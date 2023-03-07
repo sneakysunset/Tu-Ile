@@ -6,7 +6,8 @@ public class Vamos : MonoBehaviour
 {
     public float speed = 3f;
     float refSpeed;
-    public KeyCode key;
+    public KeyCode keyResume;
+    public KeyCode keyStop;
     private bool isVamos = true;
 
     private void Start()
@@ -15,12 +16,15 @@ public class Vamos : MonoBehaviour
     }
     private void Update()
     {
+        //Deplacement
         transform.Translate(Vector3.right * speed * Time.deltaTime);
-        if (Input.GetKeyDown(key)&&isVamos)
+        //Arreter le deplacement
+        if (Input.GetKeyDown(keyStop) && isVamos)
         {
             StopVamos();
         }
-        if(Input.GetKeyDown(key) && isVamos)
+        //Reprendre le deplacement
+        if(Input.GetKeyDown(keyResume) && !isVamos)
         {
             ReVamos(refSpeed);
         }
@@ -28,11 +32,13 @@ public class Vamos : MonoBehaviour
     public void StopVamos()
     {
         isVamos = false;
-        speed = 0;
+        speed = 0f;
+        print(name + "est arrété");
     }
-    public void ReVamos(float speedo)
+    public void ReVamos(float refSpeed)
     {
         isVamos = true;
-        speed = speedo;
+        speed = refSpeed;
+        print(name + "est en mouvement");
     }
 }
