@@ -32,7 +32,7 @@ public class TileBump : MonoBehaviour
 
         foreach (Collider hit in hitList)
         {
-            float distance = bumpDistanceCurve.Evaluate(Mathf.Clamp(1 / (hit.transform.position.y - tile.meshR.transform.position.y) * 5, 0, 1));
+            float distance = bumpDistanceCurve.Evaluate(Mathf.Clamp(1 / (hit.transform.position.y - tile.transform.position.y + 27) * 5, 0, 1));
             print(distance);
             if (hit.transform.TryGetComponent<Rigidbody>(out Rigidbody rbx))
             {

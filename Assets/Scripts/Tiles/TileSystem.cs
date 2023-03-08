@@ -9,8 +9,22 @@ public class TileSystem : MonoBehaviour
     public bool InstantiateGrid;
     public bool DestroyGrid;
     public int columns, rows;
-    public Tile[,] tiles;
+    [HideInInspector] public Tile[,] tiles;
     public GameObject tilePrefab;
+    [HideInInspector] public Tile selectedTile;
+    private InputEvents inputs;
+
+    private void Start()
+    {
+        print(tiles.GetLength(0) + " " +  tiles.GetLength(1));
+        inputs = FindObjectOfType<InputEvents>();
+        selectedTile = inputs.selectedTile;
+    }
+
+    private void OnDrawGizmos()
+    {
+        //print(tiles.Length);
+    }
 }
 
 
@@ -40,7 +54,6 @@ public class TileSystemEditor : Editor
 
     void Draw()
     {
-        base.OnInspectorGUI();
         if (tileS.InstantiateGrid)
         {
             InstantiateGrid();
@@ -49,6 +62,7 @@ public class TileSystemEditor : Editor
         {
             DestroyGrid();
         }
+        base.OnInspectorGUI();
     }
 
     void InstantiateGrid()
@@ -68,8 +82,10 @@ public class TileSystemEditor : Editor
                     tileS.tiles[i, j] = tile.GetComponent<Tile>();
                     tile.transform.position = tileS.tiles[i, j].indexToWorldPos(i, j, Vector3.zero);
                     tile.gameObject.name = i + "  " + j;
+                    
                 }
             }
+            Debug.Log(tileS.tiles.GetLength(0) + " " + tileS.tiles.GetLength(1));
         }
         else
         {

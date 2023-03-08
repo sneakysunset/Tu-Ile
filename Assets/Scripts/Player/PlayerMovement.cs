@@ -45,7 +45,6 @@ public class PlayerMovement : MonoBehaviour
         if (_characterController.isGrounded && _velocity < 0.0f)
         {
             _velocity = -1.0f;
-            print(1);
         }
         else
         {
