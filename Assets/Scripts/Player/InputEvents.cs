@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class InputEvents : MonoBehaviour
 {
-    Tile selectedTile;
+    [HideInInspector] public Tile selectedTile;
     public LayerMask hitMask;
     private bool smalling, growing, bumping;
 
     #region Methods
+
+
+
     private void Update()
     {
         RayCasting();
@@ -38,14 +41,12 @@ public class InputEvents : MonoBehaviour
     {
         if (growing)
         {
-            transform.position += Mathf.Clamp(Time.deltaTime * selectedTile.maxVelocity, 0, transform.localScale.y) / transform.localScale.y * Vector3.up;
-            growing = false;
+            selectedTile.transform.position += Mathf.Clamp(Time.deltaTime * selectedTile.maxVelocity, 0, transform.localScale.y) / transform.localScale.y * Vector3.up;
         }
         
         if (smalling)
         {
-            transform.position -= Mathf.Clamp(Time.deltaTime * selectedTile.maxVelocity, 0, transform.localScale.y) / transform.localScale.y * Vector3.up;
-            smalling = false;
+            selectedTile.transform.position -= Mathf.Clamp(Time.deltaTime * selectedTile.maxVelocity, 0, transform.localScale.y) / transform.localScale.y * Vector3.up;
         }
 
         if (bumping)

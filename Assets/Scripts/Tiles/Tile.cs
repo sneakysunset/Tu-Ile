@@ -5,25 +5,26 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     [HideInInspector] public bool isSelected;
-    [HideInInspector] public MeshRenderer meshR, myMeshR;
+    [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public TileBump tileB;
     [HideInInspector] public Rigidbody rb;
-    
+    [HideInInspector] public  Vector3 ogPos;
     public bool walkable = true;
     public float maxVelocity;
-
+    [HideInInspector] public int coordX, coordY;
     bool selecFlag;
-
+    [Range(0, 1)]public float normaliseSpeed;
+    public Material unselectedMat, selectedMat;
     private void Start()
     {
+        DontDestroyOnLoad(gameObject);
+        ogPos = transform.position;
         tileB = GetComponent<TileBump>();
         rb = GetComponent<Rigidbody>();
-        meshR = transform.GetChild(0).GetComponent<MeshRenderer>();
         myMeshR = GetComponent<MeshRenderer>();
         if (!walkable)
         {
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
-            meshR.enabled = false;
             myMeshR.enabled = false;
         }
     }
@@ -33,7 +34,7 @@ public class Tile : MonoBehaviour
         if (!isSelected && !selecFlag)
         {
             selecFlag = true;
-            meshR.material.color = Color.white;
+            myMeshR.material = unselectedMat;
         }
 
     }
@@ -42,6 +43,8 @@ public class Tile : MonoBehaviour
         float xOffset = 0;
         if (z % 2 == 1) xOffset = transform.localScale.x * .9f;
         Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.8f + xOffset, 0, z * transform.localScale.x * 1.5f);
+        coordX = x;
+        coordY = z;
         return pos;
     }
 
@@ -49,7 +52,15 @@ public class Tile : MonoBehaviour
     {
         selecFlag = false;
         isSelected = true;
-        meshR.material.color = Color.yellow;
+        myMeshR.material = selectedMat;
+    }
+
+    private void NormaliseRelief()
+    {
+        if (!isSelected && transform.position != ogPos)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, ogPos, normaliseSpeed);
+        }
     }
 
     
