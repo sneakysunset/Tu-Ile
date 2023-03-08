@@ -19,7 +19,6 @@ public class Tile : MonoBehaviour
     private void Start()
     {
         lightAct = transform.GetChild(0).GetComponent<Light>();
-        DontDestroyOnLoad(gameObject);
         ogPos = transform.position;
         currentPos = ogPos;
         tileB = GetComponent<TileBump>();
