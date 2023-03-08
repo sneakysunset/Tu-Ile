@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using FMOD.Studio;
 public class PlayerMovement : MonoBehaviour
 {
     #region Variables: Movement
@@ -10,9 +10,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _input;
     private CharacterController _characterController;
     private Vector3 _direction;
+    [HideInInspector] public EventInstance movingSound;
 
     [SerializeField] private float speed;
-
+    bool moveFlag;
     #endregion
     #region Variables: Rotation
 
@@ -30,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/moov");
         _characterController = GetComponent<CharacterController>();
     }
 
@@ -38,6 +40,16 @@ public class PlayerMovement : MonoBehaviour
         ApplyGravity();
         ApplyRotation();
         ApplyMovement();
+        if(_characterController.isGrounded && _input != Vector2.zero && !moveFlag)
+        {
+            moveFlag = true;
+            movingSound.start();
+        }
+        else if((!_characterController.isGrounded || _input == Vector2.zero) && moveFlag)
+        {
+            moveFlag = false;
+            movingSound.stop(STOP_MODE.ALLOWFADEOUT);
+        }
     }
 
     private void ApplyGravity()

@@ -2,23 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FMOD.Studio;
+using FMODUnity;
 public class InputEvents : MonoBehaviour
 {
     [HideInInspector] public Tile selectedTile;
     public LayerMask hitMask;
     private bool smalling, growing, bumping;
-
+    [HideInInspector] public EventInstance terraformingSound;
 
 
     #region Methods
 
-
+    private void Start()
+    {
+        terraformingSound = FMODUnity.RuntimeManager.CreateInstance("event:/monte");
+    }
 
     private void Update()
     {
         RayCasting();
         bumping = false;
 
+    }
+
+    private void OnDestroy()
+    {
+        // Release the FMOD event instance when the object is destroyed
+        terraformingSound.release();
     }
     #endregion
 
@@ -38,11 +49,11 @@ public class InputEvents : MonoBehaviour
             TileFunctions();
         }
     }
-
     private void TileFunctions()
     {
         if (growing)
         {
+
             selectedTile.currentPos += Mathf.Clamp(Time.deltaTime * selectedTile.maxVelocity, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
         }
         
@@ -65,9 +76,15 @@ public class InputEvents : MonoBehaviour
         if (cbx.started)
         {
             smalling = true;
+            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
+            attributes.position = RuntimeUtils.ToFMODVector(selectedTile.transform.position + 45 * Vector3.up);
+            terraformingSound.set3DAttributes(attributes);
+            terraformingSound.start();
         }
         else if(cbx.canceled || cbx.performed)
         {
+            terraformingSound.setParameterByName("Release Time", 50000);
+            terraformingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             smalling = false;
         }
     }
@@ -76,10 +93,17 @@ public class InputEvents : MonoBehaviour
     {
         if (cbx.started)
         {
+            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
+            attributes.position = RuntimeUtils.ToFMODVector(selectedTile.transform.position + 45 * Vector3.up);
+            terraformingSound.set3DAttributes(attributes);
+            terraformingSound.start();
+
             growing = true;
         }
         else if (cbx.canceled || cbx.performed)
         {
+            terraformingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
             growing = false;
         }
     }
@@ -92,5 +116,8 @@ public class InputEvents : MonoBehaviour
         }
     }
 
-#endregion
+    #endregion
+
+    #region Sound
+    #endregion
 }

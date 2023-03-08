@@ -20,7 +20,7 @@ public class NearSightedMode : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if(nearSightMode == NearSightMode.Player && isNearSighted)
         {
@@ -28,7 +28,7 @@ public class NearSightedMode : MonoBehaviour
             {
                 float distance = (Vector2.Distance(new Vector2(player.position.x, player.position.z), new Vector2(tile.transform.position.x, tile.transform.position.z))) / maxDistanceToFall;
                 float evaluatedDistance = distanceConvertorCurve.Evaluate(distance);
-                tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y - evaluatedDistance * fallDistance, tile.transform.position.z), lerpSpeed) ;
+                tile.rb.MovePosition(Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y - evaluatedDistance * fallDistance, tile.transform.position.z), 100 * lerpSpeed * Time.deltaTime)) ;
             }
             nsFlag = true;
         }
@@ -38,7 +38,7 @@ public class NearSightedMode : MonoBehaviour
             {
                 float distance = (Vector2.Distance(new Vector2(tileS.inputs.selectedTile.transform.position.x, tileS.inputs.selectedTile.transform.position.z), new Vector2(tile.transform.position.x, tile.transform.position.z)))/ maxDistanceToFall;
                 float evaluatedDistance = distanceConvertorCurve.Evaluate(distance);
-                tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y - evaluatedDistance * fallDistance, tile.transform.position.z), lerpSpeed);
+                tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y - evaluatedDistance * fallDistance, tile.transform.position.z), 100 * lerpSpeed * Time.deltaTime);
             }
             nsFlag = true;
         }

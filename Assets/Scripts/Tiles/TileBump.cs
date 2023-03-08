@@ -19,6 +19,8 @@ public class TileBump : MonoBehaviour
 
     public void Bump()
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/stomp");
+
         RaycastHit[] hits;
         hits = rb.SweepTestAll(Vector3.up, 30);
 

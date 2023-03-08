@@ -10,7 +10,6 @@ public class TileSystem : MonoBehaviour
     public bool DestroyGrid;
     public int columns, rows;
     [HideInInspector, SerializeField] public Tile[,] tiles;
-    Tile[,] ogArray;
     public GameObject tilePrefab;
     [HideInInspector] public InputEvents inputs;
     public int ogSelectedTileX, ogSelectedTileY;
@@ -18,7 +17,6 @@ public class TileSystem : MonoBehaviour
     private void Awake()
     {
         RegenGrid();
-
     }
 
     private void Start()
@@ -68,7 +66,6 @@ public class TileSystemEditor : Editor
 
     private void OnEnable()
     {
-        Debug.Log("enable");
         tileS = (TileSystem)target;
     }
 
