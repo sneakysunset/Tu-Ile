@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour
     public Material unselectedMat, selectedMat;
     private void Start()
     {
+        DontDestroyOnLoad(gameObject);
         ogPos = transform.position;
         tileB = GetComponent<TileBump>();
         rb = GetComponent<Rigidbody>();

@@ -9,22 +9,52 @@ public class TileSystem : MonoBehaviour
     public bool InstantiateGrid;
     public bool DestroyGrid;
     public int columns, rows;
-    [HideInInspector] public Tile[,] tiles;
+    [HideInInspector, SerializeField] public Tile[,] tiles;
+    Tile[,] ogArray;
     public GameObject tilePrefab;
-    [HideInInspector] public Tile selectedTile;
-    private InputEvents inputs;
+    [HideInInspector] public InputEvents inputs;
+    public int ogSelectedTileX, ogSelectedTileY;
+    static bool editorFlag = false;
+    private void Awake()
+    {
+        RegenGrid();
+
+    }
 
     private void Start()
     {
-        print(tiles.GetLength(0) + " " +  tiles.GetLength(1));
         inputs = FindObjectOfType<InputEvents>();
-        selectedTile = inputs.selectedTile;
+        inputs.selectedTile = tiles[ogSelectedTileX, ogSelectedTileY];
+    }
+
+    void RegenGrid()
+    {
+        Tile[] list = FindObjectsOfType<Tile>();
+        tiles = new Tile[rows, columns];
+        for (int i = 0; i < list.Length; i++)
+        {
+            int x = list[i].coordX;
+            int y = list[i].coordY;
+            tiles[x, y] = list[i];
+            tiles[x, y].name = "tile " + x + " " + y;
+        }
+
+    }
+    private void OnDisable()
+    {
+        editorFlag = true;
     }
 
     private void OnDrawGizmos()
     {
+        if(editorFlag && !Application.isPlaying)
+        {
+            editorFlag = false;
+            RegenGrid();
+        }
         //print(tiles.Length);
     }
+    
 }
 
 
@@ -38,8 +68,8 @@ public class TileSystemEditor : Editor
 
     private void OnEnable()
     {
+        Debug.Log("enable");
         tileS = (TileSystem)target;
-        tileS.tiles = new Tile[0, 0];
     }
 
 
@@ -54,6 +84,7 @@ public class TileSystemEditor : Editor
 
     void Draw()
     {
+        base.OnInspectorGUI();
         if (tileS.InstantiateGrid)
         {
             InstantiateGrid();
@@ -62,7 +93,6 @@ public class TileSystemEditor : Editor
         {
             DestroyGrid();
         }
-        base.OnInspectorGUI();
     }
 
     void InstantiateGrid()

@@ -29,7 +29,7 @@ public class NearSightedMode : MonoBehaviour
         {
             foreach(Tile tile in tileS.tiles)
             {
-                float distance = (Vector2.Distance(new Vector2(tileS.selectedTile.transform.position.x, tileS.selectedTile.transform.position.z), new Vector2(tile.transform.position.x, tile.transform.position.z)))/ maxDistanceToFall;
+                float distance = (Vector2.Distance(new Vector2(tileS.inputs.selectedTile.transform.position.x, tileS.inputs.selectedTile.transform.position.z), new Vector2(tile.transform.position.x, tile.transform.position.z)))/ maxDistanceToFall;
                 float evaluatedDistance = distanceConvertorCurve.Evaluate(distance);
                 print(distance+ "  " + evaluatedDistance);
                 tile.transform.position = new Vector3(tile.transform.position.x, tile.ogPos.y - evaluatedDistance * fallDistance, tile.transform.position.z);
@@ -41,7 +41,7 @@ public class NearSightedMode : MonoBehaviour
             nsFlag = false;
             foreach (Tile tile in tileS.tiles)
             {
-                float distance = distanceConvertorCurve.Evaluate(Vector2.Distance(new Vector2(tileS.selectedTile.transform.position.x, tileS.selectedTile.transform.position.z), new Vector2(tile.transform.position.x, tile.transform.position.z)));
+                float distance = distanceConvertorCurve.Evaluate(Vector2.Distance(new Vector2(tileS.inputs.selectedTile.transform.position.x, tileS.inputs.selectedTile.transform.position.z), new Vector2(tile.transform.position.x, tile.transform.position.z)));
                 tile.transform.position = tile.ogPos;
             }
         }

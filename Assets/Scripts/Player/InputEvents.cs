@@ -9,6 +9,9 @@ public class InputEvents : MonoBehaviour
     private bool smalling, growing, bumping;
 
     #region Methods
+
+
+
     private void Update()
     {
         RayCasting();
