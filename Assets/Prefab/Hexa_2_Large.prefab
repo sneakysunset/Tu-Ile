@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2756382758195299067
 Transform:
   m_ObjectHideFlags: 0
@@ -39,7 +39,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2823291309547831239}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
@@ -149,13 +149,14 @@ MonoBehaviour:
   tileB: {fileID: 0}
   rb: {fileID: 0}
   ogPos: {x: 0, y: 0, z: 0}
+  currentPos: {x: 0, y: 0, z: 0}
   walkable: 1
-  maxVelocity: 5
+  maxVelocity: 10
   coordX: 0
   coordY: 0
   normaliseSpeed: 0
-  unselectedMat: {fileID: 2100000, guid: c260c6e636e74324daf0e836c24cfaba, type: 2}
-  selectedMat: {fileID: 2100000, guid: c260c6e636e74324daf0e836c24cfaba, type: 2}
+  unselectedMat: {fileID: 2100000, guid: ada28b3deb2e0744a9202b339afb8453, type: 2}
+  selectedMat: {fileID: 2100000, guid: 9795e00a63851d447950e1f9430dc8d3, type: 2}
 --- !u!114 &4561797581225065379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,7 +266,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 5159466916184194871, guid: 808e8f24bea35414da8ce149efd56b96, type: 3}
+  m_Mesh: {fileID: 413145009422924760, guid: 99614d3ba5e9055429792a5cde67a72a, type: 3}
 --- !u!54 &1781402770784159168
 Rigidbody:
   m_ObjectHideFlags: 0

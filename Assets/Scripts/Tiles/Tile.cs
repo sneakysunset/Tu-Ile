@@ -8,17 +8,20 @@ public class Tile : MonoBehaviour
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public TileBump tileB;
     [HideInInspector] public Rigidbody rb;
-    [HideInInspector] public  Vector3 ogPos;
+    [HideInInspector] public  Vector3 ogPos, currentPos;
     public bool walkable = true;
     public float maxVelocity;
     [HideInInspector] public int coordX, coordY;
     bool selecFlag;
     [Range(0, 1)]public float normaliseSpeed;
     public Material unselectedMat, selectedMat;
+    Light lightAct;
     private void Start()
     {
+        lightAct = transform.GetChild(0).GetComponent<Light>();
         DontDestroyOnLoad(gameObject);
         ogPos = transform.position;
+        currentPos = ogPos;
         tileB = GetComponent<TileBump>();
         rb = GetComponent<Rigidbody>();
         myMeshR = GetComponent<MeshRenderer>();
@@ -35,6 +38,7 @@ public class Tile : MonoBehaviour
         {
             selecFlag = true;
             myMeshR.material = unselectedMat;
+            lightAct.enabled = false;
         }
 
     }
@@ -52,6 +56,7 @@ public class Tile : MonoBehaviour
     {
         selecFlag = false;
         isSelected = true;
+        lightAct.enabled = true;
         myMeshR.material = selectedMat;
     }
 
@@ -59,7 +64,7 @@ public class Tile : MonoBehaviour
     {
         if (!isSelected && transform.position != ogPos)
         {
-            transform.position = Vector3.MoveTowards(transform.position, ogPos, normaliseSpeed);
+            currentPos = Vector3.MoveTowards(currentPos, ogPos, normaliseSpeed);
         }
     }
 

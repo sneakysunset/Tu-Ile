@@ -8,6 +8,8 @@ public class InputEvents : MonoBehaviour
     public LayerMask hitMask;
     private bool smalling, growing, bumping;
 
+
+
     #region Methods
 
 
@@ -41,12 +43,12 @@ public class InputEvents : MonoBehaviour
     {
         if (growing)
         {
-            selectedTile.transform.position += Mathf.Clamp(Time.deltaTime * selectedTile.maxVelocity, 0, transform.localScale.y) / transform.localScale.y * Vector3.up;
+            selectedTile.currentPos += Mathf.Clamp(Time.deltaTime * selectedTile.maxVelocity, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
         }
         
         if (smalling)
         {
-            selectedTile.transform.position -= Mathf.Clamp(Time.deltaTime * selectedTile.maxVelocity, 0, transform.localScale.y) / transform.localScale.y * Vector3.up;
+            selectedTile.currentPos -= Mathf.Clamp(Time.deltaTime * selectedTile.maxVelocity, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
         }
 
         if (bumping)

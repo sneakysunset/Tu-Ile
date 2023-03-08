@@ -13,6 +13,7 @@ public class NearSightedMode : MonoBehaviour
     public enum NearSightMode { Player, Tile}
     public NearSightMode nearSightMode;
     private bool nsFlag;
+    [Range(0,1)]public float lerpSpeed;
     private void Start()
     {
         tileS = GetComponent<TileSystem>();
@@ -23,7 +24,13 @@ public class NearSightedMode : MonoBehaviour
     {
         if(nearSightMode == NearSightMode.Player && isNearSighted)
         {
-
+            foreach (Tile tile in tileS.tiles)
+            {
+                float distance = (Vector2.Distance(new Vector2(player.position.x, player.position.z), new Vector2(tile.transform.position.x, tile.transform.position.z))) / maxDistanceToFall;
+                float evaluatedDistance = distanceConvertorCurve.Evaluate(distance);
+                tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y - evaluatedDistance * fallDistance, tile.transform.position.z), lerpSpeed) ;
+            }
+            nsFlag = true;
         }
         else if(nearSightMode == NearSightMode.Tile && isNearSighted)
         {
@@ -31,8 +38,7 @@ public class NearSightedMode : MonoBehaviour
             {
                 float distance = (Vector2.Distance(new Vector2(tileS.inputs.selectedTile.transform.position.x, tileS.inputs.selectedTile.transform.position.z), new Vector2(tile.transform.position.x, tile.transform.position.z)))/ maxDistanceToFall;
                 float evaluatedDistance = distanceConvertorCurve.Evaluate(distance);
-                print(distance+ "  " + evaluatedDistance);
-                tile.transform.position = new Vector3(tile.transform.position.x, tile.ogPos.y - evaluatedDistance * fallDistance, tile.transform.position.z);
+                tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y - evaluatedDistance * fallDistance, tile.transform.position.z), lerpSpeed);
             }
             nsFlag = true;
         }
@@ -42,7 +48,15 @@ public class NearSightedMode : MonoBehaviour
             foreach (Tile tile in tileS.tiles)
             {
                 float distance = distanceConvertorCurve.Evaluate(Vector2.Distance(new Vector2(tileS.inputs.selectedTile.transform.position.x, tileS.inputs.selectedTile.transform.position.z), new Vector2(tile.transform.position.x, tile.transform.position.z)));
-                tile.transform.position = tile.ogPos;
+                tile.transform.position = tile.currentPos;
+            }
+        }
+
+        if (!isNearSighted)
+        {
+            foreach (Tile tile in tileS.tiles)
+            {
+                tile.transform.position = tile.currentPos;
             }
         }
     }
