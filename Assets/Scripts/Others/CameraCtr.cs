@@ -8,7 +8,9 @@ public class CameraCtr : MonoBehaviour
     private Vector3 velocity;
     private Camera cam;
     private Transform player;
-
+    public LayerMask lineCastLayers;
+    public Material fadeMat;
+    public float sphereCastRadius;
     void Start()
     {
         cam = Camera.main;
@@ -16,8 +18,34 @@ public class CameraCtr : MonoBehaviour
         transform.position = player.position;
     }
 
+    private void Update()
+    {
+        LineCastToPlayer();
+
+    }
+
     private void LateUpdate()
     {
         transform.position = Vector3.SmoothDamp(transform.position, player.position, ref velocity, smoother);
+    }
+
+    private void LineCastToPlayer()
+    {
+        Vector3 camPos = cam.transform.position;
+        Vector3 direction = (player.position - camPos).normalized;
+        float distance = Vector3.Distance(player.position, cam.transform.position) - sphereCastRadius;
+        RaycastHit[] hits = Physics.SphereCastAll(camPos,sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
+        if(hits.Length > 0)
+        {
+            foreach(RaycastHit hit in hits)
+            {
+                if(hit.transform.gameObject.layer == 6)
+                {
+                    hit.transform.gameObject.layer = 7;
+                    MeshRenderer meshR = hit.transform.GetComponent<MeshRenderer>();
+                    meshR.material = fadeMat;
+                }
+            }
+        }
     }
 }

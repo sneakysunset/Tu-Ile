@@ -40,6 +40,10 @@ public class Tile : MonoBehaviour
             lightAct.enabled = false;
         }
 
+        if (walkable && gameObject.layer == 7)
+        {
+            StartCoroutine(ReactiveTile());
+        }
     }
     public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
     {
@@ -67,5 +71,11 @@ public class Tile : MonoBehaviour
         }
     }
 
-    
+    private IEnumerator ReactiveTile()
+    {
+        yield return new WaitForEndOfFrame();
+
+        gameObject.layer = 6;
+        myMeshR.material = unselectedMat;
+    }
 }
