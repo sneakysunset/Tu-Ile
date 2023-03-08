@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSelected: 0
+  walkable: 1
+  maxVelocity: 0
 --- !u!64 &4864879330067664946
 MeshCollider:
   m_ObjectHideFlags: 0
