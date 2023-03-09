@@ -8,4 +8,9 @@ public class LoadScene : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void LoadSceneAdditive(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+    }
 }

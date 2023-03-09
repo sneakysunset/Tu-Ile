@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class Tile : MonoBehaviour
 {
@@ -9,13 +10,15 @@ public class Tile : MonoBehaviour
     [HideInInspector] public TileBump tileB;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public  Vector3 ogPos, currentPos;
-    public bool walkable = true;
+    [SerializeField] public bool walkable = true;
+    [SerializeField] public Material disabledMat;
     public float maxVelocity;
-    [HideInInspector] public int coordX, coordY;
+     public int coordX, coordY;
     bool selecFlag;
     [Range(0, 1)]public float normaliseSpeed;
     public Material unselectedMat, selectedMat;
     Light lightAct;
+    public float capDistanceNeutraliser;
     private void Start()
     {
         lightAct = transform.GetChild(0).GetComponent<Light>();
@@ -28,6 +31,20 @@ public class Tile : MonoBehaviour
         {
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
             myMeshR.enabled = false;
+            GetComponent<Collider>().enabled = false;
+        }
+    }
+
+    private void OnValidate()
+    {
+        if(!myMeshR) myMeshR = GetComponent<MeshRenderer>();
+        if (!walkable)
+        {
+            myMeshR.sharedMaterial = disabledMat;
+        }
+        else
+        {
+            myMeshR.sharedMaterial = unselectedMat;
         }
     }
 
@@ -39,6 +56,8 @@ public class Tile : MonoBehaviour
             myMeshR.material = unselectedMat;
             lightAct.enabled = false;
         }
+
+        NormaliseRelief();
 
         if (walkable && gameObject.layer == 7)
         {
@@ -65,9 +84,10 @@ public class Tile : MonoBehaviour
 
     private void NormaliseRelief()
     {
-        if (!isSelected && transform.position != ogPos)
+        if (!isSelected && currentPos != ogPos)
         {
-            currentPos = Vector3.MoveTowards(currentPos, ogPos, normaliseSpeed);
+            float incrementValue = Mathf.Clamp(Vector3.Distance(currentPos, ogPos) / capDistanceNeutraliser, 0.1f, 1) *normaliseSpeed * Time.deltaTime * 100;
+            currentPos = Vector3.MoveTowards(currentPos, ogPos, incrementValue);
         }
     }
 

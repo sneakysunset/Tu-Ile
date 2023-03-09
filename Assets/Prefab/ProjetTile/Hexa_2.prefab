@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e3eedb35490242d4883f92b1dfaf40db, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,8 +99,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSelected: 0
+  myMeshR: {fileID: 169797519484019388}
+  tileB: {fileID: 0}
+  rb: {fileID: 0}
+  ogPos: {x: 0, y: 0, z: 0}
+  currentPos: {x: 0, y: 0, z: 0}
   walkable: 1
+  disabledMat: {fileID: 0}
   maxVelocity: 0
+  coordX: 0
+  coordY: 0
+  normaliseSpeed: 0
+  unselectedMat: {fileID: 0}
+  selectedMat: {fileID: 0}
+  capDistanceNeutraliser: 0
 --- !u!64 &4864879330067664946
 MeshCollider:
   m_ObjectHideFlags: 0

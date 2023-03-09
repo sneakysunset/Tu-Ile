@@ -13,10 +13,15 @@ public class TileSystem : MonoBehaviour
     public GameObject tilePrefab;
     [HideInInspector] public InputEvents inputs;
     public int ogSelectedTileX, ogSelectedTileY;
+    public Vector3 gridOgTile;
     static bool editorFlag = false;
     private void Awake()
     {
-        RegenGrid();
+        if (this.enabled)
+        {
+
+            RegenGrid();
+        }
     }
 
     private void Start()
@@ -25,10 +30,36 @@ public class TileSystem : MonoBehaviour
         inputs.selectedTile = tiles[ogSelectedTileX, ogSelectedTileY];
     }
 
+    public void Regener()
+    {
+        StartCoroutine(waiter());
+    }
+    private IEnumerator waiter()
+    {
+        yield return new WaitForSeconds(2);
+        RegenGrid();
+    }
+
     void RegenGrid()
     {
         Tile[] list = FindObjectsOfType<Tile>();
-        tiles = new Tile[rows, columns];
+        int rowss = rows;
+        int columnss = columns;
+        /*if(list.Length > rows * columns)
+        {
+            print(this.gameObject.name + " " + list.Length + " " + rowss * columnss);
+
+            rowss = 0;
+            columnss = 0;
+            TileSystem[] tileSs = FindObjectsOfType<TileSystem>();
+            foreach(TileSystem tileS in tileSs)
+            {
+                rowss += tileS.rows;
+                columns += tileS.columns;
+            }
+            print(list.Length + " " + rowss * columnss);
+        }*/
+        tiles = new Tile[rowss, columnss];
         for (int i = 0; i < list.Length; i++)
         {
             int x = list[i].coordX;
@@ -107,7 +138,7 @@ public class TileSystemEditor : Editor
                     GameObject tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as GameObject;
                     tile.transform.parent = tileS.transform;
                     tileS.tiles[i, j] = tile.GetComponent<Tile>();
-                    tile.transform.position = tileS.tiles[i, j].indexToWorldPos(i, j, Vector3.zero);
+                    tile.transform.position = tileS.tiles[i, j].indexToWorldPos(i, j, tileS.gridOgTile);
                     tile.gameObject.name = i + "  " + j;
                     
                 }
@@ -132,7 +163,7 @@ public class TileSystemEditor : Editor
                         GameObject tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as GameObject;
                         tile.transform.parent = tileS.transform;
                         tempTiles[i, j] = tile.GetComponent<Tile>();
-                        tile.transform.position = tempTiles[i, j].indexToWorldPos(i, j, Vector3.zero);
+                        tile.transform.position = tempTiles[i, j].indexToWorldPos(i, j, tileS.gridOgTile);
                         tile.gameObject.name = i + "  " + j;
                     }
                     else if (i >= tileS.rows || j >= tileS.columns)

@@ -86,4 +86,10 @@ public class PlayerMovement : MonoBehaviour
         _direction = new Vector3(_input.x, 0.0f, _input.y);
     }
 
+
+    private void OnDestroy()
+    {
+        movingSound.stop(STOP_MODE.IMMEDIATE);
+        movingSound.release();
+    }
 }
