@@ -11,7 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 7e1180e7df7bb7749b8db03b3a1f03ec, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 0
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -31,12 +31,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _Disto_Amount: 1
-    - _Disto_Scale: 1
+    - _Disto_Scale: 10
     - _Fresnel_Power: 5
-    - _Laser_Speed: 100
+    - _Laser_Speed: 2
     - _Ripples_Strenght: 100
     - _Rotation_: -5
     - __dirty: 0
     m_Colors:
-    - _Color0: {r: 1.0592737, g: 0.03327561, b: 0, a: 1}
+    - _Color0: {r: 1.6055588, g: 0.050436404, b: 0, a: 1}
   m_BuildTextureStacks: []

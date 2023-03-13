@@ -8,11 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: v3_OFF_Hexa_LP_DefaultMaterial_BaseMap_Transparent
-  m_Shader: {fileID: 210, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 47, guid: 0000000000000000f000000000000000, type: 0}
   m_ValidKeywords:
   - _ALPHAPREMULTIPLY_ON
-  - _FADING_ON
+  - _EMISSION
   - _NORMALMAP
+  - _PARALLAXMAP
   m_InvalidKeywords:
   - _COLORADDSUBDIFF_ON
   - _SURFACE_TYPE_TRANSPARENT
@@ -25,7 +26,6 @@ Material:
   disabledShaderPasses:
   - DepthOnly
   - SHADOWCASTER
-  - GRABPASS
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -259,7 +259,7 @@ Material:
     - _Smoothness2: 1
     - _Smoothness3: 1
     - _SmoothnessTextureChannel: 0
-    - _SoftParticlesEnabled: 1
+    - _SoftParticlesEnabled: 0
     - _SoftParticlesFarFadeDistance: 2
     - _SoftParticlesNearFadeDistance: 1.5
     - _SpakleSpeed: 0
@@ -294,19 +294,19 @@ Material:
     - _BodyGlow: {r: 0, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
-    - _Color: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 0}
     - _Color0: {r: 1024, g: 1024, b: 1024, a: 1}
     - _Color1: {r: 0, g: 0, b: 0, a: 0}
     - _ColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
-    - _EmissionColor: {r: 0.60456383, g: 0.60456383, b: 0.60456383, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GlintColor: {r: 0, g: 0, b: 0, a: 0}
     - _GlintFresnel: {r: 0, g: 0, b: 0, a: 0}
     - _MainGlowFresnel: {r: 0, g: 0, b: 0, a: 0}
     - _ReflectColor: {r: 1, g: 1, b: 1, a: 1}
     - _SPECULAR_COLOR: {r: 1, g: 1, b: 1, a: 0}
     - _SizeSpeedInterval: {r: 1, g: 1, b: 1, a: 0}
-    - _SoftParticleFadeParams: {r: 1.5, g: 2, b: 0, a: 0}
+    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SparkleColor: {r: 0, g: 0, b: 0, a: 0}
     - _SparkleFresnel: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
