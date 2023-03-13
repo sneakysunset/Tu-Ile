@@ -7,12 +7,14 @@ public class ActionReaction : MonoBehaviour
     public VieBateau vie;
     public float bonusDePointDeVie = 10f;
     public float tempsDeRecuperation = 10f;
+    public float tempsDeCanalisation = 2f;
     bool jsuisdedan;
     bool enRecuperation;
-    float t;
     float n;
+    float t;
+    public MeshRenderer rendu;
 
-
+    public GameObject UI;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -20,6 +22,10 @@ public class ActionReaction : MonoBehaviour
             //Debug
             //print(other.name +" est rentré");
             jsuisdedan = true;
+            if (!enRecuperation)
+            {
+                UI.SetActive(true);
+            }
         }
     }
     private void OnTriggerStay(Collider other)
@@ -39,27 +45,39 @@ public class ActionReaction : MonoBehaviour
             //Debug
             //print(other.name + " est sortie");
             jsuisdedan = false;
+            UI.SetActive(false);
         }    
     }
     private void Update()
     {
-        if (jsuisdedan)
+        if (Input.GetButton("Jump") && !enRecuperation && jsuisdedan)
         {
-            //faire UI input maintenue pour un event ponctuelle
-            if (Input.GetButtonDown("Jump") && !enRecuperation)
+            t += Time.deltaTime;
+            if(t>= tempsDeCanalisation)
             {
+                t = 0f;
                 vie.pointDeVie += bonusDePointDeVie;
                 enRecuperation = true;
+                rendu.material.color = Color.red;
             }
+            UI.GetComponent<UIMaintientAction>().UpdateInfoAction(tempsDeCanalisation, t);
+        }
+        else
+        {
+            t = 0f;
         }
 
         //En Recuperation
         if (enRecuperation)
         {
+            UI.SetActive(false);
+
             n += Time.deltaTime;
             if(n>= tempsDeRecuperation)
             {
                 enRecuperation = false;
+                n = 0f;
+                rendu.material.color = Color.blue;
             }
         }
     }

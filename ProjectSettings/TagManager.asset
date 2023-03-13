@@ -3,19 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Bato
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - Limit
-  - Player
-  - Bato
-  - 
+  - Tile
+  - DisabledTile
+  - Unit
+  - CameraPlane
   - 
   - 
   - 
