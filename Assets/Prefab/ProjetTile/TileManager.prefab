@@ -121,3 +121,4 @@ MonoBehaviour:
   inputs: {fileID: 0}
   ogSelectedTileX: 0
   ogSelectedTileY: 0
+  gridOgTile: {x: 0, y: 0, z: 0}
