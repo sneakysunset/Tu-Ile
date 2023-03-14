@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using FMOD.Studio;
+
 public class PlayerMovement : MonoBehaviour
 {
     #region Variables: Movement
@@ -22,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     #endregion
     #region Variables: Gravity
-
+    private bool groundedCallback;
     private float _gravity = -9.81f;
     [SerializeField] private float gravityMultiplier = 3.0f;
     [HideInInspector] public  float _velocity;
@@ -35,8 +36,19 @@ public class PlayerMovement : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
     }
 
+    private void OnGroundedCallBack()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/stomp");
+    }
+
     private void Update()
     {
+        if(_characterController.isGrounded && !groundedCallback)
+        {
+            OnGroundedCallBack();
+        }
+
+        groundedCallback = _characterController.isGrounded;
         ApplyGravity();
         ApplyRotation();
         ApplyMovement();

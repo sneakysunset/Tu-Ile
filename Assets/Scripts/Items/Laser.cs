@@ -12,8 +12,8 @@ public class Laser : MonoBehaviour
         lS = FindObjectOfType<LoadScene>();
         lineR = GetComponent<LineRenderer>();
         lineR.positionCount = 2;    
-        laserSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Blockld/laser");
-        laserSound.start();
+        //laserSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Blockld/laser");
+        //laserSound.start();
     }
 
     private void FixedUpdate()

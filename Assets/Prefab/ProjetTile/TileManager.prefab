@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5154630093807575307}
-  - component: {fileID: 2198949688653012757}
   - component: {fileID: 4600271131570365409}
+  - component: {fileID: 2198949688653012757}
   - component: {fileID: 3120364899379129663}
   - component: {fileID: 4173279834238775216}
   m_Layer: 0
@@ -35,6 +35,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4600271131570365409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5154630093807575301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68b314602ddadf1438184eeacf4f6866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InstantiateGrid: 0
+  DestroyGrid: 0
+  UpdateParameters: 0
+  columns: 20
+  rows: 20
+  tilePrefab: {fileID: 5360045457859342691, guid: 4b77018d1ea53484e93b04c2c0fba8da, type: 3}
+  inputs: {fileID: 0}
+  tileP: {fileID: 0}
+  tileM: {fileID: 0}
+  ogSelectedTileX: 5
+  ogSelectedTileY: 0
+  gridOgTile: {x: 0, y: 0, z: 0}
 --- !u!114 &2198949688653012757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,30 +127,6 @@ MonoBehaviour:
   maxDistanceToFall: 23
   nearSightMode: 1
   lerpSpeed: 0.9
---- !u!114 &4600271131570365409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5154630093807575301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68b314602ddadf1438184eeacf4f6866, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InstantiateGrid: 0
-  DestroyGrid: 0
-  UpdateParameters: 0
-  columns: 20
-  rows: 20
-  tilePrefab: {fileID: 5360045457859342691, guid: 4b77018d1ea53484e93b04c2c0fba8da, type: 3}
-  inputs: {fileID: 0}
-  tileP: {fileID: 0}
-  tileM: {fileID: 0}
-  ogSelectedTileX: 5
-  ogSelectedTileY: 0
-  gridOgTile: {x: 0, y: 0, z: 0}
 --- !u!114 &3120364899379129663
 MonoBehaviour:
   m_ObjectHideFlags: 0
