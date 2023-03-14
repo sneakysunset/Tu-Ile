@@ -18408,9 +18408,9 @@ MonoBehaviour:
   TriggerOnce: 0
   Preload: 0
   Params: []
-  OverrideAttenuation: 1
-  OverrideMinDistance: 0.8
-  OverrideMaxDistance: 13.89
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &1430737955
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19523,6 +19523,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2198949688653012757, guid: b2c35ed1eb01dbd49bc6acbffdef775d, type: 3}
+      propertyPath: sightRange
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 2198949688653012757, guid: b2c35ed1eb01dbd49bc6acbffdef775d, type: 3}
       propertyPath: isNearSighted
       value: 1
