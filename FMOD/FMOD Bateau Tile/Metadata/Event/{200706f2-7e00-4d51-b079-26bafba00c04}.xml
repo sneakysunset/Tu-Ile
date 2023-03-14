@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{200706f2-7e00-4d51-b079-26bafba00c04}">
 		<property name="name">
-			<value>plok</value>
+			<value>Plok</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
