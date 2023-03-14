@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EventFolder" id="{99ed7454-5558-41fe-908d-29acc3bbfd38}">
+		<property name="name">
+			<value>Blockld</value>
+		</property>
+		<relationship name="folder">
+			<destination>{5a94d6ad-a757-4a66-808e-31c49057b070}</destination>
+		</relationship>
+	</object>
+</objects>

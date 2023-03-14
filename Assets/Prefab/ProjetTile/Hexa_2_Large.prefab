@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 1781402770784159168}
   m_Layer: 6
   m_Name: Hexa_2_Large
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -144,21 +144,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b243fa4badd297458d6fe44d3dc8aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coordX: 0
+  coordFX: 0
+  coordY: 0
+  walkable: 1
   isSelected: 0
   myMeshR: {fileID: 5864329386916401334}
   tileB: {fileID: 0}
   rb: {fileID: 0}
   ogPos: {x: 0, y: 0, z: 0}
   currentPos: {x: 0, y: 0, z: 0}
-  walkable: 1
   disabledMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
-  maxVelocity: 10
-  coordX: 0
-  coordY: 0
+  terraFormingSpeed: 0
   normaliseSpeed: 0.1
   unselectedMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
   selectedMat: {fileID: 2100000, guid: e8fbe13235048a14ab9a6668c630c855, type: 2}
+  fadeMat: {fileID: 0}
   capDistanceNeutraliser: 25
+  bumpStrength: 0
+  bumpDistanceAnimCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &4561797581225065379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,40 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94872599345eeb948b0c4187ed41ed2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bumpStrength: 10
-  bumpDistanceCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0.35046825
-      outSlope: 0.35046825
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.6260605
-      value: 0.21941432
-      inSlope: 1.2189666
-      outSlope: 1.2189666
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2.087465
-      outSlope: 2.087465
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!33 &8540724609792189564
 MeshFilter:
   m_ObjectHideFlags: 0

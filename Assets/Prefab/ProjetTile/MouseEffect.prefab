@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9176433788940392795}
   - component: {fileID: 9176433788940392794}
-  - component: {fileID: 7554023426586334546}
+  - component: {fileID: 1687666832}
   m_Layer: 0
   m_Name: MouseEffect
   m_TagString: Untagged
@@ -45,10 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62cf49f9a7c60d74c8786d2e0d789b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedTile: {fileID: 0}
   hitMask:
     serializedVersion: 2
     m_Bits: 64
---- !u!114 &7554023426586334546
+  controller: 0
+  timerToChangeTile: 0.5
+  heightToGoUp: 0
+  rangeToHitTile: 0
+--- !u!114 &1687666832
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,8 +92,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 55dcd829-c64d-43af-a9ad-abe99ec7e890
-    m_ActionName: Player/TerraFormUp[/Mouse/leftButton]
+    m_ActionId: 739d465e-77ab-4b75-8794-73a0ff0ecfdb
+    m_ActionName: PlayerTile/TerraFormUp[/Mouse/leftButton,/XInputControllerWindows/rightTrigger]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 9176433788940392794}
@@ -103,8 +108,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: ac379b3b-b40c-4f5b-b489-c0f2d6d661ec
-    m_ActionName: Player/TerraFormDown[/Mouse/rightButton]
+    m_ActionId: 2265dc00-9d42-459a-9456-7579ce55fda9
+    m_ActionName: PlayerTile/TerraFormDown[/Mouse/rightButton,/XInputControllerWindows/leftTrigger]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 9176433788940392794}
@@ -119,20 +124,36 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 9edea8ee-202d-4822-b950-b53bd69de522
-    m_ActionName: Player/Bump[/Keyboard/space]
+    m_ActionId: 94d4120a-a57d-47b3-8a33-ce3d8133ecda
+    m_ActionName: PlayerTile/Bump[/Keyboard/space,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9176433788940392794}
+        m_TargetAssemblyTypeName: InputEvents, Assembly-CSharp
+        m_MethodName: OnMoving
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d0a0f776-b5e3-4b55-8048-2df77d49fad8
+    m_ActionName: PlayerTile/MoveVector[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 5b3ed01b-264c-4425-8988-4fd9083aa444
-    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+    m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/rightStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/rightStick/right,/XInputControllerWindows/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 6564d116-9cb1-473e-980d-13ce34ba9892
-    m_ActionName: UI/Submit[/Keyboard/enter]
+    m_ActionName: UI/Submit[/Keyboard/enter,/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: aacf4956-2dd4-4e5e-9324-e38aaf28d8f5
-    m_ActionName: UI/Cancel[/Keyboard/escape]
+    m_ActionName: UI/Cancel[/Keyboard/escape,/XInputControllerWindows/buttonEast]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 429c6679-7cc0-406d-89fa-fc43812bff9c
@@ -162,7 +183,7 @@ MonoBehaviour:
     m_ActionId: 845ed5cb-c0f6-40d0-aee6-a27427fa55f2
     m_ActionName: UI/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultControlScheme: Gamepad
+  m_DefaultActionMap: PlayerTile
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
