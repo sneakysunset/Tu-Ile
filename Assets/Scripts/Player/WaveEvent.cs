@@ -16,7 +16,7 @@ public class WaveEvent : MonoBehaviour
     }
 
 
-    public void Instigator()
+/*    public void Instigator()
     {
         Tile firstTile = inputEvents.selectedTile;
         
@@ -48,5 +48,5 @@ public class WaveEvent : MonoBehaviour
             int y = hitY - fromY;
             StartCoroutine(VoidEffect(x, y, hitX, hitY));
         }
-    }
+    }*/
 }

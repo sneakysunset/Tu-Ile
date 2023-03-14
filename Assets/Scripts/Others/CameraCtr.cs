@@ -9,7 +9,6 @@ public class CameraCtr : MonoBehaviour
     private Camera cam;
     private Transform player;
     public LayerMask lineCastLayers;
-    public Material fadeMat;
     public float sphereCastRadius;
     void Start()
     {
@@ -41,9 +40,12 @@ public class CameraCtr : MonoBehaviour
             {
                 if(hit.transform.gameObject.layer == 6)
                 {
-                    hit.transform.gameObject.layer = 7;
-                    MeshRenderer meshR = hit.transform.GetComponent<MeshRenderer>();
-                    meshR.material = fadeMat;
+                    Tile tile = hit.transform.GetComponent<Tile>();
+                    if (!tile.isSelected)
+                    {
+                        hit.transform.gameObject.layer = 7;
+                    }
+                    tile.FadingTileEffect();
                 }
             }
         }

@@ -22,6 +22,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public float capDistanceNeutraliser;
     [HideNormalInspector] public float bumpStrength;
     [HideNormalInspector] public AnimationCurve bumpDistanceAnimCurve;
+    [HideNormalInspector] bool isFaded;
     private void Start()
     {
         coordFX = coordX - coordY / 2;
@@ -63,7 +64,7 @@ public class Tile : MonoBehaviour
 
         NormaliseRelief();
 
-        if (walkable && gameObject.layer == 7)
+        if (walkable && isFaded)
         {
             StartCoroutine(ReactiveTile());
         }
@@ -102,5 +103,11 @@ public class Tile : MonoBehaviour
 
         gameObject.layer = 6;
         myMeshR.material = unselectedMat;
+    }
+
+    public void FadingTileEffect()
+    {
+        myMeshR.material = fadeMat;
+        isFaded = true;
     }
 }
