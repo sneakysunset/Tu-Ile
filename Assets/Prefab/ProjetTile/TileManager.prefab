@@ -72,6 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isNearSighted: 1
+  nearSightMode: 1
   distanceConvertorCurve:
     serializedVersion: 2
     m_Curve:
@@ -124,8 +125,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   fallDistance: 50
-  maxDistanceToFall: 23
-  nearSightMode: 1
+  sightRange: 25
   lerpSpeed: 0.9
 --- !u!114 &3120364899379129663
 MonoBehaviour:
