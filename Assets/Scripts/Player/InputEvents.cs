@@ -37,6 +37,36 @@ public class InputEvents : MonoBehaviour
             TileControllerMove(tileCoord);
         }
         bumping = false;
+
+        if (Input.GetMouseButtonDown(0) && !controller)
+        {
+            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
+            attributes.position = RuntimeUtils.ToFMODVector(selectedTile.transform.position + 45 * Vector3.up);
+            terraformingSound.set3DAttributes(attributes);
+            terraformingSound.start();
+            growing = true;
+        }
+        else if (Input.GetMouseButtonUp(0) && !controller)
+        {
+            terraformingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            growing = false;
+        }
+            
+        if (Input.GetMouseButtonDown(1) && !controller)
+        {
+            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
+            attributes.position = RuntimeUtils.ToFMODVector(selectedTile.transform.position + 45 * Vector3.up);
+            terraformingSound.set3DAttributes(attributes);
+            terraformingSound.start();
+            smalling = true;
+        }
+        else if (Input.GetMouseButtonUp(1) && !controller)
+        {
+            terraformingSound.setParameterByName("Release Time", 50000);
+            terraformingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            smalling = false;
+        }
+            
     }
 
     private void OnDestroy()
@@ -58,7 +88,6 @@ public class InputEvents : MonoBehaviour
                 selectedTile = hit.transform.GetComponent<Tile>();
                 selectedTile.OnSelected();
             }
-            print(1);
             TileFunctions();
         }
     }
@@ -100,20 +129,39 @@ public class InputEvents : MonoBehaviour
 
     private void TileFunctions()
     {
-        if (growing)
+        if (controller)
         {
-
-            selectedTile.currentPos += Mathf.Clamp(Time.deltaTime * selectedTile.terraFormingSpeed, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
-        }
+            if (growing)
+            {
+                selectedTile.currentPos += Mathf.Clamp(Time.deltaTime * selectedTile.terraFormingSpeed, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
+            }
         
-        if (smalling)
-        {
-            selectedTile.currentPos -= Mathf.Clamp(Time.deltaTime * selectedTile.terraFormingSpeed, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
-        }
+            if (smalling)
+            {
+                selectedTile.currentPos -= Mathf.Clamp(Time.deltaTime * selectedTile.terraFormingSpeed, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
+            }
 
-        if (bumping)
+            if (bumping)
+            {
+                selectedTile.tileB.Bump();
+            }
+        }
+        else
         {
-            selectedTile.tileB.Bump();
+            if (growing)
+            {
+                selectedTile.currentPos += Mathf.Clamp(Time.deltaTime * selectedTile.terraFormingSpeed, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
+            }
+
+            if (smalling)
+            {
+                selectedTile.currentPos -= Mathf.Clamp(Time.deltaTime * selectedTile.terraFormingSpeed, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                selectedTile.tileB.Bump();
+            }
         }
     }
     #endregion

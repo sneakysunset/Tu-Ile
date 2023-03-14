@@ -144,22 +144,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b243fa4badd297458d6fe44d3dc8aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coordX: 0
+  coordFX: 0
+  coordY: 0
+  walkable: 1
   isSelected: 0
   myMeshR: {fileID: 5864329386916401334}
   tileB: {fileID: 0}
   rb: {fileID: 0}
   ogPos: {x: 0, y: 0, z: 0}
   currentPos: {x: 0, y: 0, z: 0}
-  walkable: 1
   disabledMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
-  maxVelocity: 10
-  coordX: 0
-  coordFX: 0
-  coordY: 0
+  terraFormingSpeed: 0
   normaliseSpeed: 0.1
   unselectedMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
   selectedMat: {fileID: 2100000, guid: e8fbe13235048a14ab9a6668c630c855, type: 2}
+  fadeMat: {fileID: 0}
   capDistanceNeutraliser: 25
+  bumpStrength: 0
+  bumpDistanceAnimCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &4561797581225065379
 MonoBehaviour:
   m_ObjectHideFlags: 0

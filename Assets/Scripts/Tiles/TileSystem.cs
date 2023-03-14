@@ -71,11 +71,29 @@ public class TileSystem : MonoBehaviour
             tiles[x, y] = list[i];
             tiles[x, y].name = "tile " + x + " " + y;
         }
-
+        UpdateGridParameters();
     }
     private void OnDisable()
     {
         editorFlag = true;
+    }
+
+    void UpdateGridParameters()
+    {
+        tileM = GetComponent<TileMats>();
+        tileP = GetComponent<TileParameters>();
+        foreach (Tile tile in tiles)
+        {
+            tile.terraFormingSpeed = tileP.terraFormingSpeed;
+            tile.normaliseSpeed = tileP.terraFormingNormalisingSpeed;
+            tile.capDistanceNeutraliser = tileP.distanceSpeedNormaliserModifier;
+            tile.bumpStrength = tileP.bumpStrength;
+            tile.bumpDistanceAnimCurve = tileP.bumpDistanceCurve;
+            tile.selectedMat = tileM.selectedTileMaterial;
+            tile.unselectedMat = tileM.unselectedTileMaterial;
+            tile.disabledMat = tileM.disabledTileMaterial;
+            tile.fadeMat = tileM.FadedTileMaterial;
+        }
     }
 
     private void OnDrawGizmos()

@@ -8,20 +8,20 @@ public class Tile : MonoBehaviour
     public int coordX, coordFX, coordY;
     [SerializeField] public bool walkable = true;
 
-    [HideInInspector] public bool isSelected;
+    [HideNormalInspector] public bool isSelected;
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public TileBump tileB;
     [HideInInspector] public Rigidbody rb;
-    [HideInInspector] public  Vector3 ogPos, currentPos;
+    [HideNormalInspector] public  Vector3 ogPos, currentPos;
     [HideInInspector, SerializeField] public Material disabledMat;
-    [HideInInspector] public float terraFormingSpeed;
+    [HideNormalInspector] public float terraFormingSpeed;
     bool selecFlag;
-    [HideInInspector] public float normaliseSpeed;
+    [HideNormalInspector] public float normaliseSpeed;
     [HideInInspector] public Material unselectedMat, selectedMat, fadeMat;
     Light lightAct;
-    [HideInInspector] public float capDistanceNeutraliser;
-    [HideInInspector] public float bumpStrength;
-    [HideInInspector] public AnimationCurve bumpDistanceAnimCurve;
+    [HideNormalInspector] public float capDistanceNeutraliser;
+    [HideNormalInspector] public float bumpStrength;
+    [HideNormalInspector] public AnimationCurve bumpDistanceAnimCurve;
     private void Start()
     {
         coordFX = coordX - coordY / 2;
