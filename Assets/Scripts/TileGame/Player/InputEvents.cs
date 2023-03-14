@@ -15,6 +15,8 @@ public class InputEvents : MonoBehaviour
     private Vector2 moveValue;
     public float timerToChangeTile = .3f;
     private float timer;
+    public float heightToGoUp;
+    public float rangeToHitTile;
     #region Methods
 
     private void Start()
@@ -67,12 +69,13 @@ public class InputEvents : MonoBehaviour
         selectedTile.gameObject.layer = 2;
         RaycastHit hit;
         //Debug.DrawRay(selectedTile.transform.position + Vector3.up * 40, new Vector3(moveValue.x, 0, moveValue.y) * 150, Color.blue, Time.deltaTime);
-        if(timer < 0 && Physics.Raycast(new Vector3(selectedTile.transform.position.x, 40, selectedTile.transform.position.z), new Vector3(moveValue.x, 0, moveValue.y), out hit, 150, hitMask, QueryTriggerInteraction.Ignore))
+        if(timer < 0 && Physics.Raycast(new Vector3(selectedTile.transform.position.x, 40, selectedTile.transform.position.z), new Vector3(moveValue.x, 0, moveValue.y), out hit, rangeToHitTile, hitMask, QueryTriggerInteraction.Ignore))
         {
             //print(hit.transform.name);
             Tile tile = hit.transform.GetComponent<Tile>();
             Vector2Int newTileCoord = new Vector2Int(tile.coordX, tile.coordY);
-            if (tileS.tiles[newTileCoord.x, newTileCoord.y].walkable)
+            Tile targetTile = tileS.tiles[newTileCoord.x, newTileCoord.y];
+            if (targetTile.walkable && targetTile.transform.position.y - selectedTile.transform.position.y < heightToGoUp)
             {
                 timer = timerToChangeTile;
                 selectedTile.gameObject.layer = LayerMask.NameToLayer("Tile");

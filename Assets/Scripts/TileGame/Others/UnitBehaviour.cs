@@ -18,7 +18,7 @@ public class UnitBehaviour : MonoBehaviour
 
     private void OnDestroy()
     {
-        deathPSys.transform.parent = null;
-        deathPSys.Play();
+        //deathPSys.transform.parent = null;
+        //deathPSys.Play();
     }
 }

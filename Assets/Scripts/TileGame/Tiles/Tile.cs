@@ -13,14 +13,17 @@ public class Tile : MonoBehaviour
     [SerializeField] public bool walkable = true;
     [SerializeField] public Material disabledMat;
     public float maxVelocity;
-     public int coordX, coordY;
+     public int coordX, coordFX, coordY;
     bool selecFlag;
     [Range(0, 1)]public float normaliseSpeed;
     public Material unselectedMat, selectedMat;
     Light lightAct;
     public float capDistanceNeutraliser;
+    [HideInInspector] const float outerRadius = 1;
+    [HideInInspector] const float innerRadius = outerRadius * 0.866025404f;
     private void Start()
     {
+        coordFX = coordX - coordY / 2;
         lightAct = transform.GetChild(0).GetComponent<Light>();
         ogPos = transform.position;
         currentPos = ogPos;
@@ -70,6 +73,7 @@ public class Tile : MonoBehaviour
         if (z % 2 == 1) xOffset = transform.localScale.x * .9f;
         Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.8f + xOffset, 0, z * transform.localScale.x * 1.5f);
         coordX = x;
+        
         coordY = z;
         return pos;
     }

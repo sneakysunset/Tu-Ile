@@ -15,6 +15,7 @@ public class TileSystem : MonoBehaviour
     public int ogSelectedTileX, ogSelectedTileY;
     public Vector3 gridOgTile;
     static bool editorFlag = false;
+
     private void Awake()
     {
         if (this.enabled)
@@ -140,10 +141,10 @@ public class TileSystemEditor : Editor
                     tileS.tiles[i, j] = tile.GetComponent<Tile>();
                     tile.transform.position = tileS.tiles[i, j].indexToWorldPos(i, j, tileS.gridOgTile);
                     tile.gameObject.name = i + "  " + j;
-                    
+
                 }
             }
-            Debug.Log(tileS.tiles.GetLength(0) + " " + tileS.tiles.GetLength(1));
+
         }
         else
         {

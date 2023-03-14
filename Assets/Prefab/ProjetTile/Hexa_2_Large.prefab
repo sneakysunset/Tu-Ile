@@ -154,6 +154,7 @@ MonoBehaviour:
   disabledMat: {fileID: 2100000, guid: 6bad597a3c8952447a2f44249a0df7ec, type: 2}
   maxVelocity: 10
   coordX: 0
+  coordFX: 0
   coordY: 0
   normaliseSpeed: 0.1
   unselectedMat: {fileID: 2100000, guid: ada28b3deb2e0744a9202b339afb8453, type: 2}
