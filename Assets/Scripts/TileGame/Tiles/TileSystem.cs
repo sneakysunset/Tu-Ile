@@ -8,10 +8,13 @@ public class TileSystem : MonoBehaviour
 {
     public bool InstantiateGrid;
     public bool DestroyGrid;
+    public bool UpdateParameters;
     public int columns, rows;
     [HideInInspector, SerializeField] public Tile[,] tiles;
     public GameObject tilePrefab;
     [HideInInspector] public InputEvents inputs;
+    [HideInInspector] public TileParameters tileP;
+    [HideInInspector] public TileMats tileM;
     public int ogSelectedTileX, ogSelectedTileY;
     public Vector3 gridOgTile;
     static bool editorFlag = false;
@@ -20,7 +23,6 @@ public class TileSystem : MonoBehaviour
     {
         if (this.enabled)
         {
-
             RegenGrid();
         }
     }
@@ -34,6 +36,7 @@ public class TileSystem : MonoBehaviour
     public void Regener()
     {
         StartCoroutine(waiter());
+
     }
     private IEnumerator waiter()
     {
@@ -117,10 +120,15 @@ public class TileSystemEditor : Editor
         if (tileS.InstantiateGrid)
         {
             InstantiateGrid();
+            UpdateGridParameters();
         }
         if (tileS.DestroyGrid)
         {
             DestroyGrid();
+        }
+        if (tileS.UpdateParameters)
+        {
+            UpdateGridParameters();
         }
     }
 
@@ -181,6 +189,25 @@ public class TileSystemEditor : Editor
             }
             tileS.tiles = new Tile[tileS.rows, tileS.columns];
             tileS.tiles = tempTiles;
+        }
+    }
+
+    void UpdateGridParameters()
+    {
+        tileS.tileM = tileS.GetComponent<TileMats>();
+        tileS.tileP = tileS.GetComponent<TileParameters>();
+        tileS.UpdateParameters = false;
+        foreach(Tile tile in tileS.tiles)
+        {
+            tile.terraFormingSpeed = tileS.tileP.terraFormingSpeed;
+            tile.normaliseSpeed = tileS.tileP.terraFormingNormalisingSpeed;
+            tile.capDistanceNeutraliser = tileS.tileP.distanceSpeedNormaliserModifier;
+            tile.bumpStrength = tileS.tileP.bumpStrength;
+            tile.bumpDistanceAnimCurve = tileS.tileP.bumpDistanceCurve;
+            tile.selectedMat = tileS.tileM.selectedTileMaterial;
+            tile.unselectedMat = tileS.tileM.unselectedTileMaterial;
+            tile.disabledMat = tileS.tileM.disabledTileMaterial;
+            tile.fadeMat = tileS.tileM.FadedTileMaterial;
         }
     }
 

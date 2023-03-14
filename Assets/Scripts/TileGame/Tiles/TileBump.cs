@@ -19,7 +19,8 @@ public class TileBump : MonoBehaviour
 
     public void Bump()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/stomp");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Tilee/bumper");
+
 
         RaycastHit[] hits;
         hits = rb.SweepTestAll(Vector3.up, 30);
@@ -28,7 +29,7 @@ public class TileBump : MonoBehaviour
         {
             foreach (RaycastHit hit in hits)
             {
-                hitList.Add(hit.collider);
+                if(!hit.transform.CompareTag("Tile")) hitList.Add(hit.collider);
             }
         }
 

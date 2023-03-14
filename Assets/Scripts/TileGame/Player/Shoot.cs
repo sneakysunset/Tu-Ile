@@ -22,6 +22,7 @@ public class Shoot : MonoBehaviour
         if (cbx.started)
         {
             shootBool = true;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Pistol/Bullet Shot");
         }
     }
 

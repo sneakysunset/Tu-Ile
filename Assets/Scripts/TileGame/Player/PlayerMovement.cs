@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/moov");
+        movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/moov");
         _characterController = GetComponent<CharacterController>();
     }
 

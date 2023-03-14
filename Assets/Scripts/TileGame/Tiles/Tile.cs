@@ -5,22 +5,23 @@ using UnityEditor;
 
 public class Tile : MonoBehaviour
 {
+    public int coordX, coordFX, coordY;
+    [SerializeField] public bool walkable = true;
+
     [HideInInspector] public bool isSelected;
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public TileBump tileB;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public  Vector3 ogPos, currentPos;
-    [SerializeField] public bool walkable = true;
-    [SerializeField] public Material disabledMat;
-    public float maxVelocity;
-     public int coordX, coordFX, coordY;
+    [HideInInspector, SerializeField] public Material disabledMat;
+    [HideInInspector] public float terraFormingSpeed;
     bool selecFlag;
-    [Range(0, 1)]public float normaliseSpeed;
-    public Material unselectedMat, selectedMat;
+    [HideInInspector] public float normaliseSpeed;
+    [HideInInspector] public Material unselectedMat, selectedMat, fadeMat;
     Light lightAct;
-    public float capDistanceNeutraliser;
-    [HideInInspector] const float outerRadius = 1;
-    [HideInInspector] const float innerRadius = outerRadius * 0.866025404f;
+    [HideInInspector] public float capDistanceNeutraliser;
+    [HideInInspector] public float bumpStrength;
+    [HideInInspector] public AnimationCurve bumpDistanceAnimCurve;
     private void Start()
     {
         coordFX = coordX - coordY / 2;

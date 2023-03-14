@@ -21,7 +21,7 @@ public class InputEvents : MonoBehaviour
 
     private void Start()
     {
-        terraformingSound = FMODUnity.RuntimeManager.CreateInstance("event:/monte");
+        terraformingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Tilee/monte");
         tileS = FindObjectOfType<TileSystem>();
         timer = timerToChangeTile;
         selectedTile.OnSelected();
@@ -103,12 +103,12 @@ public class InputEvents : MonoBehaviour
         if (growing)
         {
 
-            selectedTile.currentPos += Mathf.Clamp(Time.deltaTime * selectedTile.maxVelocity, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
+            selectedTile.currentPos += Mathf.Clamp(Time.deltaTime * selectedTile.terraFormingSpeed, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
         }
         
         if (smalling)
         {
-            selectedTile.currentPos -= Mathf.Clamp(Time.deltaTime * selectedTile.maxVelocity, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
+            selectedTile.currentPos -= Mathf.Clamp(Time.deltaTime * selectedTile.terraFormingSpeed, 0, selectedTile.transform.localScale.y) / selectedTile.transform.localScale.y * Vector3.up;
         }
 
         if (bumping)

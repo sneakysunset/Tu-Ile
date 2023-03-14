@@ -16,5 +16,6 @@ public class BulletParticleEffect : MonoBehaviour
     {
         _psm_main = pSys.main;
         _psm_main.gravityModifierMultiplier = 3;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Pistol/Bullet Impact Metal");
     }
 }
