@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/moov");
+        // movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/moov");
         _characterController = GetComponent<CharacterController>();
     }
 
@@ -43,12 +43,12 @@ public class PlayerMovement : MonoBehaviour
         if(_characterController.isGrounded && _input != Vector2.zero && !moveFlag)
         {
             moveFlag = true;
-            movingSound.start();
+            // movingSound.start();
         }
         else if((!_characterController.isGrounded || _input == Vector2.zero) && moveFlag)
         {
             moveFlag = false;
-            movingSound.stop(STOP_MODE.ALLOWFADEOUT);
+            // movingSound.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
 
@@ -89,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDestroy()
     {
-        movingSound.stop(STOP_MODE.IMMEDIATE);
-        movingSound.release();
+        // movingSound.stop(STOP_MODE.IMMEDIATE);
+        // movingSound.release();
     }
 }

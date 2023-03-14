@@ -21,7 +21,7 @@ public class InputEvents : MonoBehaviour
 
     private void Start()
     {
-        terraformingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Tilee/monte");
+        // terraformingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Tilee/monte");
         tileS = FindObjectOfType<TileSystem>();
         timer = timerToChangeTile;
         selectedTile.OnSelected();
@@ -40,30 +40,30 @@ public class InputEvents : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && !controller)
         {
-            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
-            attributes.position = RuntimeUtils.ToFMODVector(selectedTile.transform.position + 45 * Vector3.up);
-            terraformingSound.set3DAttributes(attributes);
-            terraformingSound.start();
+            // FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
+            // attributes.position = RuntimeUtils.ToFMODVector(selectedTile.transform.position + 45 * Vector3.up);
+            // terraformingSound.set3DAttributes(attributes);
+            // terraformingSound.start();
             growing = true;
         }
         else if (Input.GetMouseButtonUp(0) && !controller)
         {
-            terraformingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            // terraformingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             growing = false;
         }
             
         if (Input.GetMouseButtonDown(1) && !controller)
         {
-            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
-            attributes.position = RuntimeUtils.ToFMODVector(selectedTile.transform.position + 45 * Vector3.up);
-            terraformingSound.set3DAttributes(attributes);
-            terraformingSound.start();
+            // FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
+            // attributes.position = RuntimeUtils.ToFMODVector(selectedTile.transform.position + 45 * Vector3.up);
+            // terraformingSound.set3DAttributes(attributes);
+            // terraformingSound.start();
             smalling = true;
         }
         else if (Input.GetMouseButtonUp(1) && !controller)
         {
-            terraformingSound.setParameterByName("Release Time", 50000);
-            terraformingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            // terraformingSound.setParameterByName("Release Time", 50000);
+            // terraformingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             smalling = false;
         }
             
