@@ -53,6 +53,9 @@ MonoBehaviour:
   timerToChangeTile: 0.5
   heightToGoUp: 0
   rangeToHitTile: 0
+  keyBoardInput: 1
+  teraUp: 97
+  teraDown: 101
 --- !u!114 &1687666832
 MonoBehaviour:
   m_ObjectHideFlags: 0

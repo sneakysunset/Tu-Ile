@@ -17,6 +17,9 @@ public class InputEvents : MonoBehaviour
     private float timer;
     public float heightToGoUp;
     public float rangeToHitTile;
+    public bool keyBoardInput;
+    public KeyCode teraUp;
+    public KeyCode teraDown;
     #region Methods
 
     private void Start()
@@ -38,7 +41,7 @@ public class InputEvents : MonoBehaviour
         }
         bumping = false;
 
-        if (Input.GetMouseButtonDown(0) && !controller)
+        if (((keyBoardInput && Input.GetKeyDown(teraUp)) || (!keyBoardInput && Input.GetMouseButtonDown(0))) && !controller)
         {
             FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
             attributes.position = RuntimeUtils.ToFMODVector(selectedTile.transform.position + 45 * Vector3.up);
@@ -46,13 +49,13 @@ public class InputEvents : MonoBehaviour
             terraformingSound.start();
             growing = true;
         }
-        else if (Input.GetMouseButtonUp(0) && !controller)
+        else if (((keyBoardInput && Input.GetKeyUp(teraUp)) || (!keyBoardInput && Input.GetMouseButtonUp(0))) && !controller)
         {
             terraformingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             growing = false;
         }
             
-        if (Input.GetMouseButtonDown(1) && !controller)
+        if (((keyBoardInput && Input.GetKeyDown(teraDown)) || (!keyBoardInput && Input.GetMouseButtonDown(1))) && !controller)
         {
             FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D();
             attributes.position = RuntimeUtils.ToFMODVector(selectedTile.transform.position + 45 * Vector3.up);
@@ -60,7 +63,7 @@ public class InputEvents : MonoBehaviour
             terraformingSound.start();
             smalling = true;
         }
-        else if (Input.GetMouseButtonUp(1) && !controller)
+        else if (((keyBoardInput && Input.GetKeyUp(teraDown)) || (!keyBoardInput && Input.GetMouseButtonUp(1))) && !controller)
         {
             terraformingSound.setParameterByName("Release Time", 50000);
             terraformingSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);

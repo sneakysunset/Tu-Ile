@@ -11,7 +11,7 @@ public class NearSightedMode : MonoBehaviour
     public NearSightMode nearSightMode;
     public AnimationCurve distanceConvertorCurve;
     public float fallDistance;
-    public float sightRange;
+    [Range(1, 100)]public float sightRange;
     private bool nsFlag;
     [Range(0,1)]public float lerpSpeed;
     private void Start()
