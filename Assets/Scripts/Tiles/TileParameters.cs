@@ -18,4 +18,13 @@ public class TileParameters : MonoBehaviour
     [Space(3)]
     [Header("The curve that translates the distance in y axis between the bumped item and the tile in bump strength")]
     public AnimationCurve bumpDistanceCurve;
+
+    [Space(30)]
+    [Header("Degradation")]
+    [Space(15)]
+    public float minTimer;
+    public float maxTimer;
+    public AnimationCurve degradationTimerAnimCurve;
+    public float timeToGetToMaxDegradationSpeed;
+    public float degradingSpeed;
 }
