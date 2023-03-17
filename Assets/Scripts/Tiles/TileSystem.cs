@@ -30,7 +30,7 @@ public class TileSystem : MonoBehaviour
     private void Start()
     {
         inputs = FindObjectOfType<InputEvents>();
-        inputs.selectedTile = tiles[ogSelectedTileX, ogSelectedTileY];
+        //inputs.selectedTile = tiles[ogSelectedTileX, ogSelectedTileY];
     }
 
     public void Regener()
@@ -93,6 +93,11 @@ public class TileSystem : MonoBehaviour
             tile.unselectedMat = tileM.unselectedTileMaterial;
             tile.disabledMat = tileM.disabledTileMaterial;
             tile.fadeMat = tileM.FadedTileMaterial;
+            tile.maxTimer = tileP.maxTimer;
+            tile.minTimer = tileP.minTimer;
+            tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
+            tile.timeToGetToMaxDegradationSpeed = tileP.timeToGetToMaxDegradationSpeed;
+            tile.degradingSpeed = tileP.degradingSpeed;
         }
     }
 
@@ -170,7 +175,7 @@ public class TileSystemEditor : Editor
 
                 }
             }
-
+            UpdateGridParameters();
         }
         else
         {
