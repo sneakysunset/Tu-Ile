@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class TileSelector : MonoBehaviour
 {
     TileSystem tileS;
@@ -10,6 +10,7 @@ public class TileSelector : MonoBehaviour
     public float maxAngleToTarget = 50;
     public LayerMask tileLayer;
     public float hitDistance = 4;
+    private Tile targettedTile;
     private void Start()
     {
         tileS = FindObjectOfType<TileSystem>();
@@ -18,13 +19,14 @@ public class TileSelector : MonoBehaviour
     private void Update()
     {
         tileUnder = tileS.WorldPosToTile(transform.position);
-
-        if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && TryGetComponent<Tile>(out Tile TargettedTile) && !TargettedTile.walkable)
+        
+        if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable)
         {
-            tileBluePrint.position = TargettedTile.transform.position + Vector3.up * 20;
+            tileBluePrint.position = targettedTile.transform.position + Vector3.up * 20;
         }
         else
         {
+            targettedTile = null; 
             tileBluePrint.position = new Vector3(0, -100, 0);
         }
 /*        float angle = 180;
@@ -57,4 +59,15 @@ public class TileSelector : MonoBehaviour
         
     }
 
+
+    public void OnSpawnTile(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            if(targettedTile != null)
+            {
+                targettedTile.Spawn();
+            }
+        }
+    }
 }

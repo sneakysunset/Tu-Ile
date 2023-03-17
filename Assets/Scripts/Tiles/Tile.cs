@@ -55,7 +55,7 @@ public class Tile : MonoBehaviour
         {
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
             myMeshR.enabled = false;
-            GetComponent<Collider>().enabled = false;
+            //GetComponent<Collider>().enabled = false;
             transform.Find("Additional Visuals").gameObject.SetActive(false);
         }
         timer = Random.Range(minTimer, maxTimer);
@@ -172,6 +172,18 @@ public class Tile : MonoBehaviour
     {
         myMeshR.material = fadeMat;
         isFaded = true;
+    }
+
+    public void Spawn()
+    {
+        walkable = true;
+        gameObject.layer = LayerMask.NameToLayer("Tile");
+        myMeshR.enabled = true;
+        myMeshR.material = unselectedMat;
+        transform.Find("Additional Visuals").gameObject.SetActive(true);
+        timer = Random.Range(minTimer, maxTimer);
+        isDegrading = false;
+        transform.tag = "Tile";
     }
 }
 
