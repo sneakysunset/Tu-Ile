@@ -175,7 +175,7 @@ public class TileSystemEditor : Editor
 
                 }
             }
-
+            UpdateGridParameters();
         }
         else
         {

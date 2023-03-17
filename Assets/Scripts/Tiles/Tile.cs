@@ -55,6 +55,7 @@ public class Tile : MonoBehaviour
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
             myMeshR.enabled = false;
             GetComponent<Collider>().enabled = false;
+            transform.Find("Additional Visuals").gameObject.SetActive(false);
         }
         timer = Random.Range(minTimer, maxTimer);
     }
@@ -151,7 +152,7 @@ public class Tile : MonoBehaviour
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(Tile))]
-[System.Serializable]
+[System.Serializable,CanEditMultipleObjects]
 public class TileEditor : Editor
 {
     public Tile tile;
