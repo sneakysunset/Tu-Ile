@@ -36,6 +36,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public float minTimer, maxTimer;
     [HideNormalInspector] public AnimationCurve degradationTimerAnimCurve;
     [HideNormalInspector] public float timeToGetToMaxDegradationSpeed;
+    [HideInInspector] public Vector2Int[] adjTCoords;
     private float degradationTimerModifier;
     [HideInInspector] public float degradingSpeed;
     [HideInInspector] public bool isGrowing;
@@ -58,6 +59,7 @@ public class Tile : MonoBehaviour
             transform.Find("Additional Visuals").gameObject.SetActive(false);
         }
         timer = Random.Range(minTimer, maxTimer);
+        GetAdjCoords();
     }
 
     private void OnValidate()
@@ -66,10 +68,12 @@ public class Tile : MonoBehaviour
         if (!walkable)
         {
             myMeshR.sharedMaterial = disabledMat;
+            transform.Find("Additional Visuals").gameObject.SetActive(false);
         }
         else
         {
             myMeshR.sharedMaterial = unselectedMat;
+            transform.Find("Additional Visuals").gameObject.SetActive(true);
         }
     }
 
@@ -106,7 +110,28 @@ public class Tile : MonoBehaviour
     }
 
 
+    private void GetAdjCoords()
+    {
+        adjTCoords = new Vector2Int[6];
 
+        adjTCoords[2] = new Vector2Int(coordX + 1, coordY) ;
+        adjTCoords[5] = new Vector2Int(coordX - 1, coordY) ;
+
+        if(coordY % 2 == 1)
+        {
+            adjTCoords[0] = new Vector2Int(coordX, coordY + 1);
+            adjTCoords[1] = new Vector2Int(coordX + 1, coordY + 1);
+            adjTCoords[4] = new Vector2Int(coordX, coordY - 1);
+            adjTCoords[3] = new Vector2Int(coordX + 1, coordY - 1);
+        }
+        else
+        {
+            adjTCoords[0] = new Vector2Int(coordX - 1, coordY + 1);
+            adjTCoords[1] = new Vector2Int(coordX, coordY + 1);
+            adjTCoords[4] = new Vector2Int(coordX - 1, coordY - 1);
+            adjTCoords[3] = new Vector2Int(coordX, coordY - 1);
+        }
+    }
     public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
     {
         float xOffset = 0;
