@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using AmplifyShaderEditor;
 
 public class TileSystem : MonoBehaviour
 {
@@ -33,11 +33,25 @@ public class TileSystem : MonoBehaviour
         //inputs.selectedTile = tiles[ogSelectedTileX, ogSelectedTileY];
     }
 
+    public Tile WorldPosToTile(Vector3 pos)
+    {
+        float xOffset = 0;
+        int x;
+        int z;
+
+        z = Mathf.RoundToInt(pos.z / (tilePrefab.transform.localScale.x * 1.5f));
+        if (z % 2 == 1) xOffset = tilePrefab.transform.localScale.x * .9f;
+        x = Mathf.RoundToInt((pos.x - xOffset) / (tilePrefab.transform.localScale.x * 1.8f));
+        
+        return tiles[x, z];
+    }
+
     public void Regener()
     {
         StartCoroutine(waiter());
 
     }
+
     private IEnumerator waiter()
     {
         yield return new WaitForSeconds(2);
@@ -73,6 +87,7 @@ public class TileSystem : MonoBehaviour
         }
         UpdateGridParameters();
     }
+
     private void OnDisable()
     {
         editorFlag = true;
@@ -108,7 +123,6 @@ public class TileSystem : MonoBehaviour
             editorFlag = false;
             RegenGrid();
         }
-        //print(tiles.Length);
     }
     
 }

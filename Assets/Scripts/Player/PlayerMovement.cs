@@ -111,6 +111,8 @@ public class PlayerMovement : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         _input = context.ReadValue<Vector2>();
+        float cameraAngle = -Camera.main.transform.rotation.eulerAngles.y;
+        _input = Rotate(_input, cameraAngle);
         _direction = new Vector3(_input.x, 0.0f, _input.y);
     }
 
@@ -130,5 +132,17 @@ public class PlayerMovement : MonoBehaviour
     {
         movingSound.stop(STOP_MODE.IMMEDIATE);
         movingSound.release();
+    }
+
+    private Vector2 Rotate(Vector2 v, float degrees)
+    {
+        float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
+        float cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
+
+        float tx = v.x;
+        float ty = v.y;
+        v.x = (cos * tx) - (sin * ty);
+        v.y = (sin * tx) + (cos * ty);
+        return v;
     }
 }
