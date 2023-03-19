@@ -56,7 +56,7 @@ public class NearSightedMode : MonoBehaviour
         {
             foreach (Tile tile in tileS.tiles)
             {
-                tile.transform.position = tile.currentPos;
+                tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y, tile.transform.position.z), 100 * lerpSpeed * Time.deltaTime); ;
             }
         }
     }

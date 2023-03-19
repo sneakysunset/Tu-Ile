@@ -113,6 +113,7 @@ public class TileSystem : MonoBehaviour
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
             tile.timeToGetToMaxDegradationSpeed = tileP.timeToGetToMaxDegradationSpeed;
             tile.degradingSpeed = tileP.degradingSpeed;
+            tile.heightByTile = tileP.heightByTile;
         }
     }
 
@@ -245,6 +246,12 @@ public class TileSystemEditor : Editor
             tile.unselectedMat = tileS.tileM.unselectedTileMaterial;
             tile.disabledMat = tileS.tileM.disabledTileMaterial;
             tile.fadeMat = tileS.tileM.FadedTileMaterial;
+            tile.maxTimer = tileS.tileP.maxTimer;
+            tile.minTimer = tileS.tileP.minTimer;
+            tile.degradationTimerAnimCurve = tileS.tileP.degradationTimerAnimCurve;
+            tile.timeToGetToMaxDegradationSpeed = tileS.tileP.timeToGetToMaxDegradationSpeed;
+            tile.degradingSpeed = tileS.tileP.degradingSpeed;
+            tile.heightByTile = tileS.tileP.heightByTile;
         }
     }
 

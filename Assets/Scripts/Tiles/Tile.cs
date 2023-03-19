@@ -40,6 +40,8 @@ public class Tile : MonoBehaviour
     private float degradationTimerModifier;
     [HideInInspector] public float degradingSpeed;
     [HideInInspector] public bool isGrowing;
+    [HideNormalInspector] public float heightByTile;
+
     #endregion
 
     private void Start()
@@ -47,9 +49,8 @@ public class Tile : MonoBehaviour
         coordFX = coordX - coordY / 2;
         lightAct = transform.GetChild(0).GetComponent<Light>();
         ogPos = transform.position;
-        currentPos = ogPos;
-        tileB = GetComponent<TileBump>();
-        rb = GetComponent<Rigidbody>();
+        currentPos = ogPos;  
+
         myMeshR = GetComponent<MeshRenderer>();
         if (!walkable)
         {
@@ -79,11 +80,27 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
-        if(timer > 0)
+      
+
+        //NormaliseRelief();
+
+        if (walkable && isFaded)
+        {
+            StartCoroutine(ReactiveTile());
+        }
+
+        if(walkable)Degrading();
+
+    }
+    bool degradingChecker;
+
+    private void Degrading()
+    {
+        if (timer > 0)
         {
             timer -= Time.deltaTime * degradationTimerAnimCurve.Evaluate(degradationTimerModifier);
         }
-        else if(timer <= 0)
+        else if (timer <= 0)
         {
             isDegrading = true;
             gameObject.tag = "DegradingTile";
@@ -97,18 +114,28 @@ public class Tile : MonoBehaviour
             lightAct.enabled = false;
         }
 
-        NormaliseRelief();
 
-        if (walkable && isFaded)
+        if (isDegrading && !degradingChecker && !isGrowing && walkable)
         {
-            StartCoroutine(ReactiveTile());
+            currentPos.y -= heightByTile;
+
         }
 
-        if (isDegrading && !isGrowing) currentPos.y -= degradingSpeed * Time.deltaTime;
+        if(transform.position == currentPos && isDegrading)
+        {
+            isDegrading = false;
+            timer = Random.Range(minTimer, maxTimer);
+        }
 
+        if(currentPos == ogPos && CompareTag("DegradingTile"))
+        {
+            tag = "Tile";
+        }
+
+        degradingChecker = isDegrading;
         isGrowing = false;
-    }
 
+    }
 
     private void GetAdjCoords()
     {
@@ -132,32 +159,16 @@ public class Tile : MonoBehaviour
             adjTCoords[3] = new Vector2Int(coordX, coordY - 1);
         }
     }
+
     public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
     {
         float xOffset = 0;
         if (z % 2 == 1) xOffset = transform.localScale.x * .9f;
-        Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.8f + xOffset, 0, z * transform.localScale.x * 1.5f);
+        Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.7f + xOffset, 0, z * transform.localScale.x * 1.48f);
         coordX = x;
         
         coordY = z;
         return pos;
-    }
-
-    public void OnSelected()
-    {
-        selecFlag = false;
-        isSelected = true;
-        lightAct.enabled = true;
-        myMeshR.material = selectedMat;
-    }
-
-    private void NormaliseRelief()
-    {
-        if (!isSelected && currentPos != ogPos)
-        {
-            float incrementValue = Mathf.Clamp(Vector3.Distance(currentPos, ogPos) / capDistanceNeutraliser, 0.1f, 1) *normaliseSpeed * Time.deltaTime * 100;
-            currentPos = Vector3.MoveTowards(currentPos, ogPos, incrementValue);
-        }
     }
 
     private IEnumerator ReactiveTile()
@@ -184,6 +195,15 @@ public class Tile : MonoBehaviour
         timer = Random.Range(minTimer, maxTimer);
         isDegrading = false;
         transform.tag = "Tile";
+    }
+
+    private void OnDrawGizmos()
+    {
+        if(heightByTile != 0 && !Application.isPlaying)
+        {
+            float r = transform.position.y % heightByTile;
+            transform.position = new Vector3(transform.position.x, transform.position.y - r, transform.position.z);
+        }
     }
 }
 
@@ -259,6 +279,8 @@ public class TileEditor : Editor
         GameObject obj = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
         obj.transform.parent = t;
         obj.transform.position = t.position;
+        obj.transform.LookAt(new Vector3(tile.transform.position.x, obj.transform.position.y, tile.transform.position.z));
+        
         return obj;
     }
 }
