@@ -12,10 +12,12 @@ public class Interactions : MonoBehaviour
     public float hitRate;
     [HideNormalInspector] public Interactor interactor;
     private Transform miningZone;
+    private RessourcesManager rManager;
 
     private void Start()
     {
-        miningZone = transform.Find("MiningZone");    
+        miningZone = transform.Find("MiningZone");
+        rManager = FindObjectOfType<RessourcesManager>();
     }
 
     public void OnMining(InputAction.CallbackContext context)
@@ -25,7 +27,7 @@ public class Interactions : MonoBehaviour
             isMining = true;
             miningZone.gameObject.SetActive(true);
         }
-        else if(context.canceled || context.performed)
+        else if (context.canceled || context.performed)
         {
             isMining = false;
             miningZone.gameObject.SetActive(false);
@@ -48,10 +50,14 @@ public class Interactions : MonoBehaviour
         {
             isGrowing = false;
             if (tile && tile.isGrowing)
-            tile.isGrowing = false;
+                tile.isGrowing = false;
         }
     }
 
+    public void GetRessource(int ressourceNum)
+    {
+        rManager.wood += ressourceNum;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -101,6 +107,7 @@ public class Interactions : MonoBehaviour
             }*/
         }
     }
+
     WaitForFixedUpdate waiter;
     IEnumerator afterPhysics()
     {

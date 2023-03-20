@@ -2,14 +2,17 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Stylized Water 3
   m_Shader: {fileID: 4800000, guid: c8110ef7c96474f73b2ee5f90e026b10, type: 3}
-  m_ShaderKeywords: FANCY_SHADOWS SAMPLE_SHADOWS
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - FANCY_SHADOWS
+  - SAMPLE_SHADOWS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -31,18 +34,19 @@ Material:
         m_Texture: {fileID: 2800000, guid: ed512d00c2b0c0748bcb5cf3fce1a4c8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
-    - _DepthDensity: 0.417
+    - _DepthDensity: 0.444
     - _DistanceDensity: 0.02
-    - _EdgeFoamDepth: 0.1
+    - _EdgeFoamDepth: 0.44
     - _FancyShadows: 0
-    - _FoamContribution: 0.471
-    - _FoamNoiseScale: 0.775
+    - _FoamContribution: 0.728
+    - _FoamNoiseScale: 0.734
     - _FoamScale: 10
     - _FoamSpeed: 0.1
     - _MaxSampleDistance: 49
     - _MaxShadowDistance: 50
-    - _ReflectionContribution: 0.5
+    - _ReflectionContribution: 0.544
     - _RefractionStrength: 0
     - _SparkleExponent: 25000
     - _SparkleScale: 25
@@ -69,3 +73,4 @@ Material:
     - _ShallowColor: {r: 1.1505303, g: 1.299991, b: 0.8891448, a: 1}
     - _SparkleColor: {r: 0.740566, g: 1, b: 0.9357789, a: 1}
     - _SunSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []
