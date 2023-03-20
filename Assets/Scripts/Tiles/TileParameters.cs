@@ -27,4 +27,5 @@ public class TileParameters : MonoBehaviour
     public AnimationCurve degradationTimerAnimCurve;
     public float timeToGetToMaxDegradationSpeed;
     public float degradingSpeed;
+    public float heightByTile;
 }

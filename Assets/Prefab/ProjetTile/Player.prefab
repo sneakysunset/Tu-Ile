@@ -334,13 +334,14 @@ GameObject:
   - component: {fileID: 5703151869213025866}
   - component: {fileID: 5703151869213025868}
   - component: {fileID: 4850383736162685998}
-  - component: {fileID: 9162361828856737079}
+  - component: {fileID: 6593446547532280454}
   - component: {fileID: 5703151869213025869}
   - component: {fileID: 1229266406}
   - component: {fileID: 5703151869213025867}
   - component: {fileID: 5703151869213025864}
   - component: {fileID: 5703151869213025865}
   - component: {fileID: 6803972686401513448}
+  - component: {fileID: 769855765}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -380,7 +381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  sprintingSpeed: 0
+  sprintingSpeed: 25
   acceleration: 0.7
   deceleration: 0.6
   smoothTime: 0.05
@@ -398,12 +399,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecbd01c6408c09a41b775de8107a8d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  growingSpeed: 0
-  hitDistance: 0
-  hitRadius: 0
-  hitRate: 0
+  growingSpeed: 1
+  hitDistance: 1
+  hitRadius: 1
+  hitRate: 1
   interactor: {fileID: 0}
---- !u!114 &9162361828856737079
+--- !u!114 &6593446547532280454
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -412,19 +413,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 5703151869213024695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4031087acf03022458cacfe97daa241b, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a3fced447c41d04b85edca42b02fc47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootRate: 0.2
-  pSys: {fileID: 3692513355264146077}
-  bulletWidth: 0.1
-  hitLayer:
+  tileBluePrint: {fileID: 0}
+  maxAngleToTarget: 50
+  tileLayer:
     serializedVersion: 2
-    m_Bits: 2147483647
-  damage: 3
-  mouseLayer:
-    serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 128
+  hitDistance: 3
 --- !u!114 &5703151869213025869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,9 +465,9 @@ MonoBehaviour:
     m_ActionName: Player/Move[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9162361828856737079}
-        m_TargetAssemblyTypeName: Shoot, Assembly-CSharp
-        m_MethodName: OnShoot
+      - m_Target: {fileID: 4850383736162685998}
+        m_TargetAssemblyTypeName: Interactions, Assembly-CSharp
+        m_MethodName: OnStopDegrading
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -539,9 +536,37 @@ MonoBehaviour:
     m_ActionId: 32cae3c4-e90b-4902-b2d8-ecdffe32bcc0
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4850383736162685998}
+        m_TargetAssemblyTypeName: Interactions, Assembly-CSharp
+        m_MethodName: OnMining
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 7db96c94-320b-4181-8801-6507d16ab09d
     m_ActionName: Player/Mine[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6593446547532280454}
+        m_TargetAssemblyTypeName: TileSelector, Assembly-CSharp
+        m_MethodName: OnSpawnTile
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0914fff1-7f4e-4170-905f-5a61f25daa8b
+    m_ActionName: Player/SpawnTile[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -622,7 +647,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5703151869213024695}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dd039c57bc59c4e4c933689a340c55bc, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -642,6 +667,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attenuationObject: {fileID: 0}
+--- !u!54 &769855765
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5703151869213024695}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7976352888735921084
 GameObject:
   m_ObjectHideFlags: 0
