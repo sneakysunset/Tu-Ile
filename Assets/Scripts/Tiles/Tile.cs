@@ -218,7 +218,7 @@ public class Tile : MonoBehaviour
         isDegrading = false;
         transform.position = new Vector3(transform.position.x, -2, transform.position.z) ;
         transform.tag = "Tile";
-        currentPos.y = height;
+        currentPos.y = height - (height % heightByTile);
         ogPos.y = height;
         isGrowing = true;
     }
