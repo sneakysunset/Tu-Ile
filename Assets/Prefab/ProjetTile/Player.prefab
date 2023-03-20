@@ -450,7 +450,7 @@ MonoBehaviour:
   growingSpeed: 1
   hitDistance: 1
   hitRadius: 1
-  hitRate: 1
+  hitRate: 0.3
   interactor: {fileID: 0}
 --- !u!114 &6593446547532280454
 MonoBehaviour:
@@ -464,6 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a3fced447c41d04b85edca42b02fc47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileUnder: {fileID: 0}
   tileBluePrint: {fileID: 0}
   maxAngleToTarget: 50
   tileLayer:
