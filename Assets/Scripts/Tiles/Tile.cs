@@ -93,7 +93,7 @@ public class Tile : MonoBehaviour
 
     }
     bool degradingChecker;
-
+    bool isGrowingChecker;
     private void Degrading()
     {
         if (timer > 0)
@@ -113,12 +113,28 @@ public class Tile : MonoBehaviour
             myMeshR.material = unselectedMat;
             lightAct.enabled = false;
         }
-
+        if (!isDegrading && transform.position.y <= -3)
+        {
+            walkable = false;
+            gameObject.layer = LayerMask.NameToLayer("DisabledTile");
+            myMeshR.enabled = false;
+            //GetComponent<Collider>().enabled = false;
+            transform.Find("Additional Visuals").gameObject.SetActive(false);
+        }
 
         if (isDegrading && !degradingChecker && !isGrowing && walkable)
         {
             currentPos.y -= heightByTile;
 
+        }
+
+        if(transform.position != ogPos && isGrowingChecker && !isGrowing)
+        {
+            float p = transform.position.y % heightByTile;
+           
+            currentPos.y = transform.position.y - p;
+            isDegrading = true;
+            tag = "DegradingTile";
         }
 
         if(transform.position == currentPos && isDegrading)
@@ -132,8 +148,10 @@ public class Tile : MonoBehaviour
             tag = "Tile";
         }
 
+
         degradingChecker = isDegrading;
-        isGrowing = false;
+        isGrowingChecker = isGrowing;
+        //isGrowing = false;
 
     }
 

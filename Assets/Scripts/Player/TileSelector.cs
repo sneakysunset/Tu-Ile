@@ -22,12 +22,12 @@ public class TileSelector : MonoBehaviour
         
         if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable)
         {
-            tileBluePrint.position = targettedTile.transform.position + Vector3.up * 20;
+            tileBluePrint.position = targettedTile.transform.position + Vector3.up * 25;
         }
         else
         {
-            targettedTile = null; 
             tileBluePrint.position = new Vector3(0, -100, 0);
+            targettedTile = null; 
         }
 /*        float angle = 180;
         float tempAngle = 180;*/

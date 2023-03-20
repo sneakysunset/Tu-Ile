@@ -42,12 +42,14 @@ public class Interactions : MonoBehaviour
         if (context.started)
         {
             isGrowing = true;
-            StartCoroutine(afterPhysics());
+            //StartCoroutine(afterPhysics());
         }
-        /*        else if(context.canceled || context.performed)
-                {
-                    isGrowing = false;
-                }*/
+        else if (context.canceled || context.performed)
+        {
+            isGrowing = false;
+            if (tile && tile.isGrowing)
+            tile.isGrowing = false;
+        }
     }
 
 
@@ -69,19 +71,26 @@ public class Interactions : MonoBehaviour
             interactor.OnInteractionExit();
             interactor = null;
         }
+        if(other.TryGetComponent<Tile>(out Tile otherTile) && otherTile.isGrowing)
+        {
+            otherTile.isGrowing = false;
+            isGrowing = false;
+        }
     }
 
 
-
+    Tile tile;
+        
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.transform.CompareTag("DegradingTile") && hit.normal.y > .9f && isGrowing)
         {
-            Tile tile = hit.gameObject.GetComponent<Tile>();
+            tile = hit.gameObject.GetComponent<Tile>();
             if (!tile.isGrowing && tile.currentPos != tile.ogPos)
             {
                 tile.currentPos.y += tile.heightByTile;
                 tile.isGrowing = true;
+                
             }
 
 /*            if (tile.currentPos == tile.ogPos)
