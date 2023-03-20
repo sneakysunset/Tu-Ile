@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController _characterController;
     private Vector3 _direction;
     [HideInInspector] public EventInstance movingSound;
-
+    private TileSelector tileSelec;
     [SerializeField] private float speed;
     [SerializeField] private float jumpStrength = 10;
     [SerializeField] private float sprintingSpeed;
@@ -44,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
 /*        movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/moov");
         movingSound.set3DAttributes(new FMOD.ATTRIBUTES_3D());*/
         _characterController = GetComponent<CharacterController>();
+        tileSelec = GetComponent<TileSelector>();
     }
 
     private void OnGroundedCallBack()
@@ -168,7 +169,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.transform.CompareTag("Tile") && hit.normal.y > -0.2f && hit.normal.y < 0.2f)
+        if (hit.transform.TryGetComponent<Tile>(out Tile tileO)&& hit.normal.y > -0.2f && hit.normal.y < 0.2f && hit.transform.position.y - tileSelec.tileUnder.transform.position.y <= 3 && hit.transform.position.y - tileSelec.tileUnder.transform.position.y > 1)
         {
             jumpInput = true;
         }

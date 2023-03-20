@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class TileSelector : MonoBehaviour
 {
     TileSystem tileS;
-    Tile tileUnder;
+    [HideInInspector] public Tile tileUnder;
     public Transform tileBluePrint;
     public float maxAngleToTarget = 50;
     public LayerMask tileLayer;
