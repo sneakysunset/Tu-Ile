@@ -41,7 +41,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public float degradingSpeed;
     [HideInInspector] public bool isGrowing;
     [HideNormalInspector] public float heightByTile;
-
+    public bool degradable = true;
     #endregion
 
     private void Start()
@@ -52,6 +52,10 @@ public class Tile : MonoBehaviour
         currentPos = ogPos;  
 
         myMeshR = GetComponent<MeshRenderer>();
+        if (!degradable && walkable)
+        {
+            myMeshR.material = selectedMat;
+        }
         if (!walkable)
         {
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
@@ -89,7 +93,7 @@ public class Tile : MonoBehaviour
             StartCoroutine(ReactiveTile());
         }
 
-        if(walkable)Degrading();
+        if(walkable && degradable) Degrading();
 
     }
     bool degradingChecker;
@@ -203,7 +207,7 @@ public class Tile : MonoBehaviour
         isFaded = true;
     }
 
-    public void Spawn()
+    public void Spawn(float height)
     {
         walkable = true;
         gameObject.layer = LayerMask.NameToLayer("Tile");
@@ -212,7 +216,11 @@ public class Tile : MonoBehaviour
         transform.Find("Additional Visuals").gameObject.SetActive(true);
         timer = Random.Range(minTimer, maxTimer);
         isDegrading = false;
+        transform.position = new Vector3(transform.position.x, -2, transform.position.z) ;
         transform.tag = "Tile";
+        currentPos.y = height;
+        ogPos.y = height;
+        isGrowing = true;
     }
 
     private void OnDrawGizmos()

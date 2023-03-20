@@ -11,9 +11,11 @@ public class TileSelector : MonoBehaviour
     public LayerMask tileLayer;
     public float hitDistance = 4;
     private Tile targettedTile;
+    RessourcesManager rManager;
     private void Start()
     {
         tileS = FindObjectOfType<TileSystem>();
+        rManager = FindObjectOfType<RessourcesManager>();
     }
 
     private void Update()
@@ -64,9 +66,10 @@ public class TileSelector : MonoBehaviour
     {
         if(context.started)
         {
-            if(targettedTile != null)
+            if(targettedTile != null && rManager.wood >= rManager.tileCost)
             {
-                targettedTile.Spawn();
+                rManager.wood -= rManager.tileCost;
+                targettedTile.Spawn(tileUnder.transform.position.y);
             }
         }
     }

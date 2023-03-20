@@ -15,6 +15,7 @@ public class Interactor : MonoBehaviour
     protected Interactions _player;
     public GameObject spawnPrefab;
     private Transform spawnPoint;
+    public int ressourceNum = 10;
     private void Start()
     {
         stateIndex = meshs.Length;
@@ -42,8 +43,8 @@ public class Interactor : MonoBehaviour
                 stateIndex--;
                 meshF.mesh = meshs[stateIndex];
                 meshR.material = materials[stateIndex];
-                GameObject obj = Instantiate(spawnPrefab, spawnPoint.position, Quaternion.identity);
-                obj.transform.parent = this.transform;
+                //GameObject obj = Instantiate(spawnPrefab, spawnPoint.position, Quaternion.identity);
+                //obj.transform.parent = this.transform;
             }
             else if (timer <= 0 && stateIndex == 0)
             {
@@ -71,6 +72,7 @@ public class Interactor : MonoBehaviour
 
     protected virtual void EmptyInteractor()
     {
+        _player.GetRessource(ressourceNum);
         OnEndInteraction();
         interactable = false;
     }
