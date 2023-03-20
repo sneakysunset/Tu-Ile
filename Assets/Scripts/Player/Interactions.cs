@@ -61,7 +61,7 @@ public class Interactions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out interactor))
+        if(other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out interactor) && isMining)
         {
             if (interactor.interactable)
             {

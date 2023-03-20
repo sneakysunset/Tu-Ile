@@ -42,10 +42,12 @@ public class Tile : MonoBehaviour
     [HideInInspector] public bool isGrowing;
     [HideNormalInspector] public float heightByTile;
     public bool degradable = true;
+    Transform minableItems;
     #endregion
 
     private void Start()
     {
+        minableItems = transform.Find("SpawnPositions");
         coordFX = coordX - coordY / 2;
         lightAct = transform.GetChild(0).GetComponent<Light>();
         ogPos = transform.position;
@@ -62,6 +64,7 @@ public class Tile : MonoBehaviour
             myMeshR.enabled = false;
             //GetComponent<Collider>().enabled = false;
             transform.Find("Additional Visuals").gameObject.SetActive(false);
+            minableItems.gameObject.SetActive(false);
         }
         timer = Random.Range(minTimer, maxTimer);
         GetAdjCoords();
@@ -70,15 +73,18 @@ public class Tile : MonoBehaviour
     private void OnValidate()
     {
         if(!myMeshR) myMeshR = GetComponent<MeshRenderer>();
+        minableItems = transform.Find("SpawnPositions");
         if (!walkable)
         {
             myMeshR.sharedMaterial = disabledMat;
             transform.Find("Additional Visuals").gameObject.SetActive(false);
+            minableItems.gameObject.SetActive(false);
         }
         else
         {
             myMeshR.sharedMaterial = unselectedMat;
             transform.Find("Additional Visuals").gameObject.SetActive(true);
+            minableItems.gameObject.SetActive(true);
         }
     }
 
@@ -124,6 +130,7 @@ public class Tile : MonoBehaviour
             myMeshR.enabled = false;
             //GetComponent<Collider>().enabled = false;
             transform.Find("Additional Visuals").gameObject.SetActive(false);
+            minableItems.gameObject.SetActive(false);
         }
 
         if (isDegrading && !degradingChecker && !isGrowing && walkable)
@@ -214,6 +221,7 @@ public class Tile : MonoBehaviour
         myMeshR.enabled = true;
         myMeshR.material = unselectedMat;
         transform.Find("Additional Visuals").gameObject.SetActive(true);
+        minableItems.gameObject.SetActive(true);
         timer = Random.Range(minTimer, maxTimer);
         isDegrading = false;
         transform.position = new Vector3(transform.position.x, -2, transform.position.z) ;

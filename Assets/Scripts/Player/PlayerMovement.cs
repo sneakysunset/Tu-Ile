@@ -7,7 +7,7 @@ using FMOD.Studio;
 public class PlayerMovement : MonoBehaviour
 {
     #region Variables: Movement
-
+    public Tile respawnTile;
     private Vector2 _input;
     private bool jumpInput;
     private CharacterController _characterController;
@@ -172,6 +172,10 @@ public class PlayerMovement : MonoBehaviour
         if (hit.transform.TryGetComponent<Tile>(out Tile tileO)&& hit.normal.y > -0.2f && hit.normal.y < 0.2f && hit.transform.position.y - tileSelec.tileUnder.transform.position.y <= 3 && hit.transform.position.y - tileSelec.tileUnder.transform.position.y > 1)
         {
             jumpInput = true;
+        }
+        else if (hit.transform.CompareTag("Water"))
+        {
+            transform.position = respawnTile.transform.position + 25f * Vector3.up;
         }
     }
 }
