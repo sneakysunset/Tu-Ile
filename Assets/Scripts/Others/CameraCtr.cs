@@ -43,7 +43,7 @@ public class CameraCtr : MonoBehaviour
                     Tile tile = hit.transform.GetComponent<Tile>();
                     if (!tile.isSelected)
                     {
-                        hit.transform.gameObject.layer = 7;
+                        //hit.transform.gameObject.layer = 7;
                     }
                     tile.FadingTileEffect();
                 }

@@ -39,9 +39,9 @@ public class TileSystem : MonoBehaviour
         int x;
         int z;
 
-        z = Mathf.RoundToInt(pos.z / (tilePrefab.transform.localScale.x * 1.5f));
+        z = Mathf.RoundToInt(pos.z / (tilePrefab.transform.localScale.x * 1.48f));
         if (z % 2 == 1) xOffset = tilePrefab.transform.localScale.x * .9f;
-        x = Mathf.RoundToInt((pos.x - xOffset) / (tilePrefab.transform.localScale.x * 1.8f));
+        x = Mathf.RoundToInt((pos.x - xOffset) / (tilePrefab.transform.localScale.x * 1.7f));
         
         return tiles[x, z];
     }
@@ -113,6 +113,7 @@ public class TileSystem : MonoBehaviour
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
             tile.timeToGetToMaxDegradationSpeed = tileP.timeToGetToMaxDegradationSpeed;
             tile.degradingSpeed = tileP.degradingSpeed;
+            tile.heightByTile = tileP.heightByTile;
         }
     }
 
@@ -245,6 +246,12 @@ public class TileSystemEditor : Editor
             tile.unselectedMat = tileS.tileM.unselectedTileMaterial;
             tile.disabledMat = tileS.tileM.disabledTileMaterial;
             tile.fadeMat = tileS.tileM.FadedTileMaterial;
+            tile.maxTimer = tileS.tileP.maxTimer;
+            tile.minTimer = tileS.tileP.minTimer;
+            tile.degradationTimerAnimCurve = tileS.tileP.degradationTimerAnimCurve;
+            tile.timeToGetToMaxDegradationSpeed = tileS.tileP.timeToGetToMaxDegradationSpeed;
+            tile.degradingSpeed = tileS.tileP.degradingSpeed;
+            tile.heightByTile = tileS.tileP.heightByTile;
         }
     }
 

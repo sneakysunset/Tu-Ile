@@ -13,12 +13,14 @@ public class Interactor : MonoBehaviour
     public bool interactable = true;
     protected float currentHitTimer;
     protected Interactions _player;
-
+    public GameObject spawnPrefab;
+    private Transform spawnPoint;
     private void Start()
     {
         stateIndex = meshs.Length;
         meshF = GetComponent<MeshFilter>();
         meshR = GetComponent<MeshRenderer>();
+        spawnPoint = transform.Find("SpawnPoint");
     }
 
     public virtual void OnInteractionEnter(float hitTimer, Interactions player)
@@ -40,6 +42,8 @@ public class Interactor : MonoBehaviour
                 stateIndex--;
                 meshF.mesh = meshs[stateIndex];
                 meshR.material = materials[stateIndex];
+                GameObject obj = Instantiate(spawnPrefab, spawnPoint.position, Quaternion.identity);
+                obj.transform.parent = this.transform;
             }
             else if (timer <= 0 && stateIndex == 0)
             {
@@ -77,11 +81,11 @@ public class Interactor : MonoBehaviour
         timer = regrowthTimer;
         if(_player != null)
         {
-            _player = null;
             if(_player.interactor != null)
             {
             _player.interactor = null;
             }
+            _player = null;
         }
     }
 }

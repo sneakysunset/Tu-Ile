@@ -42,10 +42,13 @@ public class Interactions : MonoBehaviour
         if (context.started)
         {
             isGrowing = true;
+            //StartCoroutine(afterPhysics());
         }
-        else if(context.canceled || context.performed)
+        else if (context.canceled || context.performed)
         {
             isGrowing = false;
+            if (tile && tile.isGrowing)
+            tile.isGrowing = false;
         }
     }
 
@@ -54,7 +57,6 @@ public class Interactions : MonoBehaviour
     {
         if(other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out interactor))
         {
-
             if (interactor.interactable)
             {
                 interactor.OnInteractionEnter(hitRate, this);
@@ -69,24 +71,40 @@ public class Interactions : MonoBehaviour
             interactor.OnInteractionExit();
             interactor = null;
         }
+        if(other.TryGetComponent<Tile>(out Tile otherTile) && otherTile.isGrowing)
+        {
+            otherTile.isGrowing = false;
+            isGrowing = false;
+        }
     }
 
 
-
+    Tile tile;
+        
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.transform.CompareTag("DegradingTile") && hit.normal.y > .9f && isGrowing)
         {
-            Tile tile = hit.gameObject.GetComponent<Tile>();
-            tile.currentPos = Vector3.MoveTowards(tile.currentPos, tile.ogPos, Time.deltaTime * growingSpeed);
-            tile.isGrowing = true;
+            tile = hit.gameObject.GetComponent<Tile>();
+            if (!tile.isGrowing && tile.currentPos != tile.ogPos)
+            {
+                tile.currentPos.y += tile.heightByTile;
+                tile.isGrowing = true;
+                
+            }
 
-            if (tile.currentPos == tile.ogPos)
+/*            if (tile.currentPos == tile.ogPos)
             {
                 tile.timer = Random.Range(tile.minTimer, tile.maxTimer);
                 tile.isDegrading = false;
                 tile.transform.tag = "Tile";
-            }
+            }*/
         }
+    }
+    WaitForFixedUpdate waiter;
+    IEnumerator afterPhysics()
+    {
+        yield return waiter;
+        isGrowing = false;
     }
 }

@@ -27,7 +27,6 @@ public class InputEvents : MonoBehaviour
         terraformingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Tilee/monte");
         tileS = FindObjectOfType<TileSystem>();
         timer = timerToChangeTile;
-        selectedTile.OnSelected();
     }
 
     private void Update()
@@ -89,7 +88,6 @@ public class InputEvents : MonoBehaviour
                 selectedTile.isSelected = false;
                 FMODUnity.RuntimeManager.PlayOneShot("event:/plok");
                 selectedTile = hit.transform.GetComponent<Tile>();
-                selectedTile.OnSelected();
             }
             TileFunctions();
         }
@@ -125,7 +123,6 @@ public class InputEvents : MonoBehaviour
             selectedTile.isSelected = false;
             FMODUnity.RuntimeManager.PlayOneShot("event:/plok");
             selectedTile = tileS.tiles[tileCoord.x, tileCoord.y];
-            selectedTile.OnSelected();
         }
         TileFunctions();
     }
