@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{242682bf-11dc-4fa2-9e3a-a0c409cd4fcd}">
 		<property name="name">
-			<value>blockup</value>
+			<value>Blockup</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>

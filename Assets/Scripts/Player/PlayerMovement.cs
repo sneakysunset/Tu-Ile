@@ -41,8 +41,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/moov");
-        movingSound.set3DAttributes(new FMOD.ATTRIBUTES_3D());
+/*        movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/moov");
+        movingSound.set3DAttributes(new FMOD.ATTRIBUTES_3D());*/
         _characterController = GetComponent<CharacterController>();
         tileSelec = GetComponent<TileSelector>();
     }

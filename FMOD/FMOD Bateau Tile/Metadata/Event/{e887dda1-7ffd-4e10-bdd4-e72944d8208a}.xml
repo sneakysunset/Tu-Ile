@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{e887dda1-7ffd-4e10-bdd4-e72944d8208a}">
 		<property name="name">
-			<value>monte</value>
+			<value>Terraformingup</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
