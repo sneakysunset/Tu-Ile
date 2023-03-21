@@ -9,6 +9,8 @@ public class Tile : MonoBehaviour
     public enum TileType { Neutral, Tree, Rock };
     [SerializeField] public TileType tileType;
     [SerializeField] public bool walkable = true;
+    public bool walkedOnto = false;
+    private ParticleSystem pSys;
     #endregion region
 
     #region hiddenVariables
@@ -51,8 +53,8 @@ public class Tile : MonoBehaviour
         coordFX = coordX - coordY / 2;
         lightAct = transform.GetChild(0).GetComponent<Light>();
         ogPos = transform.position;
-        currentPos = ogPos;  
-
+        currentPos = ogPos;
+        pSys = gameObject.GetComponentInChildren<ParticleSystem>();
         myMeshR = GetComponent<MeshRenderer>();
         if (!degradable && walkable)
         {
@@ -65,6 +67,10 @@ public class Tile : MonoBehaviour
             //GetComponent<Collider>().enabled = false;
             transform.Find("Additional Visuals").gameObject.SetActive(false);
             minableItems.gameObject.SetActive(false);
+        }
+        if(walkable && !walkedOnto)
+        {
+            pSys.Play();
         }
         timer = Random.Range(minTimer, maxTimer);
         GetAdjCoords();
@@ -91,7 +97,10 @@ public class Tile : MonoBehaviour
     private void Update()
     {
       
-
+        if(pSys.isPlaying && walkedOnto)
+        {
+            pSys.Stop();
+        }
         //NormaliseRelief();
 
         if (walkable && isFaded)
@@ -99,7 +108,7 @@ public class Tile : MonoBehaviour
             StartCoroutine(ReactiveTile());
         }
 
-        if(walkable && degradable) Degrading();
+        if(walkable && degradable && walkedOnto) Degrading();
 
     }
     bool degradingChecker;

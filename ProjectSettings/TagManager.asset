@@ -9,6 +9,7 @@ TagManager:
   - Tile
   - DegradingTile
   - Interactor
+  - Water
   layers:
   - Default
   - TransparentFX

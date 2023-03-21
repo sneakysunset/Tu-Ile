@@ -12,5 +12,10 @@ public class RessourcesManager : MonoBehaviour
     {
         woodText.text = wood.ToString();
         rockText.text = rock.ToString();
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            wood += 30;
+        }
     }
 }

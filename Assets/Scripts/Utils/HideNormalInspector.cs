@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif 
 public class HideNormalInspector : UnityEngine.PropertyAttribute
 {
     public HideNormalInspector()
@@ -11,6 +13,7 @@ public class HideNormalInspector : UnityEngine.PropertyAttribute
 
 }
 
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(HideNormalInspector))]
 public class HideInNormalInspectorDrawer : PropertyDrawer
 {
@@ -23,3 +26,4 @@ public class HideInNormalInspectorDrawer : PropertyDrawer
 
     }
 }
+#endif
