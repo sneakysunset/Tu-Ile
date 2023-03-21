@@ -5,15 +5,17 @@ using UnityEngine.InputSystem;
 public class TileSelector : MonoBehaviour
 {
     TileSystem tileS;
-    Tile tileUnder;
+    [HideInInspector] public Tile tileUnder;
     public Transform tileBluePrint;
     public float maxAngleToTarget = 50;
     public LayerMask tileLayer;
     public float hitDistance = 4;
     private Tile targettedTile;
+    RessourcesManager rManager;
     private void Start()
     {
         tileS = FindObjectOfType<TileSystem>();
+        rManager = FindObjectOfType<RessourcesManager>();
     }
 
     private void Update()
@@ -22,12 +24,12 @@ public class TileSelector : MonoBehaviour
         
         if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable)
         {
-            tileBluePrint.position = targettedTile.transform.position + Vector3.up * 20;
+            tileBluePrint.position = targettedTile.transform.position + Vector3.up * 25;
         }
         else
         {
-            targettedTile = null; 
             tileBluePrint.position = new Vector3(0, -100, 0);
+            targettedTile = null; 
         }
 /*        float angle = 180;
         float tempAngle = 180;*/
@@ -64,9 +66,10 @@ public class TileSelector : MonoBehaviour
     {
         if(context.started)
         {
-            if(targettedTile != null)
+            if(targettedTile != null && rManager.wood >= rManager.tileCost)
             {
-                targettedTile.Spawn();
+                rManager.wood -= rManager.tileCost;
+                targettedTile.Spawn(tileUnder.transform.position.y);
             }
         }
     }

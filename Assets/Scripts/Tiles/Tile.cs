@@ -41,23 +41,30 @@ public class Tile : MonoBehaviour
     [HideInInspector] public float degradingSpeed;
     [HideInInspector] public bool isGrowing;
     [HideNormalInspector] public float heightByTile;
-
+    public bool degradable = true;
+    Transform minableItems;
     #endregion
 
     private void Start()
     {
+        minableItems = transform.Find("SpawnPositions");
         coordFX = coordX - coordY / 2;
         lightAct = transform.GetChild(0).GetComponent<Light>();
         ogPos = transform.position;
         currentPos = ogPos;  
 
         myMeshR = GetComponent<MeshRenderer>();
+        if (!degradable && walkable)
+        {
+            myMeshR.material = selectedMat;
+        }
         if (!walkable)
         {
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
             myMeshR.enabled = false;
             //GetComponent<Collider>().enabled = false;
             transform.Find("Additional Visuals").gameObject.SetActive(false);
+            minableItems.gameObject.SetActive(false);
         }
         timer = Random.Range(minTimer, maxTimer);
         GetAdjCoords();
@@ -66,15 +73,18 @@ public class Tile : MonoBehaviour
     private void OnValidate()
     {
         if(!myMeshR) myMeshR = GetComponent<MeshRenderer>();
+        minableItems = transform.Find("SpawnPositions");
         if (!walkable)
         {
             myMeshR.sharedMaterial = disabledMat;
             transform.Find("Additional Visuals").gameObject.SetActive(false);
+            minableItems.gameObject.SetActive(false);
         }
         else
         {
             myMeshR.sharedMaterial = unselectedMat;
             transform.Find("Additional Visuals").gameObject.SetActive(true);
+            minableItems.gameObject.SetActive(true);
         }
     }
 
@@ -89,11 +99,11 @@ public class Tile : MonoBehaviour
             StartCoroutine(ReactiveTile());
         }
 
-        if(walkable)Degrading();
+        if(walkable && degradable) Degrading();
 
     }
     bool degradingChecker;
-
+    bool isGrowingChecker;
     private void Degrading()
     {
         if (timer > 0)
@@ -113,12 +123,29 @@ public class Tile : MonoBehaviour
             myMeshR.material = unselectedMat;
             lightAct.enabled = false;
         }
-
+        if (!isDegrading && transform.position.y <= -3)
+        {
+            walkable = false;
+            gameObject.layer = LayerMask.NameToLayer("DisabledTile");
+            myMeshR.enabled = false;
+            //GetComponent<Collider>().enabled = false;
+            transform.Find("Additional Visuals").gameObject.SetActive(false);
+            minableItems.gameObject.SetActive(false);
+        }
 
         if (isDegrading && !degradingChecker && !isGrowing && walkable)
         {
             currentPos.y -= heightByTile;
 
+        }
+
+        if(transform.position != ogPos && isGrowingChecker && !isGrowing)
+        {
+            float p = transform.position.y % heightByTile;
+           
+            currentPos.y = transform.position.y - p;
+            isDegrading = true;
+            tag = "DegradingTile";
         }
 
         if(transform.position == currentPos && isDegrading)
@@ -132,8 +159,10 @@ public class Tile : MonoBehaviour
             tag = "Tile";
         }
 
+
         degradingChecker = isDegrading;
-        isGrowing = false;
+        isGrowingChecker = isGrowing;
+        //isGrowing = false;
 
     }
 
@@ -185,16 +214,21 @@ public class Tile : MonoBehaviour
         isFaded = true;
     }
 
-    public void Spawn()
+    public void Spawn(float height)
     {
         walkable = true;
         gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;
         myMeshR.material = unselectedMat;
         transform.Find("Additional Visuals").gameObject.SetActive(true);
+        minableItems.gameObject.SetActive(true);
         timer = Random.Range(minTimer, maxTimer);
         isDegrading = false;
+        transform.position = new Vector3(transform.position.x, -2, transform.position.z) ;
         transform.tag = "Tile";
+        currentPos.y = height - (height % heightByTile);
+        ogPos.y = height;
+        isGrowing = true;
     }
 
     private void OnDrawGizmos()
