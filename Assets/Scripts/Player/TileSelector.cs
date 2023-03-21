@@ -21,7 +21,10 @@ public class TileSelector : MonoBehaviour
     private void Update()
     {
         tileUnder = tileS.WorldPosToTile(transform.position);
-        
+        if (!tileUnder.walkedOnto)
+        {
+            tileUnder.walkedOnto = true;
+        }
         if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable)
         {
             tileBluePrint.position = targettedTile.transform.position + Vector3.up * 25;
