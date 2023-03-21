@@ -50,7 +50,9 @@ public class Interactions : MonoBehaviour
         {
             isGrowing = false;
             if (tile && tile.isGrowing)
+            {
                 tile.isGrowing = false;
+            }
         }
     }
 

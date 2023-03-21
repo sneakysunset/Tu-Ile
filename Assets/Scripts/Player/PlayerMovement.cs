@@ -16,13 +16,15 @@ public class PlayerMovement : MonoBehaviour
     private TileSelector tileSelec;
     [SerializeField] private float speed;
     [SerializeField] private float jumpStrength = 10;
-    [SerializeField] private float sprintingSpeed;
+    [SerializeField] private float dashStrength;
+    [SerializeField] private float dashDuration;
     [Header("1 = 0.1 sec, .1 = 1 sec")]
     [SerializeField, Range(0.01f, 1)] private float acceleration = .7f;
     [SerializeField, Range(0.01f, 1)] private float deceleration = .6f;
     [Space(10)]
     private float speedValue;
-    bool isSprinting;
+    bool isDashing;
+    bool dashFlag;
     bool moveFlag;
     #endregion
     #region Variables: Rotation
@@ -64,7 +66,19 @@ public class PlayerMovement : MonoBehaviour
         ApplyJump();
         ApplyRotation();
         SpeedModifier();
-        ApplyMovement();
+        if (isDashing)
+        {
+            StartCoroutine(Dash());
+            isDashing = false;
+        }
+        if (dashFlag)
+        {
+            ApplyDash();
+        }
+        else
+        {
+            ApplyMovement();
+        }
         if (_characterController.isGrounded && _input != Vector2.zero && !moveFlag)
         {
             moveFlag = true;
@@ -112,8 +126,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void SpeedModifier()
     {
-        float ax = isSprinting ? acceleration : -deceleration;
-        speedValue = Mathf.Lerp(speed, sprintingSpeed, ax * Time.deltaTime * 10);
+        /*        float ax = isDashing ? acceleration : -deceleration;
+                speedValue = Mathf.Lerp(speed, sprintingSpeed, ax * Time.deltaTime * 10);*/
+        speedValue = speed;
     }
 
     private void ApplyMovement()
@@ -121,7 +136,13 @@ public class PlayerMovement : MonoBehaviour
         _characterController.Move(_direction * speedValue * Time.deltaTime);
     }
 
-    public void Move(InputAction.CallbackContext context)
+    private void ApplyDash()
+    {
+        _characterController.Move(transform.forward * dashStrength * Time.deltaTime) ;
+    }
+        
+        
+    private void Move(InputAction.CallbackContext context)
     {
         _input = context.ReadValue<Vector2>();
         float cameraAngle = -Camera.main.transform.rotation.eulerAngles.y;
@@ -141,14 +162,19 @@ public class PlayerMovement : MonoBehaviour
     {
         if (context.started)
         {
-            isSprinting = true;
+            isDashing = true;
         }
         else if (context.canceled || context.performed)
         {
-            isSprinting = false;
+            isDashing = false;
         }
     }
 
+    public void Dashed()
+    {
+        isDashing = true;
+    }
+        
     private void OnDestroy()
     {
         movingSound.stop(STOP_MODE.IMMEDIATE);
@@ -177,5 +203,16 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.position = respawnTile.transform.position + 25f * Vector3.up;
         }
+        else if (hit.transform.TryGetComponent<PlayerMovement>(out PlayerMovement player) && dashFlag)
+        {
+            player.Dashed();
+        }
+    }
+
+    IEnumerator Dash()
+    {
+        dashFlag = true;
+        yield return new WaitForSeconds(dashDuration);
+        dashFlag = false;
     }
 }
