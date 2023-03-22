@@ -40,9 +40,9 @@ public class TileSystem : MonoBehaviour
         int x;
         int z;
 
-        z = Mathf.RoundToInt(pos.z / (tilePrefab.transform.localScale.x * 1.48f));
+        z = Mathf.RoundToInt(pos.z / (tilePrefab.transform.localScale.x * 1.5f));
         if (z % 2 == 1) xOffset = tilePrefab.transform.localScale.x * .9f;
-        x = Mathf.RoundToInt((pos.x - xOffset) / (tilePrefab.transform.localScale.x * 1.7f));
+        x = Mathf.RoundToInt((pos.x - xOffset) / (tilePrefab.transform.localScale.x * 1.8f));
         
         return tiles[x, z];
     }

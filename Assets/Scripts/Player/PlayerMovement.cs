@@ -6,26 +6,28 @@ using FMOD.Studio;
 
 public class PlayerMovement : MonoBehaviour
 {
-    #region Variables: Movement
-    public Tile respawnTile;
-    private Vector2 _input;
-    private bool jumpInput;
     private CharacterController _characterController;
-    private Vector3 _direction;
-    [HideInInspector] public EventInstance movingSound;
-    private TileSelector tileSelec;
+
+    #region Variables: Movement
+    [HideInInspector] public Vector2 _input;
+    [HideInInspector] public bool jumpInput;
+    [HideInInspector] public Vector3 _direction;
+    [HideInInspector] public bool isDashing;
+    [HideInInspector] public bool dashFlag;
+    [HideInInspector] public bool moveFlag;
+
     [SerializeField] private float speed;
     [SerializeField] private float jumpStrength = 10;
     [SerializeField] private float dashStrength;
+    [SerializeField] public float pushStrength;
     [SerializeField] private float dashDuration;
     [Header("1 = 0.1 sec, .1 = 1 sec")]
     [SerializeField, Range(0.01f, 1)] private float acceleration = .7f;
     [SerializeField, Range(0.01f, 1)] private float deceleration = .6f;
     [Space(10)]
+    private Vector3 dir;
+    private float mvtStr;
     private float speedValue;
-    bool isDashing;
-    bool dashFlag;
-    bool moveFlag;
     #endregion
     #region Variables: Rotation
 
@@ -46,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
 /*        movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/moov");
         movingSound.set3DAttributes(new FMOD.ATTRIBUTES_3D());*/
         _characterController = GetComponent<CharacterController>();
-        tileSelec = GetComponent<TileSelector>();
     }
 
     private void OnGroundedCallBack()
@@ -78,16 +79,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             ApplyMovement();
-        }
-        if (_characterController.isGrounded && _input != Vector2.zero && !moveFlag)
-        {
-            moveFlag = true;
-            movingSound.start();
-        }
-        else if ((!_characterController.isGrounded || _input == Vector2.zero) && moveFlag)
-        {
-            moveFlag = false;
-            movingSound.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
 
@@ -138,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyDash()
     {
-        _characterController.Move(transform.forward * dashStrength * Time.deltaTime) ;
+        _characterController.Move(dir * mvtStr * Time.deltaTime) ;
     }
         
         
@@ -169,17 +160,8 @@ public class PlayerMovement : MonoBehaviour
             isDashing = false;
         }
     }
-
-    public void Dashed()
-    {
-        isDashing = true;
-    }
         
-    private void OnDestroy()
-    {
-        movingSound.stop(STOP_MODE.IMMEDIATE);
-        movingSound.release();
-    }
+
 
     private Vector2 Rotate(Vector2 v, float degrees)
     {
@@ -193,25 +175,22 @@ public class PlayerMovement : MonoBehaviour
         return v;
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.transform.TryGetComponent<Tile>(out Tile tileO)&& hit.normal.y > -0.2f && hit.normal.y < 0.2f && hit.transform.position.y - tileSelec.tileUnder.transform.position.y <= 3 && hit.transform.position.y - tileSelec.tileUnder.transform.position.y > 1)
-        {
-            jumpInput = true;
-        }
-        else if (hit.transform.CompareTag("Water"))
-        {
-            transform.position = respawnTile.transform.position + 25f * Vector3.up;
-        }
-        else if (hit.transform.TryGetComponent<PlayerMovement>(out PlayerMovement player) && dashFlag)
-        {
-            player.Dashed();
-        }
-    }
+
 
     IEnumerator Dash()
     {
         dashFlag = true;
+        dir = transform.forward;
+        mvtStr = dashStrength;
+        yield return new WaitForSeconds(dashDuration);
+        dashFlag = false;
+    }
+    
+    public IEnumerator Dashed(Vector3 vec, float pushStr)
+    {
+        dashFlag = true;
+        mvtStr = pushStr;
+        dir = vec;
         yield return new WaitForSeconds(dashDuration);
         dashFlag = false;
     }
