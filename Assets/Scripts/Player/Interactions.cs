@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 public class Interactions : MonoBehaviour
 {
     bool isGrowing;
-    bool isMining;
+    [HideInInspector] public bool terraforming;
+    [HideInInspector] public bool isMining;
     public float growingSpeed;
     public float hitDistance;
     public float hitRadius;
@@ -20,9 +21,13 @@ public class Interactions : MonoBehaviour
         rManager = FindObjectOfType<RessourcesManager>();
     }
 
+    private void Update()
+    {
+    }
+
     public void OnMining(InputAction.CallbackContext context)
     {
-        if (context.started)
+/*        if (context.started)
         {
             isMining = true;
             miningZone.gameObject.SetActive(true);
@@ -36,7 +41,7 @@ public class Interactions : MonoBehaviour
                 interactor.OnInteractionExit();
                 interactor = null;
             }
-        }
+        }*/
     }
 
     public void OnStopDegrading(InputAction.CallbackContext context)
@@ -49,8 +54,11 @@ public class Interactions : MonoBehaviour
         else if (context.canceled || context.performed)
         {
             isGrowing = false;
+            terraforming = false;
             if (tile && tile.isGrowing)
+            {
                 tile.isGrowing = false;
+            }
         }
     }
 
@@ -61,10 +69,11 @@ public class Interactions : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out interactor) && isMining)
+        if(other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out interactor))
         {
             if (interactor.interactable)
             {
+                isMining = true;
                 interactor.OnInteractionEnter(hitRate, this);
             }
         }
@@ -75,12 +84,14 @@ public class Interactions : MonoBehaviour
         if(other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out interactor))
         {
             interactor.OnInteractionExit();
+            isMining = false;
             interactor = null;
         }
         if(other.TryGetComponent<Tile>(out Tile otherTile) && otherTile.isGrowing)
         {
             otherTile.isGrowing = false;
             isGrowing = false;
+            terraforming = false;
         }
     }
 
@@ -94,9 +105,13 @@ public class Interactions : MonoBehaviour
             tile = hit.gameObject.GetComponent<Tile>();
             if (!tile.isGrowing && tile.currentPos != tile.ogPos)
             {
+                terraforming = true;
                 tile.currentPos.y += tile.heightByTile;
                 tile.isGrowing = true;
-                
+            }
+            else
+            {
+                terraforming = false;
             }
 
 /*            if (tile.currentPos == tile.ogPos)

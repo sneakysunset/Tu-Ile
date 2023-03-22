@@ -51,7 +51,6 @@ public class Tile : MonoBehaviour
     {
         minableItems = transform.Find("SpawnPositions");
         coordFX = coordX - coordY / 2;
-        lightAct = transform.GetChild(0).GetComponent<Light>();
         ogPos = transform.position;
         currentPos = ogPos;
         pSys = gameObject.GetComponentInChildren<ParticleSystem>();
@@ -62,6 +61,7 @@ public class Tile : MonoBehaviour
         }
         if (!walkable)
         {
+            walkedOnto = true;
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
             myMeshR.enabled = false;
             //GetComponent<Collider>().enabled = false;
@@ -125,14 +125,7 @@ public class Tile : MonoBehaviour
             gameObject.tag = "DegradingTile";
         }
         degradationTimerModifier += Time.deltaTime * (1 / timeToGetToMaxDegradationSpeed);
-
-        if (!isSelected && !selecFlag)
-        {
-            selecFlag = true;
-            myMeshR.material = unselectedMat;
-            lightAct.enabled = false;
-        }
-        if (!isDegrading && transform.position.y <= -3)
+        if (!isDegrading && transform.position.y <= -heightByTile)
         {
             walkable = false;
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
@@ -201,7 +194,7 @@ public class Tile : MonoBehaviour
     public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
     {
         float xOffset = 0;
-        if (z % 2 == 1) xOffset = transform.localScale.x * .9f;
+        if (z % 2 == 1) xOffset = transform.localScale.x * .85f;
         Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.7f + xOffset, 0, z * transform.localScale.x * 1.48f);
         coordX = x;
         
@@ -233,7 +226,7 @@ public class Tile : MonoBehaviour
         minableItems.gameObject.SetActive(true);
         timer = Random.Range(minTimer, maxTimer);
         isDegrading = false;
-        transform.position = new Vector3(transform.position.x, -2, transform.position.z) ;
+        transform.position = new Vector3(transform.position.x, -1.9f, transform.position.z) ;
         transform.tag = "Tile";
         currentPos.y = height - (height % heightByTile);
         ogPos.y = height;
