@@ -13,9 +13,14 @@ public class Player : MonoBehaviour
     Interactions inter;
     [HideInInspector] public EventInstance movingSound;
     public Tile respawnTile;
+    [HideInInspector] public List<Item> holdableItems;
+    [HideInInspector] public List<Item> heldItems;
+    [HideInInspector] public Item closestItem;
 
     private void Start()
     {
+        holdableItems = new List<Item>();
+        heldItems = new List<Item>();
         pM = GetComponent<PlayerMovement>();
         inter = GetComponent<Interactions>();
         _characterController = pM.GetComponent<CharacterController>();
@@ -59,6 +64,7 @@ public class Player : MonoBehaviour
             }
         }
     }
+
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.transform.TryGetComponent<Tile>(out Tile tileO) && hit.normal.y > -0.2f && hit.normal.y < 0.2f && hit.transform.position.y - tileSelec.tileUnder.transform.position.y <= 3 && hit.transform.position.y - tileSelec.tileUnder.transform.position.y > 1)
@@ -75,7 +81,6 @@ public class Player : MonoBehaviour
             StartCoroutine(player.Dashed(-hit.normal, pM.pushStrength));
         }
     }
-
 
     private void OnDestroy()
     {

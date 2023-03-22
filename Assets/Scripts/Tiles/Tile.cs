@@ -194,8 +194,8 @@ public class Tile : MonoBehaviour
     public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
     {
         float xOffset = 0;
-        if (z % 2 == 1) xOffset = transform.localScale.x * .9f;
-        Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.8f + xOffset, 0, z * transform.localScale.x * 1.5f);
+        if (z % 2 == 1) xOffset = transform.localScale.x * .85f;
+        Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.7f + xOffset, 0, z * transform.localScale.x * 1.48f);
         coordX = x;
         
         coordY = z;
