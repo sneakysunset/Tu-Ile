@@ -12,10 +12,12 @@ public class Interactions : MonoBehaviour
     public float hitRate;
     [HideNormalInspector] public Interactor interactor;
     private Transform miningZone;
+    private RessourcesManager rManager;
 
     private void Start()
     {
-        miningZone = transform.Find("MiningZone");    
+        miningZone = transform.Find("MiningZone");
+        rManager = FindObjectOfType<RessourcesManager>();
     }
 
     public void OnMining(InputAction.CallbackContext context)
@@ -25,7 +27,7 @@ public class Interactions : MonoBehaviour
             isMining = true;
             miningZone.gameObject.SetActive(true);
         }
-        else if(context.canceled || context.performed)
+        else if (context.canceled || context.performed)
         {
             isMining = false;
             miningZone.gameObject.SetActive(false);
@@ -42,18 +44,26 @@ public class Interactions : MonoBehaviour
         if (context.started)
         {
             isGrowing = true;
-            StartCoroutine(afterPhysics());
+            //StartCoroutine(afterPhysics());
         }
-        /*        else if(context.canceled || context.performed)
-                {
-                    isGrowing = false;
-                }*/
+        else if (context.canceled || context.performed)
+        {
+            isGrowing = false;
+            if (tile && tile.isGrowing)
+            {
+                tile.isGrowing = false;
+            }
+        }
     }
 
+    public void GetRessource(int ressourceNum)
+    {
+        rManager.wood += ressourceNum;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out interactor))
+        if(other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out interactor) && isMining)
         {
             if (interactor.interactable)
             {
@@ -69,19 +79,26 @@ public class Interactions : MonoBehaviour
             interactor.OnInteractionExit();
             interactor = null;
         }
+        if(other.TryGetComponent<Tile>(out Tile otherTile) && otherTile.isGrowing)
+        {
+            otherTile.isGrowing = false;
+            isGrowing = false;
+        }
     }
 
 
-
+    Tile tile;
+        
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.transform.CompareTag("DegradingTile") && hit.normal.y > .9f && isGrowing)
         {
-            Tile tile = hit.gameObject.GetComponent<Tile>();
+            tile = hit.gameObject.GetComponent<Tile>();
             if (!tile.isGrowing && tile.currentPos != tile.ogPos)
             {
                 tile.currentPos.y += tile.heightByTile;
                 tile.isGrowing = true;
+                
             }
 
 /*            if (tile.currentPos == tile.ogPos)
@@ -92,6 +109,7 @@ public class Interactions : MonoBehaviour
             }*/
         }
     }
+
     WaitForFixedUpdate waiter;
     IEnumerator afterPhysics()
     {

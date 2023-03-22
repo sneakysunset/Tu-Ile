@@ -100,6 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileType: 0
   walkable: 1
+  walkedOnto: 0
   isDegrading: 0
   timer: 0
   coordX: 0
@@ -137,8 +138,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   timeToGetToMaxDegradationSpeed: 0
+  adjTCoords: []
   degradingSpeed: 0
   isGrowing: 0
+  heightByTile: 0
+  degradable: 1
 --- !u!64 &4864879330067664946
 MeshCollider:
   m_ObjectHideFlags: 0

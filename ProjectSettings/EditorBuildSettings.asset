@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Test.unity
-    guid: 31bbbb70237f4e243adf642c10924915
-  - enabled: 1
-    path: Assets/Scenes/Test 1.unity
-    guid: 67a4203fba4b5354b960c57c893c2a0f
+    path: Assets/Scenes/Ile et tatoin/Ile.unity
+    guid: 06f1bc3f33334ab41a25236c246310a3
   m_configObjects: {}

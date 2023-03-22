@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+#if UNITY_EDITOR
 using AmplifyShaderEditor;
-
+#endif
 public class TileSystem : MonoBehaviour
 {
     public bool InstantiateGrid;
@@ -39,9 +40,9 @@ public class TileSystem : MonoBehaviour
         int x;
         int z;
 
-        z = Mathf.RoundToInt(pos.z / (tilePrefab.transform.localScale.x * 1.5f));
+        z = Mathf.RoundToInt(pos.z / (tilePrefab.transform.localScale.x * 1.48f));
         if (z % 2 == 1) xOffset = tilePrefab.transform.localScale.x * .9f;
-        x = Mathf.RoundToInt((pos.x - xOffset) / (tilePrefab.transform.localScale.x * 1.8f));
+        x = Mathf.RoundToInt((pos.x - xOffset) / (tilePrefab.transform.localScale.x * 1.7f));
         
         return tiles[x, z];
     }

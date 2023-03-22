@@ -36,17 +36,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DepthDensity: 0.417
+    - _DepthDensity: 0.444
     - _DistanceDensity: 0.02
-    - _EdgeFoamDepth: 0.1
+    - _EdgeFoamDepth: 0.44
     - _FancyShadows: 0
-    - _FoamContribution: 0.471
-    - _FoamNoiseScale: 0.775
+    - _FoamContribution: 0.728
+    - _FoamNoiseScale: 0.734
     - _FoamScale: 10
     - _FoamSpeed: 0.1
     - _MaxSampleDistance: 49
     - _MaxShadowDistance: 50
-    - _ReflectionContribution: 0.5
+    - _ReflectionContribution: 0.544
     - _RefractionStrength: 0
     - _SparkleExponent: 25000
     - _SparkleScale: 25

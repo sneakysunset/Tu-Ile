@@ -46,9 +46,9 @@ Material:
     m_Floats:
     - _2nd_Normal_Strenght: 10
     - _BUILTIN_AlphaClip: 0
-    - _BUILTIN_Blend: 2
+    - _BUILTIN_Blend: 0
     - _BUILTIN_CullMode: 0
-    - _BUILTIN_DstBlend: 1
+    - _BUILTIN_DstBlend: 10
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
     - _BUILTIN_SrcBlend: 5

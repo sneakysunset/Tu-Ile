@@ -81,16 +81,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshs:
+  - {fileID: 4300000, guid: 2d99c4ba773b74442b65d2e9cb72bfcd, type: 3}
   - {fileID: 4300000, guid: 0eb2fd97e4b2bc14cbebcba12e219ea4, type: 3}
-  - {fileID: 4300000, guid: 0eb2fd97e4b2bc14cbebcba12e219ea4, type: 3}
-  - {fileID: 4300000, guid: 0eb2fd97e4b2bc14cbebcba12e219ea4, type: 3}
+  - {fileID: 4300000, guid: f3e342b6a6f40ff4c8674390024da25e, type: 3}
   materials:
   - {fileID: 2100000, guid: da2c233b59617744588b18235eda5f56, type: 2}
+  - {fileID: 2100000, guid: da2c233b59617744588b18235eda5f56, type: 2}
   - {fileID: 2100000, guid: 1af9fbef8b63fc249a7f5a9834cfd2d7, type: 2}
-  - {fileID: 2100000, guid: a74e88492fa30e540a88a0a28e6dd93c, type: 2}
   regrowthTimer: 5
   interactable: 1
   spawnPrefab: {fileID: 7307083508970999916, guid: 916ede32b917e24448f062a764b82885, type: 3}
+  ressourceNum: 10
 --- !u!33 &3727239290930370502
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -98,7 +99,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8818747911436434145}
-  m_Mesh: {fileID: 4300000, guid: 0eb2fd97e4b2bc14cbebcba12e219ea4, type: 3}
+  m_Mesh: {fileID: 4300000, guid: f3e342b6a6f40ff4c8674390024da25e, type: 3}
 --- !u!23 &3293183830676129177
 MeshRenderer:
   m_ObjectHideFlags: 0
