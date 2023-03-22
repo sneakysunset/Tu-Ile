@@ -6,7 +6,8 @@ public class TileSelector : MonoBehaviour
 {
     TileSystem tileS;
     [HideInInspector] public Tile tileUnder;
-    public Transform tileBluePrint;
+    public GameObject bluePrintPrefab;
+    Transform tileBluePrint;
     public float maxAngleToTarget = 50;
     public LayerMask tileLayer;
     public float hitDistance = 4;
@@ -14,6 +15,7 @@ public class TileSelector : MonoBehaviour
     RessourcesManager rManager;
     private void Start()
     {
+        tileBluePrint = Instantiate(bluePrintPrefab).transform;
         tileS = FindObjectOfType<TileSystem>();
         rManager = FindObjectOfType<RessourcesManager>();
     }
@@ -27,7 +29,7 @@ public class TileSelector : MonoBehaviour
         }
         if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable)
         {
-            tileBluePrint.position = targettedTile.transform.position + Vector3.up * 25;
+            tileBluePrint.position = targettedTile.transform.position + Vector3.up * (22.1f + tileUnder.transform.position.y);
         }
         else
         {

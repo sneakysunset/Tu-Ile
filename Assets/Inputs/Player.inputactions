@@ -24,12 +24,12 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Mine",
+                    "name": "GetItem",
                     "type": "Button",
                     "id": "7db96c94-320b-4181-8801-6507d16ab09d",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold(duration=100000)",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -233,7 +233,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Mine",
+                    "action": "GetItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -244,7 +244,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Mine",
+                    "action": "GetItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
