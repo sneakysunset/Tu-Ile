@@ -3,19 +3,25 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Recuperable
+  - BoRepere
+  - Tile
+  - DegradingTile
+  - Interactor
+  - Water
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Tile
   - DisabledTile
-  - 
-  - 
-  - 
+  - Unit
+  - CameraPlane
+  - Interactor
   - 
   - 
   - 

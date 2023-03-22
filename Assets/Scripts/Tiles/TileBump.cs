@@ -5,8 +5,6 @@ using UnityEngine;
 public class TileBump : MonoBehaviour
 {
     List<Collider> hitList;
-    public float bumpStrength = 5;
-    public AnimationCurve bumpDistanceCurve;
 
     private Tile tile;
     Rigidbody rb;
@@ -19,7 +17,8 @@ public class TileBump : MonoBehaviour
 
     public void Bump()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/stomp");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Tilee/bumper");
+
 
         RaycastHit[] hits;
         hits = rb.SweepTestAll(Vector3.up, 30);
@@ -28,20 +27,20 @@ public class TileBump : MonoBehaviour
         {
             foreach (RaycastHit hit in hits)
             {
-                hitList.Add(hit.collider);
+                if(!hit.transform.CompareTag("Tile")) hitList.Add(hit.collider);
             }
         }
 
         foreach (Collider hit in hitList)
         {
-            float distance = bumpDistanceCurve.Evaluate(Mathf.Clamp(1 / (hit.transform.position.y - tile.transform.position.y - 45) * 5, 0, 1));
+            float distance = tile.bumpDistanceAnimCurve.Evaluate(Mathf.Clamp(1 / (hit.transform.position.y - tile.transform.position.y - 45) * 5, 0, 1));
             if (hit.transform.TryGetComponent<Rigidbody>(out Rigidbody rbx))
             {
-                rbx.AddForce(Vector3.up * distance * bumpStrength, ForceMode.Impulse);
+                rbx.AddForce(Vector3.up * distance * tile.bumpStrength, ForceMode.Impulse);
             }
             else if (hit.transform.TryGetComponent<PlayerMovement>(out PlayerMovement charC))
             {
-                charC._velocity += distance * bumpStrength / 5;
+                charC._velocity += distance * tile.bumpStrength / 5;
             }
         }
 

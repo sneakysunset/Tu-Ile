@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Ile et tatoin/Ile.unity
+    guid: 06f1bc3f33334ab41a25236c246310a3
   m_configObjects: {}

@@ -7,29 +7,40 @@ public class CameraCtr : MonoBehaviour
     public float smoother;
     private Vector3 velocity;
     private Camera cam;
-    private Transform player;
+    private GameObject[] players;
     public LayerMask lineCastLayers;
-    public Material fadeMat;
     public float sphereCastRadius;
     void Start()
     {
         cam = Camera.main;
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        transform.position = player.position;
+        players = GameObject.FindGameObjectsWithTag("Player");
+        Vector3 medianPos = Vector3.zero;
+        foreach(GameObject player in players)
+        {
+            medianPos += player.transform.position;
+        }
+        medianPos /= players.Length;
+        transform.position = medianPos;
     }
 
     private void Update()
     {
-        LineCastToPlayer();
+        //LineCastToPlayer();
 
     }
 
     private void LateUpdate()
     {
-        transform.position = Vector3.SmoothDamp(transform.position, player.position, ref velocity, smoother);
+        Vector3 medianPos = Vector3.zero;
+        foreach (GameObject player in players)
+        {
+            medianPos += player.transform.position;
+        }
+        medianPos /= players.Length;
+        transform.position = Vector3.SmoothDamp(transform.position, medianPos, ref velocity, smoother);
     }
 
-    private void LineCastToPlayer()
+/*    private void LineCastToPlayer()
     {
         Vector3 camPos = cam.transform.position;
         Vector3 direction = (player.position - camPos).normalized;
@@ -41,11 +52,14 @@ public class CameraCtr : MonoBehaviour
             {
                 if(hit.transform.gameObject.layer == 6)
                 {
-                    hit.transform.gameObject.layer = 7;
-                    MeshRenderer meshR = hit.transform.GetComponent<MeshRenderer>();
-                    meshR.material = fadeMat;
+                    Tile tile = hit.transform.GetComponent<Tile>();
+                    if (!tile.isSelected)
+                    {
+                        //hit.transform.gameObject.layer = 7;
+                    }
+                    tile.FadingTileEffect();
                 }
             }
         }
-    }
+    }*/
 }
