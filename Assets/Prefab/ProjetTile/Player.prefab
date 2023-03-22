@@ -431,7 +431,8 @@ MonoBehaviour:
   respawnTile: {fileID: 0}
   speed: 10
   jumpStrength: 2
-  sprintingSpeed: 25
+  dashStrength: 3
+  dashDuration: 0
   acceleration: 0.7
   deceleration: 0.6
   smoothTime: 0.05
@@ -5656,15 +5657,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3585157920775845815, guid: 5ea3343f6b3f0074eafd885429426909, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 64.05
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3585157920775845815, guid: 5ea3343f6b3f0074eafd885429426909, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 28.68
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3585157920775845815, guid: 5ea3343f6b3f0074eafd885429426909, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 34.6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3585157920775845815, guid: 5ea3343f6b3f0074eafd885429426909, type: 3}
       propertyPath: m_LocalRotation.w

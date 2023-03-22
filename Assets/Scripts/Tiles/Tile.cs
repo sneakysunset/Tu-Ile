@@ -132,7 +132,7 @@ public class Tile : MonoBehaviour
             myMeshR.material = unselectedMat;
             lightAct.enabled = false;
         }
-        if (!isDegrading && transform.position.y <= -3)
+        if (!isDegrading && transform.position.y <= -heightByTile)
         {
             walkable = false;
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
