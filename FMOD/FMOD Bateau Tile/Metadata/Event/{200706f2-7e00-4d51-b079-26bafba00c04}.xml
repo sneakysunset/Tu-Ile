@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{200706f2-7e00-4d51-b079-26bafba00c04}">
 		<property name="name">
-			<value>Plok</value>
+			<value>Collect</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
 		</property>
 		<relationship name="folder">
-			<destination>{d6664914-7b2f-4ab1-95b6-11c8bc67f060}</destination>
+			<destination>{f4cc109c-7d0c-41c7-b433-f6240ee44717}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{f53607cd-cb52-4ce1-858e-45247eb2d51b}</destination>
