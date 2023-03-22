@@ -204,6 +204,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   timeToGetToMaxDegradationSpeed: 1200
   degradingSpeed: 3
+  heightByTile: 0
 --- !u!114 &4173279834238775216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,9 +217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918b0ff88cb18f443870d1a8d54d4b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedTileMaterial: {fileID: 2100000, guid: 338b8fda04ce0874181cffa3ce5a0810, type: 2}
-  unselectedTileMaterial: {fileID: 2100000, guid: 338b8fda04ce0874181cffa3ce5a0810, type: 2}
+  selectedTileMaterial: {fileID: 2100000, guid: a752ece4f9822b348a30335ee3ef0244, type: 2}
+  unselectedTileMaterial: {fileID: 2100000, guid: a752ece4f9822b348a30335ee3ef0244, type: 2}
   disabledTileMaterial: {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
-  FadedTileMaterial: {fileID: 2100000, guid: 338b8fda04ce0874181cffa3ce5a0810, type: 2}
+  FadedTileMaterial: {fileID: 2100000, guid: a752ece4f9822b348a30335ee3ef0244, type: 2}
   treePrefab: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
   rockPrefab: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}

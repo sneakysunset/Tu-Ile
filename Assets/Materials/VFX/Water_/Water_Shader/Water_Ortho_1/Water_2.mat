@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3172764099187556966
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 0
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Water_2
+  m_Shader: {fileID: -6465566751694194690, guid: a3d2e626750387b4e8e4e4e2df4ea8c0, type: 3}
+  m_ValidKeywords:
+  - _BUILTIN_SURFACE_TYPE_TRANSPARENT
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Foam:
+        m_Texture: {fileID: 2800000, guid: 0aef2eb065fd04509a54f6f349c65956, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Tex_Ripple:
+        m_Texture: {fileID: 2800000, guid: 41ea33a7d3c9049338a01c1b14bf9d19, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BUILTIN_AlphaClip: 0
+    - _BUILTIN_Blend: 0
+    - _BUILTIN_CullMode: 0
+    - _BUILTIN_DstBlend: 10
+    - _BUILTIN_QueueControl: 1
+    - _BUILTIN_QueueOffset: 0
+    - _BUILTIN_SrcBlend: 5
+    - _BUILTIN_Surface: 1
+    - _BUILTIN_ZTest: 4
+    - _BUILTIN_ZWrite: 0
+    - _BUILTIN_ZWriteControl: 0
+    - _Cutout: 0.08
+    - _Depth: 47.71
+    - _Depth_Fallof: 1.21
+    - _FoamShoreWidth: -0.14
+    - _Foam_Depth: -0.15
+    - _Foam_Falloff: -3.54
+    - _Foam_Tiling: -1.67
+    - _Ripple_Count: 0.5
+    - _Ripple_Speed: -1.2
+    - _Ripple_Strenght: 3.67
+    m_Colors:
+    - _Foam_Color: {r: 7.1297398, g: 7.1297398, b: 7.1297398, a: 1}
+    - _Main: {r: 0, g: 0.31084672, b: 0.7329843, a: 1}
+    - _Ripple_Center: {r: 1, g: 1, b: 0, a: 0}
+    - _Shore: {r: 0.10217155, g: 0.43426877, b: 0.6603774, a: 1}
+    - _Speed: {r: 0, g: 0, b: 0, a: 0}
+    - _Speed_Foam: {r: -1.02, g: -1, b: 0, a: 0}
+  m_BuildTextureStacks: []
