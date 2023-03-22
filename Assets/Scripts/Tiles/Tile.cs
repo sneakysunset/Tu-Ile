@@ -115,16 +115,18 @@ public class Tile : MonoBehaviour
     bool isGrowingChecker;
     private void Degrading()
     {
+        degradationTimerModifier += Time.deltaTime * (1 / timeToGetToMaxDegradationSpeed);
         if (timer > 0)
         {
             timer -= Time.deltaTime * degradationTimerAnimCurve.Evaluate(degradationTimerModifier);
         }
-        else if (timer <= 0)
+        else if (timer <= 0 && !degradingChecker && !isGrowing)
         {
             isDegrading = true;
             gameObject.tag = "DegradingTile";
+            currentPos.y -= heightByTile;
         }
-        degradationTimerModifier += Time.deltaTime * (1 / timeToGetToMaxDegradationSpeed);
+
         if (!isDegrading && transform.position.y <= -heightByTile)
         {
             walkable = false;
@@ -135,11 +137,6 @@ public class Tile : MonoBehaviour
             minableItems.gameObject.SetActive(false);
         }
 
-        if (isDegrading && !degradingChecker && !isGrowing && walkable)
-        {
-            currentPos.y -= heightByTile;
-
-        }
 
         if(transform.position != ogPos && isGrowingChecker && !isGrowing)
         {

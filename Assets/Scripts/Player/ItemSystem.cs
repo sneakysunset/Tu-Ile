@@ -18,7 +18,7 @@ public class ItemSystem : MonoBehaviour
     //normal grab action
     public void OnItemInput1(InputAction.CallbackContext context)
     {
-        if (context.started && player.heldItems.Count != 0)
+        if (context.started && player.heldItems.Count != 0 && (player.holdableItems.Count == 0 || player.heldItems[0].itemType != player.closestItem.itemType))
         {
             foreach(Item item in player.heldItems)
             {

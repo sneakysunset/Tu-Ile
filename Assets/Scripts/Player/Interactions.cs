@@ -58,6 +58,7 @@ public class Interactions : MonoBehaviour
             if (tile && tile.isGrowing)
             {
                 tile.isGrowing = false;
+                print(1);
             }
         }
     }
@@ -91,6 +92,7 @@ public class Interactions : MonoBehaviour
         {
             otherTile.isGrowing = false;
             isGrowing = false;
+            print(2);
             terraforming = false;
         }
     }

@@ -5,14 +5,20 @@ using TMPro;
 public class PlayerCanvas : MonoBehaviour
 {
     CameraCtr cam;
+    Player player;
+    TextMeshProUGUI text;
     private void Start()
     {
         cam = FindObjectOfType<CameraCtr>();
+        text = GetComponentInChildren<TextMeshProUGUI>();
+        player = transform.parent.GetComponent<Player>();
     }
 
     void Update()
     {
-        Vector3 dir = cam.medianPos - Camera.main.transform.position;
+        text.text = "Wood : " + player.heldItems.Count.ToString();
+
+        Vector3 dir = transform.position - Camera.main.transform.position;
         dir = dir.normalized;
         transform.forward = dir; ;
     }
