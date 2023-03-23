@@ -16,7 +16,15 @@ public class PlayerCanvas : MonoBehaviour
 
     void Update()
     {
-        text.text = "Wood : " + player.heldItems.Count.ToString();
+        if(player.heldItem != null && player.heldItem.GetType() == typeof(Item_Stack)) 
+        {         
+            Item_Stack itemS = player.heldItem as Item_Stack;
+            text.text = "Wood : " + itemS.numberStacked.ToString();
+        }
+        else
+        {
+            text.text = string.Empty;
+        }
 
         Vector3 dir = transform.position - Camera.main.transform.position;
         dir = dir.normalized;

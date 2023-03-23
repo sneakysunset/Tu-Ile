@@ -365,8 +365,6 @@ MonoBehaviour:
   dashStrength: 80
   pushStrength: 30
   dashDuration: 0.05
-  acceleration: 0.7
-  deceleration: 0.6
   smoothTime: 0.05
   gravityMultiplier: 1
   _velocity: 0

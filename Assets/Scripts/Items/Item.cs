@@ -8,12 +8,11 @@ public class Item : MonoBehaviour
 {
     public bool holdable;
     [HideNormalInspector] public bool isHeld;
-    Rigidbody rb;
+    protected Rigidbody rb;
     [HideInInspector] public GameObject Highlight;
-    Transform heldPoint;
-    public enum ItemType {Neutral, Wood, Rock};
-    public ItemType itemType = ItemType.Neutral;
-    Player _player;
+    protected Transform heldPoint;
+    protected Player _player;
+    public int numberStacked = 0;
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;
@@ -60,7 +59,11 @@ public class Item : MonoBehaviour
         {
             if (_player)
             {
-                _player.heldItems.Remove(this);
+                _player.heldItem = null;
+                if (_player.holdableItems.Contains(this))
+                {
+                    _player.holdableItems.Remove(this);
+                }
             }
             Destroy(gameObject);
         }

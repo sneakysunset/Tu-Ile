@@ -18,26 +18,20 @@ public class ItemSystem : MonoBehaviour
     //normal grab action
     public void OnItemInput1(InputAction.CallbackContext context)
     {
-        if (context.started && player.heldItems.Count != 0 && (player.holdableItems.Count == 0 || player.heldItems[0].itemType != player.closestItem.itemType))
+        if (context.started && player.heldItem != null && player.holdableItems.Count == 0)
         {
-            foreach(Item item in player.heldItems)
-            {
-                item.GrabRelease(player);
-                player.holdableItems.Add(item);
-                if (player.closestItem = null) player.closestItem = item;
-            }
-            player.heldItems.Clear();
+            player.heldItem.GrabRelease(player);
+            player.holdableItems.Add(player.heldItem);
+            if (player.closestItem = null) player.closestItem = player.heldItem;
+            player.heldItem = null;
             return;
         }
 
         if (context.started && player.closestItem != null && player.closestItem.holdable)
         {
-            player.heldItems.Add(player.closestItem);
-            foreach (Item item in player.heldItems)
-            {
-                player.holdableItems.Remove(item);
-                item.GrabStarted(holdPoint, player);
-            }
+            player.heldItem = player.closestItem;
+            player.holdableItems.Remove(player.heldItem);
+            player.heldItem.GrabStarted(holdPoint, player);
         }
     }
 }   

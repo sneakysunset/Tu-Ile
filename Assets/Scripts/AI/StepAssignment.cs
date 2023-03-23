@@ -25,7 +25,6 @@ public class StepAssignment
         return result;
     }
 
-
     static private void AssignationChecker(TileSystem tileSystem, Tile[,] tiles)
     {
         for (int i = 0; i < tileSystem.rows * tileSystem.columns; i++)

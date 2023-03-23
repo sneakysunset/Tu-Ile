@@ -100,9 +100,9 @@ public class Tile : MonoBehaviour
     private void Update()
     {
 /*        text.text = step.ToString();
-        if(!walkable && text.gameObject.activeInHierarchy) text.gameObject.SetActive(false);
-        else if(walkable && !text.gameObject.activeInHierarchy) text.gameObject.SetActive(true);*/
-        if(pSys.isPlaying && walkedOnto)
+        if (!walkable && text.gameObject.activeInHierarchy) text.gameObject.SetActive(false);
+        else if (walkable && !text.gameObject.activeInHierarchy) text.gameObject.SetActive(true);*/
+        if (pSys.isPlaying && walkedOnto)
         {
             pSys.Stop();
         }
