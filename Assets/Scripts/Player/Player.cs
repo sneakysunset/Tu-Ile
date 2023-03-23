@@ -14,13 +14,12 @@ public class Player : MonoBehaviour
     [HideInInspector] public EventInstance movingSound;
     public Tile respawnTile;
     [HideInInspector] public List<Item> holdableItems;
-    [HideInInspector] public List<Item> heldItems;
+    [HideInInspector] public Item heldItem;
     [HideInInspector] public Item closestItem;
 
     private void Start()
     {
         holdableItems = new List<Item>();
-        heldItems = new List<Item>();
         pM = GetComponent<PlayerMovement>();
         inter = GetComponent<Interactions>();
         _characterController = pM.GetComponent<CharacterController>();

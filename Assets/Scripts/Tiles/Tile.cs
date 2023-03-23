@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using TMPro;
 public class Tile : MonoBehaviour
 {
     #region publicVariables
@@ -45,10 +45,13 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public float heightByTile;
     public bool degradable = true;
     Transform minableItems;
+    [HideNormalInspector] public int step;
+    private TextMeshProUGUI text;
     #endregion
 
-    private void Start()
+    private void Awake()
     {
+        text = GetComponentInChildren<TextMeshProUGUI>();   
         minableItems = transform.Find("SpawnPositions");
         coordFX = coordX - coordY / 2;
         ogPos = transform.position;
@@ -96,8 +99,10 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
-      
-        if(pSys.isPlaying && walkedOnto)
+/*        text.text = step.ToString();
+        if (!walkable && text.gameObject.activeInHierarchy) text.gameObject.SetActive(false);
+        else if (walkable && !text.gameObject.activeInHierarchy) text.gameObject.SetActive(true);*/
+        if (pSys.isPlaying && walkedOnto)
         {
             pSys.Stop();
         }
@@ -115,16 +120,18 @@ public class Tile : MonoBehaviour
     bool isGrowingChecker;
     private void Degrading()
     {
+        degradationTimerModifier += Time.deltaTime * (1 / timeToGetToMaxDegradationSpeed);
         if (timer > 0)
         {
             timer -= Time.deltaTime * degradationTimerAnimCurve.Evaluate(degradationTimerModifier);
         }
-        else if (timer <= 0)
+        else if (timer <= 0 && !degradingChecker && !isGrowing)
         {
             isDegrading = true;
             gameObject.tag = "DegradingTile";
+            currentPos.y -= heightByTile;
         }
-        degradationTimerModifier += Time.deltaTime * (1 / timeToGetToMaxDegradationSpeed);
+
         if (!isDegrading && transform.position.y <= -heightByTile)
         {
             walkable = false;
@@ -135,11 +142,6 @@ public class Tile : MonoBehaviour
             minableItems.gameObject.SetActive(false);
         }
 
-        if (isDegrading && !degradingChecker && !isGrowing && walkable)
-        {
-            currentPos.y -= heightByTile;
-
-        }
 
         if(transform.position != ogPos && isGrowingChecker && !isGrowing)
         {

@@ -23,7 +23,7 @@ public class GetClosestItem : MonoBehaviour
     {
         if (other.TryGetComponent(out Item item))
         {
-            if (!player.heldItems.Contains(item) && !player.holdableItems.Contains(item))
+            if (player.heldItem != item  && !player.holdableItems.Contains(item))
                 GetItemOnTriggerEnter(item);
         }
     }
@@ -57,6 +57,17 @@ public class GetClosestItem : MonoBehaviour
              if (itemDistance < distance)
              {
                  cItem = item;
+                 if(player.heldItem != null && item.GetType() == typeof(Item_Stack))
+                 {
+                    Item_Stack temItem = item as Item_Stack;
+                    Item_Stack heldItemS = player.heldItem as Item_Stack;
+                    if(temItem.stackType == heldItemS.stackType)
+                    {
+                        player.holdableItems.Remove(item);
+                        heldItemS.numberStacked += temItem.numberStacked;
+                        Destroy(temItem.gameObject);
+                    }
+                 }
              }
         }
 

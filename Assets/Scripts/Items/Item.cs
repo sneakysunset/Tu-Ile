@@ -8,12 +8,11 @@ public class Item : MonoBehaviour
 {
     public bool holdable;
     [HideNormalInspector] public bool isHeld;
-    Rigidbody rb;
+    protected Rigidbody rb;
     [HideInInspector] public GameObject Highlight;
-    Transform heldPoint;
-    public enum ItemType {Neutral, Wood, Rock};
-    public ItemType itemType = ItemType.Neutral;
-
+    protected Transform heldPoint;
+    protected Player _player;
+    public int numberStacked = 0;
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;
@@ -28,6 +27,7 @@ public class Item : MonoBehaviour
 
     public virtual void GrabStarted(Transform holdPoint, Player player)
     {
+        _player = player;
         isHeld = true;
         rb.constraints = RigidbodyConstraints.FreezePosition;
         //FMODUnity.RuntimeManager.PlayOneShot("event:/MouvementCharacter/Catch");
@@ -42,6 +42,7 @@ public class Item : MonoBehaviour
 
     public virtual void GrabRelease(Player player)
     {
+        _player = null;
         isHeld = false;
         rb.constraints = RigidbodyConstraints.None;
         rb.isKinematic = false;
@@ -49,5 +50,22 @@ public class Item : MonoBehaviour
         //FMODUnity.RuntimeManager.PlayOneShot("event:/MouvementCharacter/Grab");
         player.holdableItems.Add(this);
         transform.parent = null;
+    }
+
+
+    public virtual void OnCollisionEnter(Collision other)
+    {
+        if (other.collider.CompareTag("Water"))
+        {
+            if (_player)
+            {
+                _player.heldItem = null;
+                if (_player.holdableItems.Contains(this))
+                {
+                    _player.holdableItems.Remove(this);
+                }
+            }
+            Destroy(gameObject);
+        }
     }
 }

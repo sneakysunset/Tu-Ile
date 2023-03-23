@@ -15,9 +15,10 @@ public class Interactor : MonoBehaviour
     protected float currentHitTimer;
     protected List<Interactions> _player;
     public GameObject spawnPrefab;
-    private Transform spawnPoint;
     public int ressourceNum = 10;
-
+    Transform stackT;
+    private Item_Stack stackItem;
+    [Range(1, 10)] public int numberOfRessourceGenerated = 3;
     private void Start()
     {
         stateIndex = meshs.Length - 1;
@@ -25,8 +26,24 @@ public class Interactor : MonoBehaviour
         meshR = GetComponent<MeshRenderer>();
         meshR.sharedMaterial = materials[stateIndex];
         meshF.mesh = meshs[stateIndex]; 
-        spawnPoint = transform.Find("SpawnPoint");
         _player = new List<Interactions>();
+        Transform p = transform.parent.parent.parent;
+        stackT = p.Find("StackPos");
+        CreateStack();
+    }
+
+    void CreateStack()
+    {
+        if (stackT.childCount == 0)
+        {
+            GameObject obj = Instantiate(spawnPrefab, stackT.position, Quaternion.identity);
+            obj.transform.parent = stackT;
+            stackItem = obj.GetComponent<Item_Stack>();
+        }
+        else
+        {
+            stackItem = stackT.GetChild(0).GetComponent<Item_Stack>();
+        }
     }
 
     public virtual void OnInteractionEnter(float hitTimer, Interactions player)
@@ -35,6 +52,12 @@ public class Interactor : MonoBehaviour
         currentHitTimer = hitTimer;
         _player.Add(player);
         isInteractedWith = true;
+        if(stateIndex == meshs.Length - 1)
+        {
+            stateIndex--;
+            meshF.mesh = meshs[stateIndex];
+            meshR.material = materials[stateIndex];
+        }
     }
 
     private void Update()
@@ -86,8 +109,10 @@ public class Interactor : MonoBehaviour
 
     protected virtual void EmptyInteractor()
     {
-        GameObject obj = Instantiate(spawnPrefab, spawnPoint.position, Quaternion.identity);
-        obj.transform.parent = this.transform;
+        CreateStack();
+        stackItem.numberStacked += numberOfRessourceGenerated;
+        //GameObject obj = Instantiate(spawnPrefab, spawnPoint.position, Quaternion.identity);
+        //obj.transform.parent = this.transform;
         OnEndInteraction();
         interactable = false;
     }
