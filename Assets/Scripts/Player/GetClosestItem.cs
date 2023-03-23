@@ -23,7 +23,7 @@ public class GetClosestItem : MonoBehaviour
     {
         if (other.TryGetComponent(out Item item))
         {
-            if (player.heldItem != item  && !player.holdableItems.Contains(item))
+            if (player.heldItem != item  && !player.holdableItems.Contains(item) && item.holdable)
                 GetItemOnTriggerEnter(item);
         }
     }
@@ -33,9 +33,9 @@ public class GetClosestItem : MonoBehaviour
         if (other.TryGetComponent(out Item item) && player.holdableItems.Contains(item))
         {
             RemoveItemTriggerExit(item);
+                item.Highlight.SetActive(false);
             if (player.holdableItems.Count == 0)
             {
-                item.Highlight.SetActive(false);
                 player.closestItem = null;
             }
         }

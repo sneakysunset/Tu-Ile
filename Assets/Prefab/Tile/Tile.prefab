@@ -837,6 +837,8 @@ MonoBehaviour:
   heightByTile: 0
   degradable: 1
   step: 0
+  walkedOnColor: {r: 0.8490566, g: 0.734247, b: 0.734247, a: 1}
+  notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!33 &8540724609792189564
 MeshFilter:
   m_ObjectHideFlags: 0

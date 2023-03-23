@@ -12,7 +12,6 @@ public class Item : MonoBehaviour
     [HideInInspector] public GameObject Highlight;
     protected Transform heldPoint;
     protected Player _player;
-    public int numberStacked = 0;
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;

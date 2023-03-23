@@ -146,11 +146,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f367a4d939e73274699153fe139e400a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdable: 1
+  holdable: 0
   isHeld: 0
   Highlight: {fileID: 0}
-  numberStacked: 0
   stackType: 0
+  numberStacked: 0
 --- !u!33 &4544301551639984657
 MeshFilter:
   m_ObjectHideFlags: 0
