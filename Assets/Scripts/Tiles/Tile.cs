@@ -48,7 +48,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public int step;
     private TextMeshProUGUI text;
     #endregion
-
+    public Color walkedOnColor, notWalkedOnColor;
     private void Awake()
     {
         text = GetComponentInChildren<TextMeshProUGUI>();   
@@ -71,9 +71,14 @@ public class Tile : MonoBehaviour
             transform.Find("Additional Visuals").gameObject.SetActive(false);
             minableItems.gameObject.SetActive(false);
         }
-        if(walkable && !walkedOnto)
+        if(walkable && !walkedOnto && degradable)
         {
             pSys.Play();
+            myMeshR.material.color = notWalkedOnColor;
+        }
+        else if(!walkable && walkedOnto && degradable)
+        {
+            myMeshR.material.color = walkedOnColor;
         }
         timer = Random.Range(minTimer, maxTimer);
         GetAdjCoords();
@@ -102,9 +107,10 @@ public class Tile : MonoBehaviour
 /*        text.text = step.ToString();
         if (!walkable && text.gameObject.activeInHierarchy) text.gameObject.SetActive(false);
         else if (walkable && !text.gameObject.activeInHierarchy) text.gameObject.SetActive(true);*/
-        if (pSys.isPlaying && walkedOnto)
+        if (pSys.isPlaying && walkedOnto && degradable)
         {
-            pSys.Stop();
+            pSys.Stop(); 
+            myMeshR.material.color = walkedOnColor;
         }
         //NormaliseRelief();
 
@@ -224,6 +230,7 @@ public class Tile : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;
         myMeshR.material = unselectedMat;
+        myMeshR.material.color = walkedOnColor;
         transform.Find("Additional Visuals").gameObject.SetActive(true);
         minableItems.gameObject.SetActive(true);
         timer = Random.Range(minTimer, maxTimer);

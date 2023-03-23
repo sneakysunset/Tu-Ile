@@ -12,12 +12,14 @@ public class TileSelector : MonoBehaviour
     public LayerMask tileLayer;
     public float hitDistance = 4;
     private Tile targettedTile;
+    private Player player;
     RessourcesManager rManager;
     private void Start()
     {
         tileBluePrint = Instantiate(bluePrintPrefab).transform;
         tileS = FindObjectOfType<TileSystem>();
         rManager = FindObjectOfType<RessourcesManager>();
+        player = GetComponent<Player>();
     }
 
     private void Update()
@@ -71,10 +73,19 @@ public class TileSelector : MonoBehaviour
     {
         if(context.started)
         {
-            if(targettedTile != null && rManager.wood >= rManager.tileCost)
+            if (targettedTile != null && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
             {
-                rManager.wood -= rManager.tileCost;
-                targettedTile.Spawn(tileUnder.transform.position.y);
+                Item_Stack_Tile item = player.heldItem as Item_Stack_Tile;
+                if(item.numberStacked >= rManager.wood)
+                {
+                    item.numberStacked -= rManager.tileCost;
+                    targettedTile.Spawn(tileUnder.transform.position.y);
+                    if(item.numberStacked == 0)
+                    {
+                        player.heldItem = null;
+                        Destroy(item.gameObject);
+                    }
+                }
             }
         }
     }

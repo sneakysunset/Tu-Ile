@@ -29,9 +29,16 @@ public class ItemSystem : MonoBehaviour
 
         if (context.started && player.closestItem != null && player.closestItem.holdable)
         {
-            player.heldItem = player.closestItem;
-            player.holdableItems.Remove(player.heldItem);
-            player.heldItem.GrabStarted(holdPoint, player);
+            if(player.closestItem.GetType() != typeof(Item_Etablie))
+            {
+                player.heldItem = player.closestItem;
+                player.holdableItems.Remove(player.heldItem);
+                player.heldItem.GrabStarted(holdPoint, player);
+            }
+            else
+            {
+                player.closestItem.GrabStarted(holdPoint, player);
+            }
         }
     }
 }   

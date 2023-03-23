@@ -14,15 +14,13 @@ public class Interactions : MonoBehaviour
     [HideNormalInspector] public Interactor interactor;
     private Transform miningZone;
     private RessourcesManager rManager;
+    private Player player;
 
     private void Start()
     {
         miningZone = transform.Find("MiningZone");
         rManager = FindObjectOfType<RessourcesManager>();
-    }
-
-    private void Update()
-    {
+        player = GetComponent<Player>();
     }
 
     public void OnMining(InputAction.CallbackContext context)
@@ -71,7 +69,7 @@ public class Interactions : MonoBehaviour
     {
         if(other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out interactor))
         {
-            if (interactor.interactable)
+            if (interactor.interactable && !player.heldItem)
             {
                 isMining = true;
                 interactor.OnInteractionEnter(hitRate, this);
