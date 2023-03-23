@@ -22,8 +22,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public float pushStrength;
     [SerializeField] private float dashDuration;
     [Header("1 = 0.1 sec, .1 = 1 sec")]
-    [SerializeField, Range(0.01f, 1)] private float acceleration = .7f;
-    [SerializeField, Range(0.01f, 1)] private float deceleration = .6f;
+    //[SerializeField, Range(0.01f, 1)] private float acceleration = .7f;
+    //[SerializeField, Range(0.01f, 1)] private float deceleration = .6f;
     [Space(10)]
     private Vector3 dir;
     private float mvtStr;
