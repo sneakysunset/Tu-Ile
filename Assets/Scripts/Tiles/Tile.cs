@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using TMPro;
 public class Tile : MonoBehaviour
 {
     #region publicVariables
@@ -45,13 +45,15 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public float heightByTile;
     public bool degradable = true;
     Transform minableItems;
+    [HideNormalInspector] public int step;
+    private TextMeshProUGUI text;
     #endregion
 
-    private void Start()
+    private void Awake()
     {
+        text = GetComponentInChildren<TextMeshProUGUI>();   
         minableItems = transform.Find("SpawnPositions");
         coordFX = coordX - coordY / 2;
-        lightAct = transform.GetChild(0).GetComponent<Light>();
         ogPos = transform.position;
         currentPos = ogPos;
         pSys = gameObject.GetComponentInChildren<ParticleSystem>();
@@ -62,6 +64,7 @@ public class Tile : MonoBehaviour
         }
         if (!walkable)
         {
+            walkedOnto = true;
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
             myMeshR.enabled = false;
             //GetComponent<Collider>().enabled = false;
@@ -96,8 +99,10 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
-      
-        if(pSys.isPlaying && walkedOnto)
+/*        text.text = step.ToString();
+        if (!walkable && text.gameObject.activeInHierarchy) text.gameObject.SetActive(false);
+        else if (walkable && !text.gameObject.activeInHierarchy) text.gameObject.SetActive(true);*/
+        if (pSys.isPlaying && walkedOnto)
         {
             pSys.Stop();
         }
@@ -115,23 +120,18 @@ public class Tile : MonoBehaviour
     bool isGrowingChecker;
     private void Degrading()
     {
+        degradationTimerModifier += Time.deltaTime * (1 / timeToGetToMaxDegradationSpeed);
         if (timer > 0)
         {
             timer -= Time.deltaTime * degradationTimerAnimCurve.Evaluate(degradationTimerModifier);
         }
-        else if (timer <= 0)
+        else if (timer <= 0 && !degradingChecker && !isGrowing)
         {
             isDegrading = true;
             gameObject.tag = "DegradingTile";
+            currentPos.y -= heightByTile;
         }
-        degradationTimerModifier += Time.deltaTime * (1 / timeToGetToMaxDegradationSpeed);
 
-        if (!isSelected && !selecFlag)
-        {
-            selecFlag = true;
-            myMeshR.material = unselectedMat;
-            lightAct.enabled = false;
-        }
         if (!isDegrading && transform.position.y <= -heightByTile)
         {
             walkable = false;
@@ -142,11 +142,6 @@ public class Tile : MonoBehaviour
             minableItems.gameObject.SetActive(false);
         }
 
-        if (isDegrading && !degradingChecker && !isGrowing && walkable)
-        {
-            currentPos.y -= heightByTile;
-
-        }
 
         if(transform.position != ogPos && isGrowingChecker && !isGrowing)
         {
@@ -201,7 +196,7 @@ public class Tile : MonoBehaviour
     public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
     {
         float xOffset = 0;
-        if (z % 2 == 1) xOffset = transform.localScale.x * .9f;
+        if (z % 2 == 1) xOffset = transform.localScale.x * .85f;
         Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.7f + xOffset, 0, z * transform.localScale.x * 1.48f);
         coordX = x;
         
@@ -233,7 +228,7 @@ public class Tile : MonoBehaviour
         minableItems.gameObject.SetActive(true);
         timer = Random.Range(minTimer, maxTimer);
         isDegrading = false;
-        transform.position = new Vector3(transform.position.x, -2, transform.position.z) ;
+        transform.position = new Vector3(transform.position.x, -1.9f, transform.position.z) ;
         transform.tag = "Tile";
         currentPos.y = height - (height % heightByTile);
         ogPos.y = height;

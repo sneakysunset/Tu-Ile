@@ -10,11 +10,11 @@ public class CameraCtr : MonoBehaviour
     private GameObject[] players;
     public LayerMask lineCastLayers;
     public float sphereCastRadius;
+    public Vector3 medianPos;
     void Start()
     {
         cam = Camera.main;
         players = GameObject.FindGameObjectsWithTag("Player");
-        Vector3 medianPos = Vector3.zero;
         foreach(GameObject player in players)
         {
             medianPos += player.transform.position;

@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using System;
+using System.Collections.Generic;
 public class Interactor : MonoBehaviour
 {
     public Mesh[] meshs;
@@ -12,24 +13,51 @@ public class Interactor : MonoBehaviour
     protected bool isInteractedWith;
     public bool interactable = true;
     protected float currentHitTimer;
-    protected Interactions _player;
+    protected List<Interactions> _player;
     public GameObject spawnPrefab;
-    private Transform spawnPoint;
     public int ressourceNum = 10;
+    Transform stackT;
+    private Item_Stack stackItem;
+    [Range(1, 10)] public int numberOfRessourceGenerated = 3;
     private void Start()
     {
-        stateIndex = meshs.Length;
+        stateIndex = meshs.Length - 1;
         meshF = GetComponent<MeshFilter>();
         meshR = GetComponent<MeshRenderer>();
-        spawnPoint = transform.Find("SpawnPoint");
+        meshR.sharedMaterial = materials[stateIndex];
+        meshF.mesh = meshs[stateIndex]; 
+        _player = new List<Interactions>();
+        Transform p = transform.parent.parent.parent;
+        stackT = p.Find("StackPos");
+        CreateStack();
+    }
+
+    void CreateStack()
+    {
+        if (stackT.childCount == 0)
+        {
+            GameObject obj = Instantiate(spawnPrefab, stackT.position, Quaternion.identity);
+            obj.transform.parent = stackT;
+            stackItem = obj.GetComponent<Item_Stack>();
+        }
+        else
+        {
+            stackItem = stackT.GetChild(0).GetComponent<Item_Stack>();
+        }
     }
 
     public virtual void OnInteractionEnter(float hitTimer, Interactions player)
     {
         timer = hitTimer;
         currentHitTimer = hitTimer;
-        _player = player;
+        _player.Add(player);
         isInteractedWith = true;
+        if(stateIndex == meshs.Length - 1)
+        {
+            stateIndex--;
+            meshF.mesh = meshs[stateIndex];
+            meshR.material = materials[stateIndex];
+        }
     }
 
     private void Update()
@@ -37,30 +65,21 @@ public class Interactor : MonoBehaviour
         timer -= Time.deltaTime;
         if (isInteractedWith)
         {
-            if(timer <= 0 && stateIndex > 0)
-            {
-                timer = currentHitTimer;
-                stateIndex--;
-                meshF.mesh = meshs[stateIndex];
-                meshR.material = materials[stateIndex];
-                //GameObject obj = Instantiate(spawnPrefab, spawnPoint.position, Quaternion.identity);
-                //obj.transform.parent = this.transform;
-            }
-            else if (timer <= 0 && stateIndex == 0)
-            {
-                EmptyInteractor();
-            }
+            OnFilonMined();
         }
         else if(stateIndex < meshs.Length - 1)
         {
             if (timer <= 0)
             {
                 timer = regrowthTimer;
-                stateIndex++;
-                meshF.mesh = meshs[stateIndex];
-                meshR.material = materials[stateIndex];
-                interactable = true;
+                stateIndex = meshs.Length - 1;
             }
+        }
+        else if(!interactable && stateIndex == meshs.Length - 1)
+        {
+            interactable = true;
+            meshF.mesh = meshs[stateIndex];
+            meshR.material = materials[stateIndex];
         }
     }
 
@@ -70,24 +89,46 @@ public class Interactor : MonoBehaviour
 
     }
 
-    protected virtual void EmptyInteractor()
-    {
-        _player.GetRessource(ressourceNum);
-        OnEndInteraction();
-        interactable = false;
-    }
-
     protected virtual void OnEndInteraction()
     {
         isInteractedWith = false;
         timer = regrowthTimer;
         if(_player != null)
         {
-            if(_player.interactor != null)
+            if(_player.Count > 0)
             {
-            _player.interactor = null;
+                foreach (var player in _player) 
+                { 
+                    player.isMining = false;
+                    player.interactor = null; 
+                }
             }
-            _player = null;
+            _player.Clear();
+        }
+    }
+
+    protected virtual void EmptyInteractor()
+    {
+        CreateStack();
+        stackItem.numberStacked += numberOfRessourceGenerated;
+        //GameObject obj = Instantiate(spawnPrefab, spawnPoint.position, Quaternion.identity);
+        //obj.transform.parent = this.transform;
+        OnEndInteraction();
+        interactable = false;
+    }
+
+    protected virtual void OnFilonMined()
+    {
+        if (timer <= 0 && stateIndex > 0)
+        {
+            timer = currentHitTimer;
+            stateIndex--;
+            meshF.mesh = meshs[stateIndex];
+            meshR.material = materials[stateIndex];
+        }
+        else if (stateIndex == 0)
+        {
+            EmptyInteractor();
         }
     }
 }
