@@ -8,4 +8,8 @@ public class SoundEffect : MonoBehaviour
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Moove");
     }
+    public void PlayMining()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
+    }
 }
