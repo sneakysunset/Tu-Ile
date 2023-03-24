@@ -8,11 +8,13 @@ public class StackCanvas : MonoBehaviour
     CameraCtr cam;
     Item_Stack iS;
     TextMeshProUGUI text;
+    Transform mainCamera;
     private void Start()
     {
         cam = FindObjectOfType<CameraCtr>();
         text = GetComponentInChildren<TextMeshProUGUI>();
         iS = GetComponentInParent<Item_Stack>();
+        mainCamera = Camera.main.transform;
     }
 
     void Update()
@@ -26,10 +28,7 @@ public class StackCanvas : MonoBehaviour
             text.text = string.Empty;
         }
 
-        Vector3 dir = transform.position - Camera.main.transform.position;
-        dir = dir.normalized;
-        dir.y = 0;
-        transform.forward = dir; ;
+        transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
         //transform.forward = Vector3.forward;
     }
 }

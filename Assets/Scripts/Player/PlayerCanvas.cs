@@ -7,11 +7,13 @@ public class PlayerCanvas : MonoBehaviour
     CameraCtr cam;
     Player player;
     TextMeshProUGUI text;
+    Transform mainCamera;
     private void Start()
     {
         cam = FindObjectOfType<CameraCtr>();
         text = GetComponentInChildren<TextMeshProUGUI>();
         player = GetComponentInParent<Player>();
+        mainCamera = Camera.main.transform;
     }
 
     void Update()
@@ -26,11 +28,6 @@ public class PlayerCanvas : MonoBehaviour
             text.text = string.Empty;
         }
 
-        Vector3 dir = cam.medianPos - Camera.main.transform.position;
-        dir = dir.normalized;
-        dir.y = 0;
-        transform.forward = dir;
-        //transform.LookAt(Camera.main.transform.position);
-        //transform.localEulerAngles = new Vector3(0, 180, 0);
+        transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
 }
