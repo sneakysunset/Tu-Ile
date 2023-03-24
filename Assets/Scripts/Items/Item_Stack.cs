@@ -12,6 +12,7 @@ public class Item_Stack : Item
     protected RessourcesManager rMan;
     protected MeshFilter meshF;
     ressourceMeshsCollec rMC;
+    public bool isTile;
     int prevNum;
     public bool trueHoldable = true;
     private void Start()
@@ -42,7 +43,7 @@ public class Item_Stack : Item
             rb.isKinematic = false;
         }
 
-        if (prevNum != numberStacked) ChangeMesh();
+        if (prevNum != numberStacked && !isTile) ChangeMesh();
         prevNum = numberStacked;
 
     }
