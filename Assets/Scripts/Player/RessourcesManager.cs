@@ -10,9 +10,6 @@ public class RessourcesManager : MonoBehaviour
     public TextMeshProUGUI woodText, rockText;
     private void Update()
     {
-        woodText.text = wood.ToString();
-        rockText.text = rock.ToString();
-
         if (Input.GetKeyDown(KeyCode.P))
         {
             wood += 30;

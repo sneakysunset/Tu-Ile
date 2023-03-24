@@ -11,12 +11,12 @@ public class PlayerCanvas : MonoBehaviour
     {
         cam = FindObjectOfType<CameraCtr>();
         text = GetComponentInChildren<TextMeshProUGUI>();
-        player = transform.parent.GetComponent<Player>();
+        player = GetComponentInParent<Player>();
     }
 
     void Update()
     {
-        if(player.heldItem != null && player.heldItem.GetType() == typeof(Item_Stack)) 
+        if (player.heldItem && player.heldItem.GetType() == typeof(Item_Stack)) 
         {         
             Item_Stack itemS = player.heldItem as Item_Stack;
             text.text = "Wood : " + itemS.numberStacked.ToString();
@@ -26,8 +26,11 @@ public class PlayerCanvas : MonoBehaviour
             text.text = string.Empty;
         }
 
-        Vector3 dir = transform.position - Camera.main.transform.position;
+        Vector3 dir = cam.medianPos - Camera.main.transform.position;
         dir = dir.normalized;
-        transform.forward = dir; ;
+        dir.y = 0;
+        transform.forward = dir;
+        //transform.LookAt(Camera.main.transform.position);
+        //transform.localEulerAngles = new Vector3(0, 180, 0);
     }
 }

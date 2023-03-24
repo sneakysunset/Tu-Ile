@@ -36,7 +36,7 @@ public class Interactor : MonoBehaviour
     {
         if (stackT.childCount == 0)
         {
-            GameObject obj = Instantiate(spawnPrefab, stackT.position, Quaternion.identity);
+            GameObject obj = Instantiate(spawnPrefab, stackT.position, Quaternion.identity, null);
             obj.transform.parent = stackT;
             stackItem = obj.GetComponent<Item_Stack>();
         }

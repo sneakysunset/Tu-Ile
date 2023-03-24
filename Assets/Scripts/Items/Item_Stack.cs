@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Item_Stack : Item 
 {
-    MeshRenderer meshR;
-    Collider col;
+    [HideInInspector] public MeshRenderer meshR;
+    [HideInInspector] public Collider col;
     public enum StackType { Wood, Rock};
     public StackType stackType;
+    public int numberStacked = 0;
 
     private void Start()
     {
@@ -18,18 +19,19 @@ public class Item_Stack : Item
     public override void Update()
     {
         base.Update();
-        if (holdable && numberStacked == 0)
+        if ((meshR.enabled || holdable) && numberStacked == 0)
         {
             meshR.enabled = false;
             col.enabled = false;
             holdable = false;
             rb.isKinematic = true;
         }
-        else if (!holdable && numberStacked >= 1)
+        else if ((!meshR.enabled || !holdable) && numberStacked >= 1)
         {
             meshR.enabled = true;
             col.enabled = true;
-            holdable = true;rb.isKinematic = false;
+            holdable = true;
+            rb.isKinematic = false;
         }
     }
 }
