@@ -20,15 +20,16 @@ public class StackCanvas : MonoBehaviour
         if (!iS.isHeld && iS.holdable)
         {
             text.text = iS.stackType.ToString() + " : " + iS.numberStacked.ToString();
-        }
+        }   
         else
         {
             text.text = string.Empty;
         }
 
-        /*        Vector3 dir = transform.position - Camera.main.transform.position;
-                dir = dir.normalized;
-                transform.forward = dir; ;*/
-        transform.forward = Vector3.forward;
+        Vector3 dir = transform.position - Camera.main.transform.position;
+        dir = dir.normalized;
+        dir.y = 0;
+        transform.forward = dir; ;
+        //transform.forward = Vector3.forward;
     }
 }

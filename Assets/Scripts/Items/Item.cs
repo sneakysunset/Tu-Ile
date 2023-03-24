@@ -8,10 +8,11 @@ public class Item : MonoBehaviour
 {
     public bool holdable;
     [HideNormalInspector] public bool isHeld;
-    protected Rigidbody rb;
+    [HideInInspector] public Rigidbody rb;
     [HideInInspector] public GameObject Highlight;
     protected Transform heldPoint;
     protected Player _player;
+    [HideInInspector] public bool physic = true;
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;
@@ -43,12 +44,14 @@ public class Item : MonoBehaviour
     {
         _player = null;
         isHeld = false;
-        rb.constraints = RigidbodyConstraints.None;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.isKinematic = false;
         rb.velocity = Vector2.zero;
         //FMODUnity.RuntimeManager.PlayOneShot("event:/MouvementCharacter/Grab");
         player.holdableItems.Add(this);
         transform.parent = null;
+        transform.rotation = Quaternion.identity;
+        physic = true;
     }
 
 

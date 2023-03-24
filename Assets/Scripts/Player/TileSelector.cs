@@ -76,9 +76,9 @@ public class TileSelector : MonoBehaviour
             if (targettedTile != null && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
             {
                 Item_Stack_Tile item = player.heldItem as Item_Stack_Tile;
-                if(item.numberStacked >= rManager.wood)
+                if(item.numberStacked >= 1)
                 {
-                    item.numberStacked -= rManager.tileCost;
+                    item.numberStacked --;
                     targettedTile.Spawn(tileUnder.transform.position.y);
                     if(item.numberStacked == 0)
                     {

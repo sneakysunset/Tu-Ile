@@ -41,7 +41,33 @@ public class GetClosestItem : MonoBehaviour
         }
     }
 
-    void GetItemOnTriggerEnter(Item item) => player.holdableItems.Add(item);
+    void GetItemOnTriggerEnter(Item item)
+    {
+        if (player.heldItem != null && item.GetType() == typeof(Item_Stack_Tile))
+        {
+            Item_Stack_Tile tempItem = item as Item_Stack_Tile;
+            Item_Stack_Tile heldItemS = player.heldItem as Item_Stack_Tile;
+            if (tempItem.stackType == heldItemS.stackType)
+            {
+                heldItemS.numberStacked += tempItem.numberStacked;
+                Destroy(tempItem.gameObject);
+                return;
+            }
+        }
+
+        if (player.heldItem != null && item.GetType() == typeof(Item_Stack))
+        {
+            Item_Stack tempItem = item as Item_Stack;
+            Item_Stack heldItemS = player.heldItem as Item_Stack;
+            if (tempItem.stackType == heldItemS.stackType)
+            {
+                heldItemS.numberStacked += tempItem.numberStacked;
+                Destroy(tempItem.gameObject);
+                return;
+            }
+        }
+        player.holdableItems.Add(item);
+    }
 
     void RemoveItemTriggerExit(Item item) => player.holdableItems.Remove(item);
 
@@ -51,24 +77,16 @@ public class GetClosestItem : MonoBehaviour
         Item cItem = null;
         float distance = Mathf.Infinity;
 
-        foreach (Item item in player.holdableItems)
+        if(player.holdableItems.Count > 0)
         {
-             float itemDistance = Vector2.Distance(item.transform.position, transform.position);
-             if (itemDistance < distance)
-             {
-                 cItem = item;
-                 if(player.heldItem != null && item.GetType() == typeof(Item_Stack))
+            foreach (Item item in player.holdableItems)
+            {
+                 float itemDistance = Vector2.Distance(item.transform.position, transform.position);
+                 if (itemDistance < distance)
                  {
-                    Item_Stack temItem = item as Item_Stack;
-                    Item_Stack heldItemS = player.heldItem as Item_Stack;
-                    if(temItem.stackType == heldItemS.stackType)
-                    {
-                        player.holdableItems.Remove(item);
-                        heldItemS.numberStacked += temItem.numberStacked;
-                        Destroy(temItem.gameObject);
-                    }
+                     cItem = item;
                  }
-             }
+            }
         }
 
         if (player.closestItem != null && cItem != player.closestItem)

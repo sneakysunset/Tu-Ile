@@ -23,7 +23,8 @@ public class Tile : MonoBehaviour
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public TileBump tileB;
     [HideInInspector] public Rigidbody rb;
-    [HideNormalInspector] public  Vector3 ogPos, currentPos;
+    public float maxPos;
+    [HideNormalInspector] public Vector3 currentPos;
     [HideInInspector, SerializeField] public Material disabledMat;
     [HideNormalInspector] public float terraFormingSpeed;
     bool selecFlag;
@@ -39,12 +40,12 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public AnimationCurve degradationTimerAnimCurve;
     [HideNormalInspector] public float timeToGetToMaxDegradationSpeed;
     [HideInInspector] public Vector2Int[] adjTCoords;
-    private float degradationTimerModifier;
+
     [HideInInspector] public float degradingSpeed;
     [HideInInspector] public bool isGrowing;
     [HideNormalInspector] public float heightByTile;
     public bool degradable = true;
-    Transform minableItems;
+    [HideInInspector] public Transform minableItems;
     [HideNormalInspector] public int step;
     private TextMeshProUGUI text;
     #endregion
@@ -54,8 +55,7 @@ public class Tile : MonoBehaviour
         text = GetComponentInChildren<TextMeshProUGUI>();   
         minableItems = transform.Find("SpawnPositions");
         coordFX = coordX - coordY / 2;
-        ogPos = transform.position;
-        currentPos = ogPos;
+        currentPos = transform.position;
         pSys = gameObject.GetComponentInChildren<ParticleSystem>();
         myMeshR = GetComponent<MeshRenderer>();
         if (!degradable && walkable)
@@ -112,67 +112,11 @@ public class Tile : MonoBehaviour
             pSys.Stop(); 
             myMeshR.material.color = walkedOnColor;
         }
-        //NormaliseRelief();
 
         if (walkable && isFaded)
         {
             StartCoroutine(ReactiveTile());
         }
-
-        if(walkable && degradable && walkedOnto) Degrading();
-
-    }
-    bool degradingChecker;
-    bool isGrowingChecker;
-    private void Degrading()
-    {
-        degradationTimerModifier += Time.deltaTime * (1 / timeToGetToMaxDegradationSpeed);
-        if (timer > 0)
-        {
-            timer -= Time.deltaTime * degradationTimerAnimCurve.Evaluate(degradationTimerModifier);
-        }
-        else if (timer <= 0 && !degradingChecker && !isGrowing)
-        {
-            isDegrading = true;
-            gameObject.tag = "DegradingTile";
-            currentPos.y -= heightByTile;
-        }
-
-        if (!isDegrading && transform.position.y <= -heightByTile)
-        {
-            walkable = false;
-            gameObject.layer = LayerMask.NameToLayer("DisabledTile");
-            myMeshR.enabled = false;
-            //GetComponent<Collider>().enabled = false;
-            transform.Find("Additional Visuals").gameObject.SetActive(false);
-            minableItems.gameObject.SetActive(false);
-        }
-
-
-        if(transform.position != ogPos && isGrowingChecker && !isGrowing)
-        {
-            float p = transform.position.y % heightByTile;
-           
-            currentPos.y = transform.position.y - p;
-            isDegrading = true;
-            tag = "DegradingTile";
-        }
-
-        if(transform.position == currentPos && isDegrading)
-        {
-            isDegrading = false;
-            timer = Random.Range(minTimer, maxTimer);
-        }
-
-        if(currentPos == ogPos && CompareTag("DegradingTile"))
-        {
-            tag = "Tile";
-        }
-
-
-        degradingChecker = isDegrading;
-        isGrowingChecker = isGrowing;
-        //isGrowing = false;
 
     }
 
@@ -238,7 +182,6 @@ public class Tile : MonoBehaviour
         transform.position = new Vector3(transform.position.x, -1.9f, transform.position.z) ;
         transform.tag = "Tile";
         currentPos.y = height - (height % heightByTile);
-        ogPos.y = height;
         isGrowing = true;
     }
 
@@ -321,7 +264,7 @@ public class TileEditor : Editor
                 prefab = tileM.rockPrefab;
                 break;
         }
-        GameObject obj = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+        GameObject obj = PrefabUtility.InstantiatePrefab(prefab, null) as GameObject;
         obj.transform.parent = t;
         obj.transform.position = t.position;
         obj.transform.LookAt(new Vector3(tile.transform.position.x, obj.transform.position.y, tile.transform.position.z));

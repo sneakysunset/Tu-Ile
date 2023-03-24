@@ -13,27 +13,34 @@ public class Player : MonoBehaviour
     Interactions inter;
     [HideInInspector] public EventInstance movingSound;
     public Tile respawnTile;
+    [HideInInspector] public Tile tileUnder;
+    private TileSystem tileS;
     [HideInInspector] public List<Item> holdableItems;
     [HideInInspector] public Item heldItem;
     [HideInInspector] public Item closestItem;
+    [HideInInspector] public bool isMining;
+    [HideInInspector] public Interactor interactor;
 
     private void Start()
     {
+        tileS = FindObjectOfType<TileSystem>();
         holdableItems = new List<Item>();
         pM = GetComponent<PlayerMovement>();
-        inter = GetComponent<Interactions>();
         _characterController = pM.GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
         tileSelec = GetComponent<TileSelector>();
+        
     }
 
     private void Update()
     {
-        if(_characterController.isGrounded && inter.terraforming)
+        tileUnder = tileS.WorldPosToTile(transform.position);
+
+/*        if(_characterController.isGrounded && inter.terraforming)
         {
             anim.Play("Terraform", 0);
         }
-        else if(_characterController.isGrounded && inter.isMining)
+        else*/ if(_characterController.isGrounded && isMining)
         {
             anim.Play("Mine", 0);
         }
@@ -60,6 +67,16 @@ public class Player : MonoBehaviour
             if (_characterController.isGrounded)
             {
                 anim.Play("Idle", 0);
+            }
+        }
+
+        if(heldItem && heldItem.GetType() == typeof(Item_Stack))
+        {
+            Item_Stack stack = heldItem as Item_Stack;
+            if(stack.numberStacked == 0)
+            {
+                Destroy(heldItem.gameObject);
+                heldItem = null;
             }
         }
     }

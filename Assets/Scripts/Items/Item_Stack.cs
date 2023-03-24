@@ -9,11 +9,16 @@ public class Item_Stack : Item
     public enum StackType { Wood, Rock};
     public StackType stackType;
     public int numberStacked = 0;
-
+    protected RessourcesManager rMan;
+    protected MeshFilter meshF;
+    ressourceMeshsCollec rMC;
+    int prevNum;
     private void Start()
     {
         meshR = GetComponent<MeshRenderer>();
         col = GetComponent<Collider>();
+        rMan = FindObjectOfType<RessourcesManager>();
+        meshF = GetComponent<MeshFilter>();
     }
 
     public override void Update()
@@ -24,6 +29,7 @@ public class Item_Stack : Item
             meshR.enabled = false;
             col.enabled = false;
             holdable = false;
+            
             rb.isKinematic = true;
         }
         else if ((!meshR.enabled || !holdable) && numberStacked >= 1)
@@ -31,7 +37,42 @@ public class Item_Stack : Item
             meshR.enabled = true;
             col.enabled = true;
             holdable = true;
+            if(physic)
             rb.isKinematic = false;
+        }
+
+        if (prevNum != numberStacked) ChangeMesh();
+        prevNum = numberStacked;
+
+    }
+
+    public void ChangeMesh()
+    {
+        foreach (ressourceMeshsCollec r in rMan.RessourceMeshs)
+        {
+            if (r.stackType == stackType)
+            {
+                rMC = r;
+                break;
+            }
+        }
+
+        for (int i = 0; i < rMC.necessaryNum.Count; i++)
+        {
+            if (rMC.necessaryNum[i] >= numberStacked)
+            {
+                if (meshF.mesh != rMC.meshs[i])
+                {
+                    meshF.mesh = rMC.meshs[i];
+                    meshR.material = rMC.materials[i];
+                }
+                return;
+            }
+        }
+        if (meshF.mesh != rMC.meshs[rMC.necessaryNum.Count - 1])
+        {
+            meshF.mesh = rMC.meshs[rMC.necessaryNum.Count - 1];
+            meshR.material = rMC.materials[rMC.necessaryNum.Count - 1];
         }
     }
 }
