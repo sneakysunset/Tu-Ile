@@ -29,7 +29,7 @@ public class TileSelector : MonoBehaviour
         {
             tileUnder.walkedOnto = true;
         }
-        if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable)
+        if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
         {
             tileBluePrint.position = targettedTile.transform.position + Vector3.up * (22.1f + tileUnder.transform.position.y);
         }

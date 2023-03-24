@@ -59,6 +59,12 @@ MonoBehaviour:
     necessaryNum: 030000000600000009000000
   - name: Rock
     stackType: 1
-    meshs: []
-    materials: []
-    necessaryNum: 
+    meshs:
+    - {fileID: 9086619422811771270, guid: f829edc149a9f324ab35b769cf9d33f7, type: 3}
+    - {fileID: 9086619422811771270, guid: f829edc149a9f324ab35b769cf9d33f7, type: 3}
+    - {fileID: 9086619422811771270, guid: f829edc149a9f324ab35b769cf9d33f7, type: 3}
+    materials:
+    - {fileID: 2100000, guid: a74e88492fa30e540a88a0a28e6dd93c, type: 2}
+    - {fileID: 2100000, guid: a74e88492fa30e540a88a0a28e6dd93c, type: 2}
+    - {fileID: 2100000, guid: a74e88492fa30e540a88a0a28e6dd93c, type: 2}
+    necessaryNum: 010000000200000003000000

@@ -23,8 +23,15 @@ public class GetClosestItem : MonoBehaviour
     {
         if (other.TryGetComponent(out Item item))
         {
-            if (player.heldItem != item  && !player.holdableItems.Contains(item) && item.holdable)
+            if (player.heldItem != item && !player.holdableItems.Contains(item) && item.holdable)
+            {
+                if(item.GetType() == typeof(Item_Stack))
+                {
+                    Item_Stack item_Stack = (Item_Stack)item;
+                    if (!item_Stack.trueHoldable) return;
+                }
                 GetItemOnTriggerEnter(item);
+            }
         }
     }
 

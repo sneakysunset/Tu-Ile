@@ -13,6 +13,7 @@ public class Item_Stack : Item
     protected MeshFilter meshF;
     ressourceMeshsCollec rMC;
     int prevNum;
+    public bool trueHoldable = true;
     private void Start()
     {
         meshR = GetComponent<MeshRenderer>();

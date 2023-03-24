@@ -35,6 +35,7 @@ public class Item_Etablie : Item
             requiredItemStacks[i].item = iS;
             iS.stackType = requiredItemStacks[i].stackType;
             iS.holdable = true;
+            iS.trueHoldable = false;
             iS.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }
     }
