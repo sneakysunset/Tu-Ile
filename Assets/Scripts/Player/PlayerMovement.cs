@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public bool dashFlag;
     [HideInInspector] public bool moveFlag;
 
-    [SerializeField] private float speed;
+    [SerializeField] public float speed;
     [SerializeField] public float jumpStrength = 10;
     [SerializeField] private float dashStrength;
     [SerializeField] public float pushStrength;
