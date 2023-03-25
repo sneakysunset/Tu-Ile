@@ -13,6 +13,7 @@ public class NearSightedMode : MonoBehaviour
     [Range(1, 100)]public float sightRange;
     private bool nsFlag;
     [Range(0,1)]public float lerpSpeed;
+    [Range(0,1)]public float degradationLerpSpeed;
     [Range(0,1)]public float tileGrowthLerpSpeed;
 
     private void Start()
@@ -77,7 +78,7 @@ public class NearSightedMode : MonoBehaviour
                 }
                 else
                 {
-                    tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y, tile.transform.position.z), 100 * lerpSpeed * Time.deltaTime); ;
+                    tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y, tile.transform.position.z), 100 * degradationLerpSpeed * Time.deltaTime); ;
                 }
             }
         }

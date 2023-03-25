@@ -13,7 +13,7 @@ public class GetClosestItem : MonoBehaviour
 
     private void Update()
     {
-        foreach (Item item in player.holdableItems) if (item == null) Debug.LogError("NullItem");
+        foreach (Item item in player.holdableItems) if (item == null) { player.holdableItems.Remove(item); break; };
 
         if (player.holdableItems.Count > 0) player.closestItem = ClosestItem();
         else player.closestItem = null;
@@ -62,7 +62,7 @@ public class GetClosestItem : MonoBehaviour
             }
         }
 
-        if (player.heldItem != null && item.GetType() == typeof(Item_Stack))
+        if (player.heldItem != null && item.GetType() == typeof(Item_Stack) && player.heldItem.GetType() == typeof(Item_Stack))
         {
             Item_Stack tempItem = item as Item_Stack;
             Item_Stack heldItemS = player.heldItem as Item_Stack;
