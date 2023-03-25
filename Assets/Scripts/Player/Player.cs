@@ -91,6 +91,12 @@ public class Player : MonoBehaviour
         else if (hit.transform.CompareTag("Water"))
         {
             transform.position = respawnTile.transform.position + 25f * Vector3.up;
+            if (heldItem != null)
+            {
+                heldItem.GrabRelease(this);
+                Destroy(heldItem.gameObject);
+                heldItem = null;
+            }
         }
         else if (hit.transform.TryGetComponent<PlayerMovement>(out PlayerMovement player) && pM.dashFlag && !player.dashFlag)
         {

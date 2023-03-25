@@ -129,10 +129,10 @@ public class Interactor : MonoBehaviour
             switch (type)
             {
                 case Tile.TileType.Tree:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tree");
+                    //FMODUnity.RuntimeManager.PlayOneShot("event:/Tree");
                     break;
                 case Tile.TileType.Rock:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Rock");
+                    //FMODUnity.RuntimeManager.PlayOneShot("event:/Rock");
                     break;
             }
             timer = currentHitTimer;
