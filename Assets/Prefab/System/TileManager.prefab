@@ -127,6 +127,7 @@ MonoBehaviour:
   fallDistance: 50
   sightRange: 5
   lerpSpeed: 0.9
+  tileGrowthLerpSpeed: 0
 --- !u!114 &3120364899379129663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +205,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   timeToGetToMaxDegradationSpeed: 1200
   degradingSpeed: 3
+  heightByTile: 0
 --- !u!114 &4173279834238775216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,4 +223,4 @@ MonoBehaviour:
   disabledTileMaterial: {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
   FadedTileMaterial: {fileID: 2100000, guid: 338b8fda04ce0874181cffa3ce5a0810, type: 2}
   treePrefab: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
-  rockPrefab: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+  rockPrefab: {fileID: 543949898755378784, guid: a1486965bb17ef34d9505a95cad1a333, type: 3}

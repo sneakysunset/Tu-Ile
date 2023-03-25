@@ -13,15 +13,19 @@ public struct stack
 
 public class Item_Etablie : Item
 {
+    public string recipeName;
     public stack[] requiredItemStacks;
-    public Item_Stack craftedItem;
+    public Item_Stack craftedItemPrefab;
+    Item_Stack craftedItem;
     private Transform stackT;
     private bool convertorFlag;
     private WaitForSeconds waiter;
     public float timeToCraft;
+    Transform createdItem;
     public override void Awake()
     {
         base.Awake();
+
         waiter = new WaitForSeconds(timeToCraft);
         rb.isKinematic = true;
         stackT = transform.Find("Stacks");
@@ -31,12 +35,16 @@ public class Item_Etablie : Item
             requiredItemStacks[i].item = iS;
             iS.stackType = requiredItemStacks[i].stackType;
             iS.holdable = true;
+            iS.trueHoldable = false;
             iS.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }
     }
 
     private void Start()
     {
+        Tile tile = FindObjectOfType<TileSystem>().WorldPosToTile(transform.position);
+        transform.parent = tile.transform;
+        createdItem = transform.Find("TileCreator/CreatedPos");
     }
 
     public override void Update()
@@ -64,8 +72,18 @@ public class Item_Etablie : Item
         {
             i.item.numberStacked -= i.cost;
         }
+        if (createdItem.childCount == 0) CreateStack();
+
         craftedItem.numberStacked += 1;
         convertorFlag = false;
+    }
+
+    void CreateStack()
+    {
+        craftedItem = Instantiate(craftedItemPrefab, createdItem.position, transform.rotation, null);
+        craftedItem.transform.parent = createdItem;
+        craftedItem.physic = false;
+        craftedItem.rb.isKinematic = true;  
     }
 
     public override void GrabStarted(Transform holdPoint, Player player)
@@ -77,6 +95,8 @@ public class Item_Etablie : Item
             {
                 if(iS.stackType == itemS.stackType)
                 {
+                    
+
                     iS.item.numberStacked += itemS.numberStacked;
                     player.heldItem = null;
                     Destroy(itemS.gameObject);

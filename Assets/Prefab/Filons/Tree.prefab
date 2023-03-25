@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8818747911436434145}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.19508362, y: 1.003, z: -0.016588848}
-  m_LocalScale: {x: 0.5625, y: 1.171875, z: 0.5625}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -49,15 +49,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshs:
-  - {fileID: 6629176282674064386, guid: 80f2dcbd3ac8b1740b98536f00183eb7, type: 3}
-  - {fileID: -3550858835869464127, guid: 26d12f8b2973c274595c9bc220ce01be, type: 3}
-  - {fileID: 8766849558974579512, guid: 96bf2447306896d46b28895adc77f4dc, type: 3}
-  - {fileID: 8766849558974579512, guid: 96bf2447306896d46b28895adc77f4dc, type: 3}
+  - {fileID: 5780153809476524596, guid: 58524e9a219587a499fda68a6f3a4957, type: 3}
+  - {fileID: 5780153809476524596, guid: cc283046e2046ad459200e7430afda7e, type: 3}
+  - {fileID: -5062959012617849059, guid: 1ff967a8e90a77643abc9697d0c0db74, type: 3}
+  - {fileID: -5062959012617849059, guid: 1ff967a8e90a77643abc9697d0c0db74, type: 3}
   materials:
   - {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
-  - {fileID: 2100000, guid: 1af9fbef8b63fc249a7f5a9834cfd2d7, type: 2}
-  - {fileID: 2100000, guid: 1af9fbef8b63fc249a7f5a9834cfd2d7, type: 2}
-  - {fileID: 2100000, guid: 1af9fbef8b63fc249a7f5a9834cfd2d7, type: 2}
+  - {fileID: 2100000, guid: 9f2f7a6a9db6d604d9dcca6e285c1ea4, type: 2}
+  - {fileID: 2100000, guid: 9f2f7a6a9db6d604d9dcca6e285c1ea4, type: 2}
+  - {fileID: 2100000, guid: 9f2f7a6a9db6d604d9dcca6e285c1ea4, type: 2}
   regrowthTimer: 3
   interactable: 1
   spawnPrefab: {fileID: 7307083508970999916, guid: 916ede32b917e24448f062a764b82885, type: 3}
@@ -70,7 +70,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8818747911436434145}
-  m_Mesh: {fileID: 8766849558974579512, guid: 96bf2447306896d46b28895adc77f4dc, type: 3}
+  m_Mesh: {fileID: -5062959012617849059, guid: 1ff967a8e90a77643abc9697d0c0db74, type: 3}
 --- !u!23 &3293183830676129177
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -91,7 +91,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a74e88492fa30e540a88a0a28e6dd93c, type: 2}
+  - {fileID: 2100000, guid: 9f2f7a6a9db6d604d9dcca6e285c1ea4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

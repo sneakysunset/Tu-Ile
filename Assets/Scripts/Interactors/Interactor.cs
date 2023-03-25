@@ -13,7 +13,7 @@ public class Interactor : MonoBehaviour
     protected bool isInteractedWith;
     public bool interactable = true;
     protected float currentHitTimer;
-    protected List<Interactions> _player;
+    protected List<Player> _player;
     public GameObject spawnPrefab;
     public int ressourceNum = 10;
     Transform stackT;
@@ -26,7 +26,7 @@ public class Interactor : MonoBehaviour
         meshR = GetComponent<MeshRenderer>();
         meshR.sharedMaterial = materials[stateIndex];
         meshF.mesh = meshs[stateIndex]; 
-        _player = new List<Interactions>();
+        _player = new List<Player>();
         Transform p = transform.parent.parent.parent;
         stackT = p.Find("StackPos");
         CreateStack();
@@ -46,8 +46,12 @@ public class Interactor : MonoBehaviour
         }
     }
 
-    public virtual void OnInteractionEnter(float hitTimer, Interactions player)
+    public virtual void OnInteractionEnter(float hitTimer, Player player)
     {
+        if(_player.Count == 0) 
+        { 
+            
+        }
         timer = hitTimer;
         currentHitTimer = hitTimer;
         _player.Add(player);
