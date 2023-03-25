@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 public class Interactor : MonoBehaviour
 {
+    public Tile.TileType type;
     public Mesh[] meshs;
     public Material[] materials;
     protected MeshRenderer meshR;
@@ -125,6 +126,15 @@ public class Interactor : MonoBehaviour
     {
         if (timer <= 0 && stateIndex > 0)
         {
+            switch (type)
+            {
+                case Tile.TileType.Tree:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tree");
+                    break;
+                case Tile.TileType.Rock:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Rock");
+                    break;
+            }
             timer = currentHitTimer;
             stateIndex--;
             meshF.mesh = meshs[stateIndex];

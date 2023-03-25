@@ -289,6 +289,8 @@ public class TileEditor : Editor
                 break;
         }
         GameObject obj = PrefabUtility.InstantiatePrefab(prefab, null) as GameObject;
+        Interactor inter = obj.GetComponent<Interactor>();
+        inter.type = tile.tileType;
         obj.transform.parent = t;
         obj.transform.position = t.position;
         obj.transform.LookAt(new Vector3(tile.transform.position.x, obj.transform.position.y, tile.transform.position.z));
