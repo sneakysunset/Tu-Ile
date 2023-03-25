@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Unity.VisualScripting;
 #if UNITY_EDITOR
 using AmplifyShaderEditor;
 #endif
@@ -19,6 +20,8 @@ public class TileSystem : MonoBehaviour
     public int ogSelectedTileX, ogSelectedTileY;
     public Vector3 gridOgTile;
     static bool editorFlag = false;
+    public Vector2Int targetTileCoords;
+    public int numOfRows;
 
     private void Awake()
     {
@@ -34,6 +37,14 @@ public class TileSystem : MonoBehaviour
         //inputs.selectedTile = tiles[ogSelectedTileX, ogSelectedTileY];
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            List<Tile> tiless = GetTilesAround(numOfRows, tiles[targetTileCoords.x, targetTileCoords.y]);
+        }
+    }
+
     public Tile WorldPosToTile(Vector3 pos)
     {
         float xOffset = 0;
@@ -45,6 +56,38 @@ public class TileSystem : MonoBehaviour
         x = Mathf.RoundToInt((pos.x - xOffset) / (tilePrefab.transform.localScale.x * 1.7f));
         
         return tiles[x, z];
+    }
+
+    public List<Tile> GetTilesAround(int numOfRows, Tile tile)
+    {
+        List<Tile> ts = new List<Tile>();
+        int rowsSeen = 0;
+        ts.Add(tile);
+        while (rowsSeen < numOfRows)
+        {
+            int ix = ts.Count;
+            for (int i = 0; i < ix; i++)
+            {
+                if (!ts[i].isChecked)
+                {
+                    foreach (Vector2Int vecs in ts[i].adjTCoords)
+                    {
+                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns && tiles[vecs.x, vecs.y].walkable && !ts.Contains(tiles[vecs.x, vecs.y]))
+                        {
+                            ts.Add(tiles[vecs.x, vecs.y]);
+                        }
+                    }
+                    ts[i].isChecked = true;
+                }
+            }
+            rowsSeen++;
+        }
+        //ts.Remove(tile);
+        foreach(Tile t in ts)
+        {
+            t.isChecked = false;
+        }
+        return ts;
     }
 
     public void Regener()

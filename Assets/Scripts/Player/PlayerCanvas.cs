@@ -7,16 +7,18 @@ public class PlayerCanvas : MonoBehaviour
     CameraCtr cam;
     Player player;
     TextMeshProUGUI text;
+    Transform mainCamera;
     private void Start()
     {
         cam = FindObjectOfType<CameraCtr>();
         text = GetComponentInChildren<TextMeshProUGUI>();
-        player = transform.parent.GetComponent<Player>();
+        player = GetComponentInParent<Player>();
+        mainCamera = Camera.main.transform;
     }
 
     void Update()
     {
-        if(player.heldItem != null && player.heldItem.GetType() == typeof(Item_Stack)) 
+        if (player.heldItem && player.heldItem.GetType() == typeof(Item_Stack)) 
         {         
             Item_Stack itemS = player.heldItem as Item_Stack;
             text.text = "Wood : " + itemS.numberStacked.ToString();
@@ -26,8 +28,6 @@ public class PlayerCanvas : MonoBehaviour
             text.text = string.Empty;
         }
 
-        Vector3 dir = transform.position - Camera.main.transform.position;
-        dir = dir.normalized;
-        transform.forward = dir; ;
+        transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
 }

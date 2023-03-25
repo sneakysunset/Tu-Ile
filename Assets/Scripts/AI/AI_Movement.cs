@@ -53,7 +53,7 @@ public class AI_Movement : MonoBehaviour
         {
             OnGroundedCallBack();
         }
-        if(AI_B.tilePath.Count > 0) 
+        if(AI_B.tilePath.Count > 0 && !AI_B.stopRefreshing) 
         { 
             dirInput();
         }
