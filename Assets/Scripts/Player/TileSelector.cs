@@ -29,7 +29,7 @@ public class TileSelector : MonoBehaviour
         {
             tileUnder.walkedOnto = true;
         }
-        if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
+        if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && !targettedTile.tourbillon && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
         {
             tileBluePrint.position = targettedTile.transform.position + Vector3.up * (22.1f + tileUnder.transform.position.y);
         }
@@ -73,13 +73,13 @@ public class TileSelector : MonoBehaviour
     {
         if(context.started)
         {
-            if (targettedTile != null && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
+            if (targettedTile != null && !targettedTile.tourbillon && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
             {
                 Item_Stack_Tile item = player.heldItem as Item_Stack_Tile;
                 if(item.numberStacked >= 1)
                 {
                     item.numberStacked --;
-                    targettedTile.Spawn(tileUnder.transform.position.y);
+                    targettedTile.Spawn(tileUnder.transform.position.y, item._material, item._mesh);
                     if(item.numberStacked == 0)
                     {
                         player.heldItem = null;

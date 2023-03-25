@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class AI_Behaviour : MonoBehaviour
@@ -14,6 +15,7 @@ public class AI_Behaviour : MonoBehaviour
     [Header("numTilesAround only useful for RandomTileAround AITarget")]
     public int numTilesAround;
     public bool stopRefreshing;
+    [HideInInspector] public Tile targetTile;
     private void Start()
     {
         players = FindObjectsOfType<Player>();
@@ -23,11 +25,11 @@ public class AI_Behaviour : MonoBehaviour
 
     IEnumerator RefreshAIPath()
     {
-        yield return new WaitUntil(()=> stopRefreshing = true);
+        yield return new WaitUntil(()=> stopRefreshing == false);
+        yield return new WaitUntil(()=> tilePath.Count == 0);
         float refreshRate = Random.Range(refreshRateMin, refreshRateMax);
         yield return new WaitForSeconds(refreshRate);
 
-        Tile targetTile = null;
         switch (target)
         {
             case AITarget.ClosestPlayer:

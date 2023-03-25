@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
-
+using UnityEngine.Events;
 public class AI_Movement : MonoBehaviour
 {
     private AI_Behaviour AI_B;
@@ -33,7 +33,8 @@ public class AI_Movement : MonoBehaviour
     private float _gravity = -9.81f;
     [SerializeField] private float gravityMultiplier = 3.0f;
     [HideInInspector] public float _velocity;
-
+    public float rangeToReachDestination = 1;
+    public UnityEvent<Transform, AI_Behaviour> onPlayerReached;
     #endregion
 
     private void Awake()
@@ -72,11 +73,15 @@ public class AI_Movement : MonoBehaviour
 
     private void dirInput()
     {
-        if (Vector3.Distance(transform.position , AI_B.tilePath[0].transform.position + 23 * Vector3.up) < 1f)
+        if (Vector3.Distance(transform.position , AI_B.tilePath[0].transform.position + 23 * Vector3.up) < rangeToReachDestination)
         {
             AI_B.tilePath.RemoveAt(0);
             if (AI_B.tilePath.Count == 0)
             {
+                if(AI_B.target == AI_Behaviour.AITarget.ClosestPlayer)
+                {
+                    onPlayerReached?.Invoke(AI_B.targetTile.transform, AI_B);
+                }
                 _direction = Vector3.zero;
                 return;
             }

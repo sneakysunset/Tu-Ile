@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5728364892868020583}
   m_Layer: 3
   m_Name: MiningZone
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -420,6 +420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   growingSpeed: 10
   growPrice: 1
+  ressourcesManager: {fileID: 0}
 --- !u!114 &5610916058789591604
 MonoBehaviour:
   m_ObjectHideFlags: 0
