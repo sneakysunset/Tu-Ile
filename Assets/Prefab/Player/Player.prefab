@@ -340,7 +340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnTile: {fileID: 0}
   holdableItems: []
-  heldItems: []
+  heldItem: {fileID: 0}
   closestItem: {fileID: 0}
 --- !u!114 &5703151869213025868
 MonoBehaviour:
@@ -400,7 +400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileUnder: {fileID: 0}
-  bluePrintPrefab: {fileID: 8529813801529767196, guid: 6caf9a39780de684da768536eca535b8, type: 3}
+  bluePrintPrefab: {fileID: 4351988922913038354, guid: b8d6ab8ebdfa1da4d8d2b8d9e9ef1bff, type: 3}
   maxAngleToTarget: 50
   tileLayer:
     serializedVersion: 2

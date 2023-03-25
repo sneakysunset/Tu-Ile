@@ -1271,7 +1271,7 @@
         "HLSL"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": false,
+    "m_PreviewExpanded": true,
     "m_PreviewMode": 0,
     "m_CustomColors": {
         "m_SerializableColors": []
@@ -1646,10 +1646,10 @@
         "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -687.2000732421875,
-            "y": -352.79998779296877,
-            "width": 121.60003662109375,
-            "height": 244.79998779296876
+            "x": -681.5999755859375,
+            "y": -390.3999938964844,
+            "width": 110.39996337890625,
+            "height": 99.99996948242188
         }
     },
     "m_Slots": [

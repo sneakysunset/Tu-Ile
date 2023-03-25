@@ -15,7 +15,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap:
     RenderType: Transparent
   disabledShaderPasses: []
@@ -45,11 +45,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _2nd_Normal_Strenght: 10
+    - _AO: 0.54
     - _BUILTIN_AlphaClip: 0
     - _BUILTIN_Blend: 0
     - _BUILTIN_CullMode: 0
     - _BUILTIN_DstBlend: 10
-    - _BUILTIN_QueueControl: 0
+    - _BUILTIN_QueueControl: 1
     - _BUILTIN_QueueOffset: 0
     - _BUILTIN_SrcBlend: 5
     - _BUILTIN_Surface: 1
@@ -57,24 +58,25 @@ Material:
     - _BUILTIN_ZWrite: 0
     - _BUILTIN_ZWriteControl: 0
     - _Color_Adjustement: 0.67
-    - _Depth_Fade: 0.3
+    - _Depth_Fade: 0.46
     - _Depth_Intensity: -0.04
     - _Edge_Noise_Amount: 50
     - _Edge_Noise_Size: 200
     - _Edge_Speed: 0.5
     - _Fade_Intensity: 1.05
-    - _Foam_Amount: 100
+    - _Foam_Amount: 0.12
     - _Foam_Cutoff: 2.27
-    - _Foam_Cutout: 2
-    - _Foam_Depth: 1
+    - _Foam_Cutout: 0.9
+    - _Foam_Depth: -0.12
     - _Foam_Fade: 0.5
-    - _Foam_Intensity: 1
-    - _Foam_Mix: 1
+    - _Foam_Intensity: 0.48
+    - _Foam_Mix: -0.38
     - _Foam_Scale: 1000
-    - _Foam_Speed: 1
-    - _Foam_Tiling: 50
-    - _Foam_Width: 0.5
+    - _Foam_Speed: 0.25
+    - _Foam_Tiling: 3.83
+    - _Foam_Width: -0.04
     - _Gradient_Scale: 1.01
+    - _Metalness: 7.9
     - _Multipling_Dist: 2.01
     - _Noise_Scale: 1000
     - _Normal_Strenght: 9.77
@@ -86,6 +88,7 @@ Material:
     - _Ripples_Amount: 600
     - _Ripples_Dissolve: 108.94
     - _Ripples_Speed: 2
+    - _Smoothness: -0.15
     - _Speed: 0.02
     - _Transparency: 42.56
     - _Water_Depth: 8.87
@@ -95,6 +98,7 @@ Material:
     - _Distance: {r: 3.01, g: -2.08, b: 0, a: 0}
     - _Edge_Color: {r: 2.670157, g: 2.670157, b: 2.670157, a: 1}
     - _Edge_Smoothness: {r: 100, g: 100, b: 0, a: 0}
+    - _Emission: {r: 0, g: 0, b: 0, a: 1}
     - _Foam_Color: {r: 0.69788843, g: 0.8207959, b: 1.1486983, a: 0.5882353}
     - _Main: {r: 0.29500318, g: 0.532235, b: 2.0305417, a: 1}
     - _Normal_Speed: {r: 0.5, g: 0.5, b: 0, a: 0}
@@ -102,6 +106,7 @@ Material:
     - _Sea_Color: {r: 0, g: 0.38102937, b: 1.866066, a: 0.23921569}
     - _Shallow_: {r: 0.67660415, g: 1.0980952, b: 2.1185474, a: 0.2509804}
     - _Shore: {r: 0.15711991, g: 0.2828371, b: 0.8584906, a: 1}
+    - _Specular: {r: 0, g: 0, b: 0, a: 1}
     - _Vector3: {r: 4.04, g: 9.89, b: 4.69, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &1848221797333030209
