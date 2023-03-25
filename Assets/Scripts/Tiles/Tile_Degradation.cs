@@ -9,16 +9,17 @@ public class Tile_Degradation : MonoBehaviour
     bool degradingChecker;
     bool isGrowingChecker;
     private float degradationTimerModifier;
-
+    private NearSightedMode nSM;
     private void Start()
     {
         tile = GetComponent<Tile>();
+        nSM = FindObjectOfType<NearSightedMode>();  
     }
     private void Update()
     {
         if(tile.isGrowing) Elevating();
         else if (tile.walkable && tile.degradable && tile.walkedOnto) Degrading();
-        if (!tile.isDegrading && transform.position.y <= -tile.heightByTile)
+        if (!tile.isDegrading && ((transform.position.y <= -tile.heightByTile && tile.currentPos.y <= -tile.heightByTile)))
         {
             SinkTile();
         }

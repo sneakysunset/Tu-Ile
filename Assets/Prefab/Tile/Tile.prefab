@@ -795,6 +795,8 @@ MonoBehaviour:
   tileType: 0
   walkable: 1
   walkedOnto: 0
+  rows: 0
+  isChecked: 0
   isDegrading: 0
   timer: 0
   coordX: 0

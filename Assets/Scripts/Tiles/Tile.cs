@@ -14,6 +14,8 @@ public class Tile : MonoBehaviour
     #endregion region
 
     #region hiddenVariables
+    [HideInInspector] public int rows;
+    [HideInInspector] public bool isChecked;
     [HideNormalInspector] public bool isDegrading;
     [HideNormalInspector] public float timer;
     [HideNormalInspector] public int coordX, coordFX, coordY;
