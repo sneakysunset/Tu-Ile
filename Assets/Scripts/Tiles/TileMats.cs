@@ -5,7 +5,7 @@ using UnityEngine;
 public class TileMats : MonoBehaviour
 {
     public Material selectedTileMaterial, unselectedTileMaterial, disabledTileMaterial, FadedTileMaterial;
-    public GameObject treePrefab, rockPrefab;
+    public GameObject treePrefab, rockPrefab, goldPrefab, diamondPrefab, adamantiumPrefab;
     private TileSystem tileSystem;
 
     private void OnValidate()

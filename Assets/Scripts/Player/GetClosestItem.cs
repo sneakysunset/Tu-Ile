@@ -5,7 +5,6 @@ using UnityEngine;
 public class GetClosestItem : MonoBehaviour
 {
     private Player player;
-
     private void Start()
     {
         player = GetComponent<Player>();

@@ -7,7 +7,7 @@ using UnityEngine.Windows;
 public class Player : MonoBehaviour
 {
     Animator anim;
-    CharacterController _characterController;
+    [HideInInspector] public CharacterController _characterController;
     PlayerMovement pM;
     TileSelector tileSelec;
     Interactions inter;
@@ -43,6 +43,9 @@ public class Player : MonoBehaviour
         else*/ if(_characterController.isGrounded && isMining)
         {
             anim.Play("Mine", 0);
+            Vector3 pos = interactor.transform.position;
+            pos.y = transform.position.y;
+            transform.LookAt(pos);
         }
         else if (_characterController.isGrounded && pM._input != Vector2.zero)
         {
