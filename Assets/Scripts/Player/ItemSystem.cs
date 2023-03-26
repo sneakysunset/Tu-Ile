@@ -35,7 +35,7 @@ public class ItemSystem : MonoBehaviour
                 //player.holdableItems.Add(player.heldItem);
                 player.heldItem.GrabRelease(player);
             }
-            if(player.closestItem.GetType() != typeof(Item_Etablie))
+            if(player.closestItem.GetType() != typeof(Item_Etabli))
             {
                 player.heldItem = player.closestItem;
                 player.holdableItems.Remove(player.heldItem);

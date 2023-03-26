@@ -5,7 +5,6 @@ using UnityEngine;
 public class GetClosestItem : MonoBehaviour
 {
     private Player player;
-
     private void Start()
     {
         player = GetComponent<Player>();
@@ -50,7 +49,7 @@ public class GetClosestItem : MonoBehaviour
 
     void GetItemOnTriggerEnter(Item item)
     {
-        if (player.heldItem != null && item.GetType() == typeof(Item_Stack_Tile))
+        if (player.heldItem != null && item.GetType() == typeof(Item_Stack_Tile) && player.heldItem.GetType() == typeof(Item_Stack_Tile))
         {
             Item_Stack_Tile tempItem = item as Item_Stack_Tile;
             Item_Stack_Tile heldItemS = player.heldItem as Item_Stack_Tile;

@@ -14,6 +14,7 @@ public class Player_Mining : MonoBehaviour
         player = GetComponent<Player>();
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out player.interactor))

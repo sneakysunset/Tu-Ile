@@ -11,29 +11,30 @@ public struct stack
     [HideInInspector] public Item_Stack item;
 }
 
-public class Item_Etablie : Item
+public class Item_Etabli : Item
 {
-    public string recipeName;
-    public stack[] requiredItemStacks;
-    public Item_Stack craftedItemPrefab;
+    public SO_Recette recette;
+    //public string recipeName;
+    //public stack[] requiredItemStacks;
+    //public Item_Stack craftedItemPrefab;
     Item_Stack craftedItem;
+    //public float timeToCraft;
     private Transform stackT;
     private bool convertorFlag;
     private WaitForSeconds waiter;
-    public float timeToCraft;
     Transform createdItem;
     public override void Awake()
     {
         base.Awake();
 
-        waiter = new WaitForSeconds(timeToCraft);
+        waiter = new WaitForSeconds(recette.convertionTime);
         rb.isKinematic = true;
         stackT = transform.Find("Stacks");
-        for (int i = 0; i < requiredItemStacks.Length; i++)
+        for (int i = 0; i < recette.requiredItemStacks.Length; i++)
         {
             Item_Stack iS = stackT.GetChild(i).AddComponent<Item_Stack>();
-            requiredItemStacks[i].item = iS;
-            iS.stackType = requiredItemStacks[i].stackType;
+            recette.requiredItemStacks[i].item = iS;
+            iS.stackType = recette.requiredItemStacks[i].stackType;
             iS.holdable = true;
             iS.trueHoldable = false;
             iS.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
@@ -51,14 +52,14 @@ public class Item_Etablie : Item
     {
         base.Update();
         int f = 0;
-        foreach(var i in requiredItemStacks)
+        foreach(var i in recette.requiredItemStacks)
         {
             if(i.cost <= i.item.numberStacked)
             {
                 f++;
             }
         }
-        if(f == requiredItemStacks.Length && !convertorFlag)
+        if(f == recette.requiredItemStacks.Length && !convertorFlag)
         {
             StartCoroutine(Convert());
         }
@@ -68,7 +69,7 @@ public class Item_Etablie : Item
     {
         convertorFlag = true;
         yield return waiter;
-        foreach (var i in requiredItemStacks)
+        foreach (var i in recette.requiredItemStacks)
         {
             i.item.numberStacked -= i.cost;
         }
@@ -80,7 +81,7 @@ public class Item_Etablie : Item
 
     void CreateStack()
     {
-        craftedItem = Instantiate(craftedItemPrefab, createdItem.position, transform.rotation, null);
+        craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, transform.rotation, null);
         craftedItem.transform.parent = createdItem;
         craftedItem.physic = false;
         craftedItem.rb.isKinematic = true;  
@@ -91,7 +92,7 @@ public class Item_Etablie : Item
         if(player.heldItem && player.heldItem.GetType() == typeof(Item_Stack))
         {
             Item_Stack itemS = player.heldItem as Item_Stack;
-            foreach(stack iS in requiredItemStacks)
+            foreach(stack iS in recette.requiredItemStacks)
             {
                 if(iS.stackType == itemS.stackType)
                 {

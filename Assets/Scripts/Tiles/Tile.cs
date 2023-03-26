@@ -10,7 +10,7 @@ public class Tile : MonoBehaviour
     #region MainVariables
     [SerializeField] public bool walkable = true;
     [SerializeField] public TileType tileType;
-    public enum TileType { Neutral, Tree, Rock };
+    public enum TileType { Neutral, Tree, Rock, Gold, Diamond, Adamantium };
     [HideNormalInspector] public int coordX, coordFX, coordY;
     public bool walkedOnto = false;
     [HideNormalInspector] public Vector3 currentPos;
@@ -239,39 +239,51 @@ public class TileEditor : Editor
 
     private void SpawnOnTile()
     {
-        if (tile.spawnSpawners && tile.tileType != Tile.TileType.Neutral)
+        tile.spawnPoints = new List<Transform>();
+        TileMats tileM = FindObjectOfType<TileMats>();
+        foreach (Transform t in tile.transform.Find("SpawnPositions"))
         {
-            tile.spawnSpawners = false;
-            if (tile.spawnPoints.Count > 0)
-            {
-                foreach (Transform t in tile.spawnPoints)
-                {
-                    DestroyImmediate(t.GetChild(0).gameObject);
-                }
-                tile.spawnPoints.Clear();
-            }
 
-            tile.spawnPoints = new List<Transform>();
-            TileMats tileM = FindObjectOfType<TileMats>();
-            foreach (Transform t in tile.transform.Find("SpawnPositions"))
+            if (t.gameObject.activeSelf)
             {
-                if (t.gameObject.activeSelf)
-                {
-                    tile.spawnPoints.Add(t);
-                    GameObject obj = SpawnItem(t, tileM);
-                }
+                tile.spawnPoints.Add(t);
+            }
+            else
+            {
+                tile.spawnPoints.Remove(t);
             }
         }
-        else if (tile.spawnSpawners && tile.tileType == Tile.TileType.Neutral) 
+
+        if (tile.spawnSpawners && tile.tileType != Tile.TileType.Neutral)
         {
-            tile.spawnSpawners = false;
+            foreach (Transform t in tile.transform.Find("SpawnPositions"))
+            {
+                foreach (Transform tp in t)
+                {
+                    DestroyImmediate(tp.gameObject);
+                }
+            }
+
+
             if (tile.spawnPoints.Count > 0)
             {
                 foreach (Transform t in tile.spawnPoints)
                 {
-                    DestroyImmediate(t.GetChild(0).gameObject);
+                    SpawnItem(t, tileM);
                 }
                 tile.spawnPoints.Clear();
+            }
+            tile.spawnSpawners = false;
+        }
+        else if (tile.spawnSpawners && tile.tileType == Tile.TileType.Neutral)
+        {
+            tile.spawnSpawners = false;
+            foreach (Transform t in tile.transform.Find("SpawnPositions"))
+            {
+                foreach (Transform tp in t)
+                {
+                    DestroyImmediate(tp.gameObject);
+                }
             }
         }
     }
@@ -286,6 +298,15 @@ public class TileEditor : Editor
                 break;
             case Tile.TileType.Rock:
                 prefab = tileM.rockPrefab;
+                break;
+            case Tile.TileType.Gold:
+                prefab = tileM.goldPrefab;
+                break;
+            case Tile.TileType.Diamond:
+                prefab = tileM.diamondPrefab;
+                break;
+            case Tile.TileType.Adamantium:
+                prefab = tileM.adamantiumPrefab;
                 break;
         }
         GameObject obj = PrefabUtility.InstantiatePrefab(prefab, null) as GameObject;

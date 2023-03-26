@@ -13,6 +13,7 @@ public class AI_Movement : MonoBehaviour
     [HideInInspector] public bool jumpInput;
     [HideInInspector] public Vector3 _direction;
     [HideInInspector] public bool moveFlag;
+    [HideInInspector] public bool isMoving;
 
     [SerializeField] private float speed;
     [SerializeField] private float jumpStrength = 10;
@@ -57,10 +58,12 @@ public class AI_Movement : MonoBehaviour
         if(AI_B.tilePath.Count > 0 && !AI_B.stopRefreshing) 
         { 
             dirInput();
+            isMoving = true;
         }
         else
         {
             _direction = Vector3.zero;
+            isMoving = false;
         }
 
         groundedCallback = _characterController.isGrounded;
