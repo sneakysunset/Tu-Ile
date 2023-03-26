@@ -415,6 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29b01ead37ac041a2667d201e2e433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterController: {fileID: 0}
   respawnTile: {fileID: 0}
   tileUnder: {fileID: 0}
   holdableItems: []
@@ -422,6 +423,7 @@ MonoBehaviour:
   closestItem: {fileID: 0}
   isMining: 0
   interactor: {fileID: 0}
+  waterSplash: {fileID: 3827855509166264532, guid: a9a25cd28fa105047b5420e6548167dc, type: 3}
 --- !u!114 &5703151869213025868
 MonoBehaviour:
   m_ObjectHideFlags: 0

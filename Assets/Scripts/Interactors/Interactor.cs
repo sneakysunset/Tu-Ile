@@ -62,6 +62,15 @@ public class Interactor : MonoBehaviour
             stateIndex--;
             meshF.mesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
+            switch (type)
+            {
+                case Tile.TileType.Tree:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
+                    break;
+                case Tile.TileType.Rock:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                    break;
+            }
         }
     }
 
@@ -91,7 +100,6 @@ public class Interactor : MonoBehaviour
     public virtual void OnInteractionExit()
     {
         OnEndInteraction();
-
     }
 
     protected virtual void OnEndInteraction()
