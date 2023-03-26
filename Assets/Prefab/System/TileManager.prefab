@@ -178,8 +178,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  minTimer: 15
-  maxTimer: 70
+  minTimer: 30
+  maxTimer: 150
   degradationTimerAnimCurve:
     serializedVersion: 2
     m_Curve:
@@ -204,7 +204,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  timeToGetToMaxDegradationSpeed: 1200
+  timeToGetToMaxDegradationSpeed: 3000
   degradingSpeed: 3
   heightByTile: 2
 --- !u!114 &4173279834238775216

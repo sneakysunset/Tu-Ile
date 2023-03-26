@@ -821,7 +821,10 @@ MonoBehaviour:
   isGrowing: 0
   timeToGetToMaxDegradationSpeed: 0
   spawnSpawners: 0
-  spawnPoints: []
+  spawnPoints:
+  - {fileID: 7133090253872893059}
+  - {fileID: 1949783130783487149}
+  - {fileID: 4691495834763128532}
   tileS: {fileID: 0}
   myMeshR: {fileID: 5864329386916401334}
   myMeshF: {fileID: 0}
@@ -1026,7 +1029,6 @@ GameObject:
   - component: {fileID: 774271360629026932}
   - component: {fileID: 6383376366736228397}
   - component: {fileID: 6498760337978108346}
-  - component: {fileID: 1954114574972628284}
   m_Layer: 0
   m_Name: Tourbillon
   m_TagString: Untagged
@@ -1099,20 +1101,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1954114574972628284
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9096294599413045969}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &4965133989803128468
 PrefabInstance:
   m_ObjectHideFlags: 0
