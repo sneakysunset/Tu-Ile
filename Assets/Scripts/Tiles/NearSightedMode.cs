@@ -42,15 +42,16 @@ public class NearSightedMode : MonoBehaviour
                         }
                   }
                   float distance = dist / sightRange;
+                  Vector3 localPos = tile.transform.localPosition;
                   if (tile.isGrowing)
-                  {
-                      float evaluatedDistance = distanceConvertorCurve.Evaluate(distance);
-                      tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y - evaluatedDistance * fallDistance, tile.transform.position.z), 100 * tileGrowthLerpSpeed * Time.deltaTime);
-                  }
+                    {
+                        float evaluatedDistance = distanceConvertorCurve.Evaluate(distance);
+                        tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y - evaluatedDistance * fallDistance, localPos.z), 100 * tileGrowthLerpSpeed * Time.deltaTime);
+                    }
                   else
                   {
                       float evaluatedDistance = distanceConvertorCurve.Evaluate(distance);
-                      tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y - evaluatedDistance * fallDistance, tile.transform.position.z), 100 * lerpSpeed * Time.deltaTime);
+                      tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(tile.transform.position.x, tile.currentPos.y - evaluatedDistance * fallDistance, localPos.z), 100 * lerpSpeed * Time.deltaTime);
                   }
             }
                 
@@ -72,13 +73,14 @@ public class NearSightedMode : MonoBehaviour
         {
             foreach (Tile tile in tileS.tiles)
             {
+                Vector3 localPos = tile.transform.localPosition;
                 if (tile.isGrowing)
                 {
-                    tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y, tile.transform.position.z), 100 * tileGrowthLerpSpeed * Time.deltaTime); 
+                    tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), 100 * tileGrowthLerpSpeed * Time.deltaTime); 
                 }
                 else
                 {
-                    tile.transform.position = Vector3.MoveTowards(tile.transform.position, new Vector3(tile.transform.position.x, tile.currentPos.y, tile.transform.position.z), 100 * degradationLerpSpeed * Time.deltaTime); ;
+                    tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), 100 * degradationLerpSpeed * Time.deltaTime); ;
                 }
             }
         }

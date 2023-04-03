@@ -104,7 +104,7 @@ Transform:
   m_GameObject: {fileID: 3513501612163752757}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.11, z: 0.889}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.0703, y: 1, z: 1.8708}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5703151869213025866}
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   growingSpeed: 10
-  growPrice: 1
+  growPrice: 5
   ressourcesManager: {fileID: 0}
 --- !u!114 &5610916058789591604
 MonoBehaviour:
@@ -705,7 +705,7 @@ CharacterController:
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 1
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.1
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &5703151869213025865
@@ -749,7 +749,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!1 &6814886942923399849
 GameObject:
@@ -1010,6 +1010,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7198079936379082239, guid: 828e22bd30149c342a1e6ffe7f1735eb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 055fe735eddbdd441930e33a087b71df, type: 2}
+    - target: {fileID: -2843909369972686622, guid: 828e22bd30149c342a1e6ffe7f1735eb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 055fe735eddbdd441930e33a087b71df, type: 2}
+    - target: {fileID: -1741740479129827890, guid: 828e22bd30149c342a1e6ffe7f1735eb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 055fe735eddbdd441930e33a087b71df, type: 2}
     - target: {fileID: 919132149155446097, guid: 828e22bd30149c342a1e6ffe7f1735eb, type: 3}
       propertyPath: m_Name
       value: Body Visuals

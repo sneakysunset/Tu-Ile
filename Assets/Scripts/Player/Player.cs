@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public bool isMining;
     [HideInInspector] public Interactor interactor;
     public ParticleSystem waterSplash;
+    bool waterValidate;
 
     private void Start()
     {
@@ -83,6 +84,7 @@ public class Player : MonoBehaviour
                 heldItem = null;
             }
         }
+        waterValidate = false;
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -92,8 +94,9 @@ public class Player : MonoBehaviour
             pM.jumpInput = true;
             anim.Play("Jump", 0);
         }
-        else if (hit.transform.CompareTag("Water"))
+        else if (hit.transform.CompareTag("Water") && !waterValidate)
         {
+            waterValidate = true;
             Instantiate(waterSplash, hit.point + 2 * Vector3.up, Quaternion.identity, null);
             FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
             transform.position = respawnTile.transform.position + 25f * Vector3.up;

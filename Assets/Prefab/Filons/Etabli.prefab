@@ -487,7 +487,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &666063041952729945
 RectTransform:
   m_ObjectHideFlags: 0
@@ -660,7 +660,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2483733696740314471
 RectTransform:
   m_ObjectHideFlags: 0
@@ -736,7 +736,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3770956109592432005
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1700,7 +1700,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   Highlight: {fileID: 0}
   physic: 1
-  recette: {fileID: 11400000, guid: 3f73750fb5480c64d849678d2297043a, type: 2}
+  recette: {fileID: 11400000, guid: 29a10fe3c412f894fbf7ab3565036a4c, type: 2}
 --- !u!33 &6122129862733760006
 MeshFilter:
   m_ObjectHideFlags: 0
