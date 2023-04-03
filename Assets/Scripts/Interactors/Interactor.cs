@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 public class Interactor : MonoBehaviour
 {
+    public Tile.TileType type;
     public Mesh[] meshs;
     public Material[] materials;
     protected MeshRenderer meshR;
@@ -13,7 +14,7 @@ public class Interactor : MonoBehaviour
     protected bool isInteractedWith;
     public bool interactable = true;
     protected float currentHitTimer;
-    protected List<Interactions> _player;
+    protected List<Player> _player;
     public GameObject spawnPrefab;
     public int ressourceNum = 10;
     Transform stackT;
@@ -26,7 +27,7 @@ public class Interactor : MonoBehaviour
         meshR = GetComponent<MeshRenderer>();
         meshR.sharedMaterial = materials[stateIndex];
         meshF.mesh = meshs[stateIndex]; 
-        _player = new List<Interactions>();
+        _player = new List<Player>();
         Transform p = transform.parent.parent.parent;
         stackT = p.Find("StackPos");
         CreateStack();
@@ -46,8 +47,12 @@ public class Interactor : MonoBehaviour
         }
     }
 
-    public virtual void OnInteractionEnter(float hitTimer, Interactions player)
+    public virtual void OnInteractionEnter(float hitTimer, Player player)
     {
+        if(_player.Count == 0) 
+        { 
+            
+        }
         timer = hitTimer;
         currentHitTimer = hitTimer;
         _player.Add(player);
@@ -57,6 +62,15 @@ public class Interactor : MonoBehaviour
             stateIndex--;
             meshF.mesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
+            switch (type)
+            {
+                case Tile.TileType.Tree:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
+                    break;
+                case Tile.TileType.Rock:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                    break;
+            }
         }
     }
 
@@ -86,7 +100,6 @@ public class Interactor : MonoBehaviour
     public virtual void OnInteractionExit()
     {
         OnEndInteraction();
-
     }
 
     protected virtual void OnEndInteraction()
@@ -121,6 +134,15 @@ public class Interactor : MonoBehaviour
     {
         if (timer <= 0 && stateIndex > 0)
         {
+            switch (type)
+            {
+                case Tile.TileType.Tree:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
+                    break;
+                case Tile.TileType.Rock:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                    break;
+            }
             timer = currentHitTimer;
             stateIndex--;
             meshF.mesh = meshs[stateIndex];

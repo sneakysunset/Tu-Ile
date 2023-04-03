@@ -28,4 +28,12 @@ public class TileParameters : MonoBehaviour
     public float timeToGetToMaxDegradationSpeed;
     public float degradingSpeed;
     public float heightByTile;
+
+    private TileSystem tileSystem;
+
+    private void OnValidate()
+    {
+        tileSystem = GetComponent<TileSystem>();
+        tileSystem.UpdateParameters = true;
+    }
 }

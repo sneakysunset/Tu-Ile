@@ -751,9 +751,10 @@ GameObject:
   - component: {fileID: 8540724609792189564}
   - component: {fileID: 5864329386916401334}
   - component: {fileID: 1723577319114880016}
+  - component: {fileID: 6588057917838640578}
   m_Layer: 6
   m_Name: Tile
-  m_TagString: Tile
+  m_TagString: DegradingTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -776,6 +777,7 @@ Transform:
   - {fileID: 5002407428796330615}
   - {fileID: 8545401549390866348}
   - {fileID: 7247669256870309205}
+  - {fileID: 774271360629026932}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -791,37 +793,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b243fa4badd297458d6fe44d3dc8aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileType: 0
   walkable: 1
-  walkedOnto: 0
-  isDegrading: 0
-  timer: 0
+  tileType: 0
   coordX: 0
   coordFX: 0
   coordY: 0
-  spawnPoints: []
-  spawnSpawners: 0
-  isSelected: 0
-  myMeshR: {fileID: 5864329386916401334}
-  tileB: {fileID: 0}
-  rb: {fileID: 0}
-  ogPos: {x: 0, y: 0, z: 0}
+  walkedOnto: 0
   currentPos: {x: 0, y: 0, z: 0}
-  disabledMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
+  maxPos: 20
+  adjTCoords: []
+  heightByTile: 0
+  tourbillon: 0
+  tourbillonSpeed: 40
+  degradable: 1
+  isDegrading: 0
+  timer: 0
   terraFormingSpeed: 0
-  normaliseSpeed: 0.1
-  tileS: {fileID: 0}
-  unselectedMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
-  selectedMat: {fileID: 2100000, guid: e8fbe13235048a14ab9a6668c630c855, type: 2}
-  fadeMat: {fileID: 0}
-  capDistanceNeutraliser: 25
-  bumpStrength: 0
-  bumpDistanceAnimCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   minTimer: 0
   maxTimer: 0
   degradationTimerAnimCurve:
@@ -830,15 +817,38 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  timeToGetToMaxDegradationSpeed: 0
-  adjTCoords: []
   degradingSpeed: 0
   isGrowing: 0
-  heightByTile: 0
-  degradable: 1
-  step: 0
+  timeToGetToMaxDegradationSpeed: 0
+  spawnSpawners: 0
+  spawnPoints:
+  - {fileID: 7133090253872893059}
+  - {fileID: 1949783130783487149}
+  - {fileID: 4691495834763128532}
+  tileS: {fileID: 0}
+  myMeshR: {fileID: 5864329386916401334}
+  myMeshF: {fileID: 0}
+  tileB: {fileID: 0}
+  rb: {fileID: 0}
+  minableItems: {fileID: 8755437412334106841}
+  tourbillonT: {fileID: 0}
+  disabledMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
+  unselectedMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
+  selectedMat: {fileID: 2100000, guid: e8fbe13235048a14ab9a6668c630c855, type: 2}
+  fadeMat: {fileID: 0}
   walkedOnColor: {r: 0.8490566, g: 0.734247, b: 0.734247, a: 1}
   notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
+  penguinedColor: {r: 0.8584906, g: 0.28076416, b: 0.28076416, a: 1}
+  bumpStrength: 0
+  bumpDistanceAnimCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  isPathChecked: 0
+  step: 0
+  isPenguined: 0
 --- !u!33 &8540724609792189564
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -903,6 +913,18 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2623256933809513941, guid: 40c21bedeba5d5741a50a62d507fbc8e, type: 3}
+--- !u!114 &6588057917838640578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5360045457859342691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f33708c86899c32449b6abed1b61e997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6619705555321930641
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,6 +1018,89 @@ Transform:
   m_Father: {fileID: 8755437412334106841}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9096294599413045969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 774271360629026932}
+  - component: {fileID: 6383376366736228397}
+  - component: {fileID: 6498760337978108346}
+  m_Layer: 0
+  m_Name: Tourbillon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &774271360629026932
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9096294599413045969}
+  m_LocalRotation: {x: -0, y: 0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 13.2, z: 0}
+  m_LocalScale: {x: 0.08197775, y: 0.20494436, z: 0.08197775}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 4695394438935391193}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &6383376366736228397
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9096294599413045969}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &6498760337978108346
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9096294599413045969}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: da12570b93605c44b87cde0b929fb38a, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &4965133989803128468
 PrefabInstance:
   m_ObjectHideFlags: 0

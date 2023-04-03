@@ -52,18 +52,14 @@ public class Interactions : MonoBehaviour
         else if (context.canceled || context.performed)
         {
             isGrowing = false;
-            terraforming = false;
-            if (tile && tile.isGrowing)
+            //terraforming = false;
+/*            if (tile && tile.isGrowing)
             {
                 tile.isGrowing = false;
-            }
+            }*/
         }
     }
 
-    public void GetRessource(int ressourceNum)
-    {
-        rManager.wood += ressourceNum;
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -72,7 +68,7 @@ public class Interactions : MonoBehaviour
             if (interactor.interactable && !player.heldItem)
             {
                 isMining = true;
-                interactor.OnInteractionEnter(hitRate, this);
+                interactor.OnInteractionEnter(hitRate, player);
             }
         }
     }   
@@ -101,7 +97,7 @@ public class Interactions : MonoBehaviour
         if (hit.transform.CompareTag("DegradingTile") && hit.normal.y > .9f && isGrowing)
         {
             tile = hit.gameObject.GetComponent<Tile>();
-            if (!tile.isGrowing && tile.currentPos != tile.ogPos)
+            if (!tile.isGrowing && tile.currentPos.y != tile.maxPos)
             {
                 terraforming = true;
                 tile.currentPos.y += tile.heightByTile;
@@ -120,6 +116,7 @@ public class Interactions : MonoBehaviour
             }*/
         }
     }
+
 
     WaitForFixedUpdate waiter;
     IEnumerator afterPhysics()
