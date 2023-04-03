@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1993684740632381328}
   - component: {fileID: 1993684740632381330}
   - component: {fileID: 1993684740632381327}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pingu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,6 +57,7 @@ MonoBehaviour:
   refreshRateMax: 7
   numTilesAround: 3
   stopRefreshing: 0
+  targetTile: {fileID: 0}
 --- !u!114 &1993684740632381329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,11 +74,16 @@ MonoBehaviour:
   jumpInput: 0
   _direction: {x: 0, y: 0, z: 0}
   moveFlag: 0
+  isMoving: 0
   speed: 3
   jumpStrength: 2.4
   smoothTime: 0.05
   gravityMultiplier: 1
   _velocity: 0
+  rangeToReachDestination: 1
+  onPlayerReached:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!33 &1993684740632381334
 MeshFilter:
   m_ObjectHideFlags: 0

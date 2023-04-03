@@ -43,4 +43,23 @@ public class Item_Bird : Item
         AIM.enabled = true;
         AIC.enabled = true;
     }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+            print(2);
+        if (hit.collider.CompareTag("Water"))
+        {
+            print(1);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
+            if (_player)
+            {
+                _player.heldItem = null;
+                if (_player.holdableItems.Contains(this))
+                {
+                    _player.holdableItems.Remove(this);
+                }
+            }
+            Destroy(gameObject);
+        }
+    }
 }
