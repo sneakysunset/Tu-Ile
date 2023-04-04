@@ -5,7 +5,7 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 public class StepAssignment 
 {
-    static public List<Tile> Initialisation(Tile targetTile, TileSystem tileSystem, Vector3 ogPos)
+    static public List<Tile> Initialisation(Tile targetTile, TileSystem tileSystem, Tile startTile)
     {
         List<Tile> result = new List<Tile>();
         Tile[,] tiles = tileSystem.tiles;
@@ -19,12 +19,11 @@ public class StepAssignment
         }
         targetTile.step = 0;
         AssignationChecker(tileSystem, tiles);
-        Tile startTile = tileSystem.WorldPosToTile(ogPos);
+        
         int startStep = startTile.step;
         CreatePath(tileSystem, tiles, startTile, startStep, result);
         return result;
     }
-
 
     static private void AssignationChecker(TileSystem tileSystem, Tile[,] tiles)
     {

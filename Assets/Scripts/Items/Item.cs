@@ -8,12 +8,11 @@ public class Item : MonoBehaviour
 {
     public bool holdable;
     [HideNormalInspector] public bool isHeld;
-    Rigidbody rb;
+    [HideInInspector] public Rigidbody rb;
     [HideInInspector] public GameObject Highlight;
-    Transform heldPoint;
-    public enum ItemType {Neutral, Wood, Rock};
-    public ItemType itemType = ItemType.Neutral;
-    Player _player;
+    protected Transform heldPoint;
+    protected Player _player;
+    [HideInInspector] public bool physic = true;
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;
@@ -31,7 +30,7 @@ public class Item : MonoBehaviour
         _player = player;
         isHeld = true;
         rb.constraints = RigidbodyConstraints.FreezePosition;
-        //FMODUnity.RuntimeManager.PlayOneShot("event:/MouvementCharacter/Catch");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Collect_Item");
         rb.isKinematic = true;
         if (player.holdableItems.Contains(this))
             player.holdableItems.Remove(this);
@@ -45,12 +44,14 @@ public class Item : MonoBehaviour
     {
         _player = null;
         isHeld = false;
-        rb.constraints = RigidbodyConstraints.None;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.isKinematic = false;
         rb.velocity = Vector2.zero;
-        //FMODUnity.RuntimeManager.PlayOneShot("event:/MouvementCharacter/Grab");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Release_Item");
         player.holdableItems.Add(this);
         transform.parent = null;
+        transform.rotation = Quaternion.identity;
+        physic = true;
     }
 
 
@@ -58,9 +59,14 @@ public class Item : MonoBehaviour
     {
         if (other.collider.CompareTag("Water"))
         {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
             if (_player)
             {
-                _player.heldItems.Remove(this);
+                _player.heldItem = null;
+                if (_player.holdableItems.Contains(this))
+                {
+                    _player.holdableItems.Remove(this);
+                }
             }
             Destroy(gameObject);
         }

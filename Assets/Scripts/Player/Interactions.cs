@@ -14,15 +14,13 @@ public class Interactions : MonoBehaviour
     [HideNormalInspector] public Interactor interactor;
     private Transform miningZone;
     private RessourcesManager rManager;
+    private Player player;
 
     private void Start()
     {
         miningZone = transform.Find("MiningZone");
         rManager = FindObjectOfType<RessourcesManager>();
-    }
-
-    private void Update()
-    {
+        player = GetComponent<Player>();
     }
 
     public void OnMining(InputAction.CallbackContext context)
@@ -54,28 +52,23 @@ public class Interactions : MonoBehaviour
         else if (context.canceled || context.performed)
         {
             isGrowing = false;
-            terraforming = false;
-            if (tile && tile.isGrowing)
+            //terraforming = false;
+/*            if (tile && tile.isGrowing)
             {
                 tile.isGrowing = false;
-                print(1);
-            }
+            }*/
         }
     }
 
-    public void GetRessource(int ressourceNum)
-    {
-        rManager.wood += ressourceNum;
-    }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out interactor))
         {
-            if (interactor.interactable)
+            if (interactor.interactable && !player.heldItem)
             {
                 isMining = true;
-                interactor.OnInteractionEnter(hitRate, this);
+                interactor.OnInteractionEnter(hitRate, player);
             }
         }
     }   
@@ -92,7 +85,6 @@ public class Interactions : MonoBehaviour
         {
             otherTile.isGrowing = false;
             isGrowing = false;
-            print(2);
             terraforming = false;
         }
     }
@@ -105,7 +97,7 @@ public class Interactions : MonoBehaviour
         if (hit.transform.CompareTag("DegradingTile") && hit.normal.y > .9f && isGrowing)
         {
             tile = hit.gameObject.GetComponent<Tile>();
-            if (!tile.isGrowing && tile.currentPos != tile.ogPos)
+            if (!tile.isGrowing && tile.currentPos.y != tile.maxPos)
             {
                 terraforming = true;
                 tile.currentPos.y += tile.heightByTile;
@@ -124,6 +116,7 @@ public class Interactions : MonoBehaviour
             }*/
         }
     }
+
 
     WaitForFixedUpdate waiter;
     IEnumerator afterPhysics()

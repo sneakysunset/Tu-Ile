@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 public class Interactor : MonoBehaviour
 {
+    public Tile.TileType type;
     public Mesh[] meshs;
     public Material[] materials;
     protected MeshRenderer meshR;
@@ -13,11 +14,12 @@ public class Interactor : MonoBehaviour
     protected bool isInteractedWith;
     public bool interactable = true;
     protected float currentHitTimer;
-    protected List<Interactions> _player;
+    protected List<Player> _player;
     public GameObject spawnPrefab;
-    private Transform spawnPoint;
     public int ressourceNum = 10;
-
+    Transform stackT;
+    private Item_Stack stackItem;
+    [Range(1, 10)] public int numberOfRessourceGenerated = 3;
     private void Start()
     {
         stateIndex = meshs.Length - 1;
@@ -25,16 +27,51 @@ public class Interactor : MonoBehaviour
         meshR = GetComponent<MeshRenderer>();
         meshR.sharedMaterial = materials[stateIndex];
         meshF.mesh = meshs[stateIndex]; 
-        spawnPoint = transform.Find("SpawnPoint");
-        _player = new List<Interactions>();
+        _player = new List<Player>();
+        Transform p = transform.parent.parent.parent;
+        stackT = p.Find("StackPos");
+        CreateStack();
     }
 
-    public virtual void OnInteractionEnter(float hitTimer, Interactions player)
+    void CreateStack()
     {
+        if (stackT.childCount == 0)
+        {
+            GameObject obj = Instantiate(spawnPrefab, stackT.position, Quaternion.identity, null);
+            obj.transform.parent = stackT;
+            stackItem = obj.GetComponent<Item_Stack>();
+        }
+        else
+        {
+            stackItem = stackT.GetChild(0).GetComponent<Item_Stack>();
+        }
+    }
+
+    public virtual void OnInteractionEnter(float hitTimer, Player player)
+    {
+        if(_player.Count == 0) 
+        { 
+            
+        }
         timer = hitTimer;
         currentHitTimer = hitTimer;
         _player.Add(player);
         isInteractedWith = true;
+        if(stateIndex == meshs.Length - 1)
+        {
+            stateIndex--;
+            meshF.mesh = meshs[stateIndex];
+            meshR.material = materials[stateIndex];
+            switch (type)
+            {
+                case Tile.TileType.Tree:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
+                    break;
+                case Tile.TileType.Rock:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                    break;
+            }
+        }
     }
 
     private void Update()
@@ -63,7 +100,6 @@ public class Interactor : MonoBehaviour
     public virtual void OnInteractionExit()
     {
         OnEndInteraction();
-
     }
 
     protected virtual void OnEndInteraction()
@@ -86,8 +122,10 @@ public class Interactor : MonoBehaviour
 
     protected virtual void EmptyInteractor()
     {
-        GameObject obj = Instantiate(spawnPrefab, spawnPoint.position, Quaternion.identity);
-        obj.transform.parent = this.transform;
+        CreateStack();
+        stackItem.numberStacked += numberOfRessourceGenerated;
+        //GameObject obj = Instantiate(spawnPrefab, spawnPoint.position, Quaternion.identity);
+        //obj.transform.parent = this.transform;
         OnEndInteraction();
         interactable = false;
     }
@@ -96,6 +134,15 @@ public class Interactor : MonoBehaviour
     {
         if (timer <= 0 && stateIndex > 0)
         {
+            switch (type)
+            {
+                case Tile.TileType.Tree:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
+                    break;
+                case Tile.TileType.Rock:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                    break;
+            }
             timer = currentHitTimer;
             stateIndex--;
             meshF.mesh = meshs[stateIndex];

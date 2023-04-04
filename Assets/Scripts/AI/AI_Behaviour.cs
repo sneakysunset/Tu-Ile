@@ -1,29 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class AI_Behaviour : MonoBehaviour
 {
+    public enum AITarget { ClosestPlayer, RandomTileAround};
+    public AITarget target;
     TileSystem tileS;
     Player[] players;
     [HideInInspector] public List<Tile> tilePath;
     [HideInInspector] public Tile tileUnder;
-    WaitForSeconds waiter;
-    [Range(.1f, 20)] public float refreshRate = 1;
+    [Range(.1f, 20)] public float refreshRateMin = 1, refreshRateMax = 2;
+    [Header("numTilesAround only useful for RandomTileAround AITarget")]
+    public int numTilesAround;
     public bool stopRefreshing;
+    [HideInInspector] public Tile targetTile;
     private void Start()
     {
         players = FindObjectsOfType<Player>();
         tileS = FindObjectOfType<TileSystem>();
-        waiter = new WaitForSeconds(refreshRate);
         StartCoroutine(RefreshAIPath());
     }
 
     IEnumerator RefreshAIPath()
     {
-        yield return new WaitUntil(()=> stopRefreshing = true);
-        yield return waiter;
-        InitializePathFinding();
+        yield return new WaitUntil(()=> stopRefreshing == false);
+        yield return new WaitUntil(()=> tilePath.Count == 0);
+        float refreshRate = Random.Range(refreshRateMin, refreshRateMax);
+        yield return new WaitForSeconds(refreshRate);
+
+        switch (target)
+        {
+            case AITarget.ClosestPlayer:
+                targetTile = GetClosestPlayer();
+                break;
+            case AITarget.RandomTileAround:
+                List<Tile> list = tileS.GetTilesAround(numTilesAround, tileUnder);
+                targetTile = list[Random.Range(0, list.Count - 1)];
+                break;
+        }
+
+        InitializePathFinding(targetTile);
         StartCoroutine(RefreshAIPath());
     }
 
@@ -32,7 +50,7 @@ public class AI_Behaviour : MonoBehaviour
         tileUnder = tileS.WorldPosToTile(transform.position);
     }
 
-    public void InitializePathFinding()
+    private Tile GetClosestPlayer()
     {
         float distance = Mathf.Infinity;
         Vector3 target = Vector3.zero;
@@ -46,8 +64,14 @@ public class AI_Behaviour : MonoBehaviour
             }
         }
         Tile targetTile = tileS.WorldPosToTile(target);
+        return targetTile;
+    }
 
-        tilePath = StepAssignment.Initialisation(targetTile, tileS, transform.position);
+    public void InitializePathFinding(Tile targetTile)
+    {
+       
+
+        tilePath = StepAssignment.Initialisation(targetTile, tileS, tileUnder);
         Vector3 pos = transform.position;
         for (int i = 0; i < tilePath.Count; i++)
         {
@@ -61,5 +85,7 @@ public class AI_Behaviour : MonoBehaviour
     {
         stopRefreshing = true;
         tilePath.Clear();
+        
     }
+
 }

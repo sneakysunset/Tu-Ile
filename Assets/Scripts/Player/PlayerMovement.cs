@@ -16,8 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public bool dashFlag;
     [HideInInspector] public bool moveFlag;
 
-    [SerializeField] private float speed;
-    [SerializeField] private float jumpStrength = 10;
+    [SerializeField] public float speed;
+    [SerializeField] public float jumpStrength = 10;
     [SerializeField] private float dashStrength;
     [SerializeField] public float pushStrength;
     [SerializeField] private float dashDuration;
@@ -38,14 +38,14 @@ public class PlayerMovement : MonoBehaviour
     #region Variables: Gravity
     private bool groundedCallback;
     private float _gravity = -9.81f;
-    [SerializeField] private float gravityMultiplier = 3.0f;
+    [SerializeField] public float gravityMultiplier = 3.0f;
     [HideInInspector] public float _velocity;
 
     #endregion
-
+    private FMOD.Studio.EventInstance movingSound;
     private void Awake()
     {
-/*        movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/moov");
+        /*movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/Moove");
         movingSound.set3DAttributes(new FMOD.ATTRIBUTES_3D());*/
         _characterController = GetComponent<CharacterController>();
     }
