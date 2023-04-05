@@ -13,10 +13,11 @@ public class Item : MonoBehaviour
     protected Transform heldPoint;
     protected Player _player;
     [HideInInspector] public bool physic = true;
+    [HideInInspector] public Collider col;
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;
-
+        col = GetComponent<Collider>();
         if (TryGetComponent<Rigidbody>(out rb)) { }
     }
 
@@ -37,12 +38,12 @@ public class Item : MonoBehaviour
         heldPoint = holdPoint;
         Highlight.SetActive(false);
         transform.position = heldPoint.position;
+
         transform.parent = heldPoint;
     }
 
     public virtual void GrabRelease(Player player)
     {
-        _player = null;
         isHeld = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.isKinematic = false;
@@ -54,6 +55,19 @@ public class Item : MonoBehaviour
         physic = true;
     }
 
+    public virtual void ThrowAction(Player player, float throwStrength, Vector3 direction)
+    {
+        isHeld = false;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        rb.isKinematic = false;
+        rb.velocity = Vector2.zero;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Release_Item");
+        player.holdableItems.Add(this);
+        transform.parent = null;
+        transform.rotation = Quaternion.identity;
+        rb.AddForce(throwStrength * direction, ForceMode.Impulse);
+        physic = true;
+    }
 
     public virtual void OnCollisionEnter(Collision other)
     {

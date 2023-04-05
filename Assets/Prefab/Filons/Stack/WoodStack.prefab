@@ -438,7 +438,7 @@ GameObject:
   - component: {fileID: 5174493804729871081}
   - component: {fileID: 6283125319491736211}
   - component: {fileID: 1583647475308006108}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: WoodStack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,8 +479,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   Highlight: {fileID: 0}
   physic: 1
-  meshR: {fileID: 0}
   col: {fileID: 0}
+  meshR: {fileID: 0}
   stackType: 0
   numberStacked: 0
   isTile: 0

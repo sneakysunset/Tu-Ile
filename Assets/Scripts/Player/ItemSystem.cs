@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class ItemSystem : MonoBehaviour
 {
@@ -46,6 +45,20 @@ public class ItemSystem : MonoBehaviour
                 player.closestItem.GrabStarted(holdPoint, player);
                 player.holdableItems.Remove(player.closestItem);
             }
+        }
+    }
+
+    //throw action
+    public void OnItemInput2(InputAction.CallbackContext context)
+    {
+        if (context.started && player.heldItem != null && player.holdableItems.Count == 0)
+        {
+            Vector3 direction = transform.forward + Vector3.up * player.throwYAxisDirection;
+            player.heldItem.ThrowAction(player, player.throwStrength, direction);
+            player.holdableItems.Add(player.heldItem);
+            if (player.closestItem == null) player.closestItem = player.heldItem;
+            player.heldItem = null;
+            return;
         }
     }
 }   

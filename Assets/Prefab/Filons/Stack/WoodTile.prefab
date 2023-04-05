@@ -93,8 +93,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   Highlight: {fileID: 0}
   physic: 1
-  meshR: {fileID: 0}
   col: {fileID: 0}
+  meshR: {fileID: 0}
   stackType: 0
   numberStacked: 0
   isTile: 1

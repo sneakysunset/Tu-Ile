@@ -6,10 +6,11 @@ public class Item_Bird : Item
 {
     PlayerMovement pM;
     public float gravityDivider;
+    public float jumpModifier;
     private AI_Behaviour AIB;
     private AI_Movement AIM;
     private CharacterController AIC;
-
+    bool isThrown;
     private void Start()
     {
         AIB = GetComponent<AI_Behaviour>();    
@@ -20,7 +21,7 @@ public class Item_Bird : Item
     public override void Update()
     {
         base.Update();
-        if (isHeld) AIC.enabled = false;
+        if (isHeld || isThrown) AIC.enabled = false;
     }
 
     public override void GrabStarted(Transform holdPoint, Player player)
@@ -29,8 +30,10 @@ public class Item_Bird : Item
 
         pM = player.GetComponent<PlayerMovement>();
         pM.gravityMultiplier /= gravityDivider;
+        pM.jumpStrength /= jumpModifier;
         AIM.enabled = false;
         AIB.ClearPath();
+        gameObject.layer = 13;
 
     }
 
@@ -39,17 +42,26 @@ public class Item_Bird : Item
         base.GrabRelease(player);
         rb.isKinematic = true;
         pM.gravityMultiplier *= gravityDivider;
+        pM.jumpStrength *= jumpModifier;
         AIB.stopRefreshing = false;
         AIM.enabled = true;
         AIC.enabled = true;
+        gameObject.layer = 8;
+    }
+
+    public override void ThrowAction(Player player, float throwStrength, Vector3 direction)
+    {
+        isThrown = true;
+        rb.useGravity = true;
+        pM.gravityMultiplier *= gravityDivider;
+        pM.jumpStrength *= jumpModifier;
+        base.ThrowAction(player, throwStrength, direction);
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-            print(2);
         if (hit.collider.CompareTag("Water"))
         {
-            print(1);
             FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
             if (_player)
             {
@@ -60,6 +72,21 @@ public class Item_Bird : Item
                 }
             }
             Destroy(gameObject);
+        }
+    }
+
+    public override void OnCollisionEnter(Collision collision)
+    {
+        base.OnCollisionEnter(collision);
+        if(isThrown)
+        {
+            isThrown = false;
+            gameObject.layer = 8;
+            rb.isKinematic = true;
+            rb.useGravity = false;
+            AIB.stopRefreshing = false;
+            AIM.enabled = true;
+            AIC.enabled = true;
         }
     }
 }
