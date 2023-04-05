@@ -14,7 +14,7 @@ public class Tile : MonoBehaviour
     [SerializeField] public TileType tileType = TileType.Neutral;
 
 
-    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium };
+    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand };
     [HideNormalInspector] public int coordX, coordFX, coordY;
     public bool walkedOnto = false;
     [HideNormalInspector] public Vector3 currentPos;
@@ -24,6 +24,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] bool isFaded;
     public bool tourbillon;
     public float tourbillonSpeed;
+    [HideNormalInspector] public bool sand_WalkedOnto;
     #endregion
 
     #region Degradation

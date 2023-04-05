@@ -626,8 +626,9 @@ MonoBehaviour:
   rb: {fileID: 0}
   Highlight: {fileID: 0}
   physic: 1
+  col: {fileID: 0}
   gravityDivider: 8
-  jumpModifier: 1.3
+  jumpModifier: 1.5
 --- !u!143 &3388698492052617938
 CharacterController:
   m_ObjectHideFlags: 0

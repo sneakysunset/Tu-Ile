@@ -47,4 +47,18 @@ public class ItemSystem : MonoBehaviour
             }
         }
     }
+
+    //throw action
+    public void OnItemInput2(InputAction.CallbackContext context)
+    {
+        if (context.started && player.heldItem != null && player.holdableItems.Count == 0)
+        {
+            Vector3 direction = transform.forward + Vector3.up * player.throwYAxisDirection;
+            player.heldItem.ThrowAction(player, player.throwStrength, direction);
+            player.holdableItems.Add(player.heldItem);
+            if (player.closestItem == null) player.closestItem = player.heldItem;
+            player.heldItem = null;
+            return;
+        }
+    }
 }   
