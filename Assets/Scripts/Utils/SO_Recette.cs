@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Recettes", menuName = "Recettes", order = 1)]
+[CreateAssetMenu(fileName = "Scriptable Objects", menuName = "Recettes", order = 1)]
 public class SO_Recette : ScriptableObject
 {
     public float convertionTime;

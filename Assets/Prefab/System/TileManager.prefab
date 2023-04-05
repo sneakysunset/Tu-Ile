@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2198949688653012757}
   - component: {fileID: 3120364899379129663}
   - component: {fileID: 4173279834238775216}
+  - component: {fileID: 9222783304278118907}
   m_Layer: 0
   m_Name: TileManager
   m_TagString: Untagged
@@ -60,6 +61,7 @@ MonoBehaviour:
   gridOgTile: {x: 0, y: 0, z: 0}
   targetTileCoords: {x: 21, y: 5}
   numOfRows: 3
+  centerTile: {fileID: 0}
 --- !u!114 &2198949688653012757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,3 +230,23 @@ MonoBehaviour:
   goldPrefab: {fileID: 7937501208438684671, guid: 72f3d0f0b08c81645984d3b9dffe7bde, type: 3}
   diamondPrefab: {fileID: 1548326296132660425, guid: e4fdb4ab491feff47aa6ac0bb155e34a, type: 3}
   adamantiumPrefab: {fileID: 7786200326323085320, guid: a896e8445800e1e46ad1a5d8b6049d41, type: 3}
+--- !u!114 &9222783304278118907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5154630093807575301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 512e11ac91ed554419124c19536e55c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberOfTilesLinked: 0
+  neutralCount: 0
+  woodCount: 0
+  rockCount: 0
+  goldCount: 0
+  diamondCount: 0
+  adamantiumCount: 0
+  countTimer: 0

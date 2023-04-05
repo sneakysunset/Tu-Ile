@@ -77,5 +77,6 @@ public class Tile_Degradation : MonoBehaviour
         //GetComponent<Collider>().enabled = false;
         transform.Find("Additional Visuals").gameObject.SetActive(false);
         tile.minableItems.gameObject.SetActive(false);
+        tile.tileS.tileC.Count();
     }
 }

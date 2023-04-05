@@ -13,6 +13,7 @@ public class ItemSpawner : MonoBehaviour
     {
         spawnPoint = transform.Find("SpawnPositions");
         SpawnItem();
+        baseTimerValue = spawnTimer;
     }
 
     private void SpawnItem()

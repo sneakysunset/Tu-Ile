@@ -79,7 +79,7 @@ public class TileSelector : MonoBehaviour
                 if(item.numberStacked >= 1)
                 {
                     item.numberStacked --;
-                    targettedTile.Spawn(tileUnder.transform.position.y, item._material, item._mesh);
+                    targettedTile.Spawn(tileUnder.transform.position.y, item._material, item._mesh, item.stackType.ToString()) ;
                     if(item.numberStacked == 0)
                     {
                         player.heldItem = null;

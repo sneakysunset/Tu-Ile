@@ -24,6 +24,22 @@ public class Player : MonoBehaviour
     public ParticleSystem waterSplash;
     bool waterValidate;
 
+    private void Awake()
+    {
+        if (respawnTile == null)
+        {
+            foreach (Tile til in tileS.tiles)
+            {
+                if (til.walkable && !til.degradable)
+                {
+                    respawnTile = til; break;
+                }
+            }
+            transform.position = respawnTile.transform.position + Vector3.up * 22.5f;
+        }
+        FindObjectOfType<CameraCtr>().AddPlayer(transform);
+    }
+
     private void Start()
     {
         tileS = FindObjectOfType<TileSystem>();
@@ -32,6 +48,7 @@ public class Player : MonoBehaviour
         _characterController = pM.GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
         tileSelec = GetComponent<TileSelector>();
+
     }
 
     private void Update()

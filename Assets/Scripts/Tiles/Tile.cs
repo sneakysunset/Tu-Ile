@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using TMPro;
+using System;
 
 public class Tile : MonoBehaviour
 {
     #region Variables
     #region MainVariables
     [SerializeField] public bool walkable = true;
-    [SerializeField] public TileType tileType;
-    public enum TileType { Neutral, Tree, Rock, Gold, Diamond, Adamantium };
+    [SerializeField] public TileType tileSpawnType;
+    [SerializeField] public TileType tileType = TileType.Neutral;
+
+
+    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium };
     [HideNormalInspector] public int coordX, coordFX, coordY;
     public bool walkedOnto = false;
     [HideNormalInspector] public Vector3 currentPos;
-    public float maxPos;
+    public float maxPos ;
     [HideInInspector] public Vector2Int[] adjTCoords;
     [HideNormalInspector] public float heightByTile;
     [HideNormalInspector] bool isFaded;
@@ -103,7 +107,7 @@ public class Tile : MonoBehaviour
         {
             myMeshR.material.color = walkedOnColor;
         }
-        timer = Random.Range(minTimer, maxTimer);
+        timer = UnityEngine.Random.Range(minTimer, maxTimer);
         GetAdjCoords();
         if(!walkable && tourbillon)
         {
@@ -142,7 +146,7 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Tile Functions
-    public void Spawn(float height, Material mat, Mesh mesh)
+    public void Spawn(float height, Material mat, Mesh mesh, string stackType)
     {
         walkable = true;
         gameObject.layer = LayerMask.NameToLayer("Tile");
@@ -152,12 +156,15 @@ public class Tile : MonoBehaviour
         myMeshR.material.color = walkedOnColor;
         transform.Find("Additional Visuals").gameObject.SetActive(true);
         minableItems.gameObject.SetActive(true);
-        timer = Random.Range(minTimer, maxTimer);
+        timer = UnityEngine.Random.Range(minTimer, maxTimer);
         isDegrading = false;
         transform.position = new Vector3(transform.position.x, -1.9f, transform.position.z) ;
         transform.tag = "Tile";
         currentPos.y = height - (height % heightByTile);
         isGrowing = true;
+        TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
+        tileType = tType;
+        tileS.tileC.Count();
     }
     private void GetAdjCoords()
     {
@@ -254,7 +261,7 @@ public class TileEditor : Editor
             }
         }
 
-        if (tile.spawnSpawners && tile.tileType != Tile.TileType.Neutral)
+        if (tile.spawnSpawners && tile.tileSpawnType != Tile.TileType.Neutral)
         {
             foreach (Transform t in tile.transform.Find("SpawnPositions"))
             {
@@ -275,7 +282,7 @@ public class TileEditor : Editor
             }
             tile.spawnSpawners = false;
         }
-        else if (tile.spawnSpawners && tile.tileType == Tile.TileType.Neutral)
+        else if (tile.spawnSpawners && tile.tileSpawnType == Tile.TileType.Neutral)
         {
             tile.spawnSpawners = false;
             foreach (Transform t in tile.transform.Find("SpawnPositions"))
@@ -291,9 +298,9 @@ public class TileEditor : Editor
     private GameObject SpawnItem(Transform t, TileMats tileM)
     {
         GameObject prefab = null;
-        switch (tile.tileType)
+        switch (tile.tileSpawnType)
         {
-            case Tile.TileType.Tree:
+            case Tile.TileType.Wood:
                 prefab = tileM.treePrefab;
                 break;
             case Tile.TileType.Rock:
@@ -311,7 +318,7 @@ public class TileEditor : Editor
         }
         GameObject obj = PrefabUtility.InstantiatePrefab(prefab, null) as GameObject;
         Interactor inter = obj.GetComponent<Interactor>();
-        inter.type = tile.tileType;
+        inter.type = tile.tileSpawnType;
         obj.transform.parent = t;
         obj.transform.position = t.position;
         obj.transform.LookAt(new Vector3(tile.transform.position.x, obj.transform.position.y, tile.transform.position.z));

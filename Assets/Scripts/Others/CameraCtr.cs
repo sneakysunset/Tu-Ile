@@ -7,20 +7,14 @@ public class CameraCtr : MonoBehaviour
     public float smoother;
     private Vector3 velocity;
     private Camera cam;
-    private GameObject[] players;
+    private List<Transform> players;
     public LayerMask lineCastLayers;
     public float sphereCastRadius;
     public Vector3 medianPos;
     void Start()
     {
         cam = Camera.main;
-        players = GameObject.FindGameObjectsWithTag("Player");
-        foreach(GameObject player in players)
-        {
-            medianPos += player.transform.position;
-        }
-        medianPos /= players.Length;
-        transform.position = medianPos;
+        
     }
 
     private void Update()
@@ -32,12 +26,21 @@ public class CameraCtr : MonoBehaviour
     private void LateUpdate()
     {
         Vector3 medianPos = Vector3.zero;
-        foreach (GameObject player in players)
+        foreach (Transform player in players)
         {
             medianPos += player.transform.position;
         }
-        medianPos /= players.Length;
+        medianPos /= players.Count;
         transform.position = Vector3.SmoothDamp(transform.position, medianPos, ref velocity, smoother);
+    }
+
+    public void AddPlayer(Transform player)
+    {
+        if(players == null)
+        {
+            players = new List<Transform>();
+        }
+        players.Add(player);
     }
 
 /*    private void LineCastToPlayer()

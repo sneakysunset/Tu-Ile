@@ -6,6 +6,7 @@ public class Item_Bird : Item
 {
     PlayerMovement pM;
     public float gravityDivider;
+    public float jumpModifier;
     private AI_Behaviour AIB;
     private AI_Movement AIM;
     private CharacterController AIC;
@@ -29,6 +30,7 @@ public class Item_Bird : Item
 
         pM = player.GetComponent<PlayerMovement>();
         pM.gravityMultiplier /= gravityDivider;
+        pM.jumpStrength /= jumpModifier;
         AIM.enabled = false;
         AIB.ClearPath();
 
@@ -39,6 +41,7 @@ public class Item_Bird : Item
         base.GrabRelease(player);
         rb.isKinematic = true;
         pM.gravityMultiplier *= gravityDivider;
+        pM.jumpStrength *= jumpModifier;
         AIB.stopRefreshing = false;
         AIM.enabled = true;
         AIC.enabled = true;
@@ -46,7 +49,6 @@ public class Item_Bird : Item
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-            print(2);
         if (hit.collider.CompareTag("Water"))
         {
             print(1);
