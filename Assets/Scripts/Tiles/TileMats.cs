@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class TileMats : MonoBehaviour
 {
-    public Material selectedTileMaterial, unselectedTileMaterial, disabledTileMaterial, FadedTileMaterial;
+    [Header ("Editor Mats")]
+    public Material disabledTileMaterial;
+    public Material undegradableTileMat, sandTileMat;
+    [Header ("Game Mats")]
+    public Material selectedTileMaterial;
+    public Material unselectedTileMaterial, FadedTileMaterial;
     public GameObject treePrefab, rockPrefab, goldPrefab, diamondPrefab, adamantiumPrefab;
     private TileSystem tileSystem;
 

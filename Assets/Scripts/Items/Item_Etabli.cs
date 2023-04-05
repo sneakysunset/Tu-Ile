@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 [System.Serializable]
 public struct stack
@@ -19,10 +21,10 @@ public class Item_Etabli : Item
     //public Item_Stack craftedItemPrefab;
     Item_Stack craftedItem;
     //public float timeToCraft;
-    private Transform stackT;
+    private UnityEngine.Transform stackT;
     private bool convertorFlag;
     private WaitForSeconds waiter;
-    Transform createdItem;
+    UnityEngine.Transform createdItem;
     public override void Awake()
     {
         base.Awake();
@@ -87,7 +89,7 @@ public class Item_Etabli : Item
         craftedItem.rb.isKinematic = true;  
     }
 
-    public override void GrabStarted(Transform holdPoint, Player player)
+    public override void GrabStarted(UnityEngine.Transform holdPoint, Player player)
     {
         if(player.heldItem && player.heldItem.GetType() == typeof(Item_Stack))
         {
@@ -108,5 +110,41 @@ public class Item_Etabli : Item
         }
     }
 
+    private void OnDrawGizmos()
+    {
 
+    }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Item_Etabli))]
+[System.Serializable]
+public class EtablieSystemEditor : Editor
+{
+    Item_Etabli etabli;
+
+    private void OnEnable()
+    {
+        etabli = (Item_Etabli)target;
+    }
+
+
+    private void OnSceneGUI()
+    {
+        if (!Application.isPlaying)
+        {
+            Draw();
+            EditorUtility.SetDirty(etabli);
+        }
+    }
+
+    void Draw()
+    {
+        if (!Application.isPlaying)
+        {
+            Tile tileUnder = TileSystem.Instance.WorldPosToTile(etabli.transform.position);
+            etabli.transform.position = new Vector3(etabli.transform.position.x, tileUnder.transform.position.y + 23.4f, etabli.transform.position.z);
+        }
+    }
+}
+#endif
