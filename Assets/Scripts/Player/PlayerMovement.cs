@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public bool dashFlag;
     [HideInInspector] public bool moveFlag;
 
-    [SerializeField] private float speed;
+    [SerializeField] public float speed;
     [SerializeField] public float jumpStrength = 10;
     [SerializeField] private float dashStrength;
     [SerializeField] public float pushStrength;
@@ -42,10 +42,10 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public float _velocity;
 
     #endregion
-
+    private FMOD.Studio.EventInstance movingSound;
     private void Awake()
     {
-/*        movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/moov");
+        /*movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/Moove");
         movingSound.set3DAttributes(new FMOD.ATTRIBUTES_3D());*/
         _characterController = GetComponent<CharacterController>();
     }

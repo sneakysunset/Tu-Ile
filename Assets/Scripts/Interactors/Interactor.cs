@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 public class Interactor : MonoBehaviour
 {
+    public Tile.TileType type;
     public Mesh[] meshs;
     public Material[] materials;
     protected MeshRenderer meshR;
@@ -61,6 +62,15 @@ public class Interactor : MonoBehaviour
             stateIndex--;
             meshF.mesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
+            switch (type)
+            {
+                case Tile.TileType.Wood:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
+                    break;
+                case Tile.TileType.Rock:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                    break;
+            }
         }
     }
 
@@ -90,7 +100,6 @@ public class Interactor : MonoBehaviour
     public virtual void OnInteractionExit()
     {
         OnEndInteraction();
-
     }
 
     protected virtual void OnEndInteraction()
@@ -125,6 +134,15 @@ public class Interactor : MonoBehaviour
     {
         if (timer <= 0 && stateIndex > 0)
         {
+            switch (type)
+            {
+                case Tile.TileType.Wood:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
+                    break;
+                case Tile.TileType.Rock:
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                    break;
+            }
             timer = currentHitTimer;
             stateIndex--;
             meshF.mesh = meshs[stateIndex];

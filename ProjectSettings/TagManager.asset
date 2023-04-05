@@ -10,6 +10,8 @@ TagManager:
   - DegradingTile
   - Interactor
   - Water
+  - Ship
+  - TileFolder
   layers:
   - Default
   - TransparentFX
@@ -22,8 +24,8 @@ TagManager:
   - Unit
   - CameraPlane
   - Interactor
-  - 
-  - 
+  - Player_Mine
+  - Player_Collect
   - 
   - 
   - 

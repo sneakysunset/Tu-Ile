@@ -12,7 +12,7 @@ public struct ressourceMeshsCollec
     public List<Mesh> meshs;
     public List<Material> materials;
     public List<int> necessaryNum;
-
+    public Sprite sprite;
 }
 
 public class RessourcesManager : MonoBehaviour

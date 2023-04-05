@@ -14,7 +14,6 @@ public class TileSystem : MonoBehaviour
     public int columns, rows;
     [HideInInspector, SerializeField] public Tile[,] tiles;
     public GameObject tilePrefab;
-    [HideInInspector] public InputEvents inputs;
     [HideInInspector] public TileParameters tileP;
     [HideInInspector] public TileMats tileM;
     public int ogSelectedTileX, ogSelectedTileY;
@@ -22,6 +21,9 @@ public class TileSystem : MonoBehaviour
     static bool editorFlag = false;
     public Vector2Int targetTileCoords;
     public int numOfRows;
+    public Tile centerTile;
+    [HideInInspector] public Transform tileFolder;
+    [HideInInspector] public TileCounter tileC;
 
     private void Awake()
     {
@@ -29,12 +31,12 @@ public class TileSystem : MonoBehaviour
         {
             RegenGrid();
         }
-    }
 
-    private void Start()
-    {
-        inputs = FindObjectOfType<InputEvents>();
-        //inputs.selectedTile = tiles[ogSelectedTileX, ogSelectedTileY];
+        tileC = GetComponent<TileCounter>();
+        foreach(Tile tile in tiles)
+        {
+            tile.tileS = this;
+        }
     }
 
     private void Update()
@@ -58,6 +60,17 @@ public class TileSystem : MonoBehaviour
         return tiles[x, z];
     }
 
+    public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
+    {
+        float xOffset = 0;
+        if (z % 2 == 1) xOffset = transform.localScale.x * .85f;
+        Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.7f + xOffset, 0, z * transform.localScale.x * 1.48f);
+        tiles[x, z].coordX = x;
+
+        tiles[x, z].coordY = z;
+        return pos;
+    }
+
     public List<Tile> GetTilesAround(int numOfRows, Tile tile)
     {
         List<Tile> ts = new List<Tile>();
@@ -68,7 +81,7 @@ public class TileSystem : MonoBehaviour
             int ix = ts.Count;
             for (int i = 0; i < ix; i++)
             {
-                if (!ts[i].isChecked)
+                if (!ts[i].isPathChecked)
                 {
                     foreach (Vector2Int vecs in ts[i].adjTCoords)
                     {
@@ -77,7 +90,7 @@ public class TileSystem : MonoBehaviour
                             ts.Add(tiles[vecs.x, vecs.y]);
                         }
                     }
-                    ts[i].isChecked = true;
+                    ts[i].isPathChecked = true;
                 }
             }
             rowsSeen++;
@@ -85,7 +98,7 @@ public class TileSystem : MonoBehaviour
         //ts.Remove(tile);
         foreach(Tile t in ts)
         {
-            t.isChecked = false;
+            t.isPathChecked = false;
         }
         return ts;
     }
@@ -144,8 +157,6 @@ public class TileSystem : MonoBehaviour
         foreach (Tile tile in tiles)
         {
             tile.terraFormingSpeed = tileP.terraFormingSpeed;
-            tile.normaliseSpeed = tileP.terraFormingNormalisingSpeed;
-            tile.capDistanceNeutraliser = tileP.distanceSpeedNormaliserModifier;
             tile.bumpStrength = tileP.bumpStrength;
             tile.bumpDistanceAnimCurve = tileP.bumpDistanceCurve;
             tile.selectedMat = tileM.selectedTileMaterial;
@@ -217,6 +228,7 @@ public class TileSystemEditor : Editor
     void InstantiateGrid()
     {
         tileS.InstantiateGrid = false;
+        Transform tileFolder = GameObject.FindGameObjectWithTag("TileFolder").transform;
         if (tileS.tiles == null) tileS.tiles = new Tile[0, 0];
         if(tileS.tiles.GetLength(0) == 0)
         {
@@ -226,10 +238,11 @@ public class TileSystemEditor : Editor
             {
                 for (int j = 0; j < tileS.columns; j++)
                 {
+
                     GameObject tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as GameObject;
-                    tile.transform.parent = tileS.transform;
+                    tile.transform.parent = tileFolder.transform;
                     tileS.tiles[i, j] = tile.GetComponent<Tile>();
-                    tile.transform.position = tileS.tiles[i, j].indexToWorldPos(i, j, tileS.gridOgTile);
+                    tile.transform.position = tileS.indexToWorldPos(i, j, tileS.gridOgTile);
                     tile.gameObject.name = i + "  " + j;
 
                 }
@@ -254,7 +267,7 @@ public class TileSystemEditor : Editor
                         GameObject tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as GameObject;
                         tile.transform.parent = tileS.transform;
                         tempTiles[i, j] = tile.GetComponent<Tile>();
-                        tile.transform.position = tempTiles[i, j].indexToWorldPos(i, j, tileS.gridOgTile);
+                        tile.transform.position = tileS.indexToWorldPos(i, j, tileS.gridOgTile);
                         tile.gameObject.name = i + "  " + j;
                     }
                     else if (i >= tileS.rows || j >= tileS.columns)
@@ -282,8 +295,6 @@ public class TileSystemEditor : Editor
         foreach(Tile tile in tileS.tiles)
         {
             tile.terraFormingSpeed = tileS.tileP.terraFormingSpeed;
-            tile.normaliseSpeed = tileS.tileP.terraFormingNormalisingSpeed;
-            tile.capDistanceNeutraliser = tileS.tileP.distanceSpeedNormaliserModifier;
             tile.bumpStrength = tileS.tileP.bumpStrength;
             tile.bumpDistanceAnimCurve = tileS.tileP.bumpDistanceCurve;
             tile.selectedMat = tileS.tileM.selectedTileMaterial;

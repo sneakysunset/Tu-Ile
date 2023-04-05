@@ -6,6 +6,7 @@ public class Item_Bird : Item
 {
     PlayerMovement pM;
     public float gravityDivider;
+    public float jumpModifier;
     private AI_Behaviour AIB;
     private AI_Movement AIM;
     private CharacterController AIC;
@@ -29,6 +30,7 @@ public class Item_Bird : Item
 
         pM = player.GetComponent<PlayerMovement>();
         pM.gravityMultiplier /= gravityDivider;
+        pM.jumpStrength /= jumpModifier;
         AIM.enabled = false;
         AIB.ClearPath();
 
@@ -39,8 +41,27 @@ public class Item_Bird : Item
         base.GrabRelease(player);
         rb.isKinematic = true;
         pM.gravityMultiplier *= gravityDivider;
+        pM.jumpStrength *= jumpModifier;
         AIB.stopRefreshing = false;
         AIM.enabled = true;
         AIC.enabled = true;
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("Water"))
+        {
+            print(1);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
+            if (_player)
+            {
+                _player.heldItem = null;
+                if (_player.holdableItems.Contains(this))
+                {
+                    _player.holdableItems.Remove(this);
+                }
+            }
+            Destroy(gameObject);
+        }
     }
 }

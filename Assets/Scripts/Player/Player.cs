@@ -1,13 +1,14 @@
 using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
 using UnityEngine.Windows;
 
 public class Player : MonoBehaviour
 {
     Animator anim;
-    CharacterController _characterController;
+    [HideInInspector] public CharacterController _characterController;
     PlayerMovement pM;
     TileSelector tileSelec;
     Interactions inter;
@@ -20,6 +21,24 @@ public class Player : MonoBehaviour
     [HideInInspector] public Item closestItem;
     [HideInInspector] public bool isMining;
     [HideInInspector] public Interactor interactor;
+    public ParticleSystem waterSplash;
+    bool waterValidate;
+
+    private void Awake()
+    {
+        if (respawnTile == null)
+        {
+            foreach (Tile til in tileS.tiles)
+            {
+                if (til.walkable && !til.degradable)
+                {
+                    respawnTile = til; break;
+                }
+            }
+            transform.position = respawnTile.transform.position + Vector3.up * 22.5f;
+        }
+        FindObjectOfType<CameraCtr>().AddPlayer(transform);
+    }
 
     private void Start()
     {
@@ -29,7 +48,7 @@ public class Player : MonoBehaviour
         _characterController = pM.GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
         tileSelec = GetComponent<TileSelector>();
-        
+
     }
 
     private void Update()
@@ -43,6 +62,9 @@ public class Player : MonoBehaviour
         else*/ if(_characterController.isGrounded && isMining)
         {
             anim.Play("Mine", 0);
+            Vector3 pos = interactor.transform.position;
+            pos.y = transform.position.y;
+            transform.LookAt(pos);
         }
         else if (_characterController.isGrounded && pM._input != Vector2.zero)
         {
@@ -79,6 +101,7 @@ public class Player : MonoBehaviour
                 heldItem = null;
             }
         }
+        waterValidate = false;
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -88,9 +111,18 @@ public class Player : MonoBehaviour
             pM.jumpInput = true;
             anim.Play("Jump", 0);
         }
-        else if (hit.transform.CompareTag("Water"))
+        else if (hit.transform.CompareTag("Water") && !waterValidate)
         {
+            waterValidate = true;
+            Instantiate(waterSplash, hit.point + 2 * Vector3.up, Quaternion.identity, null);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
             transform.position = respawnTile.transform.position + 25f * Vector3.up;
+            if (heldItem != null)
+            {
+                heldItem.GrabRelease(this);
+                Destroy(heldItem.gameObject);
+                heldItem = null;
+            }
         }
         else if (hit.transform.TryGetComponent<PlayerMovement>(out PlayerMovement player) && pM.dashFlag && !player.dashFlag)
         {

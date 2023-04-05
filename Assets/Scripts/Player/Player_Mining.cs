@@ -8,11 +8,12 @@ public class Player_Mining : MonoBehaviour
     public float hitRadius;
     public float hitRate;
     private Player player;
-
+    public GameObject axe;
     private void Start()
     {
         player = GetComponent<Player>();
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,6 +22,7 @@ public class Player_Mining : MonoBehaviour
             if (player.interactor.interactable && !player.heldItem)
             {
                 player.isMining = true;
+                axe.SetActive(true);
                 player.interactor.OnInteractionEnter(hitRate, player);
             }
         }
@@ -31,6 +33,7 @@ public class Player_Mining : MonoBehaviour
         if (other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out player.interactor))
         {
             player.interactor.OnInteractionExit();
+            axe.SetActive(false);
             player.isMining = false;
             player.interactor = null;
         }

@@ -30,7 +30,7 @@ public class Item : MonoBehaviour
         _player = player;
         isHeld = true;
         rb.constraints = RigidbodyConstraints.FreezePosition;
-        //FMODUnity.RuntimeManager.PlayOneShot("event:/MouvementCharacter/Catch");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Collect_Item");
         rb.isKinematic = true;
         if (player.holdableItems.Contains(this))
             player.holdableItems.Remove(this);
@@ -47,7 +47,7 @@ public class Item : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.isKinematic = false;
         rb.velocity = Vector2.zero;
-        //FMODUnity.RuntimeManager.PlayOneShot("event:/MouvementCharacter/Grab");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Release_Item");
         player.holdableItems.Add(this);
         transform.parent = null;
         transform.rotation = Quaternion.identity;
@@ -59,6 +59,7 @@ public class Item : MonoBehaviour
     {
         if (other.collider.CompareTag("Water"))
         {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
             if (_player)
             {
                 _player.heldItem = null;
