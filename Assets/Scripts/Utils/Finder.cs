@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public class Finder : MonoBehaviour
 {
+#if UNITY_EDITOR
     [MenuItem("Tools/FindFarObjects")]
     public static void FindFarObjects()
     {
@@ -33,4 +35,5 @@ public class Finder : MonoBehaviour
             Debug.Log("No Far objects");
         }
     }
+#endif
 }

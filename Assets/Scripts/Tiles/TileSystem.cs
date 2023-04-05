@@ -21,12 +21,21 @@ public class TileSystem : MonoBehaviour
     static bool editorFlag = false;
     public Vector2Int targetTileCoords;
     public int numOfRows;
+    public Tile centerTile;
+    [HideInInspector] public Transform tileFolder;
+    [HideInInspector] public TileCounter tileC;
 
     private void Awake()
     {
         if (this.enabled)
         {
             RegenGrid();
+        }
+
+        tileC = GetComponent<TileCounter>();
+        foreach(Tile tile in tiles)
+        {
+            tile.tileS = this;
         }
     }
 
@@ -219,6 +228,7 @@ public class TileSystemEditor : Editor
     void InstantiateGrid()
     {
         tileS.InstantiateGrid = false;
+        Transform tileFolder = GameObject.FindGameObjectWithTag("TileFolder").transform;
         if (tileS.tiles == null) tileS.tiles = new Tile[0, 0];
         if(tileS.tiles.GetLength(0) == 0)
         {
@@ -228,8 +238,9 @@ public class TileSystemEditor : Editor
             {
                 for (int j = 0; j < tileS.columns; j++)
                 {
+
                     GameObject tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as GameObject;
-                    tile.transform.parent = tileS.transform;
+                    tile.transform.parent = tileFolder.transform;
                     tileS.tiles[i, j] = tile.GetComponent<Tile>();
                     tile.transform.position = tileS.indexToWorldPos(i, j, tileS.gridOgTile);
                     tile.gameObject.name = i + "  " + j;

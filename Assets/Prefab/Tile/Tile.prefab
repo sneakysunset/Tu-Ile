@@ -794,6 +794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkable: 1
+  tileSpawnType: 0
   tileType: 0
   coordX: 0
   coordFX: 0

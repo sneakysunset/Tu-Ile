@@ -23,6 +23,26 @@ public class Player : MonoBehaviour
     [HideInInspector] public Interactor interactor;
     public ParticleSystem waterSplash;
     bool waterValidate;
+    public float throwStrength;
+    [Range(-5, 5)]public float throwYAxisDirection;
+    [HideInInspector] public Collider col;
+
+    private void Awake()
+    {
+        if (respawnTile == null)
+        {
+            foreach (Tile til in tileS.tiles)
+            {
+                if (til.walkable && !til.degradable)
+                {
+                    respawnTile = til; break;
+                }
+            }
+            transform.position = respawnTile.transform.position + Vector3.up * 22.5f;
+        }
+        FindObjectOfType<CameraCtr>().AddPlayer(transform);
+        col = GetComponent<Collider>();
+    }
 
     private void Start()
     {
@@ -32,12 +52,17 @@ public class Player : MonoBehaviour
         _characterController = pM.GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
         tileSelec = GetComponent<TileSelector>();
+
     }
 
     private void Update()
     {
+        if(tileUnder != null)
+        {
+            tileUnder.sand_WalkedOnto = false;
+        }
         tileUnder = tileS.WorldPosToTile(transform.position);
-
+        tileUnder.sand_WalkedOnto = true;
 /*        if(_characterController.isGrounded && inter.terraforming)
         {
             anim.Play("Terraform", 0);

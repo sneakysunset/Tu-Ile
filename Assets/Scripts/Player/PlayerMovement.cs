@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashStrength;
     [SerializeField] public float pushStrength;
     [SerializeField] private float dashDuration;
+    [SerializeField] public float dashCooldown = 1;
     [Header("1 = 0.1 sec, .1 = 1 sec")]
     //[SerializeField, Range(0.01f, 1)] private float acceleration = .7f;
     //[SerializeField, Range(0.01f, 1)] private float deceleration = .6f;
@@ -28,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 dir;
     private float mvtStr;
     private float speedValue;
+    private float dashTimer;
     #endregion
     #region Variables: Rotation
 
@@ -80,6 +82,8 @@ public class PlayerMovement : MonoBehaviour
         {
             ApplyMovement();
         }
+
+        dashTimer -= Time.deltaTime;
     }
 
 
@@ -149,11 +153,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Sprint(InputAction.CallbackContext context)
+    public void Dash(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && dashTimer <= 0)
         {
             isDashing = true;
+            dashTimer = dashCooldown;   
         }
         else if (context.canceled || context.performed)
         {

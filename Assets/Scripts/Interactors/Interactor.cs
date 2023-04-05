@@ -64,7 +64,7 @@ public class Interactor : MonoBehaviour
             meshR.material = materials[stateIndex];
             switch (type)
             {
-                case Tile.TileType.Tree:
+                case Tile.TileType.Wood:
                     FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
                     break;
                 case Tile.TileType.Rock:
@@ -136,7 +136,7 @@ public class Interactor : MonoBehaviour
         {
             switch (type)
             {
-                case Tile.TileType.Tree:
+                case Tile.TileType.Wood:
                     FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
                     break;
                 case Tile.TileType.Rock:

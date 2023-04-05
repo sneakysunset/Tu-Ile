@@ -601,7 +601,7 @@ MonoBehaviour:
   moveFlag: 0
   isMoving: 0
   speed: 3
-  jumpStrength: 2.4
+  jumpStrength: 3
   smoothTime: 0.05
   gravityMultiplier: 1.37
   _velocity: 0
@@ -626,7 +626,9 @@ MonoBehaviour:
   rb: {fileID: 0}
   Highlight: {fileID: 0}
   physic: 1
-  gravityDivider: 3
+  col: {fileID: 0}
+  gravityDivider: 8
+  jumpModifier: 1.5
 --- !u!143 &3388698492052617938
 CharacterController:
   m_ObjectHideFlags: 0
