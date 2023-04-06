@@ -40,6 +40,10 @@ public class Interactor : MonoBehaviour
             GameObject obj = Instantiate(spawnPrefab, stackT.position, Quaternion.identity, null);
             obj.transform.parent = stackT;
             stackItem = obj.GetComponent<Item_Stack>();
+            foreach(Player player in _player)
+            {
+                player.holdableItems.Add(stackItem);
+            }
         }
         else
         {

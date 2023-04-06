@@ -10,6 +10,7 @@ public class Tile_Degradation : MonoBehaviour
     bool isGrowingChecker;
     private float degradationTimerModifier;
     private NearSightedMode nSM;
+    [HideNormalInspector] private bool walkedOntoChecker;
     private void Start()
     {
         tile = GetComponent<Tile>();
@@ -18,13 +19,27 @@ public class Tile_Degradation : MonoBehaviour
     private void Update()
     {
         if(tile.isGrowing) Elevating();
-        else if (tile.walkable && tile.degradable && tile.walkedOnto) Degrading();
+        else if (tile.walkable && tile.degradable && tile.walkedOnto && tile.tileType != Tile.TileType.Sand) Degrading();
         if (!tile.isDegrading && ((transform.position.y <= -tile.heightByTile && tile.currentPos.y <= -tile.heightByTile)))
         {
             SinkTile();
         }
+        
+        if (tile.tileType == Tile.TileType.Sand)
+        {
+            SandDegradation();
+        }
     }
 
+    private void SandDegradation()
+    {
+        if(!tile.sand_WalkedOnto && walkedOntoChecker)
+        {
+            tile.currentPos.y -= tile.heightByTile;
+        }
+
+        walkedOntoChecker = tile.sand_WalkedOnto;
+    }
 
     private void Degrading()
     {

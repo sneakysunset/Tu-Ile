@@ -51,6 +51,9 @@ MonoBehaviour:
     m_Bits: 2147483647
   sphereCastRadius: 1
   medianPos: {x: 0, y: 0, z: 0}
+  strongSS: 0.15
+  mediumSS: 0.3
+  weakSS: 0.6
 --- !u!1 &6667387659626017476
 GameObject:
   m_ObjectHideFlags: 0

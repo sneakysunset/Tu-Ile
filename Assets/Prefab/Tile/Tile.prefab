@@ -107,7 +107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1257567649717721799}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.647, y: 0, z: -0.41}
+  m_LocalPosition: {x: -0.52, y: 0, z: -0.282}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -344,7 +344,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2529888614723700089}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.748}
+  m_LocalPosition: {x: 0, y: 0, z: -0.609}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -467,7 +467,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7133090253872893059
 Transform:
   m_ObjectHideFlags: 0
@@ -507,7 +507,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3966103563497217772}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.676, y: 0, z: 0.442}
+  m_LocalPosition: {x: -0.527, y: 0, z: 0.341}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -731,7 +731,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4320431684794601996}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.6789996}
+  m_LocalPosition: {x: 0, y: 0, z: 0.521}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -796,6 +796,7 @@ MonoBehaviour:
   walkable: 1
   tileSpawnType: 0
   tileType: 0
+  levelName: 
   coordX: 0
   coordFX: 0
   coordY: 0
@@ -806,6 +807,7 @@ MonoBehaviour:
   heightByTile: 0
   tourbillon: 0
   tourbillonSpeed: 40
+  sand_WalkedOnto: 0
   degradable: 1
   isDegrading: 0
   timer: 0
@@ -837,6 +839,8 @@ MonoBehaviour:
   unselectedMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
   selectedMat: {fileID: 2100000, guid: e8fbe13235048a14ab9a6668c630c855, type: 2}
   fadeMat: {fileID: 0}
+  undegradableMat: {fileID: 0}
+  sandMat: {fileID: 0}
   walkedOnColor: {r: 0.8490566, g: 0.734247, b: 0.734247, a: 1}
   notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
   penguinedColor: {r: 0.8584906, g: 0.28076416, b: 0.28076416, a: 1}
@@ -981,7 +985,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7748866086438112357}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.622, y: 0, z: 0.445}
+  m_LocalPosition: {x: 0.51, y: 0, z: 0.296}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1012,7 +1016,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8941858601475515589}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.658, y: 0, z: -0.412}
+  m_LocalPosition: {x: 0.48, y: 0, z: -0.269}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

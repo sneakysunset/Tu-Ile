@@ -24,9 +24,23 @@ public class TileSystem : MonoBehaviour
     public Tile centerTile;
     [HideInInspector] public Transform tileFolder;
     [HideInInspector] public TileCounter tileC;
+    public bool isHub;
+    public static TileSystem Instance { get; private set; }
+
 
     private void Awake()
     {
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
+
         if (this.enabled)
         {
             RegenGrid();
@@ -163,6 +177,8 @@ public class TileSystem : MonoBehaviour
             tile.unselectedMat = tileM.unselectedTileMaterial;
             tile.disabledMat = tileM.disabledTileMaterial;
             tile.fadeMat = tileM.FadedTileMaterial;
+            tile.sandMat = tileM.sandTileMat;
+            tile.undegradableMat = tileM.undegradableTileMat;
             tile.maxTimer = tileP.maxTimer;
             tile.minTimer = tileP.minTimer;
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
@@ -174,10 +190,15 @@ public class TileSystem : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if(editorFlag && !Application.isPlaying)
+        if (TileSystem.Instance == null && !Application.isPlaying)
+        {
+            TileSystem.Instance = this;
+        }
+        if((editorFlag || tiles == null) && !Application.isPlaying)
         {
             editorFlag = false;
             RegenGrid();
+
         }
     }
     
@@ -210,6 +231,8 @@ public class TileSystemEditor : Editor
     void Draw()
     {
         base.OnInspectorGUI();
+
+
         if (tileS.InstantiateGrid)
         {
             InstantiateGrid();
@@ -292,6 +315,7 @@ public class TileSystemEditor : Editor
         tileS.tileM = tileS.GetComponent<TileMats>();
         tileS.tileP = tileS.GetComponent<TileParameters>();
         tileS.UpdateParameters = false;
+        if (tileS.tiles == null) return;
         foreach(Tile tile in tileS.tiles)
         {
             tile.terraFormingSpeed = tileS.tileP.terraFormingSpeed;
@@ -301,6 +325,8 @@ public class TileSystemEditor : Editor
             tile.unselectedMat = tileS.tileM.unselectedTileMaterial;
             tile.disabledMat = tileS.tileM.disabledTileMaterial;
             tile.fadeMat = tileS.tileM.FadedTileMaterial;
+            tile.sandMat = tileS.tileM.sandTileMat;
+            tile.undegradableMat = tileS.tileM.undegradableTileMat;
             tile.maxTimer = tileS.tileP.maxTimer;
             tile.minTimer = tileS.tileP.minTimer;
             tile.degradationTimerAnimCurve = tileS.tileP.degradationTimerAnimCurve;

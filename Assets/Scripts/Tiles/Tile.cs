@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using TMPro;
 using System;
+using FMOD;
 
 public class Tile : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class Tile : MonoBehaviour
     [SerializeField] public TileType tileType = TileType.Neutral;
 
 
-    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium };
+    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, LevelLoader };
+    public string levelName;
     [HideNormalInspector] public int coordX, coordFX, coordY;
     public bool walkedOnto = false;
     [HideNormalInspector] public Vector3 currentPos;
@@ -24,6 +26,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] bool isFaded;
     public bool tourbillon;
     public float tourbillonSpeed;
+    [HideNormalInspector] public bool sand_WalkedOnto;
     #endregion
 
     #region Degradation
@@ -56,9 +59,10 @@ public class Tile : MonoBehaviour
 
     #region Materials
     [HideInInspector, SerializeField] public Material disabledMat;
-    [HideInInspector] public Material unselectedMat, selectedMat, fadeMat;
+    [HideInInspector] public Material unselectedMat, selectedMat, fadeMat, undegradableMat, sandMat;
     public Color walkedOnColor, notWalkedOnColor;
     public Color penguinedColor;
+    private Material currentMat;
     #endregion
 
     #region Bump
@@ -71,6 +75,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public int step;
     private TextMeshProUGUI AI_Text;
     [HideInInspector] public bool isPenguined;
+    bool pSysIsPlaying;
     #endregion
     #endregion
 
@@ -101,6 +106,7 @@ public class Tile : MonoBehaviour
         if(walkable && !walkedOnto && degradable)
         {
             pSys.Play();
+            pSysIsPlaying = true;
             myMeshR.material.color = notWalkedOnColor;
         }
         else if(!walkable && walkedOnto && degradable)
@@ -114,14 +120,16 @@ public class Tile : MonoBehaviour
             tourbillonT.gameObject.SetActive(true);
         }
     }
+ 
     private void Update()
     {
         // StepText();
-
-        if (pSys.isPlaying && walkedOnto && degradable)
+        isFaded = false;
+        if (pSysIsPlaying && walkedOnto && degradable)
         {
             pSys.Stop(); 
             myMeshR.material.color = walkedOnColor;
+            pSysIsPlaying = false;
         }
 
         if(!walkable && tourbillon)
@@ -132,6 +140,7 @@ public class Tile : MonoBehaviour
         if(isPenguined && myMeshR.material.color != penguinedColor)
         {
             myMeshR.material.color = penguinedColor;
+
         }
         else if(!isPenguined && myMeshR.material.color == penguinedColor)
         {
@@ -141,7 +150,19 @@ public class Tile : MonoBehaviour
 
     private void LateUpdate()
     {
+        if(!isFaded && fadeChecker)
+        {
+            fadeChecker = false;
+            ChangeRenderMode.ChangeRenderModer(myMeshR.material, ChangeRenderMode.BlendMode.Opaque);
+            Color col = myMeshR.material.color;
+            col.a = .2f;
+            myMeshR.material.color = col;
+        }
         isPenguined = false;
+        if (!isFaded && myMeshR.material == fadeMat)
+        {
+            myMeshR.material = currentMat;
+        }
     }
     #endregion
 
@@ -188,6 +209,20 @@ public class Tile : MonoBehaviour
             adjTCoords[3] = new Vector2Int(coordX, coordY - 1);
         }
     }
+
+    bool fadeChecker;
+    public void FadeTile(float t)
+    {
+        isFaded = true;
+        if (!fadeChecker)
+        {
+            fadeChecker = true;
+            ChangeRenderMode.ChangeRenderModer(myMeshR.material, ChangeRenderMode.BlendMode.Transparent);
+            Color col = myMeshR.material.color;
+            col.a = t;
+            myMeshR.material.color = col;
+        }
+    }
     #endregion
 
     #region Editor
@@ -200,6 +235,18 @@ public class Tile : MonoBehaviour
             myMeshR.sharedMaterial = disabledMat;
             transform.Find("Additional Visuals").gameObject.SetActive(false);
             minableItems.gameObject.SetActive(false);
+        }
+        else if(tileType == TileType.Sand || tileType == TileType.LevelLoader)
+        {
+            myMeshR.sharedMaterial = sandMat;
+            transform.Find("Additional Visuals").gameObject.SetActive(true);
+            minableItems.gameObject.SetActive(true);
+        }
+        else if (!degradable)
+        {
+            myMeshR.sharedMaterial = undegradableMat;
+            transform.Find("Additional Visuals").gameObject.SetActive(true);
+            minableItems.gameObject.SetActive(true);
         }
         else
         {
@@ -236,6 +283,8 @@ public class TileEditor : Editor
     {
         tile = (Tile)target;
     }
+
+
 
     private void OnSceneGUI()
     {
@@ -321,8 +370,8 @@ public class TileEditor : Editor
         inter.type = tile.tileSpawnType;
         obj.transform.parent = t;
         obj.transform.position = t.position;
-        obj.transform.LookAt(new Vector3(tile.transform.position.x, obj.transform.position.y, tile.transform.position.z));
-        
+        //obj.transform.LookAt(new Vector3(tile.transform.position.x, obj.transform.position.y, tile.transform.position.z));
+        obj.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
         return obj;
     }
 }

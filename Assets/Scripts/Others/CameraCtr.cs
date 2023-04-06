@@ -10,6 +10,7 @@ public class CameraCtr : MonoBehaviour
     private List<Transform> players;
     public LayerMask lineCastLayers;
     public float sphereCastRadius;
+    [Range(0,1)]public float transparencyLevel;
     public Vector3 medianPos;
     void Start()
     {
@@ -19,12 +20,13 @@ public class CameraCtr : MonoBehaviour
 
     private void Update()
     {
-        //LineCastToPlayer();
+
 
     }
 
     private void LateUpdate()
     {
+        LineCastToPlayer();
         Vector3 medianPos = Vector3.zero;
         foreach (Transform player in players)
         {
@@ -43,26 +45,48 @@ public class CameraCtr : MonoBehaviour
         players.Add(player);
     }
 
-/*    private void LineCastToPlayer()
+    public void StartScreenShake(float duration, float magnitude)
+    {
+        ScreenShake.ScreenShakeEffect(duration, magnitude);
+    }
+
+    public float strongSS;
+    public float mediumSS;
+    public float weakSS;
+    public void StartStrongScreenShake(float duration)
+    {
+        StartCoroutine(ScreenShake.ScreenShakeEffect(duration, strongSS));
+    }
+
+    public void StartMediumScreenShake(float duration)
+    {
+        StartCoroutine(ScreenShake.ScreenShakeEffect(duration, mediumSS));
+    }
+
+    public void StartWeakScreenShake(float duration)
+    {
+        StartCoroutine(ScreenShake.ScreenShakeEffect(duration, weakSS));
+    }
+
+    private void LineCastToPlayer()
     {
         Vector3 camPos = cam.transform.position;
-        Vector3 direction = (player.position - camPos).normalized;
-        float distance = Vector3.Distance(player.position, cam.transform.position) - sphereCastRadius;
-        RaycastHit[] hits = Physics.SphereCastAll(camPos,sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
-        if(hits.Length > 0)
+        foreach(Transform player in  players)
         {
-            foreach(RaycastHit hit in hits)
+            Vector3 direction = (player.position - camPos).normalized;
+            float distance = Vector3.Distance(player.position, cam.transform.position) - sphereCastRadius;
+            RaycastHit[] hits = Physics.SphereCastAll(camPos, sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
+            if (hits.Length > 0)
             {
-                if(hit.transform.gameObject.layer == 6)
+                foreach (RaycastHit hit in hits)
                 {
-                    Tile tile = hit.transform.GetComponent<Tile>();
-                    if (!tile.isSelected)
+                    if (hit.transform.gameObject.layer == 6)
                     {
-                        //hit.transform.gameObject.layer = 7;
+                        Tile tile = hit.transform.GetComponent<Tile>();
+                        tile.FadeTile(transparencyLevel);
                     }
-                    tile.FadingTileEffect();
                 }
             }
         }
-    }*/
+    }
 }

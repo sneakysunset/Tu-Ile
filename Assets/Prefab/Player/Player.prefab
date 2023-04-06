@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 2322084280764575136}
   - component: {fileID: 2478491969860530657}
   - component: {fileID: 5728364892868020583}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: MiningZone
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -427,6 +427,9 @@ MonoBehaviour:
   isMining: 0
   interactor: {fileID: 0}
   waterSplash: {fileID: 3827855509166264532, guid: a9a25cd28fa105047b5420e6548167dc, type: 3}
+  throwStrength: 10
+  throwYAxisDirection: 0
+  col: {fileID: 0}
 --- !u!114 &5703151869213025868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,9 +450,10 @@ MonoBehaviour:
   moveFlag: 0
   speed: 10
   jumpStrength: 2
-  dashStrength: 80
+  dashStrength: 50
   pushStrength: 30
   dashDuration: 0.05
+  dashCooldown: 0.5
   smoothTime: 0.05
   gravityMultiplier: 1
   _velocity: 0
@@ -675,9 +679,9 @@ MonoBehaviour:
     m_ActionName: Player/SpawnTile[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5703151869213025868}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-        m_MethodName: OnJump
+      - m_Target: {fileID: 5610916058789591604}
+        m_TargetAssemblyTypeName: ItemSystem, Assembly-CSharp
+        m_MethodName: OnItemInput2
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -978,7 +982,7 @@ GameObject:
   - component: {fileID: 1513522892018782601}
   - component: {fileID: 8649232305331191517}
   - component: {fileID: 6804299975358207835}
-  m_Layer: 3
+  m_Layer: 12
   m_Name: CollectZone
   m_TagString: Player
   m_Icon: {fileID: 0}
