@@ -5,6 +5,7 @@ using UnityEditor;
 using TMPro;
 using System;
 
+
 public class Tile : MonoBehaviour
 {
     #region Variables
@@ -14,7 +15,8 @@ public class Tile : MonoBehaviour
     [SerializeField] public TileType tileType = TileType.Neutral;
 
 
-    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand };
+    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, LevelLoader };
+    public string levelName;
     [HideNormalInspector] public int coordX, coordFX, coordY;
     public bool walkedOnto = false;
     [HideNormalInspector] public Vector3 currentPos;
@@ -57,7 +59,7 @@ public class Tile : MonoBehaviour
 
     #region Materials
     [HideInInspector, SerializeField] public Material disabledMat;
-    [HideInInspector] public Material unselectedMat, selectedMat, fadeMat;
+    [HideInInspector] public Material unselectedMat, selectedMat, fadeMat, undegradableMat, sandMat;
     public Color walkedOnColor, notWalkedOnColor;
     public Color penguinedColor;
     #endregion
@@ -202,6 +204,18 @@ public class Tile : MonoBehaviour
             transform.Find("Additional Visuals").gameObject.SetActive(false);
             minableItems.gameObject.SetActive(false);
         }
+        else if(tileType == TileType.Sand || tileType == TileType.LevelLoader)
+        {
+            myMeshR.sharedMaterial = sandMat;
+            transform.Find("Additional Visuals").gameObject.SetActive(true);
+            minableItems.gameObject.SetActive(true);
+        }
+        else if (!degradable)
+        {
+            myMeshR.sharedMaterial = undegradableMat;
+            transform.Find("Additional Visuals").gameObject.SetActive(true);
+            minableItems.gameObject.SetActive(true);
+        }
         else
         {
             myMeshR.sharedMaterial = unselectedMat;
@@ -237,6 +251,8 @@ public class TileEditor : Editor
     {
         tile = (Tile)target;
     }
+
+
 
     private void OnSceneGUI()
     {
