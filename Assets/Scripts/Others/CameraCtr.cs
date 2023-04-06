@@ -43,26 +43,50 @@ public class CameraCtr : MonoBehaviour
         players.Add(player);
     }
 
-/*    private void LineCastToPlayer()
+    public void StartScreenShake(float duration, float magnitude)
     {
-        Vector3 camPos = cam.transform.position;
-        Vector3 direction = (player.position - camPos).normalized;
-        float distance = Vector3.Distance(player.position, cam.transform.position) - sphereCastRadius;
-        RaycastHit[] hits = Physics.SphereCastAll(camPos,sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
-        if(hits.Length > 0)
+        ScreenShake.ScreenShakeEffect(duration, magnitude);
+    }
+
+    public float strongSS;
+    public float mediumSS;
+    public float weakSS;
+    public void StartStrongScreenShake(float duration)
+    {
+        StartCoroutine(ScreenShake.ScreenShakeEffect(duration, strongSS));
+    }
+
+    public void StartMediumScreenShake(float duration)
+    {
+        StartCoroutine(ScreenShake.ScreenShakeEffect(duration, mediumSS));
+    }
+
+    public void StartWeakScreenShake(float duration)
+    {
+        StartCoroutine(ScreenShake.ScreenShakeEffect(duration, weakSS));
+    }
+
+
+    /*    private void LineCastToPlayer()
         {
-            foreach(RaycastHit hit in hits)
+            Vector3 camPos = cam.transform.position;
+            Vector3 direction = (player.position - camPos).normalized;
+            float distance = Vector3.Distance(player.position, cam.transform.position) - sphereCastRadius;
+            RaycastHit[] hits = Physics.SphereCastAll(camPos,sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
+            if(hits.Length > 0)
             {
-                if(hit.transform.gameObject.layer == 6)
+                foreach(RaycastHit hit in hits)
                 {
-                    Tile tile = hit.transform.GetComponent<Tile>();
-                    if (!tile.isSelected)
+                    if(hit.transform.gameObject.layer == 6)
                     {
-                        //hit.transform.gameObject.layer = 7;
+                        Tile tile = hit.transform.GetComponent<Tile>();
+                        if (!tile.isSelected)
+                        {
+                            //hit.transform.gameObject.layer = 7;
+                        }
+                        tile.FadingTileEffect();
                     }
-                    tile.FadingTileEffect();
                 }
             }
-        }
-    }*/
+        }*/
 }

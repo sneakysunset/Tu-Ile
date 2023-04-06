@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6472450743787329740}
   - component: {fileID: 6354948749326121285}
   - component: {fileID: 6354948749326121287}
+  - component: {fileID: 8299111489155243357}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -46,6 +47,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da51dc8b74db77d4f8aba95ec59398a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  events: []
+  gameTimer: 0
+  LevelEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  timerText: {fileID: 0}
 --- !u!114 &6354948749326121285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,3 +127,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &8299111489155243357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1fd7cebd66f46f4686c7c96a1dba2e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelMissions:
+  - {fileID: 11400000, guid: aa24f7c934874af48a4539a33ed5917f, type: 2}
+  - {fileID: 11400000, guid: 42151d0e2e834f94292eaeb31a49f622, type: 2}
+  missionsFolder: {fileID: 0}
+  missionPrefab: {fileID: 7011966080211762253, guid: 6eee6c6daae779e4c9e953884c3151df, type: 3}
+  paddingInBetween: 100

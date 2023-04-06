@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 public class Player_StopDegradation : MonoBehaviour
 {
     private Player player;
     bool isGrowing;
     public float growingSpeed;
     public int growPrice;
-    public RessourcesManager ressourcesManager;
+    [HideInInspector] public RessourcesManager ressourcesManager;
 
     private void Start()
     {
@@ -26,7 +28,23 @@ public class Player_StopDegradation : MonoBehaviour
 
     private void Update()
     {
-        Reperation();
+        if(!TileSystem.Instance.isHub)
+        {
+            Reperation();
+        }
+        else
+        {
+            LoadScene(); 
+        }
+    }
+
+    private void LoadScene()
+    {
+        if(player.tileUnder && player.tileUnder.tileType == Tile.TileType.LevelLoader && isGrowing)
+        {
+            SceneManager.LoadScene(player.tileUnder.levelName);
+        }
+        isGrowing = false;
     }
 
     private void Reperation()
