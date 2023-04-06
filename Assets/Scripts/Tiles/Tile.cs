@@ -338,8 +338,8 @@ public class TileEditor : Editor
         inter.type = tile.tileSpawnType;
         obj.transform.parent = t;
         obj.transform.position = t.position;
-        obj.transform.LookAt(new Vector3(tile.transform.position.x, obj.transform.position.y, tile.transform.position.z));
-        
+        //obj.transform.LookAt(new Vector3(tile.transform.position.x, obj.transform.position.y, tile.transform.position.z));
+        obj.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
         return obj;
     }
 }

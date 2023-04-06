@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Ile et tatoin/MainMenu.unity
     guid: d519455b95e6968409f52a53b2eca93d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Ile et tatoin/Hub.unity
     guid: 77b26e25dff16d64992a85a480083c61
   - enabled: 1
