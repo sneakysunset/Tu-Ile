@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using TMPro;
 using System;
-
+using FMOD;
 
 public class Tile : MonoBehaviour
 {
@@ -62,6 +62,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public Material unselectedMat, selectedMat, fadeMat, undegradableMat, sandMat;
     public Color walkedOnColor, notWalkedOnColor;
     public Color penguinedColor;
+    private Material currentMat;
     #endregion
 
     #region Bump
@@ -74,6 +75,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public int step;
     private TextMeshProUGUI AI_Text;
     [HideInInspector] public bool isPenguined;
+    bool pSysIsPlaying;
     #endregion
     #endregion
 
@@ -104,6 +106,7 @@ public class Tile : MonoBehaviour
         if(walkable && !walkedOnto && degradable)
         {
             pSys.Play();
+            pSysIsPlaying = true;
             myMeshR.material.color = notWalkedOnColor;
         }
         else if(!walkable && walkedOnto && degradable)
@@ -117,14 +120,16 @@ public class Tile : MonoBehaviour
             tourbillonT.gameObject.SetActive(true);
         }
     }
+ 
     private void Update()
     {
         // StepText();
-
-        if (pSys.isPlaying && walkedOnto && degradable)
+        isFaded = false;
+        if (pSysIsPlaying && walkedOnto && degradable)
         {
             pSys.Stop(); 
             myMeshR.material.color = walkedOnColor;
+            pSysIsPlaying = false;
         }
 
         if(!walkable && tourbillon)
@@ -135,6 +140,7 @@ public class Tile : MonoBehaviour
         if(isPenguined && myMeshR.material.color != penguinedColor)
         {
             myMeshR.material.color = penguinedColor;
+
         }
         else if(!isPenguined && myMeshR.material.color == penguinedColor)
         {
@@ -144,7 +150,19 @@ public class Tile : MonoBehaviour
 
     private void LateUpdate()
     {
+        if(!isFaded && fadeChecker)
+        {
+            fadeChecker = false;
+            ChangeRenderMode.ChangeRenderModer(myMeshR.material, ChangeRenderMode.BlendMode.Opaque);
+            Color col = myMeshR.material.color;
+            col.a = .2f;
+            myMeshR.material.color = col;
+        }
         isPenguined = false;
+        if (!isFaded && myMeshR.material == fadeMat)
+        {
+            myMeshR.material = currentMat;
+        }
     }
     #endregion
 
@@ -189,6 +207,20 @@ public class Tile : MonoBehaviour
             adjTCoords[1] = new Vector2Int(coordX, coordY + 1);
             adjTCoords[4] = new Vector2Int(coordX - 1, coordY - 1);
             adjTCoords[3] = new Vector2Int(coordX, coordY - 1);
+        }
+    }
+
+    bool fadeChecker;
+    public void FadeTile(float t)
+    {
+        isFaded = true;
+        if (!fadeChecker)
+        {
+            fadeChecker = true;
+            ChangeRenderMode.ChangeRenderModer(myMeshR.material, ChangeRenderMode.BlendMode.Transparent);
+            Color col = myMeshR.material.color;
+            col.a = t;
+            myMeshR.material.color = col;
         }
     }
     #endregion

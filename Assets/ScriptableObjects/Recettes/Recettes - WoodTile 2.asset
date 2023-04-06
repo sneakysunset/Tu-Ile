@@ -20,4 +20,4 @@ MonoBehaviour:
   - stackType: 1
     cost: 2
     item: {fileID: 0}
-  craftedItemPrefab: {fileID: -7700456598475612927, guid: af6ef38888d32a347baba23a3302fbf0, type: 3}
+  craftedItemPrefab: {fileID: 2363608752128872225, guid: 210b15a271081554fb901b5bf58d7553, type: 3}
