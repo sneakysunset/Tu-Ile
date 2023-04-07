@@ -5,6 +5,7 @@ using UnityEditor;
 using TMPro;
 using System;
 using FMOD;
+using Unity.VisualScripting;
 
 public class Tile : MonoBehaviour
 {
@@ -55,6 +56,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public Transform minableItems;
     [HideInInspector] public Transform tourbillonT;
     [HideInInspector] private ParticleSystem pSys;
+     public ParticleSystem pSysCreation;
     #endregion
 
     #region Materials
@@ -99,6 +101,17 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
+        if(transform.position.y == currentPos.y && spawning)
+        {
+            spawning = false;
+            pSys.transform.position = new Vector3(pSys.transform.position.x, 0, pSys.transform.position.z) ;
+            pSysCreation.Play();
+        }
+
+        if(transform.position!=currentPos && !shakeFlag)
+        {
+            StartCoroutine(TileShake(.1f));
+        }
         // StepText();
         isFaded = false;
         if (pSysIsPlaying && walkedOnto && degradable)
@@ -122,6 +135,22 @@ public class Tile : MonoBehaviour
         {
             myMeshR.material.color = walkedOnColor;
         }
+    }
+    bool shakeFlag;
+    public IEnumerator TileShake(float magnitude)
+    {
+        shakeFlag = true;
+        while (transform.position.y != currentPos.y)
+        {
+            float x = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+            float y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+
+            transform.localPosition = new Vector3(currentPos.x + x, transform.position.y, currentPos.z + y);
+
+            yield return new WaitForEndOfFrame();
+        }
+        transform.localPosition = currentPos;
+        shakeFlag = false;
     }
 
     private void LateUpdate()
@@ -171,8 +200,10 @@ public class Tile : MonoBehaviour
             tourbillonT.gameObject.SetActive(true);
         }
     }
+    bool spawning;
     public void Spawn(float height, Material mat, Mesh mesh, string stackType)
     {
+        spawning = true;
         walkable = true;
         gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;

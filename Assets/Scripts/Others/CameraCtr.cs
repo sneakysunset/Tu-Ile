@@ -12,10 +12,12 @@ public class CameraCtr : MonoBehaviour
     public float sphereCastRadius;
     [Range(0,1)]public float transparencyLevel;
     public Vector3 medianPos;
+    private Vector3 direction;
+    private float distance;
     void Start()
     {
         cam = Camera.main;
-        
+        direction = cam.transform.position - transform.position;
     }
 
     private void Update()

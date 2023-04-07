@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   convertionTime: 1
   requiredItemStacks:
-  - stackType: 0
-    cost: 3
-    item: {fileID: 0}
   - stackType: 1
-    cost: 2
+    cost: 1
+    item: {fileID: 0}
+  - stackType: 2
+    cost: 1
     item: {fileID: 0}
   craftedItemPrefab: {fileID: 2363608752128872225, guid: 210b15a271081554fb901b5bf58d7553, type: 3}
+  numberOfCrafted: 4

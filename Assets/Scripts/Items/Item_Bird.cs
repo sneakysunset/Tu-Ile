@@ -11,6 +11,7 @@ public class Item_Bird : Item
     private AI_Movement AIM;
     private CharacterController AIC;
     bool isThrown;
+    public ParticleSystem featherPSYS;
     private void Start()
     {
         AIB = GetComponent<AI_Behaviour>();    
@@ -34,6 +35,7 @@ public class Item_Bird : Item
         AIM.enabled = false;
         AIB.ClearPath();
         gameObject.layer = 13;
+        featherPSYS.Play();
 
     }
 
@@ -47,6 +49,7 @@ public class Item_Bird : Item
         AIM.enabled = true;
         AIC.enabled = true;
         gameObject.layer = 8;
+        featherPSYS.Play();
     }
 
     public override void ThrowAction(Player player, float throwStrength, Vector3 direction)
@@ -56,6 +59,7 @@ public class Item_Bird : Item
         pM.gravityMultiplier *= gravityDivider;
         pM.jumpStrength *= jumpModifier;
         base.ThrowAction(player, throwStrength, direction);
+        featherPSYS.Play();
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)

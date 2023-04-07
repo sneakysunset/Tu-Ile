@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
+    public enum StackType { Other, Wood, Rock, Gold, Diamond, Adamantium };
     public bool holdable;
     [HideNormalInspector] public bool isHeld;
     [HideInInspector] public Rigidbody rb;
@@ -14,6 +15,7 @@ public class Item : MonoBehaviour
     protected Player _player;
     [HideInInspector] public bool physic = true;
     [HideInInspector] public Collider col;
+    public Item_Stack.StackType stackType;
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;
