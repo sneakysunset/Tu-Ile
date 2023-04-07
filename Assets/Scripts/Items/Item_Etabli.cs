@@ -109,11 +109,6 @@ public class Item_Etabli : Item
             }
         }
     }
-
-    private void OnDrawGizmos()
-    {
-
-    }
 }
 
 #if UNITY_EDITOR

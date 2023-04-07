@@ -70,7 +70,7 @@ PrefabInstance:
     - target: {fileID: 3293183830676129177, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0660bbbfe554b174ebe430adced00241, type: 2}
+      objectReference: {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
     - target: {fileID: 3727239290930370502, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -102,15 +102,19 @@ PrefabInstance:
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 0660bbbfe554b174ebe430adced00241, type: 2}
+      objectReference: {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: materials.Array.data[2]
       value: 
-      objectReference: {fileID: 2100000, guid: 0660bbbfe554b174ebe430adced00241, type: 2}
+      objectReference: {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: materials.Array.data[3]
       value: 
-      objectReference: {fileID: 2100000, guid: 0660bbbfe554b174ebe430adced00241, type: 2}
+      objectReference: {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: numberOfRessourceGenerated
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: m_Name
       value: Diamant

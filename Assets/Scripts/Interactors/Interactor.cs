@@ -20,6 +20,7 @@ public class Interactor : MonoBehaviour
     Transform stackT;
     private Item_Stack stackItem;
     [Range(1, 10)] public int numberOfRessourceGenerated = 3;
+    [HideInInspector] public ParticleSystem hitPSys;
     private void Start()
     {
         stateIndex = meshs.Length - 1;
@@ -31,6 +32,7 @@ public class Interactor : MonoBehaviour
         Transform p = transform.parent.parent.parent;
         stackT = p.Find("StackPos");
         CreateStack();
+        hitPSys = GetComponentInChildren<ParticleSystem>();
     }
 
     void CreateStack()
@@ -66,15 +68,6 @@ public class Interactor : MonoBehaviour
             stateIndex--;
             meshF.mesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
-            switch (type)
-            {
-                case Tile.TileType.Wood:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
-                    break;
-                case Tile.TileType.Rock:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
-                    break;
-            }
         }
     }
 
