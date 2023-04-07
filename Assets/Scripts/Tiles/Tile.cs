@@ -214,7 +214,7 @@ public class Tile : MonoBehaviour
         }
     }
 
-    bool fadeChecker;
+    [HideNormalInspector] public bool fadeChecker;
     public void FadeTile(float t)
     {
         isFaded = true;

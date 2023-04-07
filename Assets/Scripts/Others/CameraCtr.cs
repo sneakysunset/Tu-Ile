@@ -80,10 +80,13 @@ public class CameraCtr : MonoBehaviour
             {
                 foreach (RaycastHit hit in hits)
                 {
-                    if (hit.transform.gameObject.layer == 6)
+                    if (hit.transform.TryGetComponent<Tile>(out Tile tile))
                     {
-                        Tile tile = hit.transform.GetComponent<Tile>();
-                        tile.FadeTile(transparencyLevel);
+                            tile.FadeTile(transparencyLevel);
+                    }
+                    else if (hit.transform.TryGetComponent<Interactor>(out Interactor inter))
+                    {
+                            inter.FadeTile(transparencyLevel);
                     }
                 }
             }

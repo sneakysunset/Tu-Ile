@@ -825,7 +825,6 @@ MonoBehaviour:
   timeToGetToMaxDegradationSpeed: 0
   spawnSpawners: 0
   spawnPoints:
-  - {fileID: 7133090253872893059}
   - {fileID: 1949783130783487149}
   - {fileID: 4691495834763128532}
   tileS: {fileID: 0}
@@ -854,6 +853,7 @@ MonoBehaviour:
   isPathChecked: 0
   step: 0
   isPenguined: 0
+  fadeChecker: 0
 --- !u!33 &8540724609792189564
 MeshFilter:
   m_ObjectHideFlags: 0
