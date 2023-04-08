@@ -5,8 +5,8 @@ using UnityEngine;
 public class Item_Stack : Item 
 {
     [HideInInspector] public MeshRenderer meshR;
-    public enum StackType { Wood, Rock, Gold, Diamond, Adamantium};
-    public StackType stackType;
+
+    
     public int numberStacked = 0;
     protected RessourcesManager rMan;
     protected MeshFilter meshF;

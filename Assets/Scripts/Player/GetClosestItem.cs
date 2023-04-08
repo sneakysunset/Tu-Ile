@@ -29,9 +29,52 @@ public class GetClosestItem : MonoBehaviour
                     Item_Stack item_Stack = (Item_Stack)item;
                     if (!item_Stack.trueHoldable) return;
                 }
+
+                else if (item.GetType() == typeof(Item_Etabli))
+                {
+                    Item_Etabli item_ = (Item_Etabli)item;
+                    if (!player.heldItem) return;
+                    foreach (stack it in item_.recette.requiredItemStacks)
+                    {
+                        if (it.stackType == player.heldItem.stackType)
+                        {
+                            GetItemOnTriggerEnter(item);
+                        }
+                    }
+                    return;
+                }
                 GetItemOnTriggerEnter(item);
             }
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.TryGetComponent(out Item item))
+        {
+            if (player.heldItem != item && !player.holdableItems.Contains(item) && item.holdable)
+            {
+                if (item.GetType() == typeof(Item_Stack))
+                {
+                    Item_Stack item_Stack = (Item_Stack)item;
+                    if (!item_Stack.trueHoldable) return;
+                }
+                else if(item.GetType() == typeof(Item_Etabli))
+                {
+                    Item_Etabli item_ = (Item_Etabli)item;
+                    if (!player.heldItem) return;
+                    foreach(stack it in item_.recette.requiredItemStacks)
+                    {
+                        if(it.stackType != player.heldItem.stackType)
+                        {
+                            return;
+                        }
+                    }
+                }
+                GetItemOnTriggerEnter(item);
+            }
+        }
+
     }
 
     private void OnTriggerExit(Collider other)

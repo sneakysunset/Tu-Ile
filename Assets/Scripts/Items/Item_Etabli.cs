@@ -86,6 +86,7 @@ public class Item_Etabli : Item
         craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, transform.rotation, null);
         craftedItem.transform.parent = createdItem;
         craftedItem.physic = false;
+        craftedItem.GetComponent<Item_Stack>().numberStacked = recette.numberOfCrafted;
         craftedItem.rb.isKinematic = true;  
     }
 
@@ -108,11 +109,6 @@ public class Item_Etabli : Item
                 }
             }
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-
     }
 }
 

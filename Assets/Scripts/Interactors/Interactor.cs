@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+
 public class Interactor : MonoBehaviour
 {
     public Tile.TileType type;
@@ -11,7 +13,7 @@ public class Interactor : MonoBehaviour
     public float regrowthTimer;
     protected float timer;
     protected int stateIndex;
-    protected bool isInteractedWith;
+    public bool isInteractedWith;
     public bool interactable = true;
     protected float currentHitTimer;
     protected List<Player> _player;
@@ -20,6 +22,8 @@ public class Interactor : MonoBehaviour
     Transform stackT;
     private Item_Stack stackItem;
     [Range(1, 10)] public int numberOfRessourceGenerated = 3;
+    [HideNormalInspector] public bool fadeChecker;
+    [HideNormalInspector] bool isFaded;
     private void Start()
     {
         stateIndex = meshs.Length - 1;
@@ -66,27 +70,29 @@ public class Interactor : MonoBehaviour
             stateIndex--;
             meshF.mesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
-            switch (type)
-            {
-                case Tile.TileType.Wood:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
-                    break;
-                case Tile.TileType.Rock:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
-                    break;
-            }
         }
     }
 
+    
+
+    private void LateUpdate()
+    {
+        UnFadeTile();
+    }
+
+    bool ps;
+    public ParticleSystem pSysRegrowth;
     private void Update()
     {
-        timer -= Time.deltaTime;
-        if (isInteractedWith)
+        isFaded = false;
+        if(!isInteractedWith && stateIndex < meshs.Length - 1)
         {
-            OnFilonMined();
-        }
-        else if(stateIndex < meshs.Length - 1)
-        {
+            timer -= Time.deltaTime;
+            if (timer < 1 && !ps && _player != null)
+            {
+                ps = true;
+                pSysRegrowth.Play();
+            }
             if (timer <= 0)
             {
                 timer = regrowthTimer;
@@ -98,6 +104,7 @@ public class Interactor : MonoBehaviour
             interactable = true;
             meshF.mesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
+            ps = false;
         }
     }
 
@@ -134,27 +141,48 @@ public class Interactor : MonoBehaviour
         interactable = false;
     }
 
-    protected virtual void OnFilonMined()
+    public virtual void OnFilonMined()
     {
-        if (timer <= 0 && stateIndex > 0)
+        if (/*timer <= 0 &&*/ stateIndex > 0)
         {
-            switch (type)
-            {
-                case Tile.TileType.Wood:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
-                    break;
-                case Tile.TileType.Rock:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
-                    break;
-            }
             timer = currentHitTimer;
+            if (stateIndex == 1)
+            {
+
+                EmptyInteractor();
+            }
             stateIndex--;
             meshF.mesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
         }
-        else if (stateIndex == 0)
+        else 
         {
-            EmptyInteractor();
+            //EmptyInteractor();
+        }
+    }
+
+    public void FadeTile(float t)
+    {
+        isFaded = true;
+        if (!fadeChecker)
+        {
+            fadeChecker = true;
+            ChangeRenderMode.ChangeRenderModer(meshR.material, ChangeRenderMode.BlendMode.Transparent);
+            Color col = meshR.material.color;
+            col.a = t;
+            meshR.material.color = col;
+        }
+    }
+
+    private void UnFadeTile()
+    {
+        if (!isFaded && fadeChecker)
+        {
+            fadeChecker = false;
+            ChangeRenderMode.ChangeRenderModer(meshR.material, ChangeRenderMode.BlendMode.Opaque);
+            Color col = meshR.material.color;
+            col.a = .2f;
+            meshR.material.color = col;
         }
     }
 }

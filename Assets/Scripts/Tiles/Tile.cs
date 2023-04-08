@@ -5,6 +5,7 @@ using UnityEditor;
 using TMPro;
 using System;
 using FMOD;
+using Unity.VisualScripting;
 
 public class Tile : MonoBehaviour
 {
@@ -55,6 +56,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public Transform minableItems;
     [HideInInspector] public Transform tourbillonT;
     [HideInInspector] private ParticleSystem pSys;
+     public ParticleSystem pSysCreation;
     #endregion
 
     #region Materials
@@ -87,42 +89,29 @@ public class Tile : MonoBehaviour
         coordFX = coordX - coordY / 2;
         currentPos = transform.position;
         pSys = gameObject.GetComponentInChildren<ParticleSystem>();
-        myMeshR = GetComponent<MeshRenderer>();
-        myMeshF = GetComponent<MeshFilter>();
+
         tourbillonT = transform.Find("Tourbillon");
-        if (!degradable && walkable)
-        {
-            myMeshR.material = selectedMat;
-        }
-        if (!walkable)
-        {
-            walkedOnto = true;
-            gameObject.layer = LayerMask.NameToLayer("DisabledTile");
-            myMeshR.enabled = false;
-            //GetComponent<Collider>().enabled = false;
-            transform.Find("Additional Visuals").gameObject.SetActive(false);
-            minableItems.gameObject.SetActive(false);
-        }
-        if(walkable && !walkedOnto && degradable)
-        {
-            pSys.Play();
-            pSysIsPlaying = true;
-            myMeshR.material.color = notWalkedOnColor;
-        }
-        else if(!walkable && walkedOnto && degradable)
-        {
-            myMeshR.material.color = walkedOnColor;
-        }
+
         timer = UnityEngine.Random.Range(minTimer, maxTimer);
         GetAdjCoords();
-        if(!walkable && tourbillon)
-        {
-            tourbillonT.gameObject.SetActive(true);
-        }
+
+        SetMatOnStart();    
     }
  
+
     private void Update()
     {
+        if(transform.position.y == currentPos.y && spawning)
+        {
+            spawning = false;
+            pSys.transform.position = new Vector3(pSys.transform.position.x, 0, pSys.transform.position.z) ;
+            pSysCreation.Play();
+        }
+
+        if(transform.position!=currentPos && !shakeFlag)
+        {
+            StartCoroutine(TileShake(.1f));
+        }
         // StepText();
         isFaded = false;
         if (pSysIsPlaying && walkedOnto && degradable)
@@ -147,28 +136,74 @@ public class Tile : MonoBehaviour
             myMeshR.material.color = walkedOnColor;
         }
     }
+    bool shakeFlag;
+    public IEnumerator TileShake(float magnitude)
+    {
+        shakeFlag = true;
+        while (transform.position.y != currentPos.y)
+        {
+            float x = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+            float y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+
+            transform.localPosition = new Vector3(currentPos.x + x, transform.position.y, currentPos.z + y);
+
+            yield return new WaitForEndOfFrame();
+        }
+        transform.localPosition = currentPos;
+        shakeFlag = false;
+    }
 
     private void LateUpdate()
     {
-        if(!isFaded && fadeChecker)
-        {
-            fadeChecker = false;
-            ChangeRenderMode.ChangeRenderModer(myMeshR.material, ChangeRenderMode.BlendMode.Opaque);
-            Color col = myMeshR.material.color;
-            col.a = .2f;
-            myMeshR.material.color = col;
-        }
+        UnFadeTile();
         isPenguined = false;
-        if (!isFaded && myMeshR.material == fadeMat)
-        {
-            myMeshR.material = currentMat;
-        }
     }
     #endregion
 
     #region Tile Functions
+    private void SetMatOnStart()
+    {
+        myMeshR = GetComponent<MeshRenderer>();
+        myMeshF = GetComponent<MeshFilter>();
+
+        if (!degradable && walkable)
+        {
+            myMeshR.material = selectedMat;
+        }
+        else if (!walkable)
+        {
+            walkedOnto = true;
+            gameObject.layer = LayerMask.NameToLayer("DisabledTile");
+            myMeshR.enabled = false;
+            //GetComponent<Collider>().enabled = false;
+            transform.Find("Additional Visuals").gameObject.SetActive(false);
+            minableItems.gameObject.SetActive(false);
+        }
+        else if (walkable && !degradable && tileType == TileType.Sand)
+        {
+            pSysIsPlaying = false;
+            myMeshR.material = sandMat;
+            walkedOnto = true;
+        }
+        else if (walkable && !walkedOnto && degradable)
+        {
+            pSys.Play();
+            pSysIsPlaying = true;
+            myMeshR.material.color = notWalkedOnColor;
+        }
+        else if (!walkable && walkedOnto && degradable)
+        {
+            myMeshR.material.color = walkedOnColor;
+        }
+        if (!walkable && tourbillon)
+        {
+            tourbillonT.gameObject.SetActive(true);
+        }
+    }
+    bool spawning;
     public void Spawn(float height, Material mat, Mesh mesh, string stackType)
     {
+        spawning = true;
         walkable = true;
         gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;
@@ -210,7 +245,7 @@ public class Tile : MonoBehaviour
         }
     }
 
-    bool fadeChecker;
+    [HideNormalInspector] public bool fadeChecker;
     public void FadeTile(float t)
     {
         isFaded = true;
@@ -220,6 +255,18 @@ public class Tile : MonoBehaviour
             ChangeRenderMode.ChangeRenderModer(myMeshR.material, ChangeRenderMode.BlendMode.Transparent);
             Color col = myMeshR.material.color;
             col.a = t;
+            myMeshR.material.color = col;
+        }
+    }
+
+    private void UnFadeTile()
+    {
+        if (!isFaded && fadeChecker)
+        {
+            fadeChecker = false;
+            ChangeRenderMode.ChangeRenderModer(myMeshR.material, ChangeRenderMode.BlendMode.Opaque);
+            Color col = myMeshR.material.color;
+            col.a = .2f;
             myMeshR.material.color = col;
         }
     }

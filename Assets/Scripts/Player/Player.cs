@@ -26,18 +26,12 @@ public class Player : MonoBehaviour
     public float throwStrength;
     [Range(-5, 5)]public float throwYAxisDirection;
     [HideInInspector] public Collider col;
-
+    public ParticleSystem hitParticleSystem;
     private void Awake()
     {
         if (respawnTile == null)
         {
-            foreach (Tile til in tileS.tiles)
-            {
-                if (til.walkable && !til.degradable)
-                {
-                    respawnTile = til; break;
-                }
-            }
+            respawnTile = TileSystem.Instance.centerTile;
             transform.position = respawnTile.transform.position + Vector3.up * 22.5f;
         }
         FindObjectOfType<CameraCtr>().AddPlayer(transform);
