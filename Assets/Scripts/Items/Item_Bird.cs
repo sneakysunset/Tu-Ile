@@ -66,16 +66,7 @@ public class Item_Bird : Item
     {
         if (hit.collider.CompareTag("Water"))
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
-            if (_player)
-            {
-                _player.heldItem = null;
-                if (_player.holdableItems.Contains(this))
-                {
-                    _player.holdableItems.Remove(this);
-                }
-            }
-            Destroy(gameObject);
+            StartCoroutine(KillItem(hit.collider));
         }
     }
 
@@ -92,5 +83,14 @@ public class Item_Bird : Item
             AIM.enabled = true;
             AIC.enabled = true;
         }
+    }
+
+    public override IEnumerator KillItem(Collider other)
+    {
+        AIC.enabled = false;
+        rb.mass /= 20;
+        isThrown = true;
+        StartCoroutine(base.KillItem(other));
+        yield return null;
     }
 }
