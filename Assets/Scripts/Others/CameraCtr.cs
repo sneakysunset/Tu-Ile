@@ -10,6 +10,7 @@ public class CameraCtr : MonoBehaviour
     private List<Transform> players;
     public LayerMask lineCastLayers;
     public float sphereCastRadius;
+    [Range(0,1)]public float transparencyLevel;
     public Vector3 medianPos;
     void Start()
     {
@@ -19,12 +20,13 @@ public class CameraCtr : MonoBehaviour
 
     private void Update()
     {
-        //LineCastToPlayer();
+
 
     }
 
     private void LateUpdate()
     {
+        LineCastToPlayer();
         Vector3 medianPos = Vector3.zero;
         foreach (Transform player in players)
         {
@@ -66,27 +68,28 @@ public class CameraCtr : MonoBehaviour
         StartCoroutine(ScreenShake.ScreenShakeEffect(duration, weakSS));
     }
 
-
-    /*    private void LineCastToPlayer()
+    private void LineCastToPlayer()
+    {
+        Vector3 camPos = cam.transform.position;
+        foreach(Transform player in  players)
         {
-            Vector3 camPos = cam.transform.position;
             Vector3 direction = (player.position - camPos).normalized;
             float distance = Vector3.Distance(player.position, cam.transform.position) - sphereCastRadius;
-            RaycastHit[] hits = Physics.SphereCastAll(camPos,sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
-            if(hits.Length > 0)
+            RaycastHit[] hits = Physics.SphereCastAll(camPos, sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
+            if (hits.Length > 0)
             {
-                foreach(RaycastHit hit in hits)
+                foreach (RaycastHit hit in hits)
                 {
-                    if(hit.transform.gameObject.layer == 6)
+                    if (hit.transform.TryGetComponent<Tile>(out Tile tile))
                     {
-                        Tile tile = hit.transform.GetComponent<Tile>();
-                        if (!tile.isSelected)
-                        {
-                            //hit.transform.gameObject.layer = 7;
-                        }
-                        tile.FadingTileEffect();
+                            tile.FadeTile(transparencyLevel);
+                    }
+                    else if (hit.transform.TryGetComponent<Interactor>(out Interactor inter))
+                    {
+                            inter.FadeTile(transparencyLevel);
                     }
                 }
             }
-        }*/
+        }
+    }
 }

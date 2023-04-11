@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6465f77c236d94f9c14b0a445f3f56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
   meshs:
   - {fileID: 5780153809476524596, guid: 58524e9a219587a499fda68a6f3a4957, type: 3}
   - {fileID: 5780153809476524596, guid: cc283046e2046ad459200e7430afda7e, type: 3}
@@ -63,6 +64,7 @@ MonoBehaviour:
   spawnPrefab: {fileID: 7307083508970999916, guid: 916ede32b917e24448f062a764b82885, type: 3}
   ressourceNum: 10
   numberOfRessourceGenerated: 3
+  hitPSys: {fileID: 0}
 --- !u!33 &3727239290930370502
 MeshFilter:
   m_ObjectHideFlags: 0

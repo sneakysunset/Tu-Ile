@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+
 public class Interactor : MonoBehaviour
 {
     public Tile.TileType type;
@@ -20,6 +22,8 @@ public class Interactor : MonoBehaviour
     Transform stackT;
     private Item_Stack stackItem;
     [Range(1, 10)] public int numberOfRessourceGenerated = 3;
+    [HideNormalInspector] public bool fadeChecker;
+    [HideNormalInspector] bool isFaded;
     private void Start()
     {
         stateIndex = meshs.Length - 1;
@@ -40,6 +44,10 @@ public class Interactor : MonoBehaviour
             GameObject obj = Instantiate(spawnPrefab, stackT.position, Quaternion.identity, null);
             obj.transform.parent = stackT;
             stackItem = obj.GetComponent<Item_Stack>();
+            foreach(Player player in _player)
+            {
+                player.holdableItems.Add(stackItem);
+            }
         }
         else
         {
@@ -62,20 +70,19 @@ public class Interactor : MonoBehaviour
             stateIndex--;
             meshF.mesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
-            switch (type)
-            {
-                case Tile.TileType.Wood:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
-                    break;
-                case Tile.TileType.Rock:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
-                    break;
-            }
         }
+    }
+
+    
+
+    private void LateUpdate()
+    {
+        UnFadeTile();
     }
 
     private void Update()
     {
+        isFaded = false;
         timer -= Time.deltaTime;
         if (isInteractedWith)
         {
@@ -151,6 +158,31 @@ public class Interactor : MonoBehaviour
         else if (stateIndex == 0)
         {
             EmptyInteractor();
+        }
+    }
+
+    public void FadeTile(float t)
+    {
+        isFaded = true;
+        if (!fadeChecker)
+        {
+            fadeChecker = true;
+            ChangeRenderMode.ChangeRenderModer(meshR.material, ChangeRenderMode.BlendMode.Transparent);
+            Color col = meshR.material.color;
+            col.a = t;
+            meshR.material.color = col;
+        }
+    }
+
+    private void UnFadeTile()
+    {
+        if (!isFaded && fadeChecker)
+        {
+            fadeChecker = false;
+            ChangeRenderMode.ChangeRenderModer(meshR.material, ChangeRenderMode.BlendMode.Opaque);
+            Color col = meshR.material.color;
+            col.a = .2f;
+            meshR.material.color = col;
         }
     }
 }

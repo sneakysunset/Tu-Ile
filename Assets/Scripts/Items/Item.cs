@@ -53,6 +53,7 @@ public class Item : MonoBehaviour
         transform.parent = null;
         transform.rotation = Quaternion.identity;
         physic = true;
+        Highlight.SetActive(true);
     }
 
     public virtual void ThrowAction(Player player, float throwStrength, Vector3 direction)

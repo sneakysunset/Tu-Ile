@@ -9,6 +9,7 @@ public class Player_Mining : MonoBehaviour
     public float hitRate;
     private Player player;
     public GameObject axe;
+    
     private void Start()
     {
         player = GetComponent<Player>();
