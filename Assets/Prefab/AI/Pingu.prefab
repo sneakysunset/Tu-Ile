@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1993684740632381328}
   - component: {fileID: 1993684740632381330}
   - component: {fileID: 1993684740632381327}
+  - component: {fileID: 4166800590185427786}
   m_Layer: 8
   m_Name: Pingu
   m_TagString: Untagged
@@ -182,3 +183,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerDeterioration: 0.01
+--- !u!114 &4166800590185427786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993684740632381338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 882b3ab8e8a902e4292ef6875d1bf85a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdable: 0
+  isHeld: 0
+  rb: {fileID: 0}
+  Highlight: {fileID: 0}
+  physic: 1
+  col: {fileID: 0}
+  stackType: 0
+  gravityDivider: 0
+  jumpModifier: 0
+  featherPSYS: {fileID: 0}

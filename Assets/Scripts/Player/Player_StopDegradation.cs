@@ -55,7 +55,7 @@ public class Player_StopDegradation : MonoBehaviour
             isGrowing = false;
             return;
         }
-        bool cd1 = player.tileUnder.CompareTag("DegradingTile");
+        //bool cd1 = player.tileUnder.CompareTag("DegradingTile");
         bool cd2 = isGrowing;
         bool cd3 = !tile.isGrowing;
         bool cd4 = tile.walkable;
@@ -69,7 +69,7 @@ public class Player_StopDegradation : MonoBehaviour
         }
         Item_Stack stackItem = player.heldItem as Item_Stack;
         bool cd8 = stackItem.numberStacked >= ressourcesManager.growthCost;
-        if (cd1 && cd2 && cd3 && cd4 && cd5 && cd6 && cd7 && cd8)
+        if (cd2 && cd3 && cd4 && cd5 && cd6 && cd7 && cd8)
         {
             stackItem.numberStacked -= ressourcesManager.growthCost;
             tile.currentPos.y += tile.heightByTile;
