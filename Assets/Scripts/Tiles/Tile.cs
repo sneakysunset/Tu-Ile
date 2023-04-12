@@ -61,7 +61,7 @@ public class Tile : MonoBehaviour
 
     #region Materials
     [HideInInspector, SerializeField] public Material disabledMat;
-    [HideInInspector] public Material unselectedMat, selectedMat, fadeMat, undegradableMat, sandMat;
+    [HideInInspector] public Material plaineMat, undegradableMat, sandMat;
     public Color walkedOnColor, notWalkedOnColor;
     public Color penguinedColor;
     private Material currentMat;
@@ -168,7 +168,7 @@ public class Tile : MonoBehaviour
 
         if (!degradable && walkable && tileType == TileType.Neutral)
         {
-            myMeshR.material = selectedMat;
+            myMeshR.material = plaineMat;
         }
         else if (!walkable)
         {
@@ -299,7 +299,7 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            myMeshR.sharedMaterial = unselectedMat;
+            myMeshR.sharedMaterial = plaineMat;
             transform.Find("Additional Visuals").gameObject.SetActive(true);
             minableItems.gameObject.SetActive(true);
         }

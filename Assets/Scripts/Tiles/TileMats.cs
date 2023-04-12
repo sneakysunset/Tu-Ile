@@ -9,8 +9,7 @@ public class TileMats : MonoBehaviour
     public Material disabledTileMaterial;
     public Material undegradableTileMat, sandTileMat;
     [Header ("Game Mats")]
-    public Material selectedTileMaterial;
-    public Material unselectedTileMaterial, FadedTileMaterial;
+    public Material plaineTileMat;
     public GameObject treePrefab, rockPrefab, goldPrefab, diamondPrefab, adamantiumPrefab;
     private TileSystem tileSystem;
 

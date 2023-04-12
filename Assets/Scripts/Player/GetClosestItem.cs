@@ -71,7 +71,7 @@ public class GetClosestItem : MonoBehaviour
                         }
                     }
                 }
-                GetItemOnTriggerEnter(item);
+                //GetItemOnTriggerEnter(item);
             }
         }
 
@@ -110,6 +110,7 @@ public class GetClosestItem : MonoBehaviour
             Item_Stack heldItemS = player.heldItem as Item_Stack;
             if (tempItem.stackType == heldItemS.stackType)
             {
+                print(1);
                 heldItemS.numberStacked += tempItem.numberStacked;
                 Destroy(tempItem.gameObject);
                 return;
