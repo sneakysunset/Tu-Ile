@@ -20,7 +20,7 @@ public class ItemSystem : MonoBehaviour
     {
         if (context.started && player.heldItem != null && player.holdableItems.Count == 0)
         {
-            player.heldItem.GrabRelease(player);
+            player.heldItem.GrabRelease();
             player.holdableItems.Add(player.heldItem);
             if (player.closestItem == null) player.closestItem = player.heldItem;
             player.heldItem = null;
@@ -32,16 +32,25 @@ public class ItemSystem : MonoBehaviour
             if(player.heldItem != null)
             {
                 //player.holdableItems.Add(player.heldItem);
-                player.heldItem.GrabRelease(player);
+                player.heldItem.GrabRelease();
             }
             if(player.closestItem.GetType() != typeof(Item_Etabli))
             {
+                if (player.closestItem.isHeld)
+                {
+                    print(1);
+                    player.closestItem.GrabRelease();
+                    Player pl = player.closestItem._player;
+                    pl.holdableItems.Add(player.closestItem);
+                    pl.heldItem = null;
+                }
                 player.heldItem = player.closestItem;
                 player.holdableItems.Remove(player.heldItem);
                 player.heldItem.GrabStarted(holdPoint, player);
             }
             else
             {
+
                 player.closestItem.GrabStarted(holdPoint, player);
                 player.holdableItems.Remove(player.closestItem);
             }

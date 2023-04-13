@@ -39,9 +39,9 @@ public class Item_Bird : Item
 
     }
 
-    public override void GrabRelease(Player player)
+    public override void GrabRelease()
     {
-        base.GrabRelease(player);
+        base.GrabRelease();
         rb.isKinematic = true;
         pM.gravityMultiplier *= gravityDivider;
         pM.jumpStrength *= jumpModifier;
