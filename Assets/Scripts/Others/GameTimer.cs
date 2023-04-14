@@ -17,7 +17,7 @@ public class GameTimer : MonoBehaviour
     public enum Events { Apocalypse};
     public List<Event> events;
     public float gameTimer;
-    [HideInInspector] public float timer;
+    private float timer;
     public UnityEvent LevelEnd;
     public Slider timerSlider;
     public Transform eventFolder;

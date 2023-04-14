@@ -12,7 +12,7 @@ public class Item : MonoBehaviour
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public GameObject Highlight;
     protected Transform heldPoint;
-    public Player _player;
+    protected Player _player;
     [HideInInspector] public bool physic = true;
     [HideInInspector] public Collider col;
     public Item_Stack.StackType stackType;
@@ -44,14 +44,14 @@ public class Item : MonoBehaviour
         transform.parent = heldPoint;
     }
 
-    public virtual void GrabRelease()
+    public virtual void GrabRelease(Player player)
     {
         isHeld = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.isKinematic = false;
         rb.velocity = Vector2.zero;
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Release_Item");
-        _player.holdableItems.Add(this);
+        player.holdableItems.Add(this);
         transform.parent = null;
         transform.rotation = Quaternion.identity;
         physic = true;

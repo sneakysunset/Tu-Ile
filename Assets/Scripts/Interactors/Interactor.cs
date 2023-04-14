@@ -10,7 +10,6 @@ public class Interactor : MonoBehaviour
     public Material[] materials;
     protected MeshRenderer meshR;
     protected MeshFilter meshF;
-    protected MeshCollider meshC;
     public float regrowthTimer;
     protected float timer;
     protected int stateIndex;
@@ -30,10 +29,8 @@ public class Interactor : MonoBehaviour
         stateIndex = meshs.Length - 1;
         meshF = GetComponent<MeshFilter>();
         meshR = GetComponent<MeshRenderer>();
-        meshC = GetComponent<MeshCollider>();
         meshR.sharedMaterial = materials[stateIndex];
         meshF.mesh = meshs[stateIndex]; 
-        meshC.sharedMesh = meshs[stateIndex]; 
         _player = new List<Player>();
         Transform p = transform.parent.parent.parent;
         stackT = p.Find("StackPos");
@@ -72,7 +69,6 @@ public class Interactor : MonoBehaviour
         {
             stateIndex--;
             meshF.mesh = meshs[stateIndex];
-            meshC.sharedMesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
         }
     }
@@ -107,7 +103,6 @@ public class Interactor : MonoBehaviour
         {
             interactable = true;
             meshF.mesh = meshs[stateIndex];
-            meshC.sharedMesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
             ps = false;
         }
@@ -158,7 +153,6 @@ public class Interactor : MonoBehaviour
             }
             stateIndex--;
             meshF.mesh = meshs[stateIndex];
-            meshC.sharedMesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
         }
         else 

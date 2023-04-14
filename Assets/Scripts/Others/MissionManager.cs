@@ -4,47 +4,20 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
-public struct missionPage
-{
-    public float deliveryTimer;
-    public List<SO_Mission> missions;
-}
-
 public class MissionManager : MonoBehaviour
 {
-    public List<missionPage> levelMissions;
+    public List<SO_Mission> levelMissions;
     private TileCounter tileCounter;
-    private GameTimer gmTimer;
     public Transform missionsFolder;
     public GameObject missionPrefab;
     public float paddingInBetween = 1;
-    int missionPageIndex;
     private void Start()
     {
+
         tileCounter = FindObjectOfType<TileCounter>();
-        gmTimer = GetComponent<GameTimer>();
-        SetNewMissions();   
-    }
 
-    private void Update()
-    {
-        if (levelMissions[missionPageIndex].deliveryTimer >= gmTimer.timer)
-        {
-            missionPageIndex++;
-            SetNewMissions();
-        }
-    }
-
-    private void SetNewMissions()
-    {
-        float padding = 0;
-        while(missionPrefab.transform.childCount > 0)
-        {
-            Destroy(missionPrefab.transform.GetChild(0).gameObject);
-        }
-
-        foreach (SO_Mission s in levelMissions[missionPageIndex].missions)
+        float padding = 0; 
+        foreach (SO_Mission s in levelMissions)
         {
             Transform m = Instantiate(missionPrefab, missionsFolder).transform;
             s.missionText = m.GetComponentInChildren<TextMeshProUGUI>();
@@ -57,7 +30,7 @@ public class MissionManager : MonoBehaviour
     
     public void CheckMissions()
     {
-        foreach (SO_Mission s in levelMissions[missionPageIndex].missions)
+        foreach (SO_Mission s in levelMissions)
         {
             CheckMissionCompletion(s);
         }

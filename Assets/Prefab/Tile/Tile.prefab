@@ -837,7 +837,9 @@ MonoBehaviour:
   tourbillonT: {fileID: 0}
   pSysCreation: {fileID: 6110715987752271232}
   disabledMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
-  plaineMat: {fileID: 0}
+  unselectedMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
+  selectedMat: {fileID: 2100000, guid: e8fbe13235048a14ab9a6668c630c855, type: 2}
+  fadeMat: {fileID: 0}
   undegradableMat: {fileID: 0}
   sandMat: {fileID: 0}
   walkedOnColor: {r: 0.8490566, g: 0.734247, b: 0.734247, a: 1}
@@ -882,7 +884,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
