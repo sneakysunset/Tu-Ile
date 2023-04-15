@@ -30,7 +30,7 @@ public class MissionManager : MonoBehaviour
 
     private void Update()
     {
-        if (levelMissions[missionPageIndex].deliveryTimer + passingTimer <= gmTimer.timer)
+        if (levelMissions[missionPageIndex].deliveryTimer + passingTimer <= gmTimer.timer && levelMissions.Count - 1 >  missionPageIndex)
         {
             passingTimer += gmTimer.timer;
             missionPageIndex++;
@@ -45,7 +45,7 @@ public class MissionManager : MonoBehaviour
         {
             for (int i = missionsFolder.childCount - 1; i >= 0 ; i--)
             {
-                Destroy(missionPrefab.transform.GetChild(i).gameObject);
+                Destroy(missionsFolder.transform.GetChild(i).gameObject);
             }
         }
 

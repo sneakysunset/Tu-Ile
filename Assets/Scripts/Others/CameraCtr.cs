@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,12 +13,18 @@ public class CameraCtr : MonoBehaviour
     public float sphereCastRadius;
     [Range(0,1)]public float transparencyLevel;
     public Vector3 medianPos;
+    public CinemachineVirtualCamera virtualCamera;
     private Vector3 direction;
     private float distance;
-    void Start()
+    IEnumerator Start()
     {
         cam = Camera.main;
         direction = cam.transform.position - transform.position;
+        yield return new WaitUntil(()=> Input.GetKeyDown(KeyCode.Space));
+        if(virtualCamera != null)
+        {
+            virtualCamera.Priority = 2;
+        }
     }
 
     private void Update()
@@ -35,7 +42,7 @@ public class CameraCtr : MonoBehaviour
             medianPos += player.transform.position;
         }
         medianPos /= players.Count;
-        transform.position = Vector3.SmoothDamp(transform.position, medianPos, ref velocity, smoother);
+        //transform.position = Vector3.SmoothDamp(transform.position, medianPos, ref velocity, smoother);
     }
 
     public void AddPlayer(Transform player)

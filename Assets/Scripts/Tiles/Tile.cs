@@ -166,7 +166,11 @@ public class Tile : MonoBehaviour
         myMeshR = GetComponent<MeshRenderer>();
         myMeshF = GetComponent<MeshFilter>();
 
-        if (!degradable && walkable && tileType == TileType.Neutral)
+        if(!degradable && walkable)
+        {
+            myMeshR.material = undegradableMat;
+        }
+        else if (degradable && walkable && tileType == TileType.Neutral)
         {
             myMeshR.material = plaineMat;
         }
@@ -185,7 +189,8 @@ public class Tile : MonoBehaviour
             myMeshR.material = sandMat;
             walkedOnto = true;
         }
-        else if (walkable && !walkedOnto && degradable)
+        
+        if (walkable && !walkedOnto && degradable && tileType == TileType.Neutral)
         {
             pSys.Play();
             pSysIsPlaying = true;
@@ -195,6 +200,7 @@ public class Tile : MonoBehaviour
         {
             myMeshR.material.color = walkedOnColor;
         }
+
         if (!walkable && tourbillon)
         {
             tourbillonT.gameObject.SetActive(true);
