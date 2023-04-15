@@ -20,6 +20,7 @@ public class MissionManager : MonoBehaviour
     public GameObject missionPrefab;
     public float paddingInBetween = 1;
     int missionPageIndex;
+    float passingTimer;
     private void Start()
     {
         tileCounter = FindObjectOfType<TileCounter>();
@@ -29,8 +30,9 @@ public class MissionManager : MonoBehaviour
 
     private void Update()
     {
-        if (levelMissions[missionPageIndex].deliveryTimer >= gmTimer.timer)
+        if (levelMissions[missionPageIndex].deliveryTimer + passingTimer <= gmTimer.timer)
         {
+            passingTimer += gmTimer.timer;
             missionPageIndex++;
             SetNewMissions();
         }
@@ -39,9 +41,12 @@ public class MissionManager : MonoBehaviour
     private void SetNewMissions()
     {
         float padding = 0;
-        while(missionPrefab.transform.childCount > 0)
+        if (missionsFolder.childCount > 0)
         {
-            Destroy(missionPrefab.transform.GetChild(0).gameObject);
+            for (int i = missionsFolder.childCount - 1; i >= 0 ; i--)
+            {
+                Destroy(missionPrefab.transform.GetChild(i).gameObject);
+            }
         }
 
         foreach (SO_Mission s in levelMissions[missionPageIndex].missions)
