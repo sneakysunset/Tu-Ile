@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,10 +15,13 @@ public class CameraCtr : MonoBehaviour
     public Vector3 medianPos;
     private Vector3 direction;
     private float distance;
-    void Start()
+    public CinemachineVirtualCamera cVM;
+    IEnumerator Start()
     {
         cam = Camera.main;
         direction = cam.transform.position - transform.position;
+        yield return new WaitUntil(()=>Input.GetKeyDown(KeyCode.Space));
+        cVM.Priority = 0;
     }
 
     private void Update()

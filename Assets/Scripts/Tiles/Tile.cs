@@ -168,6 +168,10 @@ public class Tile : MonoBehaviour
 
         if (!degradable && walkable && tileType == TileType.Neutral)
         {
+            myMeshR.material = undegradableMat;
+        }
+        else if (degradable && walkable && tileType == TileType.Neutral)
+        {
             myMeshR.material = plaineMat;
         }
         else if (!walkable)
@@ -179,7 +183,7 @@ public class Tile : MonoBehaviour
             transform.Find("Additional Visuals").gameObject.SetActive(false);
             minableItems.gameObject.SetActive(false);
         }
-        else if (walkable && !degradable && tileType == TileType.Sand)
+        else if (walkable && degradable && tileType == TileType.Sand)
         {
             pSysIsPlaying = false;
             myMeshR.material = sandMat;

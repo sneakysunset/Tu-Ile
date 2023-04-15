@@ -18,4 +18,4 @@ MonoBehaviour:
     cost: 3
     item: {fileID: 0}
   craftedItemPrefab: {fileID: -7700456598475612927, guid: af6ef38888d32a347baba23a3302fbf0, type: 3}
-  numberOfCrafted: 1
+  numberOfCrafted: 2
