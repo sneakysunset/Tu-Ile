@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
+    public enum StackType { Other, Wood, Rock, Gold, Diamond, Adamantium };
     public bool holdable;
     [HideNormalInspector] public bool isHeld;
     [HideInInspector] public Rigidbody rb;
@@ -14,6 +15,7 @@ public class Item : MonoBehaviour
     protected Player _player;
     [HideInInspector] public bool physic = true;
     [HideInInspector] public Collider col;
+    public Item_Stack.StackType stackType;
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;
@@ -74,16 +76,23 @@ public class Item : MonoBehaviour
     {
         if (other.collider.CompareTag("Water"))
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
-            if (_player)
-            {
-                _player.heldItem = null;
-                if (_player.holdableItems.Contains(this))
-                {
-                    _player.holdableItems.Remove(this);
-                }
-            }
-            Destroy(gameObject);
+            StartCoroutine(KillItem(other.collider));
         }
+    }
+
+    public  virtual IEnumerator KillItem(Collider other)
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
+        Physics.IgnoreCollision(other, col, true);
+        if (_player)
+        {
+            _player.heldItem = null;
+            if (_player.holdableItems.Contains(this))
+            {
+                _player.holdableItems.Remove(this);
+            }
+        }
+        yield return new WaitForSeconds(2);
+        Destroy(gameObject);
     }
 }

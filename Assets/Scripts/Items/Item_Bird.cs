@@ -11,6 +11,7 @@ public class Item_Bird : Item
     private AI_Movement AIM;
     private CharacterController AIC;
     bool isThrown;
+    public ParticleSystem featherPSYS;
     private void Start()
     {
         AIB = GetComponent<AI_Behaviour>();    
@@ -34,6 +35,7 @@ public class Item_Bird : Item
         AIM.enabled = false;
         AIB.ClearPath();
         gameObject.layer = 13;
+        featherPSYS.Play();
 
     }
 
@@ -47,6 +49,7 @@ public class Item_Bird : Item
         AIM.enabled = true;
         AIC.enabled = true;
         gameObject.layer = 8;
+        featherPSYS.Play();
     }
 
     public override void ThrowAction(Player player, float throwStrength, Vector3 direction)
@@ -56,22 +59,14 @@ public class Item_Bird : Item
         pM.gravityMultiplier *= gravityDivider;
         pM.jumpStrength *= jumpModifier;
         base.ThrowAction(player, throwStrength, direction);
+        featherPSYS.Play();
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.collider.CompareTag("Water"))
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
-            if (_player)
-            {
-                _player.heldItem = null;
-                if (_player.holdableItems.Contains(this))
-                {
-                    _player.holdableItems.Remove(this);
-                }
-            }
-            Destroy(gameObject);
+            StartCoroutine(KillItem(hit.collider));
         }
     }
 
@@ -88,5 +83,14 @@ public class Item_Bird : Item
             AIM.enabled = true;
             AIC.enabled = true;
         }
+    }
+
+    public override IEnumerator KillItem(Collider other)
+    {
+        AIC.enabled = false;
+        rb.mass /= 20;
+        isThrown = true;
+        StartCoroutine(base.KillItem(other));
+        yield return null;
     }
 }

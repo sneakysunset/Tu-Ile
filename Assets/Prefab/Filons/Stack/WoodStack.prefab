@@ -467,8 +467,8 @@ MonoBehaviour:
   Highlight: {fileID: 0}
   physic: 1
   col: {fileID: 0}
+  stackType: 1
   meshR: {fileID: 0}
-  stackType: 0
   numberStacked: 0
   isTile: 0
   trueHoldable: 1

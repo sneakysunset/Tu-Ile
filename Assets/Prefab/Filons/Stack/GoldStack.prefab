@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -1034060959200090777, guid: 916ede32b917e24448f062a764b82885, type: 3}
       propertyPath: stackType
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1583647475308006108, guid: 916ede32b917e24448f062a764b82885, type: 3}
       propertyPath: m_Mesh

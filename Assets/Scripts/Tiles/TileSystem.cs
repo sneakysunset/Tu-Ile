@@ -173,10 +173,8 @@ public class TileSystem : MonoBehaviour
             tile.terraFormingSpeed = tileP.terraFormingSpeed;
             tile.bumpStrength = tileP.bumpStrength;
             tile.bumpDistanceAnimCurve = tileP.bumpDistanceCurve;
-            tile.selectedMat = tileM.selectedTileMaterial;
-            tile.unselectedMat = tileM.unselectedTileMaterial;
+            tile.plaineMat = tileM.plaineTileMat;
             tile.disabledMat = tileM.disabledTileMaterial;
-            tile.fadeMat = tileM.FadedTileMaterial;
             tile.sandMat = tileM.sandTileMat;
             tile.undegradableMat = tileM.undegradableTileMat;
             tile.maxTimer = tileP.maxTimer;
@@ -321,10 +319,8 @@ public class TileSystemEditor : Editor
             tile.terraFormingSpeed = tileS.tileP.terraFormingSpeed;
             tile.bumpStrength = tileS.tileP.bumpStrength;
             tile.bumpDistanceAnimCurve = tileS.tileP.bumpDistanceCurve;
-            tile.selectedMat = tileS.tileM.selectedTileMaterial;
-            tile.unselectedMat = tileS.tileM.unselectedTileMaterial;
+            tile.plaineMat = tileS.tileM.plaineTileMat;
             tile.disabledMat = tileS.tileM.disabledTileMaterial;
-            tile.fadeMat = tileS.tileM.FadedTileMaterial;
             tile.sandMat = tileS.tileM.sandTileMat;
             tile.undegradableMat = tileS.tileM.undegradableTileMat;
             tile.maxTimer = tileS.tileP.maxTimer;

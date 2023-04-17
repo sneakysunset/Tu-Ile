@@ -62,6 +62,9 @@ MonoBehaviour:
   targetTileCoords: {x: 21, y: 5}
   numOfRows: 3
   centerTile: {fileID: 0}
+  tileFolder: {fileID: 0}
+  tileC: {fileID: 0}
+  isHub: 0
 --- !u!114 &2198949688653012757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,10 +224,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918b0ff88cb18f443870d1a8d54d4b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedTileMaterial: {fileID: 2100000, guid: beeebf6fa71aabf42848c6dd78e92c25, type: 2}
-  unselectedTileMaterial: {fileID: 2100000, guid: a752ece4f9822b348a30335ee3ef0244, type: 2}
   disabledTileMaterial: {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
-  FadedTileMaterial: {fileID: 2100000, guid: 338b8fda04ce0874181cffa3ce5a0810, type: 2}
+  undegradableTileMat: {fileID: 2100000, guid: a73c746518bb3c04eaf33974af53a5e2, type: 2}
+  sandTileMat: {fileID: 2100000, guid: e92f8dd77f940e840a8360b14316adce, type: 2}
+  plaineTileMat: {fileID: 2100000, guid: a752ece4f9822b348a30335ee3ef0244, type: 2}
   treePrefab: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
   rockPrefab: {fileID: 2678278403484233012, guid: a1486965bb17ef34d9505a95cad1a333, type: 3}
   goldPrefab: {fileID: 7937501208438684671, guid: 72f3d0f0b08c81645984d3b9dffe7bde, type: 3}
@@ -249,4 +252,3 @@ MonoBehaviour:
   goldCount: 0
   diamondCount: 0
   adamantiumCount: 0
-  countTimer: 0

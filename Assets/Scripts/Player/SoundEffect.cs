@@ -6,14 +6,23 @@ public class SoundEffect : MonoBehaviour
 {
     Player player;
     public Color woodCol, rockCol, goldCol, diamondCol, adamCol;
+    public ParticleSystem pSysWalkingR, pSysWalkingL;
     private void Start()
     {
         player = GetComponentInParent<Player>();
+        
     }
 
-    public void PlayMoove()
+    public void PlayMooveRight()
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Moove");
+        pSysWalkingR.Play();
+    }
+
+    public void PlayMooveLeft()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Moove");
+        pSysWalkingL.Play();
     }
 
 
@@ -21,7 +30,6 @@ public class SoundEffect : MonoBehaviour
     {
         if(player.interactor != null)
         {
-
             //ParticleSystem.MainModule ma = player.hitParticleSystem.main;
             ParticleSystemRenderer ma = player.hitParticleSystem.GetComponent<ParticleSystemRenderer>();
             switch (player.interactor.type)
@@ -48,6 +56,10 @@ public class SoundEffect : MonoBehaviour
                     break;
             }
             player.hitParticleSystem.Play();
+            if(player.interactor.isInteractedWith) 
+            {
+                player.interactor.OnFilonMined();
+            }
         }
     }
 }

@@ -51,7 +51,7 @@ public class ItemSystem : MonoBehaviour
     //throw action
     public void OnItemInput2(InputAction.CallbackContext context)
     {
-        if (context.started && player.heldItem != null && player.holdableItems.Count == 0)
+        if (context.started && player.heldItem != null /*&& player.holdableItems.Count == 0*/)
         {
             Vector3 direction = transform.forward + Vector3.up * player.throwYAxisDirection;
             player.heldItem.ThrowAction(player, player.throwStrength, direction);

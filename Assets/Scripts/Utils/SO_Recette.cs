@@ -8,4 +8,5 @@ public class SO_Recette : ScriptableObject
     public float convertionTime;
     public stack[] requiredItemStacks;
     public Item_Stack craftedItemPrefab;
+    public int numberOfCrafted;
 }

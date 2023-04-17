@@ -9,9 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Ile et tatoin/MainMenu.unity
     guid: d519455b95e6968409f52a53b2eca93d
   - enabled: 0
-    path: Assets/Scenes/Ile et tatoin/Hub.unity
-    guid: 77b26e25dff16d64992a85a480083c61
-  - enabled: 1
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/Scenes/Ile et tatoin/Ile.unity
     guid: 06f1bc3f33334ab41a25236c246310a3
+  - enabled: 1
+    path: Assets/Scenes/Ile et tatoin/Ile 2.unity
+    guid: cd6f09d14365bb44596ebffc36bb2d23
   m_configObjects: {}

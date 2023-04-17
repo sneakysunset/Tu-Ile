@@ -5,6 +5,7 @@ using UnityEditor;
 using TMPro;
 using System;
 using FMOD;
+using Unity.VisualScripting;
 
 public class Tile : MonoBehaviour
 {
@@ -55,11 +56,12 @@ public class Tile : MonoBehaviour
     [HideInInspector] public Transform minableItems;
     [HideInInspector] public Transform tourbillonT;
     [HideInInspector] private ParticleSystem pSys;
+    public ParticleSystem pSysCreation;
     #endregion
 
     #region Materials
     [HideInInspector, SerializeField] public Material disabledMat;
-    [HideInInspector] public Material unselectedMat, selectedMat, fadeMat, undegradableMat, sandMat;
+    [HideInInspector] public Material plaineMat, undegradableMat, sandMat;
     public Color walkedOnColor, notWalkedOnColor;
     public Color penguinedColor;
     private Material currentMat;
@@ -99,9 +101,20 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
+        if(transform.position.y == currentPos.y && spawning)
+        {
+            spawning = false;
+            pSys.transform.position = new Vector3(pSys.transform.position.x, 0, pSys.transform.position.z) ;
+            pSysCreation.Play();
+        }
+
+        if(transform.position!=currentPos && !shakeFlag && !tileS.isHub)
+        {
+            StartCoroutine(TileShake(.1f));
+        }
         // StepText();
         isFaded = false;
-        if (pSysIsPlaying && walkedOnto && degradable)
+        if (pSysIsPlaying && walkedOnto && degradable && tileType == TileType.Neutral)
         {
             pSys.Stop(); 
             myMeshR.material.color = walkedOnColor;
@@ -113,15 +126,31 @@ public class Tile : MonoBehaviour
             tourbillonT.Rotate(0, tourbillonSpeed * Time.deltaTime, 0);
         }
 
-        if(isPenguined && myMeshR.material.color != penguinedColor)
+        if(isPenguined && myMeshR.material.color != penguinedColor && tileType == TileType.Neutral)
         {
             myMeshR.material.color = penguinedColor;
 
         }
-        else if(!isPenguined && myMeshR.material.color == penguinedColor)
+        else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType == TileType.Neutral)
         {
             myMeshR.material.color = walkedOnColor;
         }
+    }
+    bool shakeFlag;
+    public IEnumerator TileShake(float magnitude)
+    {
+        shakeFlag = true;
+        while (transform.position.y != currentPos.y)
+        {
+            float x = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+            float y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+
+            transform.localPosition = new Vector3(currentPos.x + x, transform.position.y, currentPos.z + y);
+
+            yield return new WaitForEndOfFrame();
+        }
+        transform.localPosition = currentPos;
+        shakeFlag = false;
     }
 
     private void LateUpdate()
@@ -137,9 +166,13 @@ public class Tile : MonoBehaviour
         myMeshR = GetComponent<MeshRenderer>();
         myMeshF = GetComponent<MeshFilter>();
 
-        if (!degradable && walkable)
+        if (!degradable && walkable && tileType == TileType.Neutral)
         {
-            myMeshR.material = selectedMat;
+            myMeshR.material = undegradableMat;
+        }
+        else if (degradable && walkable && tileType == TileType.Neutral)
+        {
+            myMeshR.material = plaineMat;
         }
         else if (!walkable)
         {
@@ -150,7 +183,7 @@ public class Tile : MonoBehaviour
             transform.Find("Additional Visuals").gameObject.SetActive(false);
             minableItems.gameObject.SetActive(false);
         }
-        else if (walkable && !degradable && tileType == TileType.Sand)
+        else if (walkable && degradable && tileType == TileType.Sand)
         {
             pSysIsPlaying = false;
             myMeshR.material = sandMat;
@@ -162,7 +195,7 @@ public class Tile : MonoBehaviour
             pSysIsPlaying = true;
             myMeshR.material.color = notWalkedOnColor;
         }
-        else if (!walkable && walkedOnto && degradable)
+        else if (!walkable && walkedOnto && degradable && tileType == TileType.Neutral)
         {
             myMeshR.material.color = walkedOnColor;
         }
@@ -171,14 +204,17 @@ public class Tile : MonoBehaviour
             tourbillonT.gameObject.SetActive(true);
         }
     }
+    bool spawning;
     public void Spawn(float height, Material mat, Mesh mesh, string stackType)
     {
+        spawning = true;
         walkable = true;
         gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;
         myMeshF.mesh = mesh;
         myMeshR.material = mat;
-        myMeshR.material.color = walkedOnColor;
+
+        //myMeshR.material.color = walkedOnColor;
         transform.Find("Additional Visuals").gameObject.SetActive(true);
         minableItems.gameObject.SetActive(true);
         timer = UnityEngine.Random.Range(minTimer, maxTimer);
@@ -215,6 +251,7 @@ public class Tile : MonoBehaviour
     }
 
     [HideNormalInspector] public bool fadeChecker;
+    Color currentColor;
     public void FadeTile(float t)
     {
         isFaded = true;
@@ -266,7 +303,7 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            myMeshR.sharedMaterial = unselectedMat;
+            myMeshR.sharedMaterial = plaineMat;
             transform.Find("Additional Visuals").gameObject.SetActive(true);
             minableItems.gameObject.SetActive(true);
         }
