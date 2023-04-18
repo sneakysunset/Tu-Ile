@@ -134,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
     {
         /*        float ax = isDashing ? acceleration : -deceleration;
                 speedValue = Mathf.Lerp(speed, sprintingSpeed, ax * Time.deltaTime * 10);*/
-        if(player.tileUnder.tileType != Tile.TileType.Rock)
+        if(player.tileUnder.tileType == Tile.TileType.Rock)
         {
             speedValue = speedOnRocks;
         }

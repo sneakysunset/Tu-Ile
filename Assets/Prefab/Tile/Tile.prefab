@@ -832,7 +832,7 @@ MonoBehaviour:
   - {fileID: 4691495834763128532}
   tileS: {fileID: 0}
   myMeshR: {fileID: 5864329386916401334}
-  myMeshF: {fileID: 0}
+  myMeshF: {fileID: 8540724609792189564}
   tileB: {fileID: 0}
   rb: {fileID: 0}
   minableItems: {fileID: 8755437412334106841}
@@ -842,6 +842,15 @@ MonoBehaviour:
   plaineMat: {fileID: 0}
   undegradableMat: {fileID: 0}
   sandMat: {fileID: 0}
+  bounceMat: {fileID: 0}
+  woodMat: {fileID: 0}
+  rockMat: {fileID: 0}
+  goldMat: {fileID: 0}
+  diamondMat: {fileID: 0}
+  adamantiumMat: {fileID: 0}
+  defaultMesh: {fileID: 0}
+  woodMesh: {fileID: 0}
+  rockMesh: {fileID: 0}
   walkedOnColor: {r: 0.8490566, g: 0.734247, b: 0.734247, a: 1}
   notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
   penguinedColor: {r: 0.8584906, g: 0.28076416, b: 0.28076416, a: 1}
@@ -863,7 +872,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5360045457859342691}
-  m_Mesh: {fileID: -2623256933809513941, guid: 40c21bedeba5d5741a50a62d507fbc8e, type: 3}
+  m_Mesh: {fileID: 0}
 --- !u!23 &5864329386916401334
 MeshRenderer:
   m_ObjectHideFlags: 0
