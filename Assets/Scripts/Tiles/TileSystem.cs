@@ -174,7 +174,6 @@ public class TileSystem : MonoBehaviour
     public void Regener()
     {
         StartCoroutine(waiter());
-
     }
 
     private IEnumerator waiter()
@@ -230,6 +229,7 @@ public class TileSystem : MonoBehaviour
             tile.plaineMat = tileM.plaineTileMat;
             tile.disabledMat = tileM.disabledTileMaterial;
             tile.sandMat = tileM.sandTileMat;
+            tile.bounceMat = tileM.bounceTileMat;
             tile.undegradableMat = tileM.undegradableTileMat;
             tile.maxTimer = tileP.maxTimer;
             tile.minTimer = tileP.minTimer;
@@ -237,6 +237,14 @@ public class TileSystem : MonoBehaviour
             tile.timeToGetToMaxDegradationSpeed = tileP.timeToGetToMaxDegradationSpeed;
             tile.degradingSpeed = tileP.degradingSpeed;
             tile.heightByTile = tileP.heightByTile;
+            tile.woodMat = tileM.woodTileMat;
+            tile.rockMat = tileM.rockTileMat;
+            tile.goldMat = tileM.goldTileMat;
+            tile.diamondMat = tileM.diamondTileMat;
+            tile.adamantiumMat = tileM.adamantiumTileMat;
+            tile.defaultMesh = tileM.defaultTileMesh;
+            tile.woodMesh = tileM.woodTileMesh;
+            tile.rockMesh = tileM.rockTileMesh;
         }
     }
 
@@ -382,7 +390,13 @@ public class TileSystemEditor : Editor
             tile.degradationTimerAnimCurve = tileS.tileP.degradationTimerAnimCurve;
             tile.timeToGetToMaxDegradationSpeed = tileS.tileP.timeToGetToMaxDegradationSpeed;
             tile.degradingSpeed = tileS.tileP.degradingSpeed;
+            tile.bounceMat = tileS.tileM.bounceTileMat;
             tile.heightByTile = tileS.tileP.heightByTile;
+            tile.woodMat = tileS.tileM.woodTileMat;
+            tile.rockMat = tileS.tileM.rockTileMat;
+            tile.goldMat = tileS.tileM.goldTileMat;
+            tile.diamondMat = tileS.tileM.diamondTileMat;
+            tile.adamantiumMat = tileS.tileM.adamantiumTileMat;
         }
     }
 

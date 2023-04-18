@@ -16,7 +16,7 @@ public class Tile : MonoBehaviour
     [SerializeField] public TileType tileType = TileType.Neutral;
 
 
-    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, LevelLoader };
+    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, BouncyTile, LevelLoader };
     public string levelName;
     [HideNormalInspector] public int coordX, coordFX, coordY;
     public bool walkedOnto = false;
@@ -47,6 +47,7 @@ public class Tile : MonoBehaviour
     #region Interactor Spawning
     [SerializeField] public bool spawnSpawners;
     [HideInInspector] public List<Transform> spawnPoints;
+    bool spawning;
     #endregion
 
     #region Components
@@ -63,7 +64,8 @@ public class Tile : MonoBehaviour
 
     #region Materials
     [HideInInspector, SerializeField] public Material disabledMat;
-    [HideInInspector] public Material plaineMat, undegradableMat, sandMat;
+    [HideInInspector] public Material plaineMat, undegradableMat, sandMat, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat;
+    [HideInInspector] public Mesh defaultMesh, woodMesh, rockMesh;
     public Color walkedOnColor, notWalkedOnColor;
     public Color penguinedColor;
     private Material currentMat;
@@ -169,15 +171,7 @@ public class Tile : MonoBehaviour
         myMeshR = GetComponent<MeshRenderer>();
         myMeshF = GetComponent<MeshFilter>();
 
-        if(!degradable && walkable)
-        {
-            myMeshR.material = undegradableMat;
-        }
-        else if (degradable && walkable && tileType == TileType.Neutral)
-        {
-            myMeshR.material = plaineMat;
-        }
-        else if (!walkable)
+         if (!walkable)
         {
             walkedOnto = true;
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
@@ -186,38 +180,93 @@ public class Tile : MonoBehaviour
             transform.Find("Additional Visuals").gameObject.SetActive(false);
             minableItems.gameObject.SetActive(false);
         }
-        else if (walkable && !degradable && tileType == TileType.Sand)
+        else
+        {
+            myMeshF.mesh = getCorrespondingMesh(tileType); 
+            myMeshR.material = getCorrespondingMat(tileType);
+        }
+
+        if (walkable && (!degradable || tileType == TileType.Sand || tileType == TileType.BouncyTile))
         {
             pSysIsPlaying = false;
-            myMeshR.material = sandMat;
             walkedOnto = true;
         }
-        
-        if (walkable && !walkedOnto && degradable && tileType == TileType.Neutral)
+        else if (walkable && !walkedOnto && degradable)
         {
             pSys.Play();
             pSysIsPlaying = true;
             myMeshR.material.color = notWalkedOnColor;
         }
-        else if (!walkable && walkedOnto && degradable && tileType == TileType.Neutral)
+/*        else if (!walkable && walkedOnto && degradable && tileType == TileType.Neutral)
         {
             myMeshR.material.color = walkedOnColor;
-        }
+        }*/
 
         if (!walkable && tourbillon)
         {
             tourbillonT.gameObject.SetActive(true);
         }
     }
-    bool spawning;
+
+    public Material getCorrespondingMat(TileType tType)
+    {
+        Material mat = null;
+
+        if (!walkable)
+        {
+            mat = disabledMat;
+        }
+        else if (!degradable)
+        {
+            mat = undegradableMat;
+        }
+        else
+        {
+            switch (tType)
+            {
+                case TileType.Neutral: mat = plaineMat; break;
+                case TileType.Wood: mat = woodMat; break;
+                case TileType.Rock: mat = rockMat; break;
+                case TileType.Gold: mat = goldMat; break;
+                case TileType.Diamond: mat = diamondMat; break;
+                case TileType.Adamantium: mat = adamantiumMat; break;
+                case TileType.Sand: mat = sandMat; break;
+                case TileType.BouncyTile: mat = bounceMat; break;
+                case TileType.LevelLoader: mat = sandMat; break;
+                default: mat = plaineMat; break;
+            }
+        }
+
+        return mat;
+    }
+
+    public Mesh getCorrespondingMesh(TileType tType)
+    {
+        Mesh mesh = null;
+
+        switch (tType)
+        {
+            case TileType.Wood: mesh = woodMesh; break;
+            case TileType.Rock: mesh = rockMesh; break;
+            case TileType.Gold: mesh = rockMesh; break;
+            case TileType.Diamond: mesh = rockMesh; break;
+            case TileType.Adamantium: mesh = rockMesh; break;
+            default: mesh = defaultMesh; break;
+        }
+
+        return mesh;
+    }
+
     public void Spawn(float height, Material mat, Mesh mesh, string stackType, float degradingSpeed)
     {
+        TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
+        tileType = tType;
         spawning = true;
         walkable = true;
         gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;
-        myMeshF.mesh = mesh;
-        myMeshR.material = mat;
+        myMeshF.mesh = getCorrespondingMesh(tileType);
+        myMeshR.material = getCorrespondingMat(tileType);
         typeDegradingSpeed = degradingSpeed;
         //myMeshR.material.color = walkedOnColor;
         transform.Find("Additional Visuals").gameObject.SetActive(true);
@@ -228,8 +277,6 @@ public class Tile : MonoBehaviour
         transform.tag = "Tile";
         currentPos.y = height - (height % heightByTile);
         isGrowing = true;
-        TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
-        tileType = tType;
         tileS.tileC.Count();
     }
     private void GetAdjCoords()
@@ -287,28 +334,17 @@ public class Tile : MonoBehaviour
     private void OnValidate()
     {
         if(!myMeshR) myMeshR = GetComponent<MeshRenderer>();
+        if(!myMeshF) myMeshF = GetComponent<MeshFilter>();
         minableItems = transform.Find("SpawnPositions");
+        myMeshR.sharedMaterial = getCorrespondingMat(tileType);
+        myMeshF.sharedMesh = getCorrespondingMesh(tileType);
         if (!walkable)
         {
-            myMeshR.sharedMaterial = disabledMat;
             transform.Find("Additional Visuals").gameObject.SetActive(false);
             minableItems.gameObject.SetActive(false);
         }
-        else if(tileType == TileType.Sand || tileType == TileType.LevelLoader)
-        {
-            myMeshR.sharedMaterial = sandMat;
-            transform.Find("Additional Visuals").gameObject.SetActive(true);
-            minableItems.gameObject.SetActive(true);
-        }
-        else if (!degradable)
-        {
-            myMeshR.sharedMaterial = undegradableMat;
-            transform.Find("Additional Visuals").gameObject.SetActive(true);
-            minableItems.gameObject.SetActive(true);
-        }
         else
         {
-            myMeshR.sharedMaterial = plaineMat;
             transform.Find("Additional Visuals").gameObject.SetActive(true);
             minableItems.gameObject.SetActive(true);
         }

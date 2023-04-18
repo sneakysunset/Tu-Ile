@@ -418,6 +418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29b01ead37ac041a2667d201e2e433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
   _characterController: {fileID: 0}
   respawnTile: {fileID: 0}
   tileUnder: {fileID: 0}
@@ -450,7 +451,9 @@ MonoBehaviour:
   dashFlag: 0
   moveFlag: 0
   speed: 10
+  speedOnRocks: 12
   jumpStrength: 2
+  jumpStrengthOnBounce: 3
   dashStrength: 50
   pushStrength: 30
   dashDuration: 0.05

@@ -227,6 +227,7 @@ MonoBehaviour:
   disabledTileMaterial: {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
   undegradableTileMat: {fileID: 2100000, guid: a73c746518bb3c04eaf33974af53a5e2, type: 2}
   sandTileMat: {fileID: 2100000, guid: e92f8dd77f940e840a8360b14316adce, type: 2}
+  bounceTileMat: {fileID: 2100000, guid: 3193cf6cf65b8a748b1a843c78e6c26d, type: 2}
   plaineTileMat: {fileID: 2100000, guid: a752ece4f9822b348a30335ee3ef0244, type: 2}
   treePrefab: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
   rockPrefab: {fileID: 2678278403484233012, guid: a1486965bb17ef34d9505a95cad1a333, type: 3}

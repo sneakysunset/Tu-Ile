@@ -1,0 +1,27 @@
+{
+    "name": "ProjectDawn.SplitScreen.HighDefinition.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:cf8f96e06a3f9754bad58fbcdcea5346",
+        "GUID:938a8f7b77660f243b4d036b0f1d1e9f",
+        "GUID:a98f0b737d864ce41a0a46c17c4dc851",
+        "GUID:457756d89b35d2941b3e7b37b4ece6f1"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.render-pipelines.high-definition",
+            "expression": "10.5",
+            "define": "HIGH_DEFINITION_RENDER_PIPELINE"
+        }
+    ],
+    "noEngineReferences": false
+}

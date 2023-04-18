@@ -17,7 +17,9 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public bool moveFlag;
 
     [SerializeField] public float speed;
+    [SerializeField] public float speedOnRocks;
     [SerializeField] public float jumpStrength = 10;
+    [SerializeField] public float jumpStrengthOnBounce = 20;
     [SerializeField] private float dashStrength;
     [SerializeField] public float pushStrength;
     [SerializeField] private float dashDuration;
@@ -60,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        
         if (_characterController.isGrounded && !groundedCallback)
         {
             OnGroundedCallBack();
@@ -106,7 +109,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_characterController.isGrounded && jumpInput)
         {
-            _velocity = jumpStrength;
+            if(player.tileUnder.tileType == Tile.TileType.BouncyTile)
+            {
+                _velocity = jumpStrengthOnBounce;
+            }
+            else
+            {
+                _velocity = jumpStrength;
+            }
         }
         jumpInput = false;
     }
@@ -124,7 +134,14 @@ public class PlayerMovement : MonoBehaviour
     {
         /*        float ax = isDashing ? acceleration : -deceleration;
                 speedValue = Mathf.Lerp(speed, sprintingSpeed, ax * Time.deltaTime * 10);*/
-        speedValue = speed;
+        if(player.tileUnder.tileType != Tile.TileType.Rock)
+        {
+            speedValue = speedOnRocks;
+        }
+        else
+        {
+            speedValue = speed;
+        }
     }
 
     private void ApplyMovement()

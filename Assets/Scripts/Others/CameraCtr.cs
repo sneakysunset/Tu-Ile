@@ -1,4 +1,5 @@
 using Cinemachine;
+using ProjectDawn.SplitScreen;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,10 +17,13 @@ public class CameraCtr : MonoBehaviour
     public CinemachineVirtualCamera virtualCamera, endVirtualCam;
     private Vector3 direction;
     private float distance;
+    private SplitScreenEffect sCE;
+    public float distanceToSplit;
     IEnumerator Start()
     {
         cam = Camera.main;
         direction = cam.transform.position - transform.position;
+        sCE = GetComponentInChildren<SplitScreenEffect>();
         yield return new WaitUntil(()=> Input.GetKeyDown(KeyCode.Space));
         if(virtualCamera != null)
         {
@@ -29,7 +33,14 @@ public class CameraCtr : MonoBehaviour
 
     private void Update()
     {
-
+        if (Vector3.Distance(players[0].transform.position, players[1].transform.position) > distanceToSplit)
+        {
+            sCE.enabled = true;
+        }
+        else
+        {
+            sCE.enabled = false;
+        }
     }
 
     public void Dezoom()

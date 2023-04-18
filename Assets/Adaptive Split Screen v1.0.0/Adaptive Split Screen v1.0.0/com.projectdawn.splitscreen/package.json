@@ -1,0 +1,27 @@
+{
+  "name": "com.projectdawn.splitscreen",
+  "displayName": "Adaptive Split Screen",
+  "version": "1.0.0",
+  "unity": "2019.4",
+  "keywords": [
+    "graphics",
+    "render",
+    "camera",
+    "postprocessing",
+    "splitscreen",
+    "voronoi"
+  ],
+  "dependencies": {
+    "com.unity.mathematics": "1.2.5",
+    "com.unity.collections": "0.9.0-preview.6",
+    "com.unity.burst": "1.3.0-preview.12"
+  },
+  "description": "This is novel solution of split screen based on voronoi diagrams. One can think of it as extension of traditional dynamic split screen for up to 4 players.",
+  "unityRelease": "35f1",
+  "type": "tool",
+  "author": {
+    "name" : "Lukas Chodosevicius",
+    "email" : "lukaschodosevicius@gmail.com",
+    "url" : "https://assetstore.unity.com/publishers/62140"
+  }
+}
