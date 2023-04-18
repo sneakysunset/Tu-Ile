@@ -7,7 +7,7 @@ using FMOD.Studio;
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController _characterController;
-
+    private Player player;
     #region Variables: Movement
     [HideInInspector] public Vector2 _input;
     [HideInInspector] public bool jumpInput;
@@ -50,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
         /*movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/Moove");
         movingSound.set3DAttributes(new FMOD.ATTRIBUTES_3D());*/
         _characterController = GetComponent<CharacterController>();
+        player = GetComponent<Player>();
     }
 
     private void OnGroundedCallBack()
@@ -155,10 +156,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void Dash(InputAction.CallbackContext context)
     {
-        if (context.started && dashTimer <= 0)
+        if (context.started && dashTimer <= 0 && _characterController.isGrounded)
         {
-            isDashing = true;
-            dashTimer = dashCooldown;   
+            jumpInput = true;
+            player.anim.Play("Jump", 0);
+            //isDashing = true;
+            //dashTimer = dashCooldown;   
         }
         else if (context.canceled || context.performed)
         {

@@ -23,6 +23,7 @@ public class GameTimer : MonoBehaviour
     public Transform eventFolder;
     public GameObject eventVisualPrefab;
     public Sprite apocalypseImage;
+    private Player[] players;
     private void Start()
     {
         SortList();
@@ -33,6 +34,7 @@ public class GameTimer : MonoBehaviour
             t.localPosition += new Vector3((e.eventTime / gameTimer) * 2 * (r.sizeDelta.x * r.localScale.x), 0, 0);
             //t.GetComponent<Image>().sprite = apocalypseImage;
         }
+        players = FindObjectsOfType<Player>();
     }
 
     private void SortList()
@@ -69,6 +71,11 @@ public class GameTimer : MonoBehaviour
         if (timer >= gameTimer)
         {
             LevelEnd?.Invoke();
+            foreach(Player p in players)
+            {
+                p.respawnTile = players[0].tileUnder;
+            }
+            StartCoroutine(TileSystem.Instance.SinkWorld(players[0].tileUnder));
         }
 
         timerSlider.value = timer / gameTimer;

@@ -13,7 +13,7 @@ public class CameraCtr : MonoBehaviour
     public float sphereCastRadius;
     [Range(0,1)]public float transparencyLevel;
     public Vector3 medianPos;
-    public CinemachineVirtualCamera virtualCamera;
+    public CinemachineVirtualCamera virtualCamera, endVirtualCam;
     private Vector3 direction;
     private float distance;
     IEnumerator Start()
@@ -30,9 +30,15 @@ public class CameraCtr : MonoBehaviour
     private void Update()
     {
 
-
     }
 
+    public void Dezoom()
+    {
+        if (virtualCamera != null)
+        {
+            endVirtualCam.Priority = 4;
+        }
+    }
     private void LateUpdate()
     {
         LineCastToPlayer();

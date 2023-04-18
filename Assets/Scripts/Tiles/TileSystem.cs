@@ -74,6 +74,60 @@ public class TileSystem : MonoBehaviour
         return tiles[x, z];
     }
 
+    public IEnumerator SinkWorld(Tile tile)
+    {
+        List<Tile> ts = new List<Tile>();
+        ts.Add(tile);
+        bool isOver = false;
+        while (!isOver)
+        {
+            isOver = true;
+            int ix = ts.Count;
+            for (int i = 0; i < ix; i++)
+            {
+                if (!ts[i].isPathChecked)
+                {
+                    foreach (Vector2Int vecs in ts[i].adjTCoords)
+                    {
+                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns /*&& tiles[vecs.x, vecs.y].walkable*/ && !ts.Contains(tiles[vecs.x, vecs.y]))
+                        {
+                            ts.Add(tiles[vecs.x, vecs.y]);
+                            isOver = false;
+                        }
+                    }
+                    ts[i].isPathChecked = true;
+                }
+            }
+
+            
+            foreach (Tile t in ts)
+            {
+                if (t.walkable && t != tile)
+                {
+                    t.degradable = true;
+                    t.currentPos.y = -t.heightByTile;
+                    t.tourbillon = false;
+                    t.tourbillonT.gameObject.SetActive(false);
+                }
+            }
+            tile.degradable = false;
+
+            float timer = .3f;
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                foreach(Tile t in ts)
+                {
+                    if (t.walkable && t != tile)
+                    {
+                        t.degSpeed *= 1 + Time.deltaTime * 3;
+                    }
+                }
+                yield return new WaitForEndOfFrame();
+            }
+        }
+    }
+
     public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
     {
         float xOffset = 0;

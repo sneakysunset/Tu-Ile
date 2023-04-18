@@ -822,7 +822,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   degradingSpeed: 0
+  typeDegradingSpeed: 1
   isGrowing: 0
+  degSpeed: 0
   timeToGetToMaxDegradationSpeed: 0
   spawnSpawners: 0
   spawnPoints:

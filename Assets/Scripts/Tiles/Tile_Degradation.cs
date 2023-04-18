@@ -43,7 +43,7 @@ public class Tile_Degradation : MonoBehaviour
 
     private void Degrading()
     {
-        degradationTimerModifier += Time.deltaTime * (1 / tile.timeToGetToMaxDegradationSpeed);
+        degradationTimerModifier += Time.deltaTime * (1 / tile.timeToGetToMaxDegradationSpeed) * tile.typeDegradingSpeed;
 
 
         //Effect while degrading

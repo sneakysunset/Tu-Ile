@@ -7,7 +7,7 @@ using UnityEngine.Windows;
 
 public class Player : MonoBehaviour
 {
-    Animator anim;
+    [HideInInspector] public Animator anim;
     [HideInInspector] public CharacterController _characterController;
     PlayerMovement pM;
     TileSelector tileSelec;

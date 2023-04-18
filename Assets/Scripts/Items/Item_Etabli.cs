@@ -25,12 +25,17 @@ public class Item_Etabli : Item
     private bool convertorFlag;
     private WaitForSeconds waiter;
     UnityEngine.Transform createdItem;
+    private MeshRenderer[] meshs;
+    bool isActive;
+    Tile tileUnder;
+    UnityEngine.Transform itemNum;
     public override void Awake()
     {
         base.Awake();
-
+        meshs = GetComponentsInChildren<MeshRenderer>();
         waiter = new WaitForSeconds(recette.convertionTime);
         rb.isKinematic = true;
+        itemNum = transform.Find("ItemNumber");
         stackT = transform.Find("Stacks");
         for (int i = 0; i < recette.requiredItemStacks.Length; i++)
         {
@@ -43,16 +48,45 @@ public class Item_Etabli : Item
         }
     }
 
+    public void SetActiveMesh(bool active)
+    {
+        foreach(MeshRenderer m in meshs)
+        {
+            if (active)
+            {
+                m.enabled = true;
+                isActive = true;
+                itemNum.gameObject.SetActive(true);
+            }
+            else
+            {
+                m.enabled = false;
+                isActive = false;
+                itemNum.gameObject.SetActive(false);
+            }
+        }
+    }
+
     private void Start()
     {
-        Tile tile = FindObjectOfType<TileSystem>().WorldPosToTile(transform.position);
-        transform.parent = tile.transform;
+        tileUnder = FindObjectOfType<TileSystem>().WorldPosToTile(transform.position);
+        transform.parent = tileUnder.transform;
         createdItem = transform.Find("TileCreator/CreatedPos");
     }
 
     public override void Update()
     {
         base.Update();
+
+        if(isActive && !tileUnder.walkable)
+        {
+            SetActiveMesh(false);
+        }
+        else if(!isActive && tileUnder.walkable)
+        {
+            SetActiveMesh(true);
+        }
+
         int f = 0;
         foreach(var i in recette.requiredItemStacks)
         {
@@ -65,6 +99,8 @@ public class Item_Etabli : Item
         {
             StartCoroutine(Convert());
         }
+
+
     }
 
     IEnumerator Convert()

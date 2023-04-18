@@ -207,7 +207,7 @@
                 {
                     "name": "",
                     "id": "5db4ce1d-543a-447b-8b96-e148c22c16c2",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Keyboard>/space",
                     "interactions": "Hold(duration=1E+31)",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -273,7 +273,7 @@
                 {
                     "name": "",
                     "id": "567dce23-f61d-49dd-a7c9-d73b25544f7b",
-                    "path": "<Keyboard>/space",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -284,7 +284,7 @@
                 {
                     "name": "",
                     "id": "bfa20942-f11e-4291-9d99-bc8f7c543d48",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",

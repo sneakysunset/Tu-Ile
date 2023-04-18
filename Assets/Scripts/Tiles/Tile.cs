@@ -38,7 +38,9 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public float minTimer, maxTimer;
     [HideNormalInspector] public AnimationCurve degradationTimerAnimCurve;
     [HideInInspector] public float degradingSpeed;
+    [HideInInspector] public float typeDegradingSpeed = 1;
     [HideInInspector] public bool isGrowing;
+    [HideInInspector] public float degSpeed = 1;
     [HideNormalInspector] public float timeToGetToMaxDegradationSpeed;
     #endregion
 
@@ -84,6 +86,7 @@ public class Tile : MonoBehaviour
     #region Call Methods
     private void Awake()
     {
+        degSpeed = 1;
         AI_Text = GetComponentInChildren<TextMeshProUGUI>();   
         minableItems = transform.Find("SpawnPositions");
         coordFX = coordX - coordY / 2;
@@ -207,7 +210,7 @@ public class Tile : MonoBehaviour
         }
     }
     bool spawning;
-    public void Spawn(float height, Material mat, Mesh mesh, string stackType)
+    public void Spawn(float height, Material mat, Mesh mesh, string stackType, float degradingSpeed)
     {
         spawning = true;
         walkable = true;
@@ -215,7 +218,7 @@ public class Tile : MonoBehaviour
         myMeshR.enabled = true;
         myMeshF.mesh = mesh;
         myMeshR.material = mat;
-
+        typeDegradingSpeed = degradingSpeed;
         //myMeshR.material.color = walkedOnColor;
         transform.Find("Additional Visuals").gameObject.SetActive(true);
         minableItems.gameObject.SetActive(true);
