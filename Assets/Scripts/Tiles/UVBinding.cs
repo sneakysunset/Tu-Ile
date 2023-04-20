@@ -8,7 +8,7 @@ public class UVBinding : MonoBehaviour
 
     private void Start()
     {
-        m = GetComponent<MeshFilter>().mesh;
+        /*m = GetComponent<MeshFilter>().mesh;
         List<int> uvListCoord = new List<int>();
         Matrix4x4 localToWorld = transform.localToWorldMatrix;
         m.uv5 = new Vector2[m.normals.Length];
@@ -29,7 +29,7 @@ public class UVBinding : MonoBehaviour
             {
                 m.uv5[i] = new Vector2(-1, -1);
             }
-        }
+        }*/
         
     }
 

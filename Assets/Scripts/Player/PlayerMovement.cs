@@ -46,7 +46,6 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public float _velocity;
 
     #endregion
-    private FMOD.Studio.EventInstance movingSound;
     private void Awake()
     {
         /*movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/Moove");
@@ -134,7 +133,8 @@ public class PlayerMovement : MonoBehaviour
     {
         /*        float ax = isDashing ? acceleration : -deceleration;
                 speedValue = Mathf.Lerp(speed, sprintingSpeed, ax * Time.deltaTime * 10);*/
-        if(player.tileUnder.tileType == Tile.TileType.Rock)
+
+        if(player.tileUnder != null && player.tileUnder.tileType == Tile.TileType.Rock)
         {
             speedValue = speedOnRocks;
         }

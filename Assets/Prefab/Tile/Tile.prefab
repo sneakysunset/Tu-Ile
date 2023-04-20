@@ -833,6 +833,7 @@ MonoBehaviour:
   tileS: {fileID: 0}
   myMeshR: {fileID: 5864329386916401334}
   myMeshF: {fileID: 8540724609792189564}
+  myMeshC: {fileID: 1723577319114880016}
   tileB: {fileID: 0}
   rb: {fileID: 0}
   minableItems: {fileID: 8755437412334106841}

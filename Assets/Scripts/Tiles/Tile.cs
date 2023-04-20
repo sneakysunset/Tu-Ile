@@ -54,6 +54,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public TileSystem tileS;
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public MeshFilter myMeshF;
+    [HideInInspector] public MeshCollider myMeshC;
     [HideInInspector] public TileBump tileB;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public Transform minableItems;
@@ -68,7 +69,6 @@ public class Tile : MonoBehaviour
     [HideInInspector] public Mesh defaultMesh, woodMesh, rockMesh;
     public Color walkedOnColor, notWalkedOnColor;
     public Color penguinedColor;
-    private Material currentMat;
     #endregion
 
     #region Bump
@@ -335,9 +335,11 @@ public class Tile : MonoBehaviour
     {
         if(!myMeshR) myMeshR = GetComponent<MeshRenderer>();
         if(!myMeshF) myMeshF = GetComponent<MeshFilter>();
+        if(!myMeshC) myMeshC = GetComponent<MeshCollider>();
         minableItems = transform.Find("SpawnPositions");
         myMeshR.sharedMaterial = getCorrespondingMat(tileType);
         myMeshF.sharedMesh = getCorrespondingMesh(tileType);
+        myMeshC.sharedMesh = myMeshF.sharedMesh;
         if (!walkable)
         {
             transform.Find("Additional Visuals").gameObject.SetActive(false);

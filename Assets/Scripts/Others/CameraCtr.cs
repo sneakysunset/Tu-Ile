@@ -19,6 +19,7 @@ public class CameraCtr : MonoBehaviour
     private float distance;
     private SplitScreenEffect sCE;
     public float distanceToSplit;
+    
     IEnumerator Start()
     {
         cam = Camera.main;
