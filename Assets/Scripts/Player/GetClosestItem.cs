@@ -34,21 +34,37 @@ public class GetClosestItem : MonoBehaviour
                 {
                     Item_Etabli item_ = (Item_Etabli)item;
                     if (!player.heldItem) return;
-                    foreach (stack it in item_.recette.requiredItemStacks)
+                    if (player.heldItem.GetType() == typeof(Item_Stack))
                     {
-                        if (it.stackType == player.heldItem.stackType)
+                        foreach (stack it in item_.recette.requiredItemStacks)
                         {
-                            GetItemOnTriggerEnter(item);
+                            if (it.stackType == player.heldItem.stackType)
+                            {
+                                GetItemOnTriggerEnter(item);
+                                return;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        foreach(var i in item_.recette.requiredItemUnstackable)
+                        {
+                            if(Item_Etabli.GetTypeItem(i.itemType, player.heldItem.GetType(), out System.Type type))
+                            {
+                                GetItemOnTriggerEnter(item);
+                                return;
+                            }
                         }
                     }
-                    return;
+
                 }
                 GetItemOnTriggerEnter(item);
             }
         }
     }
 
-    private void OnTriggerStay(Collider other)
+/*    private void OnTriggerStay(Collider other)
     {
         if (other.TryGetComponent(out Item item))
         {
@@ -75,7 +91,7 @@ public class GetClosestItem : MonoBehaviour
             }
         }
 
-    }
+    }*/
 
     private void OnTriggerExit(Collider other)
     {

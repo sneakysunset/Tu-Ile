@@ -333,22 +333,25 @@ public class Tile : MonoBehaviour
     #region Editor
     private void OnValidate()
     {
-        if(!myMeshR) myMeshR = GetComponent<MeshRenderer>();
-        if(!myMeshF) myMeshF = GetComponent<MeshFilter>();
-        if(!myMeshC) myMeshC = GetComponent<MeshCollider>();
-        minableItems = transform.Find("SpawnPositions");
-        myMeshR.sharedMaterial = getCorrespondingMat(tileType);
-        myMeshF.sharedMesh = getCorrespondingMesh(tileType);
-        myMeshC.sharedMesh = myMeshF.sharedMesh;
-        if (!walkable)
+        if(!Application.isPlaying)
         {
-            transform.Find("Additional Visuals").gameObject.SetActive(false);
-            minableItems.gameObject.SetActive(false);
-        }
-        else
-        {
-            transform.Find("Additional Visuals").gameObject.SetActive(true);
-            minableItems.gameObject.SetActive(true);
+            if(!myMeshR) myMeshR = GetComponent<MeshRenderer>();
+            if(!myMeshF) myMeshF = GetComponent<MeshFilter>();
+            if(!myMeshC) myMeshC = GetComponent<MeshCollider>();
+            minableItems = transform.Find("SpawnPositions");
+            myMeshR.sharedMaterial = getCorrespondingMat(tileType);
+            myMeshF.sharedMesh = getCorrespondingMesh(tileType);
+            myMeshC.sharedMesh = myMeshF.sharedMesh;
+            if (!walkable)
+            {
+                transform.Find("Additional Visuals").gameObject.SetActive(false);
+                minableItems.gameObject.SetActive(false);
+            }
+            else
+            {
+                transform.Find("Additional Visuals").gameObject.SetActive(true);
+                minableItems.gameObject.SetActive(true);
+            }
         }
     }
     private void OnDrawGizmos()

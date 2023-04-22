@@ -1,26 +1,31 @@
+using AmplifyShaderEditor;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.Progress;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 [System.Serializable]
 public struct stack
 {
     public Item_Stack.StackType stackType;
+    [HideInInspector] public int currentNumber;
     public int cost;
-    [HideInInspector] public Item_Stack item;
+}
+
+[System.Serializable]
+public struct item
+{
+    public Item.ItemType itemType;
+    [HideInInspector] public bool isFilled;
 }
 
 public class Item_Etabli : Item
 {
     public SO_Recette recette;
-    //public string recipeName;
-    //public stack[] requiredItemStacks;
-    //public Item_Stack craftedItemPrefab;
     Item_Stack craftedItem;
-    //public float timeToCraft;
     private UnityEngine.Transform stackT;
     private bool convertorFlag;
     private WaitForSeconds waiter;
@@ -28,24 +33,15 @@ public class Item_Etabli : Item
     private MeshRenderer[] meshs;
     bool isActive;
     Tile tileUnder;
-    UnityEngine.Transform itemNum;
+    EtabliCanvas itemNum;
     public override void Awake()
     {
         base.Awake();
         meshs = GetComponentsInChildren<MeshRenderer>();
         waiter = new WaitForSeconds(recette.convertionTime);
         rb.isKinematic = true;
-        itemNum = transform.Find("ItemNumber");
+        itemNum = GetComponentInChildren<EtabliCanvas>();
         stackT = transform.Find("Stacks");
-        for (int i = 0; i < recette.requiredItemStacks.Length; i++)
-        {
-            Item_Stack iS = stackT.GetChild(i).AddComponent<Item_Stack>();
-            recette.requiredItemStacks[i].item = iS;
-            iS.stackType = recette.requiredItemStacks[i].stackType;
-            iS.holdable = true;
-            iS.trueHoldable = false;
-            iS.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-        }
     }
 
     public void SetActiveMesh(bool active)
@@ -72,6 +68,7 @@ public class Item_Etabli : Item
         tileUnder = FindObjectOfType<TileSystem>().WorldPosToTile(transform.position);
         transform.parent = tileUnder.transform;
         createdItem = transform.Find("TileCreator/CreatedPos");
+        itemNum.UpdateText();
     }
 
     public override void Update()
@@ -87,18 +84,7 @@ public class Item_Etabli : Item
             SetActiveMesh(true);
         }
 
-        int f = 0;
-        foreach(var i in recette.requiredItemStacks)
-        {
-            if(i.cost <= i.item.numberStacked)
-            {
-                f++;
-            }
-        }
-        if(f == recette.requiredItemStacks.Length && !convertorFlag)
-        {
-            StartCoroutine(Convert());
-        }
+
 
 
     }
@@ -107,37 +93,34 @@ public class Item_Etabli : Item
     {
         convertorFlag = true;
         yield return waiter;
-        foreach (var i in recette.requiredItemStacks)
+        for (int i = 0; i < recette.requiredItemStacks.Length; i++)
         {
-            i.item.numberStacked -= i.cost;
+            recette.requiredItemStacks[i].currentNumber -= recette.requiredItemStacks[i].cost;
         }
-        if (createdItem.childCount == 0) CreateStack();
-
-        craftedItem.numberStacked += 1;
+        int f = 0;
+        for (int i = 0; i < recette.requiredItemUnstackable.Length; i++)
+        {
+            recette.requiredItemUnstackable[i].isFilled = false;
+            f++;
+        }
+        craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, Quaternion.identity, createdItem);
+        craftedItem.numberStacked += recette.numberOfCrafted;
+        itemNum.UpdateText();
         convertorFlag = false;
     }
 
-    void CreateStack()
-    {
-        craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, transform.rotation, null);
-        craftedItem.transform.parent = createdItem;
-        craftedItem.physic = false;
-        craftedItem.GetComponent<Item_Stack>().numberStacked = recette.numberOfCrafted;
-        craftedItem.rb.isKinematic = true;  
-    }
 
     public override void GrabStarted(UnityEngine.Transform holdPoint, Player player)
     {
         if(player.heldItem && player.heldItem.GetType() == typeof(Item_Stack))
         {
             Item_Stack itemS = player.heldItem as Item_Stack;
-            foreach(stack iS in recette.requiredItemStacks)
+            for (int i = 0; i < recette.requiredItemStacks.Length; i++)
             {
+                stack iS = recette.requiredItemStacks[i];
                 if(iS.stackType == itemS.stackType)
                 {
-                    
-
-                    iS.item.numberStacked += itemS.numberStacked;
+                    recette.requiredItemStacks[i].currentNumber += itemS.numberStacked;
                     player.heldItem = null;
                     Destroy(itemS.gameObject);
                     Highlight.SetActive(false);
@@ -145,8 +128,71 @@ public class Item_Etabli : Item
                 }
             }
         }
+        else if (player.heldItem)
+        {
+            Item itemS = player.heldItem;
+            for (int i = 0; i < recette.requiredItemUnstackable.Length; i++)
+            {
+                item iT = recette.requiredItemUnstackable[i];
+                if(GetTypeItem(iT.itemType, player.heldItem.GetType(), out System.Type type))
+                {
+                    recette.requiredItemUnstackable[i].isFilled = true;
+                    Item tempItem = player.heldItem;
+                    player.heldItem = null;
+                    Destroy(tempItem.gameObject);
+                    Highlight.SetActive(false);
+                    break;
+                }
+            }
+        }
+        itemNum.UpdateText();
+        if (CheckStacks())
+        {
+            StartCoroutine(Convert());
+        }
+    }
+
+    bool CheckStacks()
+    {
+        int f = 0;
+        foreach (var i in recette.requiredItemStacks)
+        {
+            if (i.cost <= i.currentNumber)
+            {
+                f++;
+            }
+        }
+        foreach(var i in recette.requiredItemUnstackable)
+        {
+            if(i.isFilled)
+            {
+                f++;
+            }
+        }
+
+        if (f == recette.requiredItemStacks.Length + recette.requiredItemUnstackable.Length && !convertorFlag)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public static bool GetTypeItem(Item.ItemType itemType, System.Type type1, out System.Type type)
+    {
+        bool checker = false;
+        switch (itemType)
+        {
+            case ItemType.Bird: type = System.Type.GetType("Item_Bird"); break;
+            default: type = null; break;
+        }
+
+        if (type == type1) checker = true;
+
+        return checker;
     }
 }
+
+
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(Item_Etabli))]
