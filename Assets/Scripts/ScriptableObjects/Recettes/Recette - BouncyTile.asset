@@ -20,5 +20,5 @@ MonoBehaviour:
   requiredItemUnstackable:
   - itemType: 0
     isFilled: 0
-  craftedItemPrefab: {fileID: 0}
+  craftedItemPrefab: {fileID: -7700456598475612927, guid: 72b09a015b9ac824ba421ff6d85778a8, type: 3}
   numberOfCrafted: 1
