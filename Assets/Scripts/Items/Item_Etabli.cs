@@ -106,7 +106,7 @@ public class Item_Etabli : Item
         craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, Quaternion.identity, createdItem);
         craftedItem.numberStacked += recette.numberOfCrafted;
         itemNum.UpdateText();
-        convertorFlag = false;
+        convertorFlag = false;  
     }
 
 
