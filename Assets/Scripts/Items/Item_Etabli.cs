@@ -1,12 +1,9 @@
-using AmplifyShaderEditor;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.Progress;
-using static UnityEngine.RuleTile.TilingRuleOutput;
+using UnityEngine.Events;
 
+#region structs
 [System.Serializable]
 public struct stack
 {
@@ -21,11 +18,14 @@ public struct item
     public Item.ItemType itemType;
     [HideInInspector] public bool isFilled;
 }
+#endregion
 
 public class Item_Etabli : Item
 {
+    #region variables
+    public bool limitItemsReceived;
     public SO_Recette recette;
-    Item_Stack craftedItem;
+    Item craftedItem;
     private UnityEngine.Transform stackT;
     private bool convertorFlag;
     private WaitForSeconds waiter;
@@ -34,6 +34,13 @@ public class Item_Etabli : Item
     bool isActive;
     Tile tileUnder;
     EtabliCanvas itemNum;
+    bool isChantier;
+    public UnityEvent EventOnCreation;
+    [HideInInspector] public bool constructed = false;
+    [HideInInspector] public bool isDestroyed = false;
+    #endregion
+
+    #region SystemCallbacks
     public override void Awake()
     {
         base.Awake();
@@ -44,31 +51,14 @@ public class Item_Etabli : Item
         stackT = transform.Find("Stacks");
     }
 
-    public void SetActiveMesh(bool active)
-    {
-        foreach(MeshRenderer m in meshs)
-        {
-            if (active)
-            {
-                m.enabled = true;
-                isActive = true;
-                itemNum.gameObject.SetActive(true);
-            }
-            else
-            {
-                m.enabled = false;
-                isActive = false;
-                itemNum.gameObject.SetActive(false);
-            }
-        }
-    }
-
     private void Start()
     {
+        recette.ResetRecette();
+        if(Utils.IsSameOrSubclass(recette.craftedItemPrefab.GetType(), typeof(Item_Chantier))) isChantier = true;
         tileUnder = FindObjectOfType<TileSystem>().WorldPosToTile(transform.position);
         transform.parent = tileUnder.transform;
         createdItem = transform.Find("TileCreator/CreatedPos");
-        itemNum.UpdateText();
+        itemNum.UpdateText(this);
     }
 
     public override void Update()
@@ -84,9 +74,120 @@ public class Item_Etabli : Item
             SetActiveMesh(true);
         }
 
+        if(craftedItem != null && craftedItem.isHeld) 
+        {
+            craftedItem = null;
+            if (CheckStacks())
+            {
+                StartCoroutine(Convert());
+            }
+        }
 
 
+    }
+    
+    public override void GrabStarted(UnityEngine.Transform holdPoint, Player player)
+    {
+        //Transfer Items to Etabli
+        TransferItems(player);
 
+        //Update EtabliCanvas values
+        itemNum.UpdateText(this);
+
+        //Check if convertion can take place
+        if (CheckStacks())
+        {
+            if(isChantier) StartCoroutine(ChantierConvert());
+            else StartCoroutine(Convert());
+        } 
+    }
+    #endregion
+
+    #region Methods
+    public void SetActiveMesh(bool active)
+    {
+        foreach(MeshRenderer m in meshs)
+        {
+            if (active)
+            {
+                m.enabled = true;
+                isActive = true;
+                itemNum.gameObject.SetActive(true);
+            }
+            else
+            {
+                if(isChantier)
+                {
+                    Destroy(gameObject);
+                }
+                m.enabled = false;
+                isActive = false;
+                itemNum.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        isDestroyed = true;
+        if( isChantier && !constructed)
+        {
+            FindObjectOfType<MissionManager>().CheckMissions();
+        }
+    }
+
+
+    void TransferItems(Player player)
+    {
+        // if ItemStacked check if item receivable and transfer to etabli
+        if (player.heldItem && player.heldItem.GetType() == typeof(Item_Stack))
+        {
+            Item_Stack itemS = player.heldItem as Item_Stack;
+            for (int i = 0; i < recette.requiredItemStacks.Length; i++)
+            {
+                stack iS = recette.requiredItemStacks[i];
+                if (iS.stackType == itemS.stackType)
+                {
+                    if (!limitItemsReceived)
+                    {
+                        recette.requiredItemStacks[i].currentNumber += itemS.numberStacked;
+                        player.heldItem = null;
+                        Destroy(itemS.gameObject);
+                    }
+                    else
+                    {
+                        int numToTransfer = Mathf.Clamp(itemS.numberStacked, 0, iS.cost - iS.currentNumber);
+                        recette.requiredItemStacks[i].currentNumber += numToTransfer;
+                        itemS.numberStacked -= numToTransfer;
+                        if(itemS.numberStacked <= 0)
+                        {
+                            recette.requiredItemStacks[i].currentNumber += itemS.numberStacked;
+                            player.heldItem = null;
+                            Destroy(itemS.gameObject);
+                        }
+                    }
+                    Highlight.SetActive(false);
+                    break;
+                }
+            }
+        }
+        //same but for not stackable Items
+        else if (player.heldItem)
+        {
+            for (int i = 0; i < recette.requiredItemUnstackable.Length; i++)
+            {
+                item iT = recette.requiredItemUnstackable[i];
+                if (Utils.GetTypeItem(iT.itemType, player.heldItem.GetType(), out System.Type type))
+                {
+                    recette.requiredItemUnstackable[i].isFilled = true;
+                    Item tempItem = player.heldItem;
+                    player.heldItem = null;
+                    Destroy(tempItem.gameObject);
+                    Highlight.SetActive(false);
+                    break;
+                }
+            }
+        }
     }
 
     IEnumerator Convert()
@@ -103,53 +204,30 @@ public class Item_Etabli : Item
             recette.requiredItemUnstackable[i].isFilled = false;
             f++;
         }
-        craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, Quaternion.identity, createdItem);
-        craftedItem.numberStacked += recette.numberOfCrafted;
-        itemNum.UpdateText();
-        convertorFlag = false;  
+        if(craftedItem == null)
+        {
+            craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, Quaternion.identity, createdItem);
+        }
+        if(Utils.IsSameOrSubclass(System.Type.GetType("Item_Stack"), craftedItem.GetType()))
+        {
+            Item_Stack craIt = craftedItem as Item_Stack;
+            craIt.numberStacked += recette.numberOfCrafted;
+        }
+        itemNum.UpdateText(this);
+        convertorFlag = false;
+        EventOnCreation?.Invoke();
+
     }
 
-
-    public override void GrabStarted(UnityEngine.Transform holdPoint, Player player)
+    IEnumerator ChantierConvert()
     {
-        if(player.heldItem && player.heldItem.GetType() == typeof(Item_Stack))
-        {
-            Item_Stack itemS = player.heldItem as Item_Stack;
-            for (int i = 0; i < recette.requiredItemStacks.Length; i++)
-            {
-                stack iS = recette.requiredItemStacks[i];
-                if(iS.stackType == itemS.stackType)
-                {
-                    recette.requiredItemStacks[i].currentNumber += itemS.numberStacked;
-                    player.heldItem = null;
-                    Destroy(itemS.gameObject);
-                    Highlight.SetActive(false);
-                    break;
-                }
-            }
-        }
-        else if (player.heldItem)
-        {
-            Item itemS = player.heldItem;
-            for (int i = 0; i < recette.requiredItemUnstackable.Length; i++)
-            {
-                item iT = recette.requiredItemUnstackable[i];
-                if(GetTypeItem(iT.itemType, player.heldItem.GetType(), out System.Type type))
-                {
-                    recette.requiredItemUnstackable[i].isFilled = true;
-                    Item tempItem = player.heldItem;
-                    player.heldItem = null;
-                    Destroy(tempItem.gameObject);
-                    Highlight.SetActive(false);
-                    break;
-                }
-            }
-        }
-        itemNum.UpdateText();
-        if (CheckStacks())
-        {
-            StartCoroutine(Convert());
-        }
+        yield return waiter;
+        GameObject chantier = Instantiate(recette.craftedItemPrefab, tileUnder.transform.position + Vector3.up * GameConstant.tileHeight, Quaternion.identity).gameObject;
+        chantier.transform.parent = tileUnder.transform;
+        constructed = true;
+        FindObjectOfType<MissionManager>().CheckMissions();
+        EventOnCreation?.Invoke();
+        gameObject.SetActive(false);
     }
 
     bool CheckStacks()
@@ -169,31 +247,20 @@ public class Item_Etabli : Item
                 f++;
             }
         }
+        bool condition1 = f == recette.requiredItemStacks.Length + recette.requiredItemUnstackable.Length;
+        bool condition2 = recette.craftedItemPrefab.GetType() == System.Type.GetType("Item_Stack");
+        bool condition3 = craftedItem == null;
 
-        if (f == recette.requiredItemStacks.Length + recette.requiredItemUnstackable.Length && !convertorFlag)
+        if (!convertorFlag && condition1 && (condition2 || condition3))
         {
             return true;
         }
         else return false;
     }
-
-    public static bool GetTypeItem(Item.ItemType itemType, System.Type type1, out System.Type type)
-    {
-        bool checker = false;
-        switch (itemType)
-        {
-            case ItemType.Bird: type = System.Type.GetType("Item_Bird"); break;
-            default: type = null; break;
-        }
-
-        if (type == type1) checker = true;
-
-        return checker;
-    }
+    #endregion
 }
 
-
-
+#region Editor
 #if UNITY_EDITOR
 [CustomEditor(typeof(Item_Etabli))]
 [System.Serializable]
@@ -221,8 +288,12 @@ public class EtablieSystemEditor : Editor
         if (!Application.isPlaying)
         {
             Tile tileUnder = TileSystem.Instance.WorldPosToTile(etabli.transform.position);
-            etabli.transform.position = new Vector3(etabli.transform.position.x, tileUnder.transform.position.y + 23.4f, etabli.transform.position.z);
+            if(tileUnder != null)
+            {
+                etabli.transform.position = new Vector3(etabli.transform.position.x, tileUnder.transform.position.y + 23.4f, etabli.transform.position.z);
+            }
         }
     }
 }
 #endif
+#endregion

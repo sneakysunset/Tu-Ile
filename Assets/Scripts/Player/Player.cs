@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     [Range(-5, 5)]public float throwYAxisDirection;
     [HideInInspector] public Collider col;
     public ParticleSystem hitParticleSystem;
+    public Transform pointer;
     private void Awake()
     {
         if (respawnTile == null)

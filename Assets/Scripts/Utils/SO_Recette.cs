@@ -8,7 +8,7 @@ public class SO_Recette : ScriptableObject
     public float convertionTime;
     public stack[] requiredItemStacks;
     public item[] requiredItemUnstackable;
-    public Item_Stack craftedItemPrefab;
+    public Item craftedItemPrefab;
     public int numberOfCrafted;
 
     public void ResetRecette()

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6615502366343924395}
   - component: {fileID: 5910207511914767580}
   - component: {fileID: 866486334532639043}
-  m_Layer: 3
+  m_Layer: 14
   m_Name: RessourceNum3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -82.2}
+  m_AnchoredPosition: {x: 20.9, y: -70.4}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5910207511914767580
@@ -66,10 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '
-
-
-'
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -104,7 +101,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -343,7 +340,7 @@ GameObject:
   - component: {fileID: 6743672034750223366}
   - component: {fileID: 6096486748461821545}
   - component: {fileID: 4911165902237318712}
-  m_Layer: 3
+  m_Layer: 14
   m_Name: RessourceNum2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -367,7 +364,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -39.7}
+  m_AnchoredPosition: {x: 20.9, y: -27.9}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6096486748461821545
@@ -398,10 +395,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '
-
-
-'
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -436,7 +430,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -481,7 +475,7 @@ GameObject:
   - component: {fileID: 666063041952729945}
   - component: {fileID: 6826503257484133953}
   - component: {fileID: 2558099182621226893}
-  m_Layer: 3
+  m_Layer: 14
   m_Name: Image2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -505,7 +499,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -58.8, y: -35.9}
+  m_AnchoredPosition: {x: -58.8, y: -28.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6826503257484133953
@@ -654,7 +648,7 @@ GameObject:
   - component: {fileID: 4773366677674849846}
   - component: {fileID: 4597971873197290088}
   - component: {fileID: 872459734552543602}
-  m_Layer: 3
+  m_Layer: 14
   m_Name: Fond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -669,18 +663,18 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2350118983955779161}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000046359168}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4617322393302104171}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.13, y: -38.3}
-  m_SizeDelta: {x: 172.54, y: 137.81}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -1.1299394, y: -189.39493}
+  m_SizeDelta: {x: 172.54, y: 137.81001}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4597971873197290088
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -730,7 +724,7 @@ GameObject:
   - component: {fileID: 2483733696740314471}
   - component: {fileID: 8569098498478955893}
   - component: {fileID: 8229383657240455937}
-  m_Layer: 3
+  m_Layer: 14
   m_Name: Image3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -754,7 +748,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -58.8, y: -74.3}
+  m_AnchoredPosition: {x: -58.8, y: -66.89993}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8569098498478955893
@@ -806,7 +800,7 @@ GameObject:
   - component: {fileID: 3770956109592432005}
   - component: {fileID: 8049941608993985227}
   - component: {fileID: 3419839561367990584}
-  m_Layer: 3
+  m_Layer: 14
   m_Name: Image1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -830,7 +824,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -58.8, y: 2.3}
+  m_AnchoredPosition: {x: -58.8, y: 9.7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8049941608993985227
@@ -1229,7 +1223,7 @@ GameObject:
   - component: {fileID: 8353422736337241742}
   - component: {fileID: 6661449458448674771}
   - component: {fileID: 969642240820056749}
-  m_Layer: 3
+  m_Layer: 14
   m_Name: ItemNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1347,7 +1341,7 @@ GameObject:
   - component: {fileID: 1153253914734004356}
   - component: {fileID: 2185717113076622417}
   - component: {fileID: 5838469112705647285}
-  m_Layer: 3
+  m_Layer: 14
   m_Name: RessourceNum1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1371,7 +1365,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 20.9, y: 11.8}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2185717113076622417
@@ -1402,10 +1396,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '
-
-
-'
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1440,7 +1431,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1779,8 +1770,11 @@ MonoBehaviour:
   _player: {fileID: 0}
   physic: 1
   col: {fileID: 0}
-  stackType: 0
+  limitItemsReceived: 0
   recette: {fileID: 11400000, guid: 29a10fe3c412f894fbf7ab3565036a4c, type: 2}
+  EventOnCreation:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!33 &6122129862733760006
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -7,16 +7,15 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public enum StackType { Other, Wood, Rock, Gold, Diamond, Adamantium, BouncyTile};
-    public enum ItemType { Bird};
+    public enum ItemType { Bird, Chantier, Boussole};
     public bool holdable;
     [HideNormalInspector] public bool isHeld;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public GameObject Highlight;
     protected Transform heldPoint;
-    public Player _player;
+    [HideInInspector] public Player _player;
     [HideInInspector] public bool physic = true;
     [HideInInspector] public Collider col;
-    public Item_Stack.StackType stackType;
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;

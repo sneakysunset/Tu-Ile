@@ -14,15 +14,16 @@ public class EtabliCanvas : MonoBehaviour
     Transform mainCamera;
     Image[] images;
     private RessourcesManager rMan;
-    private void Start()
+
+
+    private void OnActivated()
     {
+        rMan = FindObjectOfType<RessourcesManager>();
         cam = FindObjectOfType<CameraCtr>();
         texts = GetComponentsInChildren<TextMeshProUGUI>();
-        etabli = transform.parent.GetComponent<Item_Etabli>();
         mainCamera = Camera.main.transform;
         images = GetComponentsInChildren<Image>();
-        rMan = FindObjectOfType<RessourcesManager>();
-
+        images[0].rectTransform.localScale = new Vector3(images[0].rectTransform.localScale.x, 0, images[0].rectTransform.localScale.z);
         for (int i = 0; i < images.Length - 1; i++)
         {
             images[i + 1].gameObject.SetActive(false);
@@ -39,6 +40,7 @@ public class EtabliCanvas : MonoBehaviour
                 {
                     images[i + 1].sprite = rMC.sprite;
                     images[i + 1].gameObject.SetActive(true);
+                    images[0].rectTransform.localScale += .35f * Vector3.up;
                     f++;
                 }
             }
@@ -52,15 +54,23 @@ public class EtabliCanvas : MonoBehaviour
                 {
                     images[f + 1].gameObject.SetActive(true);
                     images[f + 1].sprite = rMC.sprite;
+                    images[0].rectTransform.localScale += .35f * Vector3.up;
                     f++;
                 }
             }
         }
+
+        
     }
 
-    public void UpdateText()
+    public void UpdateText(Item_Etabli et)
     {
         int f = 0;
+        if (etabli == null)
+        {
+            etabli = et;
+            OnActivated();
+        }
         for (int i = 0; i < etabli.recette.requiredItemStacks.Length; i++)
         {
             foreach (ressourceMeshsCollec rMC in rMan.RessourceMeshs)

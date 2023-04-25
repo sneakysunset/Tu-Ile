@@ -15,8 +15,7 @@ public class Tile : MonoBehaviour
     [SerializeField] public TileType tileSpawnType;
     [SerializeField] public TileType tileType = TileType.Neutral;
 
-
-    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, BouncyTile, LevelLoader };
+    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, BouncyTile, LevelLoader, construction };
     public string levelName;
     [HideNormalInspector] public int coordX, coordFX, coordY;
     public bool walkedOnto = false;
@@ -260,6 +259,9 @@ public class Tile : MonoBehaviour
     public void Spawn(float height, Material mat, Mesh mesh, string stackType, float degradingSpeed)
     {
         TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
+        float rot = UnityEngine.Random.Range(0, 360);
+
+        transform.Rotate(0, rot - (rot % 60), 0);
         tileType = tType;
         spawning = true;
         walkable = true;
@@ -331,7 +333,9 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Editor
-    private void OnValidate()
+#if UNITY_EDITOR
+    void OnValidate() { UnityEditor.EditorApplication.delayCall += _OnValidate; }
+    private void _OnValidate()
     {
         if(!Application.isPlaying)
         {
@@ -354,6 +358,7 @@ public class Tile : MonoBehaviour
             }
         }
     }
+#endif
     private void OnDrawGizmos()
     {
         if(heightByTile != 0 && !Application.isPlaying)

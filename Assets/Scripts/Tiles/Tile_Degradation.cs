@@ -20,7 +20,7 @@ public class Tile_Degradation : MonoBehaviour
     {
         if(tile.isGrowing) Elevating();
         else if (tile.walkable && tile.degradable && tile.walkedOnto && tile.tileType != Tile.TileType.Sand) Degrading();
-        if (!tile.isDegrading && ((transform.position.y <= -tile.heightByTile && tile.currentPos.y <= -tile.heightByTile)))
+        if (!tile.isDegrading && tile.walkable && ((transform.position.y <= -tile.heightByTile && tile.currentPos.y <= -tile.heightByTile)))
         {
             SinkTile();
         }

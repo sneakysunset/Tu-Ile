@@ -22,4 +22,6 @@ public class ScreenShake
 
         Camera.main.transform.localPosition = ogPos;
     }
+
+   
 }

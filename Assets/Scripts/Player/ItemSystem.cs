@@ -18,7 +18,8 @@ public class ItemSystem : MonoBehaviour
     //normal grab action
     public void OnItemInput1(InputAction.CallbackContext context)
     {
-        if (context.started && player.heldItem != null && player.holdableItems.Count == 0)
+        bool isSameOrSubClass = player.closestItem != null && Utils.IsSameOrSubclass(player.closestItem.GetType(), typeof(Item_Etabli));
+        if (context.started && player.heldItem != null && player.holdableItems.Count == 0 && !isSameOrSubClass)
         {
             player.heldItem.GrabRelease();
             player.holdableItems.Add(player.heldItem);
@@ -29,7 +30,7 @@ public class ItemSystem : MonoBehaviour
 
         if (context.started && player.closestItem != null && player.closestItem.holdable)
         {
-            if(player.heldItem != null)
+            if(player.heldItem != null && !isSameOrSubClass)
             {
                 //player.holdableItems.Add(player.heldItem);
                 player.heldItem.GrabRelease();
@@ -38,7 +39,6 @@ public class ItemSystem : MonoBehaviour
             {
                 if (player.closestItem.isHeld)
                 {
-                    print(1);
                     player.closestItem.GrabRelease();
                     Player pl = player.closestItem._player;
                     pl.holdableItems.Add(player.closestItem);
@@ -55,6 +55,7 @@ public class ItemSystem : MonoBehaviour
                 player.holdableItems.Remove(player.closestItem);
             }
         }
+
     }
 
     //throw action

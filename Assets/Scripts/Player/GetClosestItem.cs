@@ -5,6 +5,8 @@ using UnityEngine;
 public class GetClosestItem : MonoBehaviour
 {
     private Player player;
+
+    #region SystemCallBacks
     private void Start()
     {
         player = GetComponent<Player>();
@@ -20,7 +22,7 @@ public class GetClosestItem : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Item item))
+        if (other.TryGetComponent(out Item item) && !player.holdableItems.Contains(item))
         {
             if (player.heldItem != item && !player.holdableItems.Contains(item) && item.holdable)
             {
@@ -30,68 +32,15 @@ public class GetClosestItem : MonoBehaviour
                     if (!item_Stack.trueHoldable) return;
                 }
 
-                else if (item.GetType() == typeof(Item_Etabli))
+                else if (Utils.IsSameOrSubclass(item.GetType(), typeof(Item_Etabli)))
                 {
                     Item_Etabli item_ = (Item_Etabli)item;
-                    if (!player.heldItem) return;
-                    if (player.heldItem.GetType() == typeof(Item_Stack))
-                    {
-                        foreach (stack it in item_.recette.requiredItemStacks)
-                        {
-                            if (it.stackType == player.heldItem.stackType)
-                            {
-                                GetItemOnTriggerEnter(item);
-                                return;
-                            }
-                        }
-
-                    }
-                    else
-                    {
-                        foreach(var i in item_.recette.requiredItemUnstackable)
-                        {
-                            if(Item_Etabli.GetTypeItem(i.itemType, player.heldItem.GetType(), out System.Type type))
-                            {
-                                GetItemOnTriggerEnter(item);
-                                return;
-                            }
-                        }
-                    }
-
+                    if (!player.heldItem || !Utils.CheckIfItemInRecette(player.heldItem, item_.recette)) return;
                 }
                 GetItemOnTriggerEnter(item);
             }
         }
     }
-
-/*    private void OnTriggerStay(Collider other)
-    {
-        if (other.TryGetComponent(out Item item))
-        {
-            if (player.heldItem != item && !player.holdableItems.Contains(item) && item.holdable)
-            {
-                if (item.GetType() == typeof(Item_Stack))
-                {
-                    Item_Stack item_Stack = (Item_Stack)item;
-                    if (!item_Stack.trueHoldable) return;
-                }
-                else if(item.GetType() == typeof(Item_Etabli))
-                {
-                    Item_Etabli item_ = (Item_Etabli)item;
-                    if (!player.heldItem) return;
-                    foreach(stack it in item_.recette.requiredItemStacks)
-                    {
-                        if(it.stackType != player.heldItem.stackType)
-                        {
-                            return;
-                        }
-                    }
-                }
-                //GetItemOnTriggerEnter(item);
-            }
-        }
-
-    }*/
 
     private void OnTriggerExit(Collider other)
     {
@@ -105,7 +54,9 @@ public class GetClosestItem : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region Methods
     void GetItemOnTriggerEnter(Item item)
     {
         if (player.heldItem != null && item.GetType() == typeof(Item_Stack_Tile) && player.heldItem.GetType() == typeof(Item_Stack_Tile))
@@ -137,7 +88,6 @@ public class GetClosestItem : MonoBehaviour
 
     void RemoveItemTriggerExit(Item item) => player.holdableItems.Remove(item);
 
-
     Item ClosestItem()
     {
         Item cItem = null;
@@ -164,5 +114,5 @@ public class GetClosestItem : MonoBehaviour
 
         return cItem;
     }
-
+    #endregion
 }
