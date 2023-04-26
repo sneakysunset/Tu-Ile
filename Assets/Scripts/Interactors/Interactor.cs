@@ -17,7 +17,7 @@ public class Interactor : MonoBehaviour
     public bool isInteractedWith;
     public bool interactable = true;
     protected float currentHitTimer;
-    protected List<Player> _player;
+    [HideInInspector] public List<Player> _player;
     public GameObject spawnPrefab;
     public int ressourceNum = 10;
     Transform stackT;
@@ -62,11 +62,13 @@ public class Interactor : MonoBehaviour
     {
         if(_player.Count == 0) 
         { 
-            
+            timer = hitTimer;
+            currentHitTimer = hitTimer;            
         }
-        timer = hitTimer;
-        currentHitTimer = hitTimer;
-        _player.Add(player);
+        if(!_player.Contains(player))
+        {
+            _player.Add(player);
+        }
         isInteractedWith = true;
         if(stateIndex == meshs.Length - 1)
         {
@@ -77,6 +79,29 @@ public class Interactor : MonoBehaviour
         }
     }
 
+    public virtual void OnInteractionExit(Player player)
+    {
+        OnEndInteraction(player);
+    }
+
+    protected virtual void OnEndInteraction(Player player)
+    {
+        for (int i = _player.Count - 1; i <= 0; i--)
+        {
+            if (_player[i] == player)
+            {
+                _player.Remove(player);
+                player.isMining = false;
+                player.interactor = null;
+            }
+        }
+        if(_player.Count == 0)
+        {
+            isInteractedWith = false;
+            timer = regrowthTimer;
+        }
+        player.anim.speed = 1;
+    }
     
 
     private void LateUpdate()
@@ -86,6 +111,7 @@ public class Interactor : MonoBehaviour
 
     bool ps;
     public ParticleSystem pSysRegrowth;
+
     private void Update()
     {
         isFaded = false;
@@ -106,6 +132,7 @@ public class Interactor : MonoBehaviour
         else if(!interactable && stateIndex == meshs.Length - 1)
         {
             interactable = true;
+            tag = "Interactor";
             meshF.mesh = meshs[stateIndex];
             meshC.sharedMesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
@@ -113,28 +140,6 @@ public class Interactor : MonoBehaviour
         }
     }
 
-    public virtual void OnInteractionExit()
-    {
-        OnEndInteraction();
-    }
-
-    protected virtual void OnEndInteraction()
-    {
-        isInteractedWith = false;
-        timer = regrowthTimer;
-        if(_player != null)
-        {
-            if(_player.Count > 0)
-            {
-                foreach (var player in _player) 
-                { 
-                    player.isMining = false;
-                    player.interactor = null; 
-                }
-            }
-            _player.Clear();
-        }
-    }
 
     protected virtual void EmptyInteractor()
     {
@@ -142,8 +147,14 @@ public class Interactor : MonoBehaviour
         stackItem.numberStacked += numberOfRessourceGenerated;
         //GameObject obj = Instantiate(spawnPrefab, spawnPoint.position, Quaternion.identity);
         //obj.transform.parent = this.transform;
-        OnEndInteraction();
+        foreach(Player p in _player)
+        {
+            p.GetComponent<Player_Mining>().StopMining();
+            OnEndInteraction(p);
+        }
         interactable = false;
+        tag = "InteractorOff";
+        timer = regrowthTimer;
     }
 
     public virtual void OnFilonMined()

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: M_B_1
   m_EditorClassIdentifier: 
   description: Find the Treasure using a boussole
-  deliveryTime: 15
-  activated: 0
-  timer: 0
-  targetTileCoord: {x: 9, y: 6}
+  deliveryTimeMin: 5
+  deliveryTimeMax: 10
+  minDistanceFromCenter: 0
+  maxDistanceFromCenter: 0

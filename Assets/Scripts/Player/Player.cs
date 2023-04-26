@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     [Range(-5, 5)]public float throwYAxisDirection;
     [HideInInspector] public Collider col;
     public ParticleSystem hitParticleSystem;
-    public Transform pointer;
+    [HideInInspector] public List<Transform> pointers;
     private void Awake()
     {
         if (respawnTile == null)
@@ -37,6 +37,12 @@ public class Player : MonoBehaviour
         }
         FindObjectOfType<CameraCtr>().AddPlayer(transform);
         col = GetComponent<Collider>();
+        pointers = new List<Transform>();
+        Transform pointerFolder = transform.Find("PointerFolder");
+        foreach (Transform go in pointerFolder)
+        {
+            pointers.Add(go);
+        }
     }
 
     private void Start()

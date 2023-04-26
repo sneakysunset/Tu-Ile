@@ -77,7 +77,7 @@ public class Interactions : MonoBehaviour
     {
         if(other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out interactor))
         {
-            interactor.OnInteractionExit();
+            interactor.OnInteractionExit(player);
             isMining = false;
             interactor = null;
         }

@@ -6,15 +6,13 @@ using UnityEngine;
 public class Tile_Degradation : MonoBehaviour
 {
     Tile tile;
-    bool degradingChecker;
-    bool isGrowingChecker;
     private float degradationTimerModifier;
-    private NearSightedMode nSM;
     [HideNormalInspector] private bool walkedOntoChecker;
+
     private void Start()
     {
         tile = GetComponent<Tile>();
-        nSM = FindObjectOfType<NearSightedMode>();  
+
     }
     private void Update()
     {
@@ -70,9 +68,6 @@ public class Tile_Degradation : MonoBehaviour
         {
             tag = "Tile";
         }
-
-
-        degradingChecker = tile.isDegrading;
     }
     
     private void Elevating()

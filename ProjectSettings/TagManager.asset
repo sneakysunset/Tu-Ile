@@ -12,6 +12,7 @@ TagManager:
   - Water
   - Ship
   - TileFolder
+  - InteractorOff
   layers:
   - Default
   - TransparentFX

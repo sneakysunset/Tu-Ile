@@ -256,7 +256,7 @@ public class Tile : MonoBehaviour
         return mesh;
     }
 
-    public void Spawn(float height, Material mat, Mesh mesh, string stackType, float degradingSpeed)
+    public void Spawn(float height, string stackType, float degradingSpeed)
     {
         TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
         float rot = UnityEngine.Random.Range(0, 360);

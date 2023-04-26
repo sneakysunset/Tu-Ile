@@ -30,6 +30,8 @@ public class SoundEffect : MonoBehaviour
     {
         if(player.interactor != null)
         {
+            player.anim.speed = player.interactor._player.Count;
+            print(player.anim.speed);
             //ParticleSystem.MainModule ma = player.hitParticleSystem.main;
             ParticleSystemRenderer ma = player.hitParticleSystem.GetComponent<ParticleSystemRenderer>();
             switch (player.interactor.type)

@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: M_TC_WoodTIleSmall
   m_EditorClassIdentifier: 
   description: Build 3 Wood Tiles
-  deliveryTime: 25
-  activated: 0
-  timer: 0
+  deliveryTimeMin: 10
+  deliveryTimeMax: 22
   requiredNumber: 3
   requiredType: 1

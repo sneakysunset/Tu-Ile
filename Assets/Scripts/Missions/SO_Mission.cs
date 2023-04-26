@@ -8,10 +8,12 @@ using Unity.VisualScripting;
 public class SO_Mission : ScriptableObject
 {
     public string description;
-    public float deliveryTime;
+    public float deliveryTimeMin;
+    public float deliveryTimeMax;
     public virtual void OnActivated(Image _missionChecker, TextMeshProUGUI _missionText, ref missionPage page)
     {
-        page.timer = deliveryTime;
+        page.timer = Random.Range(deliveryTimeMin, deliveryTimeMax);
+        page.deliveryTime = page.timer;
         page.activated = true;
         _missionChecker.color = Color.black;
         _missionText.color = Color.white;

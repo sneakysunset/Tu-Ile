@@ -171,6 +171,43 @@ public class TileSystem : MonoBehaviour
         return ts;
     }
 
+    public List<Tile> GetTilesBetweenRaws(int rowMin, int rowMax, Tile tile)
+    {
+        List<Tile> ts = new List<Tile>();
+        List<Tile> ts2 = new List<Tile>();
+        int rowsSeen = 0;
+        ts.Add(tile);
+        while (rowsSeen <= rowMax)
+        {
+            int ix = ts.Count;
+            for (int i = 0; i < ix; i++)
+            {
+                if (!ts[i].isPathChecked)
+                {
+                    foreach (Vector2Int vecs in ts[i].adjTCoords)
+                    {
+                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns  && !ts.Contains(tiles[vecs.x, vecs.y]))
+                        {
+                            ts.Add(tiles[vecs.x, vecs.y]);
+                            if(rowsSeen >= rowMin &&  rowsSeen <= rowMax)
+                            {
+                                ts2.Add(tiles[vecs.x, vecs.y]);
+                            }
+                        }
+                    }
+                    ts[i].isPathChecked = true;
+                }
+            }
+            rowsSeen++;
+        }
+
+        foreach (Tile t in ts)
+        {
+            t.isPathChecked = false;
+        }
+        return ts2;
+    }
+
     public void Regener()
     {
         StartCoroutine(waiter());

@@ -4,36 +4,91 @@ using UnityEngine;
 
 public class Item_Boussole : Item
 {
-    [HideInInspector] public Tile targettedTile;
-    private Transform pointer;
-
+    /*[HideInInspector] */public List<Tile> targettedTiles;
+    private List<Transform> pointers;
+    private void Start()
+    {
+        MissionManager mM = FindObjectOfType<MissionManager>();
+        pointers = new List<Transform>();
+        foreach(missionPage page in mM.activeMissions) 
+        { 
+            if(page.boussoleTile != null && !targettedTiles.Contains(page.boussoleTile))
+            {
+                targettedTiles.Add(page.boussoleTile);
+            }
+        }
+    }
 
     public override void GrabStarted(Transform holdPoint, Player player)
     {
         base.GrabStarted(holdPoint, player);
-        if (targettedTile != null)
+        if (targettedTiles != null)
         {
-            player.pointer.gameObject.SetActive(true);
-            pointer = player.pointer;
+            for(int i = 0; i < targettedTiles.Count; i++)
+            {
+                player.pointers[i].gameObject.SetActive(true);
+                pointers.Add(player.pointers[i]);
+            }
+        }
+    }
+
+    public void UpdateTargettedList()
+    {
+        if(isHeld && targettedTiles != null)
+        {
+            foreach(Transform pointer in pointers)
+            {
+                pointer.gameObject.SetActive(false);
+            }
+            pointers.Clear();
+
+            for (int i = 0; i < targettedTiles.Count; i++)
+            {
+                _player.pointers[i].gameObject.SetActive(true);
+                pointers.Add(_player.pointers[i]);
+            }
         }
     }
 
     public override void GrabRelease()
     {
-        pointer.gameObject.SetActive(true);
         base.GrabRelease();
-        pointer = null;
+        foreach (Transform pointer in pointers)
+        {
+            pointer.gameObject.SetActive(false);
+        }
+        pointers.Clear();
     }
 
     public override void Update()
     {
         base.Update();
 
-
-
-        if (targettedTile != null && pointer != null)
+        if (targettedTiles != null && isHeld)
         {
-            pointer.LookAt(new Vector3(targettedTile.transform.position.x, pointer.position.y, targettedTile.transform.position.z));
+            for (int i = 0; i < pointers.Count; i++)
+            {
+                pointers[i].LookAt(new Vector3(targettedTiles[i].transform.position.x, pointers[i].position.y, targettedTiles[i].transform.position.z));
+            }
         }
+    }
+
+    public override void ThrowAction(Player player, float throwStrength, Vector3 direction)
+    {
+        base.ThrowAction(player, throwStrength, direction);
+        foreach (Transform pointer in pointers)
+        {
+            pointer.gameObject.SetActive(false);
+        }
+        pointers.Clear();
+    }
+
+    private void OnDestroy()
+    {
+        foreach (Transform pointer in pointers)
+        {
+            pointer.gameObject.SetActive(false);
+        }
+        pointers.Clear();
     }
 }

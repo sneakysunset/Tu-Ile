@@ -14,8 +14,17 @@ public struct missionPage
     [HideInInspector] public Image missionChecker;
     [HideInInspector] public IEnumerator shakeCor;
     [HideInInspector] public Item_Etabli chantier;
+    [HideInInspector] public Tile boussoleTile;
+    [HideInInspector] public bool tresorFound;
     public float timer;
+    public float deliveryTime;
     public bool activated;
+}
+
+[System.Serializable]
+public struct missionPool
+{
+    public SO_Mission[] missionList;
 }
 
 public class MissionManager : MonoBehaviour
@@ -25,11 +34,14 @@ public class MissionManager : MonoBehaviour
     private TileCounter tileCounter;
 
     [Header("Mission")]
-    public SO_Mission[] missionList;
+    public missionPool[] missionPools;
+    [HideInInspector] public List<SO_Mission> missionList;
     public int missionSlotNumber;
     public RectTransform missionsFolder;
     public GameObject missionPrefab;
-    int missionPageIndex;
+
+    [HideInInspector] public int activePoolMin = 0;
+    [HideInInspector] public int activePoolMax = -1;
 
     [Space(10)]
     [Header("Mission Shake")]
@@ -48,6 +60,8 @@ public class MissionManager : MonoBehaviour
     {
         tileCounter = FindObjectOfType<TileCounter>();
         activeMissions = new missionPage[missionSlotNumber];
+        missionList = new List<SO_Mission>();
+        AddMissionPool();
         SetMissionPages();
     }
 
@@ -68,7 +82,7 @@ public class MissionManager : MonoBehaviour
     #endregion
 
     #region Setting Up Missions
-    private IEnumerator SetNewMission(int missionIndex)
+    public IEnumerator SetNewMission(int missionIndex)
     {
         float f = 0;
         RectTransform rec = activeMissions[missionIndex].missionUI.GetChild(0).GetComponent<RectTransform>();
@@ -98,17 +112,9 @@ public class MissionManager : MonoBehaviour
         f = 1;
 
         //Set up New Mission
-        if (missionList.Length > missionPageIndex)
-        {
-            activeMissions[missionIndex].m = missionList[missionPageIndex];
-            activeMissions[missionIndex].m.OnActivated(activeMissions[missionIndex].missionChecker, activeMissions[missionIndex].missionText, ref activeMissions[missionIndex]);
-            missionPageIndex++;
-        }
-        else
-        {
-            activeMissions[missionIndex].missionUI.position = endPos;
-            yield return null;
-        }
+
+         activeMissions[missionIndex].m = missionList[Random.Range(0, missionList.Count)];
+         activeMissions[missionIndex].m.OnActivated(activeMissions[missionIndex].missionChecker, activeMissions[missionIndex].missionText, ref activeMissions[missionIndex]);
 
         //Lerp Into Screen
         while (f > 0f)
@@ -144,6 +150,24 @@ public class MissionManager : MonoBehaviour
             StartCoroutine(SetNewMission(i));
         }
     }
+
+    public void AddMissionPool()
+    {
+        activePoolMax++;
+        foreach (var item in missionPools[activePoolMax].missionList)
+        {
+            missionList.Add(item);
+        }
+    }
+
+    public void RemoveMissionPoll()
+    {
+        foreach (var item in missionPools[activePoolMin].missionList)
+        {
+            missionList.Remove(item);
+        }
+        activePoolMin++;
+    }
     #endregion
 
     #region CheckingMissions
@@ -161,9 +185,7 @@ public class MissionManager : MonoBehaviour
         {
             case "SOM_Tile": StartCoroutine(CheckTileMission(page.m as SOM_Tile, page, pageNum)); break;
             case "SOM_Chantier": StartCoroutine(CheckChantierMission(page.m as SOM_Chantier, page, pageNum)); break;
-            case "SOM_Boussole": 
-                
-                break;
+            case "SOM_Boussole": StartCoroutine(CheckBoussoleMission(page.m as SOM_Boussole, page, pageNum)); break;
         }
         
     }
@@ -186,16 +208,27 @@ public class MissionManager : MonoBehaviour
 
     private IEnumerator CheckChantierMission(SOM_Chantier mission, missionPage page, int pageNum)
     {
-        if (page.chantier.constructed)
+        if (page.chantier != null && page.chantier.constructed)
         {
             page.missionChecker.color = Color.yellow;
             page.missionText.color = Color.yellow;
             yield return new WaitForSeconds(1);
             StartCoroutine(SetNewMission(pageNum));
         }
-        else if (page.chantier.isDestroyed)
+        else if (!page.chantier || page.chantier.isDestroyed)
         {
             activeMissions[pageNum].timer = 0;
+        }
+    }
+
+    private IEnumerator CheckBoussoleMission(SOM_Boussole mission, missionPage page, int pageNum)
+    {
+        if (page.boussoleTile != null && page.tresorFound)
+        {
+            page.missionChecker.color = Color.yellow;
+            page.missionText.color = Color.yellow;
+            yield return new WaitForSeconds(1);
+            StartCoroutine(SetNewMission(pageNum));
         }
     }
     #endregion
@@ -209,7 +242,7 @@ public class MissionManager : MonoBehaviour
         bool yo = false;
         while (activeMissions[mI].m = m)
         {
-            float i = mPageShakingCurve.Evaluate(activeMissions[mI].timer / activeMissions[mI].m.deliveryTime);
+            float i = mPageShakingCurve.Evaluate(activeMissions[mI].timer / activeMissions[mI].deliveryTime);
             /*            float x = Random.Range(-i, i) * shakeMagnitude;
                         float y = Random.Range(-i, i) * shakeMagnitude;*/
             float x = 0;

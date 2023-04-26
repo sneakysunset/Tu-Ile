@@ -16,12 +16,13 @@ public class Player_Mining : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out player.interactor))
+        if (other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out Interactor tempInteractor))
         {
-            if (player.interactor.interactable && !player.heldItem)
+            if (tempInteractor.interactable && (!player.interactor || player.interactor != tempInteractor) && !player.heldItem)
             {
+                player.interactor = tempInteractor;
                 player.isMining = true;
                 axe.SetActive(true);
                 player.interactor.OnInteractionEnter(hitRate, player);
@@ -33,10 +34,15 @@ public class Player_Mining : MonoBehaviour
     {
         if (other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out player.interactor))
         {
-            player.interactor.OnInteractionExit();
-            axe.SetActive(false);
-            player.isMining = false;
-            player.interactor = null;
+            player.interactor.OnInteractionExit(player);
+            StopMining();
         }
+    }
+
+    public void StopMining()
+    {
+        axe.SetActive(false);
+        player.isMining = false;
+        player.interactor = null;
     }
 }
