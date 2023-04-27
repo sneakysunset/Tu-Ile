@@ -29,7 +29,7 @@ public class GameTimer : MonoBehaviour
     private void Start()
     {
         missionManager = GetComponent<MissionManager>();
-        SortList();
+        //SortList();
         RectTransform r = timerSlider.transform as RectTransform;
         foreach(Event e in events)
         {

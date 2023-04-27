@@ -65,7 +65,8 @@ public class Item_Etabli : Item
     {
         base.Update();
 
-        if(isActive && !tileUnder.walkable)
+
+        if (isActive && !tileUnder.walkable)
         {
             SetActiveMesh(false);
         }
@@ -130,6 +131,7 @@ public class Item_Etabli : Item
     private void OnDestroy()
     {
         isDestroyed = true;
+        if(isChantier && tileUnder.tileSpawnType != Tile.TileType.construction) tileUnder.tileSpawnType = Tile.TileType.construction;
         if( isChantier && !constructed)
         {
             FindObjectOfType<MissionManager>().CheckMissions();

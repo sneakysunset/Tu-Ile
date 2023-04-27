@@ -25,6 +25,7 @@ public class CameraCtr : MonoBehaviour
         cam = Camera.main;
         direction = cam.transform.position - transform.position;
         sCE = GetComponentInChildren<SplitScreenEffect>();
+        sCE.enabled = false;
         yield return new WaitUntil(()=> Input.GetKeyDown(KeyCode.Space));
         if(virtualCamera != null)
         {
@@ -34,13 +35,16 @@ public class CameraCtr : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(players[0].transform.position, players[1].transform.position) > distanceToSplit)
-        {
-            sCE.enabled = true;
-        }
-        else
-        {
-            sCE.enabled = false;
+        if(players.Count > 1) 
+        { 
+            if (Vector3.Distance(players[0].transform.position, players[1].transform.position) > distanceToSplit)
+            {
+                sCE.enabled = true;
+            }
+            else
+            {
+                sCE.enabled = false;
+            }        
         }
     }
 

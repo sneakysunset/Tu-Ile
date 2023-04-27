@@ -161,6 +161,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1778619372719119619, guid: 39cdcf0cbd58c154080ce34126f322a3, type: 3}
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: stackPrefab
+      value: 
+      objectReference: {fileID: 896025357493118984, guid: 39cdcf0cbd58c154080ce34126f322a3, type: 3}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: meshs.Array.data[0]
       value: 
       objectReference: {fileID: 8691780276856062721, guid: 0b4825cbfaf242045874d32e497e1cb4, type: 3}

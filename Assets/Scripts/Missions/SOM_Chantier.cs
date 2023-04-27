@@ -22,7 +22,6 @@ public class SOM_Chantier : SO_Mission
         if (tile == null)
         {
             page.timer = 0;
-            page.activated = false;
             return;
         }
         page.chantier = Instantiate(chantierPrefab, tile.transform.position + Vector3.up * GameConstant.tileHeight, Quaternion.identity);

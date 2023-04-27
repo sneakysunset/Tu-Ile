@@ -28,39 +28,40 @@ public class SoundEffect : MonoBehaviour
 
     public void PlayHit()
     {
-        if(player.interactor != null)
+        if(player.interactors.Count > 0)
         {
-            player.anim.speed = player.interactor._player.Count;
-            print(player.anim.speed);
-            //ParticleSystem.MainModule ma = player.hitParticleSystem.main;
             ParticleSystemRenderer ma = player.hitParticleSystem.GetComponent<ParticleSystemRenderer>();
-            switch (player.interactor.type)
+            for (int i = 0; i < player.interactors.Count; i++)
             {
-                case Tile.TileType.Wood:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
-                    ma.material.color = woodCol;
-                    break;
-                case Tile.TileType.Rock:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
-                    ma.material.color = rockCol;
-                    break;
-                case Tile.TileType.Gold:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
-                    ma.material.color = goldCol;
-                    break;
-                case Tile.TileType.Diamond:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
-                    ma.material.color = diamondCol;
-                    break;
-                case Tile.TileType.Adamantium:
-                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
-                    ma.material.color = adamCol;
-                    break;
-            }
-            player.hitParticleSystem.Play();
-            if(player.interactor.isInteractedWith) 
-            {
-                player.interactor.OnFilonMined();
+                if (i > player.interactors.Count - 1 || i < 0 || player.interactors[i] == null) break;
+                switch (player.interactors[i].type)
+                {
+                    case Tile.TileType.Wood:
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
+                        ma.material.color = woodCol;
+                        break;
+                    case Tile.TileType.Rock:
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                        ma.material.color = rockCol;
+                        break;
+                    case Tile.TileType.Gold:
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                        ma.material.color = goldCol;
+                        break;
+                    case Tile.TileType.Diamond:
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                        ma.material.color = diamondCol;
+                        break;
+                    case Tile.TileType.Adamantium:
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                        ma.material.color = adamCol;
+                        break;
+                }
+                player.hitParticleSystem.Play();
+                if(player.interactors[i].isInteractedWith && player.interactors[i].interactable) 
+                {
+                    player.interactors[i].OnFilonMined();
+                }
             }
         }
     }
