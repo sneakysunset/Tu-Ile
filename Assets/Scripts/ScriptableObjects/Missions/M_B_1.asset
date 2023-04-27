@@ -15,5 +15,5 @@ MonoBehaviour:
   description: Find the Treasure using a boussole
   deliveryTimeMin: 5
   deliveryTimeMax: 10
-  minDistanceFromCenter: 0
-  maxDistanceFromCenter: 0
+  minDistanceFromCenter: 3
+  maxDistanceFromCenter: 6

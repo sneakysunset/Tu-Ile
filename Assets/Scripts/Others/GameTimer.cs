@@ -17,20 +17,24 @@ public class GameTimer : MonoBehaviour
     public enum Events { Neutral, Apocalypse, AddMissionSlot, ExtendMissionPool, ReduceMissionPool, EnlargeMissionPool};
     public List<Event> events;
     public float gameTimer;
-    [HideInInspector] public float timer;
+    /*[HideInInspector]*/ public float timer;
     public UnityEvent LevelEnd;
-    public Slider timerSlider;
+    public Image timerFillImage;
     public Transform eventFolder;
     public GameObject eventVisualPrefab;
     public Sprite apocalypseImage;
     public Sprite newPageImage;
     private Player[] players;
+    public Image minuteBar;
+    public Image secondBar;
+    public Transform minuteFolder;
     MissionManager missionManager;
     private void Start()
     {
         missionManager = GetComponent<MissionManager>();
         //SortList();
-        RectTransform r = timerSlider.transform as RectTransform;
+        RectTransform r = timerFillImage.transform as RectTransform;
+
         foreach(Event e in events)
         {
             RectTransform t;
@@ -95,7 +99,7 @@ public class GameTimer : MonoBehaviour
             StartCoroutine(TileSystem.Instance.SinkWorld(players[0].tileUnder));
         }
 
-        timerSlider.value = timer / gameTimer;
+        timerFillImage.fillAmount = timer / gameTimer;
     }
 
     private void TimelineEvent()

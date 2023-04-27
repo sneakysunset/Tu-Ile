@@ -13,6 +13,7 @@ TagManager:
   - Ship
   - TileFolder
   - InteractorOff
+  - Pause
   layers:
   - Default
   - TransparentFX

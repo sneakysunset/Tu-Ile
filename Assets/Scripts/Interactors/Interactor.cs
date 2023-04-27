@@ -1,18 +1,24 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using System.Collections;
-using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
+
 
 public class Interactor : MonoBehaviour
 {
-    
+    #region Variables
+
+    #region mainVariables
     public Tile.TileType type;
     [HideInInspector] public List<Player> _player;
     protected int stateIndex;
+    #endregion
+
+    #region Regrowth
     IEnumerator regrowth;
     WaitForSeconds regrowthWaiter;
+    public float regrowthTimer;
+    #endregion
 
     #region Mesh Variables
     public Mesh[] meshs;
@@ -43,8 +49,7 @@ public class Interactor : MonoBehaviour
     bool ps;
     public ParticleSystem pSysRegrowth;
     #endregion
-
-    public float regrowthTimer;
+    #endregion
 
     #region SystemCallBacks
     private void Start()
@@ -67,29 +72,6 @@ public class Interactor : MonoBehaviour
     private void Update()
     {
         isFaded = false;
-/*        if(!isInteractedWith && stateIndex < meshs.Length - 1)
-        {
-           timer -= Time.deltaTime;
-            if (timer < 1 && !ps && _player != null)
-            {
-                ps = true;
-                pSysRegrowth.Play();
-            }
-            if (timer <= 0)
-            {
-                timer = regrowthTimer;
-                stateIndex = meshs.Length - 1;
-            }
-        }
-        else if(!interactable && stateIndex == meshs.Length - 1)
-        {
-            interactable = true;
-            tag = "Interactor";
-            meshF.mesh = meshs[stateIndex];
-            meshC.sharedMesh = meshs[stateIndex];
-            meshR.material = materials[stateIndex];
-            ps = false;
-        }*/
     }
 
     public virtual void OnInteractionEnter(Player player)
@@ -183,7 +165,6 @@ public class Interactor : MonoBehaviour
             }*/
             yield return regrowthWaiter;
         }
-        print(stateIndex + " " + (stateIndex - 1)); 
         meshF.mesh = meshs[stateIndex];
         meshC.sharedMesh = meshs[stateIndex];
         meshR.material = materials[stateIndex];

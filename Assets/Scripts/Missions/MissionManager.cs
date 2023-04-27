@@ -261,7 +261,7 @@ public class MissionManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         Vector3 ogPos = rec.localPosition;
         SO_Mission m = activeMissions[mI].m;
-        bool yo = false;
+        //bool yo = false;
         while (activeMissions[mI].m = m)
         {
             /*            float i = mPageShakingCurve.Evaluate(activeMissions[mI].timer / activeMissions[mI].deliveryTime);
