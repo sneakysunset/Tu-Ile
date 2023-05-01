@@ -41,13 +41,12 @@ public class Tile_Degradation : MonoBehaviour
 
     private void Degrading()
     {
-        degradationTimerModifier += Time.deltaTime * (1 / tile.timeToGetToMaxDegradationSpeed) * tile.typeDegradingSpeed;
 
 
         //Effect while degrading
         if (tile.timer > 0)
         {
-            tile.timer -= Time.deltaTime * tile.degradationTimerAnimCurve.Evaluate(degradationTimerModifier);
+            tile.timer -= Time.deltaTime * TileSystem.Instance.degradationTimerModifier * tile.typeDegradingSpeed;
         }
         //DegradationStart
         else if (tile.timer <= 0 && !tile.isDegrading)
@@ -64,7 +63,7 @@ public class Tile_Degradation : MonoBehaviour
             tile.timer = Random.Range(tile.minTimer, tile.maxTimer);
         }
 
-        if (tile.currentPos.y == tile.maxPos && CompareTag("DegradingTile"))
+        if (tile.currentPos.y == GameConstant.maxTileHeight && CompareTag("DegradingTile"))
         {
             tag = "Tile";
         }

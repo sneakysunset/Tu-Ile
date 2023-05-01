@@ -13,20 +13,18 @@ public class TileSystem : MonoBehaviour
     public bool UpdateParameters;
     public int columns, rows;
     [HideInInspector, SerializeField] public Tile[,] tiles;
-    public GameObject tilePrefab;
+    public Tile tilePrefab;
     [HideInInspector] public TileParameters tileP;
     [HideInInspector] public TileMats tileM;
-    public int ogSelectedTileX, ogSelectedTileY;
-    public Vector3 gridOgTile;
+    private GameTimer gT;
+    [HideInInspector] public Vector3 gridOgTile;
     static bool editorFlag = false;
-    public Vector2Int targetTileCoords;
-    public int numOfRows;
     public Tile centerTile;
     [HideInInspector] public Transform tileFolder;
     [HideInInspector] public TileCounter tileC;
     public bool isHub;
     public static TileSystem Instance { get; private set; }
-
+    [HideNormalInspector] public float degradationTimerModifier;
 
     private void Awake()
     {
@@ -53,12 +51,14 @@ public class TileSystem : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        gT = FindObjectOfType<GameTimer>();
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            List<Tile> tiless = GetTilesAround(numOfRows, tiles[targetTileCoords.x, targetTileCoords.y]);
-        }
+        degradationTimerModifier += tileP.degradationTimerAnimCurve.Evaluate(Time.deltaTime * (1 / gT.gameTimer)); 
     }
 
     public Tile WorldPosToTile(Vector3 pos)
@@ -67,7 +67,8 @@ public class TileSystem : MonoBehaviour
         int x;
         int z;
 
-        z = Mathf.RoundToInt(pos.z / (tilePrefab.transform.localScale.x * 1.48f));
+
+        z = Mathf.RoundToInt(pos.z / (tilePrefab.transform.localScale.z * 1.48f));
         if (z % 2 == 1) xOffset = tilePrefab.transform.localScale.x * .9f;
         x = Mathf.RoundToInt((pos.x - xOffset) / (tilePrefab.transform.localScale.x * 1.7f));
         
@@ -131,8 +132,9 @@ public class TileSystem : MonoBehaviour
     public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
     {
         float xOffset = 0;
-        if (z % 2 == 1) xOffset = transform.localScale.x * .85f;
-        Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.7f + xOffset, 0, z * transform.localScale.x * 1.48f);
+        if (z % 2 == 1) xOffset = tiles[x, z].transform.localScale.x * .85f;
+        print(x +  " " + (x * transform.localScale.x * 1.7f + xOffset));
+        Vector3 pos = ogPos + new Vector3(x * tiles[x, z].transform.localScale.x * 1.7f + xOffset, 0, z * tiles[x, z].transform.localScale.z * 1.48f);
         tiles[x, z].coordX = x;
 
         tiles[x, z].coordY = z;
@@ -222,6 +224,7 @@ public class TileSystem : MonoBehaviour
     void RegenGrid()
     {
         Tile[] list = FindObjectsOfType<Tile>();
+        if (list.Length == 0) return;
         int rowss = rows;
         int columnss = columns;
         /*if(list.Length > rows * columns)
@@ -258,22 +261,18 @@ public class TileSystem : MonoBehaviour
     {
         tileM = GetComponent<TileMats>();
         tileP = GetComponent<TileParameters>();
-        foreach (Tile tile in tiles)
+        foreach (var tile in tiles)
         {
-            tile.terraFormingSpeed = tileP.terraFormingSpeed;
-            tile.bumpStrength = tileP.bumpStrength;
-            tile.bumpDistanceAnimCurve = tileP.bumpDistanceCurve;
+            tile.maxTimer = tileP.maxTimer;
+            tile.minTimer = tileP.minTimer;
+            tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
+            tile.heightByTile = tileP.heightByTile;
+
             tile.plaineMat = tileM.plaineTileMat;
             tile.disabledMat = tileM.disabledTileMaterial;
             tile.sandMat = tileM.sandTileMat;
             tile.bounceMat = tileM.bounceTileMat;
             tile.undegradableMat = tileM.undegradableTileMat;
-            tile.maxTimer = tileP.maxTimer;
-            tile.minTimer = tileP.minTimer;
-            tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
-            tile.timeToGetToMaxDegradationSpeed = tileP.timeToGetToMaxDegradationSpeed;
-            tile.degradingSpeed = tileP.degradingSpeed;
-            tile.heightByTile = tileP.heightByTile;
             tile.woodMat = tileM.woodTileMat;
             tile.rockMat = tileM.rockTileMat;
             tile.goldMat = tileM.goldTileMat;
@@ -282,6 +281,9 @@ public class TileSystem : MonoBehaviour
             tile.defaultMesh = tileM.defaultTileMesh;
             tile.woodMesh = tileM.woodTileMesh;
             tile.rockMesh = tileM.rockTileMesh;
+            tile.notWalkedOnColor = tileM.notWalkedOnColor;
+            tile.walkedOnColor = tileM.walkedOnColor;
+            tile.penguinedColor = tileM.acceleratedDegradationColor;
         }
     }
 
@@ -349,25 +351,23 @@ public class TileSystemEditor : Editor
     {
         tileS.InstantiateGrid = false;
         Transform tileFolder = GameObject.FindGameObjectWithTag("TileFolder").transform;
-        if (tileS.tiles == null) tileS.tiles = new Tile[0, 0];
-        if(tileS.tiles.GetLength(0) == 0)
+        if (tileS.tiles == null) tileS.tiles = new Tile[tileS.rows, tileS.columns]; ;
+        if (tileS.tiles[0, 0] == null)
         {
             tileS.tiles = new Tile[tileS.rows, tileS.columns];
-
             for (int i = 0; i < tileS.rows; i++)
             {
                 for (int j = 0; j < tileS.columns; j++)
                 {
 
-                    GameObject tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as GameObject;
+                    Tile tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as Tile;
                     tile.transform.parent = tileFolder.transform;
-                    tileS.tiles[i, j] = tile.GetComponent<Tile>();
+                    tileS.tiles[i, j] = tile;
                     tile.transform.position = tileS.indexToWorldPos(i, j, tileS.gridOgTile);
                     tile.gameObject.name = i + "  " + j;
 
                 }
             }
-            UpdateGridParameters();
         }
         else
         {
@@ -384,9 +384,9 @@ public class TileSystemEditor : Editor
                 {
                     if (i >= tileS.tiles.GetLength(0) || j >= tileS.tiles.GetLength(1) )
                     {
-                        GameObject tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as GameObject;
-                        tile.transform.parent = tileS.transform;
-                        tempTiles[i, j] = tile.GetComponent<Tile>();
+                        Tile tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as Tile;
+                        tile.transform.parent = tileS.tileFolder;
+                        tempTiles[i, j] = tile;
                         tile.transform.position = tileS.indexToWorldPos(i, j, tileS.gridOgTile);
                         tile.gameObject.name = i + "  " + j;
                     }
@@ -415,25 +415,25 @@ public class TileSystemEditor : Editor
         if (tileS.tiles == null) return;
         foreach(Tile tile in tileS.tiles)
         {
-            tile.terraFormingSpeed = tileS.tileP.terraFormingSpeed;
-            tile.bumpStrength = tileS.tileP.bumpStrength;
-            tile.bumpDistanceAnimCurve = tileS.tileP.bumpDistanceCurve;
+            tile.maxTimer = tileS.tileP.maxTimer;
+            tile.minTimer = tileS.tileP.minTimer;
+            tile.degradationTimerAnimCurve = tileS.tileP.degradationTimerAnimCurve;
+            tile.heightByTile = tileS.tileP.heightByTile;
+
             tile.plaineMat = tileS.tileM.plaineTileMat;
             tile.disabledMat = tileS.tileM.disabledTileMaterial;
             tile.sandMat = tileS.tileM.sandTileMat;
             tile.undegradableMat = tileS.tileM.undegradableTileMat;
-            tile.maxTimer = tileS.tileP.maxTimer;
-            tile.minTimer = tileS.tileP.minTimer;
-            tile.degradationTimerAnimCurve = tileS.tileP.degradationTimerAnimCurve;
-            tile.timeToGetToMaxDegradationSpeed = tileS.tileP.timeToGetToMaxDegradationSpeed;
-            tile.degradingSpeed = tileS.tileP.degradingSpeed;
             tile.bounceMat = tileS.tileM.bounceTileMat;
-            tile.heightByTile = tileS.tileP.heightByTile;
             tile.woodMat = tileS.tileM.woodTileMat;
             tile.rockMat = tileS.tileM.rockTileMat;
             tile.goldMat = tileS.tileM.goldTileMat;
             tile.diamondMat = tileS.tileM.diamondTileMat;
             tile.adamantiumMat = tileS.tileM.adamantiumTileMat;
+            tile.notWalkedOnColor = tileS.tileM.notWalkedOnColor;
+            tile.walkedOnColor = tileS.tileM.walkedOnColor;
+            tile.penguinedColor = tileS.tileM.acceleratedDegradationColor;
+            tile.UpdateObject();
         }
     }
 

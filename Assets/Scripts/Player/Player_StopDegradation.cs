@@ -59,7 +59,7 @@ public class Player_StopDegradation : MonoBehaviour
         bool cd2 = isGrowing;
         bool cd3 = !tile.isGrowing;
         bool cd4 = tile.walkable;
-        bool cd5 = tile.currentPos.y != tile.maxPos;
+        bool cd5 = tile.currentPos.y != GameConstant.tileHeight;
         bool cd6 = tile.degradable;
         bool cd7 = player.heldItem && player.heldItem.GetType() == typeof(Item_Stack);
         if (!cd7) 

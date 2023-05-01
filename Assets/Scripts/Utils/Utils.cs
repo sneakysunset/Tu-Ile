@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using static Item;
+using Unity.VisualScripting.FullSerializer;
 
 public class Utils
 {
@@ -56,9 +57,37 @@ public class Utils
         return false;
     }
 
+    public static bool[] GetSpawnPositions(int flagNum)
+    {
+        bool[] bools = new bool[7];
+        if(flagNum == -1)
+        {
+            for (int i = 0; i < bools.Length; i++) bools[i] = true;
+            return bools;
+        }
+        int moduloNum = 64;
+        for (int i = bools.Length - 1; i >= 0; i--)
+        {
+            bools[i] = IterateThroughFlags(ref flagNum, moduloNum);
+            moduloNum /= 2;
+        }
+
+        return bools;
+    }
+
+    private static bool IterateThroughFlags(ref int iteratedNum, int moduloNum)
+    {
+        if (iteratedNum >= moduloNum)
+        {
+            iteratedNum -= moduloNum;
+            return true;
+        }
+        else return false;
+    }
 }
 
 public static class GameConstant
 {
     public const float tileHeight = 23f;
+    public const int maxTileHeight = 20;
 }

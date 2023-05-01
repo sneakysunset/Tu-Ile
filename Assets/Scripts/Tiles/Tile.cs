@@ -7,30 +7,56 @@ using System;
 using FMOD;
 using Unity.VisualScripting;
 
+[System.Flags]
+public enum SpawnPositions
+{
+    Nothing = 0,
+    Pos1 = 1,
+    Pos2 = 2,
+    Pos3 = 4,
+    Pos4 = 8,
+    Pos5 = 16,
+    Pos6 = 32,
+    Pos7 = 64,
+    Everything = 0b1111
+}
+
 public class Tile : MonoBehaviour
 {
+
+
     #region Variables
     #region MainVariables
+    [Header("Type de Tile")]
+    [Space(10)]
     [SerializeField] public bool walkable = true;
-    [SerializeField] public TileType tileSpawnType;
+    public bool degradable = true;
     [SerializeField] public TileType tileType = TileType.Neutral;
 
+    [Space(15)]
+    [Header("Spawn sur Tile")]
+    [Space(10)]
+    [SerializeField] public TileType tileSpawnType;
+    public SpawnPositions spawnPositions;
+    [SerializeField] public bool spawnSpawners;
+
     public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, BouncyTile, LevelLoader, construction };
-    public string levelName;
     [HideNormalInspector] public int coordX, coordFX, coordY;
-    public bool walkedOnto = false;
+    [HideNormalInspector] public bool walkedOnto = false;
     [HideNormalInspector] public Vector3 currentPos;
-    public float maxPos ;
     [HideInInspector] public Vector2Int[] adjTCoords;
     [HideNormalInspector] public float heightByTile;
     [HideNormalInspector] bool isFaded;
+    [Space(15)]
+    [Header("Other")]
+    [Space(10)]
     public bool tourbillon;
     public float tourbillonSpeed;
     [HideNormalInspector] public bool sand_WalkedOnto;
+    public string levelName;
     #endregion
 
     #region Degradation
-    public bool degradable = true;
     [HideNormalInspector] public bool isDegrading;
     [HideNormalInspector] public float timer;
     [HideNormalInspector] public float terraFormingSpeed;
@@ -44,7 +70,6 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Interactor Spawning
-    [SerializeField] public bool spawnSpawners;
     [HideInInspector] public List<Transform> spawnPoints;
     bool spawning;
     #endregion
@@ -54,25 +79,19 @@ public class Tile : MonoBehaviour
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public MeshFilter myMeshF;
     [HideInInspector] public MeshCollider myMeshC;
-    [HideInInspector] public TileBump tileB;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public Transform minableItems;
     [HideInInspector] public Transform tourbillonT;
     [HideInInspector] private ParticleSystem pSys;
-    public ParticleSystem pSysCreation;
+    [HideInInspector] ParticleSystem pSysCreation;
     #endregion
 
     #region Materials
     [HideInInspector, SerializeField] public Material disabledMat;
     [HideInInspector] public Material plaineMat, undegradableMat, sandMat, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat;
     [HideInInspector] public Mesh defaultMesh, woodMesh, rockMesh;
-    public Color walkedOnColor, notWalkedOnColor;
-    public Color penguinedColor;
-    #endregion
-
-    #region Bump
-    [HideNormalInspector] public float bumpStrength;
-    [HideNormalInspector] public AnimationCurve bumpDistanceAnimCurve;
+    [HideInInspector] public Color walkedOnColor, notWalkedOnColor;
+    [HideInInspector] public Color penguinedColor;
     #endregion
 
     #region AI
@@ -85,6 +104,7 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Call Methods
+
     private void Awake()
     {
         degSpeed = 1;
@@ -92,8 +112,8 @@ public class Tile : MonoBehaviour
         minableItems = transform.Find("SpawnPositions");
         coordFX = coordX - coordY / 2;
         currentPos = transform.position;
-        pSys = gameObject.GetComponentInChildren<ParticleSystem>();
-
+        pSys = transform.GetChild(3).GetComponent<ParticleSystem>();
+        pSysCreation = transform.GetChild(7).GetComponent<ParticleSystem>();
         tourbillonT = transform.Find("Tourbillon");
 
         timer = UnityEngine.Random.Range(minTimer, maxTimer);
@@ -209,7 +229,7 @@ public class Tile : MonoBehaviour
 
     public Material getCorrespondingMat(TileType tType)
     {
-        Material mat = null;
+        Material mat;
 
         if (!walkable)
         {
@@ -241,10 +261,10 @@ public class Tile : MonoBehaviour
 
     public Mesh getCorrespondingMesh(TileType tType)
     {
-        Mesh mesh = null;
-
+        Mesh mesh;
         switch (tType)
         {
+            case TileType.Neutral: mesh = defaultMesh; break;
             case TileType.Wood: mesh = woodMesh; break;
             case TileType.Rock: mesh = rockMesh; break;
             case TileType.Gold: mesh = rockMesh; break;
@@ -337,11 +357,17 @@ public class Tile : MonoBehaviour
     void OnValidate() { UnityEditor.EditorApplication.delayCall += _OnValidate; }
     private void _OnValidate()
     {
-        if(!Application.isPlaying)
+        UpdateObject();
+    }
+
+    public void UpdateObject()
+    {
+        if (!Application.isPlaying)
         {
-            if(!myMeshR) myMeshR = GetComponent<MeshRenderer>();
-            if(!myMeshF) myMeshF = GetComponent<MeshFilter>();
-            if(!myMeshC) myMeshC = GetComponent<MeshCollider>();
+            if (this == null) return;
+            if (!myMeshR) myMeshR = GetComponent<MeshRenderer>();
+            if (!myMeshF) myMeshF = GetComponent<MeshFilter>();
+            if (!myMeshC) myMeshC = GetComponent<MeshCollider>();
             minableItems = transform.Find("SpawnPositions");
             myMeshR.sharedMaterial = getCorrespondingMat(tileType);
             myMeshF.sharedMesh = getCorrespondingMesh(tileType);
@@ -386,58 +412,72 @@ public class TileEditor : Editor
     private void OnEnable()
     {
         tile = (Tile)target;
+        tile.UpdateObject();
     }
 
 
 
     private void OnSceneGUI()
     {
+        Draw();
+
         SpawnOnTile();
 
         EditorUtility.SetDirty(tile);
     }
-
-    private void SpawnOnTile()
+    
+    private void Draw()
     {
-        tile.spawnPoints = new List<Transform>();
-        TileMats tileM = FindObjectOfType<TileMats>();
-        foreach (Transform t in tile.transform.Find("SpawnPositions"))
+        Transform t = tile.transform.Find("SpawnPositions");
+        int myInt = Convert.ToInt32(tile.spawnPositions);
+        bool[] bools = Utils.GetSpawnPositions(myInt);
+        GUIStyle gUIStyle = new GUIStyle();
+        gUIStyle.fontSize = 30;
+        for (int i = 0; i < bools.Length; i++)
         {
-
-            if (t.gameObject.activeSelf)
+            if (bools[i])
             {
-                tile.spawnPoints.Add(t);
+                gUIStyle.normal.textColor = Color.blue;
             }
             else
             {
-                tile.spawnPoints.Remove(t);
+                gUIStyle.normal.textColor = Color.red;
             }
+            Handles.Label(t.GetChild(i).position + Vector3.up * 1, (i + 1).ToString(), gUIStyle) ;
         }
+    }
+
+    private void SpawnOnTile()
+    {
+        TileMats tileM = FindObjectOfType<TileMats>();
+
 
         if (tile.spawnSpawners && tile.tileSpawnType != Tile.TileType.Neutral)
         {
-            foreach (Transform t in tile.transform.Find("SpawnPositions"))
+            Transform t = tile.transform.Find("SpawnPositions");
+            foreach (Transform tr in t)
             {
-                foreach (Transform tp in t)
+                foreach (Transform tp in tr)
                 {
                     DestroyImmediate(tp.gameObject);
                 }
             }
 
-
-            if (tile.spawnPoints.Count > 0)
+            int myInt = Convert.ToInt32(tile.spawnPositions);
+            bool[] bools = Utils.GetSpawnPositions(myInt);
+            for (int i = 0; i < bools.Length; i++)
             {
-                foreach (Transform t in tile.spawnPoints)
+                if (bools[i])
                 {
-                    SpawnItem(t, tileM);
+                    SpawnItem(t.GetChild(i), tileM);
                 }
-                tile.spawnPoints.Clear();
             }
             tile.spawnSpawners = false;
         }
         else if (tile.spawnSpawners && tile.tileSpawnType == Tile.TileType.Neutral)
         {
             tile.spawnSpawners = false;
+
             foreach (Transform t in tile.transform.Find("SpawnPositions"))
             {
                 foreach (Transform tp in t)

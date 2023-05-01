@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class TileCounter : MonoBehaviour
 {
-    [Header("Stats")]
-    [Space(5)]
-    public int numberOfTilesLinked;
-    public int neutralCount;
-    public int woodCount;
-    public int rockCount;
-    public int goldCount;
-    public int diamondCount;
-    public int adamantiumCount;
+    [HideNormalInspector] public int numberOfTilesLinked;
+    [HideNormalInspector] public int neutralCount;
+    [HideNormalInspector] public int woodCount;
+    [HideNormalInspector] public int rockCount;
+    [HideNormalInspector] public int goldCount;
+    [HideNormalInspector] public int diamondCount;
+    [HideNormalInspector] public int adamantiumCount;
 
     private TileSystem tileSystem;
     private MissionManager missionManager;

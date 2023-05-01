@@ -9,19 +9,19 @@ public class DayNightCycle : MonoBehaviour
     private float time;
     private WaitForSeconds waiter;
     public bool day = true;
-    private NearSightedMode nSM;
+    private TileMovements nSM;
     private void Start()
     {
-        nSM = FindObjectOfType<NearSightedMode>();
+        nSM = FindObjectOfType<TileMovements>();
         if (day)
         {
             time = dayTime;
-            nSM.isNearSighted = false;
+            //nSM.isNearSighted = false;
         }
         else
         {
             time = nightTime;
-            nSM.isNearSighted = true;
+           // nSM.isNearSighted = true;
         }
         waiter = new WaitForSeconds(time);
         StartCoroutine(dayCycleEnum());
@@ -53,7 +53,7 @@ public class DayNightCycle : MonoBehaviour
     {
         print("day");
         time = dayTime;
-        nSM.isNearSighted = false;
+        //nSM.isNearSighted = false;
     }
 
     void NightEffect()
@@ -61,7 +61,7 @@ public class DayNightCycle : MonoBehaviour
         print("night");
 
         time = nightTime;
-        nSM.isNearSighted = true;
+        //nSM.isNearSighted = true;
     }
 
 

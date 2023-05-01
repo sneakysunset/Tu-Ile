@@ -14,6 +14,7 @@ public class Player_Pause : MonoBehaviour
         players = FindObjectsOfType<PlayerInput>();
         pauseMenu = FindObjectOfType<PauseMenu>();
         pauseMenu.gameObject.SetActive(false);
+        pauseMenu.transform.GetChild(0).gameObject.SetActive(true);
     }
 
     public void PauseGame()
