@@ -5,8 +5,9 @@ using UnityEngine;
 public class Item_Stack : Item 
 {
     [HideInInspector] public MeshRenderer meshR;
+    public Item_Stack.StackType stackType;
 
-    
+
     public int numberStacked = 0;
     protected RessourcesManager rMan;
     protected MeshFilter meshF;
@@ -45,6 +46,11 @@ public class Item_Stack : Item
         if (prevNum != numberStacked && !isTile) ChangeMesh();
         prevNum = numberStacked;
 
+    }
+
+    public override void GrabRelease()
+    {
+        base.GrabRelease();
     }
 
     public void ChangeMesh()

@@ -106,3 +106,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: a148dfd9566cf574e942a28854723245, type: 2}
     necessaryNum: 010000000200000003000000
     sprite: {fileID: 21300000, guid: a7c6f9ade6c4b504385395ac8af38f7b, type: 3}
+  RessourceMeshsUnstackable:
+  - name: Eltender
+    itemType: 0
+    sprite: {fileID: 21300000, guid: 3c6c1f7c30a584c42b958af4e3f85bfd, type: 3}

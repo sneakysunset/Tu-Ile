@@ -626,10 +626,12 @@ MonoBehaviour:
   isHeld: 0
   rb: {fileID: 0}
   Highlight: {fileID: 0}
+  _player: {fileID: 0}
   physic: 1
   col: {fileID: 0}
-  gravityDivider: 8
-  jumpModifier: 1.5
+  stackType: 0
+  gravityDivider: 6
+  jumpModifier: 2.3
   featherPSYS: {fileID: 3630517554770355513}
 --- !u!143 &3388698492052617938
 CharacterController:

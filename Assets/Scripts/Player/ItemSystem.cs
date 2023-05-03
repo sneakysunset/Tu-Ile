@@ -18,9 +18,10 @@ public class ItemSystem : MonoBehaviour
     //normal grab action
     public void OnItemInput1(InputAction.CallbackContext context)
     {
-        if (context.started && player.heldItem != null && player.holdableItems.Count == 0)
+        bool isSameOrSubClass = player.closestItem != null && Utils.IsSameOrSubclass(player.closestItem.GetType(), typeof(Item_Etabli));
+        if (context.started && player.heldItem != null && player.holdableItems.Count == 0 && !isSameOrSubClass)
         {
-            player.heldItem.GrabRelease(player);
+            player.heldItem.GrabRelease();
             player.holdableItems.Add(player.heldItem);
             if (player.closestItem == null) player.closestItem = player.heldItem;
             player.heldItem = null;
@@ -29,23 +30,32 @@ public class ItemSystem : MonoBehaviour
 
         if (context.started && player.closestItem != null && player.closestItem.holdable)
         {
-            if(player.heldItem != null)
+            if(player.heldItem != null && !isSameOrSubClass)
             {
                 //player.holdableItems.Add(player.heldItem);
-                player.heldItem.GrabRelease(player);
+                player.heldItem.GrabRelease();
             }
             if(player.closestItem.GetType() != typeof(Item_Etabli))
             {
+                if (player.closestItem.isHeld)
+                {
+                    player.closestItem.GrabRelease();
+                    Player pl = player.closestItem._player;
+                    pl.holdableItems.Add(player.closestItem);
+                    pl.heldItem = null;
+                }
                 player.heldItem = player.closestItem;
                 player.holdableItems.Remove(player.heldItem);
                 player.heldItem.GrabStarted(holdPoint, player);
             }
             else
             {
+
                 player.closestItem.GrabStarted(holdPoint, player);
                 player.holdableItems.Remove(player.closestItem);
             }
         }
+
     }
 
     //throw action

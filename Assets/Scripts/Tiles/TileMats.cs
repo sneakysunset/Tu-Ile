@@ -7,9 +7,11 @@ public class TileMats : MonoBehaviour
 {
     [Header ("Editor Mats")]
     public Material disabledTileMaterial;
-    public Material undegradableTileMat, sandTileMat;
-    [Header ("Game Mats")]
-    public Material plaineTileMat;
+    public Material undegradableTileMat, sandTileMat, bounceTileMat;
+    [Header("Game Mats")]
+    public Material plaineTileMat; 
+    public Material woodTileMat, rockTileMat, goldTileMat, diamondTileMat, adamantiumTileMat;
+    public Mesh defaultTileMesh, woodTileMesh, rockTileMesh;
     public GameObject treePrefab, rockPrefab, goldPrefab, diamondPrefab, adamantiumPrefab;
     private TileSystem tileSystem;
 

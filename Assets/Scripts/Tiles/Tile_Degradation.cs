@@ -6,21 +6,19 @@ using UnityEngine;
 public class Tile_Degradation : MonoBehaviour
 {
     Tile tile;
-    bool degradingChecker;
-    bool isGrowingChecker;
     private float degradationTimerModifier;
-    private NearSightedMode nSM;
     [HideNormalInspector] private bool walkedOntoChecker;
+
     private void Start()
     {
         tile = GetComponent<Tile>();
-        nSM = FindObjectOfType<NearSightedMode>();  
+
     }
     private void Update()
     {
         if(tile.isGrowing) Elevating();
         else if (tile.walkable && tile.degradable && tile.walkedOnto && tile.tileType != Tile.TileType.Sand) Degrading();
-        if (!tile.isDegrading && ((transform.position.y <= -tile.heightByTile && tile.currentPos.y <= -tile.heightByTile)))
+        if (!tile.isDegrading && tile.walkable && ((transform.position.y <= -tile.heightByTile && tile.currentPos.y <= -tile.heightByTile)))
         {
             SinkTile();
         }
@@ -43,7 +41,7 @@ public class Tile_Degradation : MonoBehaviour
 
     private void Degrading()
     {
-        degradationTimerModifier += Time.deltaTime * (1 / tile.timeToGetToMaxDegradationSpeed);
+        degradationTimerModifier += Time.deltaTime * (1 / tile.timeToGetToMaxDegradationSpeed) * tile.typeDegradingSpeed;
 
 
         //Effect while degrading
@@ -70,9 +68,6 @@ public class Tile_Degradation : MonoBehaviour
         {
             tag = "Tile";
         }
-
-
-        degradingChecker = tile.isDegrading;
     }
     
     private void Elevating()

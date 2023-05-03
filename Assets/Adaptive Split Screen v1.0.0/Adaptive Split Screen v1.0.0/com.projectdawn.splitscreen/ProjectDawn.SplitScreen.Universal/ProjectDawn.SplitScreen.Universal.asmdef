@@ -1,0 +1,22 @@
+{
+    "name": "ProjectDawn.SplitScreen.Universal",
+    "references": [
+        "GUID:cf8f96e06a3f9754bad58fbcdcea5346",
+        "GUID:15fc0a57446b3144c949da3e2b9737a9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.render-pipelines.universal",
+            "expression": "7.7.1",
+            "define": "UNIVERSAL_RENDER_PIPELINE"
+        }
+    ],
+    "noEngineReferences": false
+}

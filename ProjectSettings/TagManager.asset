@@ -12,6 +12,8 @@ TagManager:
   - Water
   - Ship
   - TileFolder
+  - InteractorOff
+  - Pause
   layers:
   - Default
   - TransparentFX
@@ -27,7 +29,7 @@ TagManager:
   - Player_Mine
   - Player_Collect
   - Collectable
-  - 
+  - Spacial UI
   - 
   - 
   - 

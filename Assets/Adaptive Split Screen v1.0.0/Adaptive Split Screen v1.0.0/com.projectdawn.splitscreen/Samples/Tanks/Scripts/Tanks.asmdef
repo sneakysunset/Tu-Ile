@@ -1,0 +1,15 @@
+{
+    "name": "Tanks",
+    "references": [
+        "GUID:cf8f96e06a3f9754bad58fbcdcea5346"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

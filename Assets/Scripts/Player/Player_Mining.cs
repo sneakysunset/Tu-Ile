@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Player_Mining : MonoBehaviour
 {
-    public float hitDistance;
-    public float hitRadius;
     public float hitRate;
     private Player player;
     public GameObject axe;
@@ -15,28 +13,87 @@ public class Player_Mining : MonoBehaviour
         player = GetComponent<Player>();
     }
 
-
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        if (other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out player.interactor))
+        InteractorChange();
+        
+        player.anim.SetFloat("MiningSpeed", hitRate);
+    }
+
+    private void InteractorChange()
+    {
+/*        if (player.interactors.Count > 1)
         {
-            if (player.interactor.interactable && !player.heldItem)
+            float dist = Mathf.Infinity;
+            Interactor tempInte = null;
+            foreach (Interactor inte in player.interactors)
             {
+                float tempDist = Vector3.Distance(transform.position, inte.transform.position);
+                if (dist < tempDist)
+                {
+                    dist = tempDist;
+                    tempInte = inte;
+                }
+            }
+            if (player.interactor == null)
+            {
+                player.interactor = tempInte;
                 player.isMining = true;
+                player.interactor.OnInteractionEnter(player);
                 axe.SetActive(true);
-                player.interactor.OnInteractionEnter(hitRate, player);
+            }
+            else if (tempInte != player.interactor)
+            {
+                player.interactor.OnInteractionExit(player);
+                player.interactor = tempInte;
+                player.interactor.OnInteractionEnter(player);
+            }
+
+        }
+        else if (player.interactors.Count == 1 && player.interactor == null)
+        {
+            player.interactor = player.interactors[0];
+            player.isMining = true;
+            player.interactor.OnInteractionEnter(player);
+            axe.SetActive(true);
+        }
+        else if (player.interactors.Count == 0 && player.interactor != null)
+        {
+            player.isMining = false;
+            player.GetComponent<Player_Mining>().axe.SetActive(false);
+            player.interactor = null;
+        }*/
+/*        if(player.interactors.Count > 0)
+        {
+            foreach(var interactor in player.interactors)
+            {
+                interactor.
+            }
+        }*/
+
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out Interactor tempInteractor))
+        {
+            if (tempInteractor.interactable && !player.interactors.Contains(tempInteractor) && !player.heldItem)
+            {
+                tempInteractor.OnInteractionEnter(player);
+                player.interactors.Add(tempInteractor);
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out player.interactor))
+        if (other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out Interactor tempInt))
         {
-            player.interactor.OnInteractionExit();
-            axe.SetActive(false);
-            player.isMining = false;
-            player.interactor = null;
+            if (player.interactors.Contains(tempInt))
+            {
+                tempInt.OnInteractionExit(player);
+            }
+            //player.interactor.OnInteractionExit(player);
         }
     }
 }

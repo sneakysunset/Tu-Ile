@@ -1,3 +1,4 @@
+using FMOD;
 using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,11 +8,10 @@ using UnityEngine.Windows;
 
 public class Player : MonoBehaviour
 {
-    Animator anim;
+    [HideInInspector] public Animator anim;
     [HideInInspector] public CharacterController _characterController;
     PlayerMovement pM;
     TileSelector tileSelec;
-    Interactions inter;
     [HideInInspector] public EventInstance movingSound;
     public Tile respawnTile;
     [HideInInspector] public Tile tileUnder;
@@ -20,13 +20,15 @@ public class Player : MonoBehaviour
     [HideInInspector] public Item heldItem;
     [HideInInspector] public Item closestItem;
     [HideInInspector] public bool isMining;
-    [HideInInspector] public Interactor interactor;
+    /*[HideInInspector]*/ public List<Interactor> interactors;
+    ///*[HideInInspector]*/ public Interactor interactor;
     public ParticleSystem waterSplash;
     bool waterValidate;
     public float throwStrength;
     [Range(-5, 5)]public float throwYAxisDirection;
     [HideInInspector] public Collider col;
     public ParticleSystem hitParticleSystem;
+    [HideInInspector] public List<Transform> pointers;
     private void Awake()
     {
         if (respawnTile == null)
@@ -36,11 +38,18 @@ public class Player : MonoBehaviour
         }
         FindObjectOfType<CameraCtr>().AddPlayer(transform);
         col = GetComponent<Collider>();
+        pointers = new List<Transform>();
+        Transform pointerFolder = transform.Find("PointerFolder");
+        foreach (Transform go in pointerFolder)
+        {
+            pointers.Add(go);
+        }
     }
 
     private void Start()
     {
         tileS = FindObjectOfType<TileSystem>();
+        interactors = new List<Interactor>();   
         holdableItems = new List<Item>();
         pM = GetComponent<PlayerMovement>();
         _characterController = pM.GetComponent<CharacterController>();
@@ -64,7 +73,12 @@ public class Player : MonoBehaviour
         else*/ if(_characterController.isGrounded && isMining)
         {
             anim.Play("Mine", 0);
-            Vector3 pos = interactor.transform.position;
+            Vector3 pos = Vector3.zero;
+            foreach(var inter in interactors)
+            {
+                pos += inter.transform.position;
+            }
+            pos /= interactors.Count;
             pos.y = transform.position.y;
             transform.LookAt(pos);
         }

@@ -14,25 +14,48 @@ public struct Event
 }
 public class GameTimer : MonoBehaviour
 {
-    public enum Events { Apocalypse};
+    public enum Events { Neutral, Apocalypse, AddMissionSlot, ExtendMissionPool, ReduceMissionPool, EnlargeMissionPool};
     public List<Event> events;
     public float gameTimer;
-    private float timer;
+    /*[HideInInspector]*/ public float timer;
     public UnityEvent LevelEnd;
-    public Slider timerSlider;
+    public Image timerFillImage;
     public Transform eventFolder;
     public GameObject eventVisualPrefab;
     public Sprite apocalypseImage;
+    public Sprite newPageImage;
+    private Player[] players;
+    public Image minuteBar;
+    public Image secondBar;
+    public Transform minuteFolder;
+    MissionManager missionManager;
     private void Start()
     {
-        SortList();
-        RectTransform r = timerSlider.transform as RectTransform;
+        missionManager = GetComponent<MissionManager>();
+        //SortList();
+        RectTransform r = timerFillImage.transform as RectTransform;
+
         foreach(Event e in events)
         {
-            RectTransform t = Instantiate(eventVisualPrefab, eventFolder).transform as RectTransform;
-            t.localPosition += new Vector3((e.eventTime / gameTimer) * 2 * (r.sizeDelta.x * r.localScale.x), 0, 0);
-            //t.GetComponent<Image>().sprite = apocalypseImage;
+            RectTransform t;
+            switch (e.timeLineEvent)
+            {
+                case Events.Apocalypse:
+                    t = Instantiate(eventVisualPrefab, eventFolder).transform as RectTransform;
+                    t.localPosition += new Vector3((e.eventTime / gameTimer) * 2 * (r.sizeDelta.x * r.localScale.x), 0, 0);
+                    t.GetComponent<Image>().sprite = apocalypseImage;
+                    break;
+                case Events.AddMissionSlot:
+                    t = Instantiate(eventVisualPrefab, eventFolder).transform as RectTransform;
+                    t.localPosition += new Vector3((e.eventTime / gameTimer) * 2 * (r.sizeDelta.x * r.localScale.x), 0, 0);
+                    t.GetComponent<Image>().sprite = newPageImage;
+                    break;
+                default:
+                    break;
+            }
+
         }
+        players = FindObjectsOfType<Player>();
     }
 
     private void SortList()
@@ -69,20 +92,14 @@ public class GameTimer : MonoBehaviour
         if (timer >= gameTimer)
         {
             LevelEnd?.Invoke();
+            foreach(Player p in players)
+            {
+                p.respawnTile = players[0].tileUnder;
+            }
+            StartCoroutine(TileSystem.Instance.SinkWorld(players[0].tileUnder));
         }
 
-        timerSlider.value = timer / gameTimer;
-
-/*        int minutes = Mathf.FloorToInt((gameTimer - timer) / 60);
-
-        if (minutes >= 1)
-        {
-            timerText.text = minutes.ToString() + " : " + Mathf.RoundToInt((gameTimer - timer) % 60).ToString();
-        }
-        else
-        {
-            timerText.text = Mathf.RoundToInt((gameTimer - timer)).ToString();
-        }*/
+        timerFillImage.fillAmount = timer / gameTimer;
     }
 
     private void TimelineEvent()
@@ -93,6 +110,18 @@ public class GameTimer : MonoBehaviour
             {
                 case Events.Apocalypse:
                     TimeLineEvents.ApocalypseEvent();
+                    break;
+                case Events.AddMissionSlot:
+                    TimeLineEvents.AddMissionPage(missionManager);
+                    break;
+                case Events.ReduceMissionPool:
+                    TimeLineEvents.ReduceMissionPool(missionManager);
+                    break;
+                case Events.ExtendMissionPool:
+                    TimeLineEvents.ExtendMissionPool(missionManager);
+                    break;
+                case Events.EnlargeMissionPool:
+                    TimeLineEvents.EnlargeMissionPool(missionManager);
                     break;
                 default:
                     break;

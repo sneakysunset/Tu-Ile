@@ -15,10 +15,19 @@ public struct ressourceMeshsCollec
     public Sprite sprite;
 }
 
+[System.Serializable]
+public struct ressourceMeshCollecUnstackable
+{
+    public string name;
+    public Item_Stack.ItemType itemType;
+    public Sprite sprite;
+}
+
 public class RessourcesManager : MonoBehaviour
 {
     public int growthCost;
     public List<ressourceMeshsCollec> RessourceMeshs;
+    public List<ressourceMeshCollecUnstackable> RessourceMeshsUnstackable;
 
     private void Update()
     {

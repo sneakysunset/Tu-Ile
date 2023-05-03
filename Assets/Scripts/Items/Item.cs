@@ -6,16 +6,16 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public enum StackType { Other, Wood, Rock, Gold, Diamond, Adamantium };
+    public enum StackType { Other, Wood, Rock, Gold, Diamond, Adamantium, BouncyTile};
+    public enum ItemType { Bird, Chantier, Boussole};
     public bool holdable;
     [HideNormalInspector] public bool isHeld;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public GameObject Highlight;
     protected Transform heldPoint;
-    protected Player _player;
+    [HideInInspector] public Player _player;
     [HideInInspector] public bool physic = true;
     [HideInInspector] public Collider col;
-    public Item_Stack.StackType stackType;
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;
@@ -44,14 +44,14 @@ public class Item : MonoBehaviour
         transform.parent = heldPoint;
     }
 
-    public virtual void GrabRelease(Player player)
+    public virtual void GrabRelease()
     {
         isHeld = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.isKinematic = false;
         rb.velocity = Vector2.zero;
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Release_Item");
-        player.holdableItems.Add(this);
+        _player.holdableItems.Add(this);
         transform.parent = null;
         transform.rotation = Quaternion.identity;
         physic = true;

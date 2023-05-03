@@ -74,6 +74,60 @@ public class TileSystem : MonoBehaviour
         return tiles[x, z];
     }
 
+    public IEnumerator SinkWorld(Tile tile)
+    {
+        List<Tile> ts = new List<Tile>();
+        ts.Add(tile);
+        bool isOver = false;
+        while (!isOver)
+        {
+            isOver = true;
+            int ix = ts.Count;
+            for (int i = 0; i < ix; i++)
+            {
+                if (!ts[i].isPathChecked)
+                {
+                    foreach (Vector2Int vecs in ts[i].adjTCoords)
+                    {
+                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns /*&& tiles[vecs.x, vecs.y].walkable*/ && !ts.Contains(tiles[vecs.x, vecs.y]))
+                        {
+                            ts.Add(tiles[vecs.x, vecs.y]);
+                            isOver = false;
+                        }
+                    }
+                    ts[i].isPathChecked = true;
+                }
+            }
+
+            
+            foreach (Tile t in ts)
+            {
+                if (t.walkable && t != tile)
+                {
+                    t.degradable = true;
+                    t.currentPos.y = -t.heightByTile;
+                    t.tourbillon = false;
+                    t.tourbillonT.gameObject.SetActive(false);
+                }
+            }
+            tile.degradable = false;
+
+            float timer = .3f;
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                foreach(Tile t in ts)
+                {
+                    if (t.walkable && t != tile)
+                    {
+                        t.degSpeed *= 1 + Time.deltaTime * 3;
+                    }
+                }
+                yield return new WaitForEndOfFrame();
+            }
+        }
+    }
+
     public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
     {
         float xOffset = 0;
@@ -117,10 +171,46 @@ public class TileSystem : MonoBehaviour
         return ts;
     }
 
+    public List<Tile> GetTilesBetweenRaws(int rowMin, int rowMax, Tile tile)
+    {
+        List<Tile> ts = new List<Tile>();
+        List<Tile> ts2 = new List<Tile>();
+        int rowsSeen = 0;
+        ts.Add(tile);
+        while (rowsSeen <= rowMax)
+        {
+            int ix = ts.Count;
+            for (int i = 0; i < ix; i++)
+            {
+                if (!ts[i].isPathChecked)
+                {
+                    foreach (Vector2Int vecs in ts[i].adjTCoords)
+                    {
+                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns  && !ts.Contains(tiles[vecs.x, vecs.y]))
+                        {
+                            ts.Add(tiles[vecs.x, vecs.y]);
+                            if(rowsSeen >= rowMin &&  rowsSeen <= rowMax)
+                            {
+                                ts2.Add(tiles[vecs.x, vecs.y]);
+                            }
+                        }
+                    }
+                    ts[i].isPathChecked = true;
+                }
+            }
+            rowsSeen++;
+        }
+
+        foreach (Tile t in ts)
+        {
+            t.isPathChecked = false;
+        }
+        return ts2;
+    }
+
     public void Regener()
     {
         StartCoroutine(waiter());
-
     }
 
     private IEnumerator waiter()
@@ -176,6 +266,7 @@ public class TileSystem : MonoBehaviour
             tile.plaineMat = tileM.plaineTileMat;
             tile.disabledMat = tileM.disabledTileMaterial;
             tile.sandMat = tileM.sandTileMat;
+            tile.bounceMat = tileM.bounceTileMat;
             tile.undegradableMat = tileM.undegradableTileMat;
             tile.maxTimer = tileP.maxTimer;
             tile.minTimer = tileP.minTimer;
@@ -183,6 +274,14 @@ public class TileSystem : MonoBehaviour
             tile.timeToGetToMaxDegradationSpeed = tileP.timeToGetToMaxDegradationSpeed;
             tile.degradingSpeed = tileP.degradingSpeed;
             tile.heightByTile = tileP.heightByTile;
+            tile.woodMat = tileM.woodTileMat;
+            tile.rockMat = tileM.rockTileMat;
+            tile.goldMat = tileM.goldTileMat;
+            tile.diamondMat = tileM.diamondTileMat;
+            tile.adamantiumMat = tileM.adamantiumTileMat;
+            tile.defaultMesh = tileM.defaultTileMesh;
+            tile.woodMesh = tileM.woodTileMesh;
+            tile.rockMesh = tileM.rockTileMesh;
         }
     }
 
@@ -328,7 +427,13 @@ public class TileSystemEditor : Editor
             tile.degradationTimerAnimCurve = tileS.tileP.degradationTimerAnimCurve;
             tile.timeToGetToMaxDegradationSpeed = tileS.tileP.timeToGetToMaxDegradationSpeed;
             tile.degradingSpeed = tileS.tileP.degradingSpeed;
+            tile.bounceMat = tileS.tileM.bounceTileMat;
             tile.heightByTile = tileS.tileP.heightByTile;
+            tile.woodMat = tileS.tileM.woodTileMat;
+            tile.rockMat = tileS.tileM.rockTileMat;
+            tile.goldMat = tileS.tileM.goldTileMat;
+            tile.diamondMat = tileS.tileM.diamondTileMat;
+            tile.adamantiumMat = tileS.tileM.adamantiumTileMat;
         }
     }
 

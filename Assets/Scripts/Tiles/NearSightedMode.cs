@@ -76,11 +76,11 @@ public class NearSightedMode : MonoBehaviour
                 Vector3 localPos = tile.transform.localPosition;
                 if (tile.isGrowing)
                 {
-                    tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), 100 * tileGrowthLerpSpeed * Time.deltaTime);
+                    tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), 100 * tileGrowthLerpSpeed * Time.deltaTime * tile.degSpeed);
                 }
                 else
                 {
-                    tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), 100 * degradationLerpSpeed * Time.deltaTime); ;
+                    tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), 100 * degradationLerpSpeed * Time.deltaTime * tile.degSpeed);
                 }
             }
         }
