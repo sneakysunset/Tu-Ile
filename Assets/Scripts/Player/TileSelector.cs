@@ -6,16 +6,20 @@ public class TileSelector : MonoBehaviour
 {
     TileSystem tileS;
     [HideInInspector] public Tile tileUnder;
-    public Transform tileBluePrint;
+    public GameObject bluePrintPrefab;
+    Transform tileBluePrint;
     public float maxAngleToTarget = 50;
     public LayerMask tileLayer;
     public float hitDistance = 4;
     private Tile targettedTile;
-    RessourcesManager rManager;
+    private Player player;
+    private MissionManager mM;
     private void Start()
     {
+        tileBluePrint = Instantiate(bluePrintPrefab).transform;
         tileS = FindObjectOfType<TileSystem>();
-        rManager = FindObjectOfType<RessourcesManager>();
+        player = GetComponent<Player>();
+        mM = FindObjectOfType<MissionManager>();
     }
 
     private void Update()
@@ -25,9 +29,9 @@ public class TileSelector : MonoBehaviour
         {
             tileUnder.walkedOnto = true;
         }
-        if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable)
+        if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && !targettedTile.tourbillon && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
         {
-            tileBluePrint.position = targettedTile.transform.position + Vector3.up * 25;
+            tileBluePrint.position = targettedTile.transform.position + Vector3.up * (22.1f + tileUnder.transform.position.y);
         }
         else
         {
@@ -69,10 +73,37 @@ public class TileSelector : MonoBehaviour
     {
         if(context.started)
         {
-            if(targettedTile != null && rManager.wood >= rManager.tileCost)
+            if (player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile) && targettedTile != null && !targettedTile.tourbillon)
             {
-                rManager.wood -= rManager.tileCost;
-                targettedTile.Spawn(tileUnder.transform.position.y);
+                Item_Stack_Tile item = player.heldItem as Item_Stack_Tile;
+                if(item.numberStacked >= 1)
+                {
+                    item.numberStacked --;
+                    targettedTile.Spawn(tileUnder.transform.position.y, item.stackType.ToString(), item.degradingSpeed) ;
+                    if(item.numberStacked == 0)
+                    {
+                        player.heldItem = null;
+                        Destroy(item.gameObject);
+                    }
+                }
+            }
+            else if(player.heldItem && player.heldItem.GetType() == typeof(Item_Boussole))
+            {
+                Item_Boussole _item = player.heldItem as Item_Boussole;
+                foreach(Tile tile in _item.targettedTiles)
+                {
+                    if(tile == player.tileUnder)
+                    {
+                        for (int i = 0; i < mM.activeMissions.Length; i++)
+                        {
+                            if (mM.activeMissions[i].boussoleTile && tile == mM.activeMissions[i].boussoleTile)
+                            {
+                                mM.activeMissions[i].tresorFound = true;
+                            }
+                        }
+                        mM.CheckMissions();
+                    }
+                }
             }
         }
     }

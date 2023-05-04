@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Unity.VisualScripting;
 #if UNITY_EDITOR
 using AmplifyShaderEditor;
 #endif
@@ -13,25 +14,51 @@ public class TileSystem : MonoBehaviour
     public int columns, rows;
     [HideInInspector, SerializeField] public Tile[,] tiles;
     public GameObject tilePrefab;
-    [HideInInspector] public InputEvents inputs;
     [HideInInspector] public TileParameters tileP;
     [HideInInspector] public TileMats tileM;
     public int ogSelectedTileX, ogSelectedTileY;
     public Vector3 gridOgTile;
     static bool editorFlag = false;
+    public Vector2Int targetTileCoords;
+    public int numOfRows;
+    public Tile centerTile;
+    [HideInInspector] public Transform tileFolder;
+    [HideInInspector] public TileCounter tileC;
+    public bool isHub;
+    public static TileSystem Instance { get; private set; }
+
 
     private void Awake()
     {
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
+
         if (this.enabled)
         {
             RegenGrid();
         }
+
+        tileC = GetComponent<TileCounter>();
+        foreach(Tile tile in tiles)
+        {
+            tile.tileS = this;
+        }
     }
 
-    private void Start()
+    private void Update()
     {
-        inputs = FindObjectOfType<InputEvents>();
-        //inputs.selectedTile = tiles[ogSelectedTileX, ogSelectedTileY];
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            List<Tile> tiless = GetTilesAround(numOfRows, tiles[targetTileCoords.x, targetTileCoords.y]);
+        }
     }
 
     public Tile WorldPosToTile(Vector3 pos)
@@ -47,10 +74,143 @@ public class TileSystem : MonoBehaviour
         return tiles[x, z];
     }
 
+    public IEnumerator SinkWorld(Tile tile)
+    {
+        List<Tile> ts = new List<Tile>();
+        ts.Add(tile);
+        bool isOver = false;
+        while (!isOver)
+        {
+            isOver = true;
+            int ix = ts.Count;
+            for (int i = 0; i < ix; i++)
+            {
+                if (!ts[i].isPathChecked)
+                {
+                    foreach (Vector2Int vecs in ts[i].adjTCoords)
+                    {
+                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns /*&& tiles[vecs.x, vecs.y].walkable*/ && !ts.Contains(tiles[vecs.x, vecs.y]))
+                        {
+                            ts.Add(tiles[vecs.x, vecs.y]);
+                            isOver = false;
+                        }
+                    }
+                    ts[i].isPathChecked = true;
+                }
+            }
+
+            
+            foreach (Tile t in ts)
+            {
+                if (t.walkable && t != tile)
+                {
+                    t.degradable = true;
+                    t.currentPos.y = -t.heightByTile;
+                    t.tourbillon = false;
+                    t.tourbillonT.gameObject.SetActive(false);
+                }
+            }
+            tile.degradable = false;
+
+            float timer = .3f;
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                foreach(Tile t in ts)
+                {
+                    if (t.walkable && t != tile)
+                    {
+                        t.degSpeed *= 1 + Time.deltaTime * 3;
+                    }
+                }
+                yield return new WaitForEndOfFrame();
+            }
+        }
+    }
+
+    public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
+    {
+        float xOffset = 0;
+        if (z % 2 == 1) xOffset = transform.localScale.x * .85f;
+        Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.7f + xOffset, 0, z * transform.localScale.x * 1.48f);
+        tiles[x, z].coordX = x;
+
+        tiles[x, z].coordY = z;
+        return pos;
+    }
+
+    public List<Tile> GetTilesAround(int numOfRows, Tile tile)
+    {
+        List<Tile> ts = new List<Tile>();
+        int rowsSeen = 0;
+        ts.Add(tile);
+        while (rowsSeen < numOfRows)
+        {
+            int ix = ts.Count;
+            for (int i = 0; i < ix; i++)
+            {
+                if (!ts[i].isPathChecked)
+                {
+                    foreach (Vector2Int vecs in ts[i].adjTCoords)
+                    {
+                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns && tiles[vecs.x, vecs.y].walkable && !ts.Contains(tiles[vecs.x, vecs.y]))
+                        {
+                            ts.Add(tiles[vecs.x, vecs.y]);
+                        }
+                    }
+                    ts[i].isPathChecked = true;
+                }
+            }
+            rowsSeen++;
+        }
+        //ts.Remove(tile);
+        foreach(Tile t in ts)
+        {
+            t.isPathChecked = false;
+        }
+        return ts;
+    }
+
+    public List<Tile> GetTilesBetweenRaws(int rowMin, int rowMax, Tile tile)
+    {
+        List<Tile> ts = new List<Tile>();
+        List<Tile> ts2 = new List<Tile>();
+        int rowsSeen = 0;
+        ts.Add(tile);
+        while (rowsSeen <= rowMax)
+        {
+            int ix = ts.Count;
+            for (int i = 0; i < ix; i++)
+            {
+                if (!ts[i].isPathChecked)
+                {
+                    foreach (Vector2Int vecs in ts[i].adjTCoords)
+                    {
+                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns  && !ts.Contains(tiles[vecs.x, vecs.y]))
+                        {
+                            ts.Add(tiles[vecs.x, vecs.y]);
+                            if(rowsSeen >= rowMin &&  rowsSeen <= rowMax)
+                            {
+                                ts2.Add(tiles[vecs.x, vecs.y]);
+                            }
+                        }
+                    }
+                    ts[i].isPathChecked = true;
+                }
+            }
+            rowsSeen++;
+        }
+
+        foreach (Tile t in ts)
+        {
+            t.isPathChecked = false;
+        }
+        return ts2;
+    }
+
     public void Regener()
     {
         StartCoroutine(waiter());
-
     }
 
     private IEnumerator waiter()
@@ -101,29 +261,41 @@ public class TileSystem : MonoBehaviour
         foreach (Tile tile in tiles)
         {
             tile.terraFormingSpeed = tileP.terraFormingSpeed;
-            tile.normaliseSpeed = tileP.terraFormingNormalisingSpeed;
-            tile.capDistanceNeutraliser = tileP.distanceSpeedNormaliserModifier;
             tile.bumpStrength = tileP.bumpStrength;
             tile.bumpDistanceAnimCurve = tileP.bumpDistanceCurve;
-            tile.selectedMat = tileM.selectedTileMaterial;
-            tile.unselectedMat = tileM.unselectedTileMaterial;
+            tile.plaineMat = tileM.plaineTileMat;
             tile.disabledMat = tileM.disabledTileMaterial;
-            tile.fadeMat = tileM.FadedTileMaterial;
+            tile.sandMat = tileM.sandTileMat;
+            tile.bounceMat = tileM.bounceTileMat;
+            tile.undegradableMat = tileM.undegradableTileMat;
             tile.maxTimer = tileP.maxTimer;
             tile.minTimer = tileP.minTimer;
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
             tile.timeToGetToMaxDegradationSpeed = tileP.timeToGetToMaxDegradationSpeed;
             tile.degradingSpeed = tileP.degradingSpeed;
             tile.heightByTile = tileP.heightByTile;
+            tile.woodMat = tileM.woodTileMat;
+            tile.rockMat = tileM.rockTileMat;
+            tile.goldMat = tileM.goldTileMat;
+            tile.diamondMat = tileM.diamondTileMat;
+            tile.adamantiumMat = tileM.adamantiumTileMat;
+            tile.defaultMesh = tileM.defaultTileMesh;
+            tile.woodMesh = tileM.woodTileMesh;
+            tile.rockMesh = tileM.rockTileMesh;
         }
     }
 
     private void OnDrawGizmos()
     {
-        if(editorFlag && !Application.isPlaying)
+        if (TileSystem.Instance == null && !Application.isPlaying)
+        {
+            TileSystem.Instance = this;
+        }
+        if((editorFlag || tiles == null) && !Application.isPlaying)
         {
             editorFlag = false;
             RegenGrid();
+
         }
     }
     
@@ -156,6 +328,8 @@ public class TileSystemEditor : Editor
     void Draw()
     {
         base.OnInspectorGUI();
+
+
         if (tileS.InstantiateGrid)
         {
             InstantiateGrid();
@@ -174,6 +348,7 @@ public class TileSystemEditor : Editor
     void InstantiateGrid()
     {
         tileS.InstantiateGrid = false;
+        Transform tileFolder = GameObject.FindGameObjectWithTag("TileFolder").transform;
         if (tileS.tiles == null) tileS.tiles = new Tile[0, 0];
         if(tileS.tiles.GetLength(0) == 0)
         {
@@ -183,10 +358,11 @@ public class TileSystemEditor : Editor
             {
                 for (int j = 0; j < tileS.columns; j++)
                 {
+
                     GameObject tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as GameObject;
-                    tile.transform.parent = tileS.transform;
+                    tile.transform.parent = tileFolder.transform;
                     tileS.tiles[i, j] = tile.GetComponent<Tile>();
-                    tile.transform.position = tileS.tiles[i, j].indexToWorldPos(i, j, tileS.gridOgTile);
+                    tile.transform.position = tileS.indexToWorldPos(i, j, tileS.gridOgTile);
                     tile.gameObject.name = i + "  " + j;
 
                 }
@@ -211,7 +387,7 @@ public class TileSystemEditor : Editor
                         GameObject tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as GameObject;
                         tile.transform.parent = tileS.transform;
                         tempTiles[i, j] = tile.GetComponent<Tile>();
-                        tile.transform.position = tempTiles[i, j].indexToWorldPos(i, j, tileS.gridOgTile);
+                        tile.transform.position = tileS.indexToWorldPos(i, j, tileS.gridOgTile);
                         tile.gameObject.name = i + "  " + j;
                     }
                     else if (i >= tileS.rows || j >= tileS.columns)
@@ -236,23 +412,28 @@ public class TileSystemEditor : Editor
         tileS.tileM = tileS.GetComponent<TileMats>();
         tileS.tileP = tileS.GetComponent<TileParameters>();
         tileS.UpdateParameters = false;
+        if (tileS.tiles == null) return;
         foreach(Tile tile in tileS.tiles)
         {
             tile.terraFormingSpeed = tileS.tileP.terraFormingSpeed;
-            tile.normaliseSpeed = tileS.tileP.terraFormingNormalisingSpeed;
-            tile.capDistanceNeutraliser = tileS.tileP.distanceSpeedNormaliserModifier;
             tile.bumpStrength = tileS.tileP.bumpStrength;
             tile.bumpDistanceAnimCurve = tileS.tileP.bumpDistanceCurve;
-            tile.selectedMat = tileS.tileM.selectedTileMaterial;
-            tile.unselectedMat = tileS.tileM.unselectedTileMaterial;
+            tile.plaineMat = tileS.tileM.plaineTileMat;
             tile.disabledMat = tileS.tileM.disabledTileMaterial;
-            tile.fadeMat = tileS.tileM.FadedTileMaterial;
+            tile.sandMat = tileS.tileM.sandTileMat;
+            tile.undegradableMat = tileS.tileM.undegradableTileMat;
             tile.maxTimer = tileS.tileP.maxTimer;
             tile.minTimer = tileS.tileP.minTimer;
             tile.degradationTimerAnimCurve = tileS.tileP.degradationTimerAnimCurve;
             tile.timeToGetToMaxDegradationSpeed = tileS.tileP.timeToGetToMaxDegradationSpeed;
             tile.degradingSpeed = tileS.tileP.degradingSpeed;
+            tile.bounceMat = tileS.tileM.bounceTileMat;
             tile.heightByTile = tileS.tileP.heightByTile;
+            tile.woodMat = tileS.tileM.woodTileMat;
+            tile.rockMat = tileS.tileM.rockTileMat;
+            tile.goldMat = tileS.tileM.goldTileMat;
+            tile.diamondMat = tileS.tileM.diamondTileMat;
+            tile.adamantiumMat = tileS.tileM.adamantiumTileMat;
         }
     }
 

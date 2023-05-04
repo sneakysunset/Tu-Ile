@@ -13,4 +13,9 @@ public class LoadScene : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     }
+
+    public void LoadSceneSingle(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+    }
 }

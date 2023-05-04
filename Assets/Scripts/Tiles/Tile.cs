@@ -2,179 +2,285 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using TMPro;
+using System;
+using FMOD;
+using Unity.VisualScripting;
 
 public class Tile : MonoBehaviour
 {
-    #region publicVariables
-    public enum TileType { Neutral, Tree, Rock };
-    [SerializeField] public TileType tileType;
+    #region Variables
+    #region MainVariables
     [SerializeField] public bool walkable = true;
-    public bool walkedOnto = false;
-    private ParticleSystem pSys;
-    #endregion region
+    [SerializeField] public TileType tileSpawnType;
+    [SerializeField] public TileType tileType = TileType.Neutral;
 
-    #region hiddenVariables
-    [HideNormalInspector] public bool isDegrading;
-    [HideNormalInspector] public float timer;
+    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, BouncyTile, LevelLoader, construction };
+    public string levelName;
     [HideNormalInspector] public int coordX, coordFX, coordY;
-    [HideInInspector] public List<Transform> spawnPoints;
-    [SerializeField] public bool spawnSpawners;
-    [HideNormalInspector] public bool isSelected;
-    [HideInInspector] public MeshRenderer myMeshR;
-    [HideInInspector] public TileBump tileB;
-    [HideInInspector] public Rigidbody rb;
-    [HideNormalInspector] public  Vector3 ogPos, currentPos;
-    [HideInInspector, SerializeField] public Material disabledMat;
-    [HideNormalInspector] public float terraFormingSpeed;
-    bool selecFlag;
-    [HideNormalInspector] public float normaliseSpeed;
-    [HideInInspector] public TileSystem tileS;
-    [HideInInspector] public Material unselectedMat, selectedMat, fadeMat;
-    Light lightAct;
-    [HideNormalInspector] public float capDistanceNeutraliser;
-    [HideNormalInspector] public float bumpStrength;
-    [HideNormalInspector] public AnimationCurve bumpDistanceAnimCurve;
-    [HideNormalInspector] bool isFaded;
-    [HideNormalInspector] public float minTimer, maxTimer;
-    [HideNormalInspector] public AnimationCurve degradationTimerAnimCurve;
-    [HideNormalInspector] public float timeToGetToMaxDegradationSpeed;
+    public bool walkedOnto = false;
+    [HideNormalInspector] public Vector3 currentPos;
+    public float maxPos ;
     [HideInInspector] public Vector2Int[] adjTCoords;
-    private float degradationTimerModifier;
-    [HideInInspector] public float degradingSpeed;
-    [HideInInspector] public bool isGrowing;
     [HideNormalInspector] public float heightByTile;
-    public bool degradable = true;
-    Transform minableItems;
+    [HideNormalInspector] bool isFaded;
+    public bool tourbillon;
+    public float tourbillonSpeed;
+    [HideNormalInspector] public bool sand_WalkedOnto;
     #endregion
 
-    private void Start()
+    #region Degradation
+    public bool degradable = true;
+    [HideNormalInspector] public bool isDegrading;
+    [HideNormalInspector] public float timer;
+    [HideNormalInspector] public float terraFormingSpeed;
+    [HideNormalInspector] public float minTimer, maxTimer;
+    [HideNormalInspector] public AnimationCurve degradationTimerAnimCurve;
+    [HideInInspector] public float degradingSpeed;
+    [HideInInspector] public float typeDegradingSpeed = 1;
+    [HideInInspector] public bool isGrowing;
+    [HideInInspector] public float degSpeed = 1;
+    [HideNormalInspector] public float timeToGetToMaxDegradationSpeed;
+    #endregion
+
+    #region Interactor Spawning
+    [SerializeField] public bool spawnSpawners;
+    [HideInInspector] public List<Transform> spawnPoints;
+    bool spawning;
+    #endregion
+
+    #region Components
+    [HideInInspector] public TileSystem tileS;
+    [HideInInspector] public MeshRenderer myMeshR;
+    [HideInInspector] public MeshFilter myMeshF;
+    [HideInInspector] public MeshCollider myMeshC;
+    [HideInInspector] public TileBump tileB;
+    [HideInInspector] public Rigidbody rb;
+    [HideInInspector] public Transform minableItems;
+    [HideInInspector] public Transform tourbillonT;
+    [HideInInspector] private ParticleSystem pSys;
+    public ParticleSystem pSysCreation;
+    #endregion
+
+    #region Materials
+    [HideInInspector, SerializeField] public Material disabledMat;
+    [HideInInspector] public Material plaineMat, undegradableMat, sandMat, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat;
+    [HideInInspector] public Mesh defaultMesh, woodMesh, rockMesh;
+    public Color walkedOnColor, notWalkedOnColor;
+    public Color penguinedColor;
+    #endregion
+
+    #region Bump
+    [HideNormalInspector] public float bumpStrength;
+    [HideNormalInspector] public AnimationCurve bumpDistanceAnimCurve;
+    #endregion
+
+    #region AI
+    [HideInInspector] public bool isPathChecked;
+    [HideNormalInspector] public int step;
+    private TextMeshProUGUI AI_Text;
+    [HideInInspector] public bool isPenguined;
+    bool pSysIsPlaying;
+    #endregion
+    #endregion
+
+    #region Call Methods
+    private void Awake()
     {
+        degSpeed = 1;
+        AI_Text = GetComponentInChildren<TextMeshProUGUI>();   
         minableItems = transform.Find("SpawnPositions");
         coordFX = coordX - coordY / 2;
-        lightAct = transform.GetChild(0).GetComponent<Light>();
-        ogPos = transform.position;
-        currentPos = ogPos;
+        currentPos = transform.position;
         pSys = gameObject.GetComponentInChildren<ParticleSystem>();
-        myMeshR = GetComponent<MeshRenderer>();
-        if (!degradable && walkable)
+
+        tourbillonT = transform.Find("Tourbillon");
+
+        timer = UnityEngine.Random.Range(minTimer, maxTimer);
+        GetAdjCoords();
+
+        SetMatOnStart();    
+    }
+ 
+
+    private void Update()
+    {
+        if(transform.position.y == currentPos.y && spawning)
         {
-            myMeshR.material = selectedMat;
+            spawning = false;
+            pSys.transform.position = new Vector3(pSys.transform.position.x, 0, pSys.transform.position.z) ;
+            pSysCreation.Play();
         }
-        if (!walkable)
+
+        if(transform.position!=currentPos && !shakeFlag && !tileS.isHub)
         {
+            StartCoroutine(TileShake(.1f));
+        }
+        // StepText();
+        isFaded = false;
+        if (pSysIsPlaying && walkedOnto && degradable && tileType == TileType.Neutral)
+        {
+            pSys.Stop(); 
+            myMeshR.material.color = walkedOnColor;
+            pSysIsPlaying = false;
+        }
+
+        if(!walkable && tourbillon)
+        {
+            tourbillonT.Rotate(0, tourbillonSpeed * Time.deltaTime, 0);
+        }
+
+        if(isPenguined && myMeshR.material.color != penguinedColor && tileType == TileType.Neutral)
+        {
+            myMeshR.material.color = penguinedColor;
+
+        }
+        else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType == TileType.Neutral)
+        {
+            myMeshR.material.color = walkedOnColor;
+        }
+    }
+    bool shakeFlag;
+    public IEnumerator TileShake(float magnitude)
+    {
+        shakeFlag = true;
+        while (transform.position.y != currentPos.y)
+        {
+            float x = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+            float y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+
+            transform.localPosition = new Vector3(currentPos.x + x, transform.position.y, currentPos.z + y);
+
+            yield return new WaitForEndOfFrame();
+        }
+        transform.localPosition = currentPos;
+        shakeFlag = false;
+    }
+
+    private void LateUpdate()
+    {
+        UnFadeTile();
+        isPenguined = false;
+    }
+    #endregion
+
+    #region Tile Functions
+    private void SetMatOnStart()
+    {
+        myMeshR = GetComponent<MeshRenderer>();
+        myMeshF = GetComponent<MeshFilter>();
+
+         if (!walkable)
+        {
+            walkedOnto = true;
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
             myMeshR.enabled = false;
             //GetComponent<Collider>().enabled = false;
-            transform.Find("Additional Visuals").gameObject.SetActive(false);
-            minableItems.gameObject.SetActive(false);
-        }
-        if(walkable && !walkedOnto)
-        {
-            pSys.Play();
-        }
-        timer = Random.Range(minTimer, maxTimer);
-        GetAdjCoords();
-    }
-
-    private void OnValidate()
-    {
-        if(!myMeshR) myMeshR = GetComponent<MeshRenderer>();
-        minableItems = transform.Find("SpawnPositions");
-        if (!walkable)
-        {
-            myMeshR.sharedMaterial = disabledMat;
             transform.Find("Additional Visuals").gameObject.SetActive(false);
             minableItems.gameObject.SetActive(false);
         }
         else
         {
-            myMeshR.sharedMaterial = unselectedMat;
-            transform.Find("Additional Visuals").gameObject.SetActive(true);
-            minableItems.gameObject.SetActive(true);
+            myMeshF.mesh = getCorrespondingMesh(tileType); 
+            myMeshR.material = getCorrespondingMat(tileType);
+        }
+
+        if (walkable && (!degradable || tileType == TileType.Sand || tileType == TileType.BouncyTile))
+        {
+            pSysIsPlaying = false;
+            walkedOnto = true;
+        }
+        else if (walkable && !walkedOnto && degradable)
+        {
+            pSys.Play();
+            pSysIsPlaying = true;
+            myMeshR.material.color = notWalkedOnColor;
+        }
+/*        else if (!walkable && walkedOnto && degradable && tileType == TileType.Neutral)
+        {
+            myMeshR.material.color = walkedOnColor;
+        }*/
+
+        if (!walkable && tourbillon)
+        {
+            tourbillonT.gameObject.SetActive(true);
         }
     }
 
-    private void Update()
+    public Material getCorrespondingMat(TileType tType)
     {
-      
-        if(pSys.isPlaying && walkedOnto)
+        Material mat = null;
+
+        if (!walkable)
         {
-            pSys.Stop();
+            mat = disabledMat;
         }
-        //NormaliseRelief();
-
-        if (walkable && isFaded)
+        else if (!degradable)
         {
-            StartCoroutine(ReactiveTile());
+            mat = undegradableMat;
+        }
+        else
+        {
+            switch (tType)
+            {
+                case TileType.Neutral: mat = plaineMat; break;
+                case TileType.Wood: mat = woodMat; break;
+                case TileType.Rock: mat = rockMat; break;
+                case TileType.Gold: mat = goldMat; break;
+                case TileType.Diamond: mat = diamondMat; break;
+                case TileType.Adamantium: mat = adamantiumMat; break;
+                case TileType.Sand: mat = sandMat; break;
+                case TileType.BouncyTile: mat = bounceMat; break;
+                case TileType.LevelLoader: mat = sandMat; break;
+                default: mat = plaineMat; break;
+            }
         }
 
-        if(walkable && degradable && walkedOnto) Degrading();
-
+        return mat;
     }
-    bool degradingChecker;
-    bool isGrowingChecker;
-    private void Degrading()
+
+    public Mesh getCorrespondingMesh(TileType tType)
     {
-        if (timer > 0)
-        {
-            timer -= Time.deltaTime * degradationTimerAnimCurve.Evaluate(degradationTimerModifier);
-        }
-        else if (timer <= 0)
-        {
-            isDegrading = true;
-            gameObject.tag = "DegradingTile";
-        }
-        degradationTimerModifier += Time.deltaTime * (1 / timeToGetToMaxDegradationSpeed);
+        Mesh mesh = null;
 
-        if (!isSelected && !selecFlag)
+        switch (tType)
         {
-            selecFlag = true;
-            myMeshR.material = unselectedMat;
-            lightAct.enabled = false;
-        }
-        if (!isDegrading && transform.position.y <= -heightByTile)
-        {
-            walkable = false;
-            gameObject.layer = LayerMask.NameToLayer("DisabledTile");
-            myMeshR.enabled = false;
-            //GetComponent<Collider>().enabled = false;
-            transform.Find("Additional Visuals").gameObject.SetActive(false);
-            minableItems.gameObject.SetActive(false);
+            case TileType.Wood: mesh = woodMesh; break;
+            case TileType.Rock: mesh = rockMesh; break;
+            case TileType.Gold: mesh = rockMesh; break;
+            case TileType.Diamond: mesh = rockMesh; break;
+            case TileType.Adamantium: mesh = rockMesh; break;
+            default: mesh = defaultMesh; break;
         }
 
-        if (isDegrading && !degradingChecker && !isGrowing && walkable)
-        {
-            currentPos.y -= heightByTile;
-
-        }
-
-        if(transform.position != ogPos && isGrowingChecker && !isGrowing)
-        {
-            float p = transform.position.y % heightByTile;
-           
-            currentPos.y = transform.position.y - p;
-            isDegrading = true;
-            tag = "DegradingTile";
-        }
-
-        if(transform.position == currentPos && isDegrading)
-        {
-            isDegrading = false;
-            timer = Random.Range(minTimer, maxTimer);
-        }
-
-        if(currentPos == ogPos && CompareTag("DegradingTile"))
-        {
-            tag = "Tile";
-        }
-
-
-        degradingChecker = isDegrading;
-        isGrowingChecker = isGrowing;
-        //isGrowing = false;
-
+        return mesh;
     }
 
+    public void Spawn(float height, string stackType, float degradingSpeed)
+    {
+        TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
+        float rot = UnityEngine.Random.Range(0, 360);
+
+        transform.Rotate(0, rot - (rot % 60), 0);
+        tileType = tType;
+        spawning = true;
+        walkable = true;
+        gameObject.layer = LayerMask.NameToLayer("Tile");
+        myMeshR.enabled = true;
+        myMeshF.mesh = getCorrespondingMesh(tileType);
+        myMeshR.material = getCorrespondingMat(tileType);
+        typeDegradingSpeed = degradingSpeed;
+        //myMeshR.material.color = walkedOnColor;
+        transform.Find("Additional Visuals").gameObject.SetActive(true);
+        minableItems.gameObject.SetActive(true);
+        timer = UnityEngine.Random.Range(minTimer, maxTimer);
+        isDegrading = false;
+        transform.position = new Vector3(transform.position.x, -1.9f, transform.position.z) ;
+        transform.tag = "Tile";
+        currentPos.y = height - (height % heightByTile);
+        isGrowing = true;
+        tileS.tileC.Count();
+    }
     private void GetAdjCoords()
     {
         adjTCoords = new Vector2Int[6];
@@ -198,48 +304,61 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
+    [HideNormalInspector] public bool fadeChecker;
+    Color currentColor;
+    public void FadeTile(float t)
     {
-        float xOffset = 0;
-        if (z % 2 == 1) xOffset = transform.localScale.x * .9f;
-        Vector3 pos = ogPos + new Vector3(x * transform.localScale.x * 1.7f + xOffset, 0, z * transform.localScale.x * 1.48f);
-        coordX = x;
-        
-        coordY = z;
-        return pos;
-    }
-
-    private IEnumerator ReactiveTile()
-    {
-        yield return new WaitForEndOfFrame();
-
-        gameObject.layer = 6;
-        myMeshR.material = unselectedMat;
-    }
-
-    public void FadingTileEffect()
-    {
-        myMeshR.material = fadeMat;
         isFaded = true;
+        if (!fadeChecker)
+        {
+            fadeChecker = true;
+            ChangeRenderMode.ChangeRenderModer(myMeshR.material, ChangeRenderMode.BlendMode.Transparent);
+            Color col = myMeshR.material.color;
+            col.a = t;
+            myMeshR.material.color = col;
+        }
     }
 
-    public void Spawn(float height)
+    private void UnFadeTile()
     {
-        walkable = true;
-        gameObject.layer = LayerMask.NameToLayer("Tile");
-        myMeshR.enabled = true;
-        myMeshR.material = unselectedMat;
-        transform.Find("Additional Visuals").gameObject.SetActive(true);
-        minableItems.gameObject.SetActive(true);
-        timer = Random.Range(minTimer, maxTimer);
-        isDegrading = false;
-        transform.position = new Vector3(transform.position.x, -2, transform.position.z) ;
-        transform.tag = "Tile";
-        currentPos.y = height - (height % heightByTile);
-        ogPos.y = height;
-        isGrowing = true;
+        if (!isFaded && fadeChecker)
+        {
+            fadeChecker = false;
+            ChangeRenderMode.ChangeRenderModer(myMeshR.material, ChangeRenderMode.BlendMode.Opaque);
+            Color col = myMeshR.material.color;
+            col.a = .2f;
+            myMeshR.material.color = col;
+        }
     }
+    #endregion
 
+    #region Editor
+#if UNITY_EDITOR
+    void OnValidate() { UnityEditor.EditorApplication.delayCall += _OnValidate; }
+    private void _OnValidate()
+    {
+        if(!Application.isPlaying)
+        {
+            if(!myMeshR) myMeshR = GetComponent<MeshRenderer>();
+            if(!myMeshF) myMeshF = GetComponent<MeshFilter>();
+            if(!myMeshC) myMeshC = GetComponent<MeshCollider>();
+            minableItems = transform.Find("SpawnPositions");
+            myMeshR.sharedMaterial = getCorrespondingMat(tileType);
+            myMeshF.sharedMesh = getCorrespondingMesh(tileType);
+            myMeshC.sharedMesh = myMeshF.sharedMesh;
+            if (!walkable)
+            {
+                transform.Find("Additional Visuals").gameObject.SetActive(false);
+                minableItems.gameObject.SetActive(false);
+            }
+            else
+            {
+                transform.Find("Additional Visuals").gameObject.SetActive(true);
+                minableItems.gameObject.SetActive(true);
+            }
+        }
+    }
+#endif
     private void OnDrawGizmos()
     {
         if(heightByTile != 0 && !Application.isPlaying)
@@ -248,8 +367,16 @@ public class Tile : MonoBehaviour
             transform.position = new Vector3(transform.position.x, transform.position.y - r, transform.position.z);
         }
     }
+    private void StepText()
+    {
+        AI_Text.text = step.ToString();
+        if (!walkable && AI_Text.gameObject.activeInHierarchy) AI_Text.gameObject.SetActive(false);
+        else if (walkable && !AI_Text.gameObject.activeInHierarchy) AI_Text.gameObject.SetActive(true);
+    }
+    #endregion
 }
 
+#region Editor Class
 #if UNITY_EDITOR
 [CustomEditor(typeof(Tile))]
 [System.Serializable,CanEditMultipleObjects]
@@ -261,6 +388,8 @@ public class TileEditor : Editor
         tile = (Tile)target;
     }
 
+
+
     private void OnSceneGUI()
     {
         SpawnOnTile();
@@ -270,39 +399,51 @@ public class TileEditor : Editor
 
     private void SpawnOnTile()
     {
-        if (tile.spawnSpawners && tile.tileType != Tile.TileType.Neutral)
+        tile.spawnPoints = new List<Transform>();
+        TileMats tileM = FindObjectOfType<TileMats>();
+        foreach (Transform t in tile.transform.Find("SpawnPositions"))
         {
-            tile.spawnSpawners = false;
-            if (tile.spawnPoints.Count > 0)
-            {
-                foreach (Transform t in tile.spawnPoints)
-                {
-                    DestroyImmediate(t.GetChild(0).gameObject);
-                }
-                tile.spawnPoints.Clear();
-            }
 
-            tile.spawnPoints = new List<Transform>();
-            TileMats tileM = FindObjectOfType<TileMats>();
-            foreach (Transform t in tile.transform.Find("SpawnPositions"))
+            if (t.gameObject.activeSelf)
             {
-                if (t.gameObject.activeSelf)
-                {
-                    tile.spawnPoints.Add(t);
-                    GameObject obj = SpawnItem(t, tileM);
-                }
+                tile.spawnPoints.Add(t);
+            }
+            else
+            {
+                tile.spawnPoints.Remove(t);
             }
         }
-        else if (tile.spawnSpawners && tile.tileType == Tile.TileType.Neutral) 
+
+        if (tile.spawnSpawners && tile.tileSpawnType != Tile.TileType.Neutral)
         {
-            tile.spawnSpawners = false;
+            foreach (Transform t in tile.transform.Find("SpawnPositions"))
+            {
+                foreach (Transform tp in t)
+                {
+                    DestroyImmediate(tp.gameObject);
+                }
+            }
+
+
             if (tile.spawnPoints.Count > 0)
             {
                 foreach (Transform t in tile.spawnPoints)
                 {
-                    DestroyImmediate(t.GetChild(0).gameObject);
+                    SpawnItem(t, tileM);
                 }
                 tile.spawnPoints.Clear();
+            }
+            tile.spawnSpawners = false;
+        }
+        else if (tile.spawnSpawners && tile.tileSpawnType == Tile.TileType.Neutral)
+        {
+            tile.spawnSpawners = false;
+            foreach (Transform t in tile.transform.Find("SpawnPositions"))
+            {
+                foreach (Transform tp in t)
+                {
+                    DestroyImmediate(tp.gameObject);
+                }
             }
         }
     }
@@ -310,21 +451,33 @@ public class TileEditor : Editor
     private GameObject SpawnItem(Transform t, TileMats tileM)
     {
         GameObject prefab = null;
-        switch (tile.tileType)
+        switch (tile.tileSpawnType)
         {
-            case Tile.TileType.Tree:
+            case Tile.TileType.Wood:
                 prefab = tileM.treePrefab;
                 break;
             case Tile.TileType.Rock:
                 prefab = tileM.rockPrefab;
                 break;
+            case Tile.TileType.Gold:
+                prefab = tileM.goldPrefab;
+                break;
+            case Tile.TileType.Diamond:
+                prefab = tileM.diamondPrefab;
+                break;
+            case Tile.TileType.Adamantium:
+                prefab = tileM.adamantiumPrefab;
+                break;
         }
-        GameObject obj = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+        GameObject obj = PrefabUtility.InstantiatePrefab(prefab, null) as GameObject;
+        Interactor inter = obj.GetComponent<Interactor>();
+        inter.type = tile.tileSpawnType;
         obj.transform.parent = t;
         obj.transform.position = t.position;
-        obj.transform.LookAt(new Vector3(tile.transform.position.x, obj.transform.position.y, tile.transform.position.z));
-        
+        //obj.transform.LookAt(new Vector3(tile.transform.position.x, obj.transform.position.y, tile.transform.position.z));
+        obj.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
         return obj;
     }
 }
 #endif
+#endregion

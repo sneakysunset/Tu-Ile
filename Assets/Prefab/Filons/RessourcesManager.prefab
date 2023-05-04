@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4804251724381437489
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4804251724381437495}
+  - component: {fileID: 4804251724381437494}
+  m_Layer: 0
+  m_Name: RessourcesManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4804251724381437495
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4804251724381437489}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 70.476974, y: 13.513227, z: 52.363766}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4804251724381437494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4804251724381437489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13611ddd9b085584cb37be27c3b75a01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  growthCost: 1
+  RessourceMeshs:
+  - name: Wood
+    stackType: 1
+    meshs:
+    - {fileID: -2157827413335789763, guid: f6e7ea1b1fd848c499b58cedb12b204b, type: 3}
+    - {fileID: 7387616259769646581, guid: ad236b5a0d8a15c448ec89bc3a5ad5be, type: 3}
+    - {fileID: -1335090132975519528, guid: 01c4bc75994ba3d4898535a0cf3bcf73, type: 3}
+    materials:
+    - {fileID: 2100000, guid: 9ee57a835abf71544b864397f3ebb673, type: 2}
+    - {fileID: 2100000, guid: 9ee57a835abf71544b864397f3ebb673, type: 2}
+    - {fileID: 2100000, guid: 9ee57a835abf71544b864397f3ebb673, type: 2}
+    necessaryNum: 030000000600000009000000
+    sprite: {fileID: 21300000, guid: ffc43ac98e0a29749bf006dec39eaf1e, type: 3}
+  - name: Rock
+    stackType: 2
+    meshs:
+    - {fileID: -8111299999684605929, guid: 458be6733aa78cb4cac8dfa2e553a068, type: 3}
+    - {fileID: -996742315441427339, guid: 42267fa5c2dde624dab6054a21ab08ff, type: 3}
+    - {fileID: -8736917780145172729, guid: 9bc52dab5305e294fb864417d6ae48ff, type: 3}
+    materials:
+    - {fileID: 2100000, guid: 3ab60182c03b70945b158f1605d88218, type: 2}
+    - {fileID: 2100000, guid: 3ab60182c03b70945b158f1605d88218, type: 2}
+    - {fileID: 2100000, guid: 3ab60182c03b70945b158f1605d88218, type: 2}
+    necessaryNum: 020000000400000006000000
+    sprite: {fileID: 21300000, guid: cfaed7eb6078de34aa199b0035bc61ad, type: 3}
+  - name: Gold
+    stackType: 3
+    meshs:
+    - {fileID: 1639584309554002610, guid: 642afb5bc5dc21f49b1bd15a3e575a9e, type: 3}
+    - {fileID: 1639584309554002610, guid: 642afb5bc5dc21f49b1bd15a3e575a9e, type: 3}
+    - {fileID: 1639584309554002610, guid: 642afb5bc5dc21f49b1bd15a3e575a9e, type: 3}
+    materials:
+    - {fileID: -6478536213147159724, guid: 642afb5bc5dc21f49b1bd15a3e575a9e, type: 3}
+    - {fileID: -6478536213147159724, guid: 642afb5bc5dc21f49b1bd15a3e575a9e, type: 3}
+    - {fileID: -6478536213147159724, guid: 642afb5bc5dc21f49b1bd15a3e575a9e, type: 3}
+    necessaryNum: 010000000200000003000000
+    sprite: {fileID: 21300000, guid: a883498e3d7923443ab111c96b724ba4, type: 3}
+  - name: Diamond
+    stackType: 4
+    meshs:
+    - {fileID: -7333400514083579747, guid: 9a0c937219b8c444c99f3010c8ee31e8, type: 3}
+    - {fileID: 1992084786377048623, guid: 2f9832285889d5244b4cfc3d4ee0550e, type: 3}
+    - {fileID: -7062511976261702364, guid: 8f0b09609af26aa448abcf1dc991cb2f, type: 3}
+    materials:
+    - {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
+    - {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
+    - {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
+    necessaryNum: 010000000200000003000000
+    sprite: {fileID: 21300000, guid: 0647d565d43add24e8cf63ca2b8edb91, type: 3}
+  - name: Adamantium
+    stackType: 5
+    meshs:
+    - {fileID: 4300000, guid: ba687a10e97cdc740b06d5e2d00ee983, type: 3}
+    - {fileID: 4300000, guid: ba687a10e97cdc740b06d5e2d00ee983, type: 3}
+    - {fileID: 4300000, guid: ba687a10e97cdc740b06d5e2d00ee983, type: 3}
+    materials:
+    - {fileID: 2100000, guid: a148dfd9566cf574e942a28854723245, type: 2}
+    - {fileID: 2100000, guid: a148dfd9566cf574e942a28854723245, type: 2}
+    - {fileID: 2100000, guid: a148dfd9566cf574e942a28854723245, type: 2}
+    necessaryNum: 010000000200000003000000
+    sprite: {fileID: 21300000, guid: a7c6f9ade6c4b504385395ac8af38f7b, type: 3}
+  RessourceMeshsUnstackable:
+  - name: Eltender
+    itemType: 0
+    sprite: {fileID: 21300000, guid: 3c6c1f7c30a584c42b958af4e3f85bfd, type: 3}

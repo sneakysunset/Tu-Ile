@@ -1,0 +1,253 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6354948749326121284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6354948749326121286}
+  - component: {fileID: 6472450743787329740}
+  - component: {fileID: 8299111489155243357}
+  - component: {fileID: 6354948749326121285}
+  - component: {fileID: 6354948749326121287}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6354948749326121286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 63, y: 27.347, z: 40.554}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6472450743787329740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da51dc8b74db77d4f8aba95ec59398a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events:
+  - timeLineEvent: 2
+    eventTime: 15
+    eventTrigger:
+      m_PersistentCalls:
+        m_Calls: []
+  gameTimer: 300
+  timer: 0
+  LevelEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  timerFillImage: {fileID: 0}
+  eventFolder: {fileID: 0}
+  eventVisualPrefab: {fileID: 2026664673166425894, guid: b8ce6079d7aa49945a1fb7cd9373b195, type: 3}
+  apocalypseImage: {fileID: 21300000, guid: a7c6f9ade6c4b504385395ac8af38f7b, type: 3}
+  newPageImage: {fileID: 21300000, guid: 639445af5561eaa438655cabe913244c, type: 3}
+  minuteBar: {fileID: 7334830493600781002, guid: 60a3955a1a4772640805888a853845b8, type: 3}
+  secondBar: {fileID: 1185876906053481542, guid: 4041be0b1c80c044b87440fcc76d724f, type: 3}
+  minuteFolder: {fileID: 0}
+--- !u!114 &8299111489155243357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1fd7cebd66f46f4686c7c96a1dba2e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeMissions: []
+  missionPools:
+  - missionList:
+    - {fileID: 11400000, guid: 5922120d5baef104a910f7133f08f9d5, type: 2}
+    - {fileID: 11400000, guid: b3f4c62a234d57d4ba8957097bfda281, type: 2}
+    - {fileID: 11400000, guid: b324cb209deb80947a2ed950daddbd89, type: 2}
+    - {fileID: 11400000, guid: 4520cb571a7a8874cb620fbd4d882663, type: 2}
+  - missionList:
+    - {fileID: 11400000, guid: 4520cb571a7a8874cb620fbd4d882663, type: 2}
+    - {fileID: 11400000, guid: 4520cb571a7a8874cb620fbd4d882663, type: 2}
+    - {fileID: 11400000, guid: 4520cb571a7a8874cb620fbd4d882663, type: 2}
+    - {fileID: 11400000, guid: 4520cb571a7a8874cb620fbd4d882663, type: 2}
+  - missionList:
+    - {fileID: 11400000, guid: 5922120d5baef104a910f7133f08f9d5, type: 2}
+    - {fileID: 11400000, guid: 4520cb571a7a8874cb620fbd4d882663, type: 2}
+    - {fileID: 11400000, guid: 5922120d5baef104a910f7133f08f9d5, type: 2}
+    - {fileID: 11400000, guid: 5922120d5baef104a910f7133f08f9d5, type: 2}
+  missionList:
+  - {fileID: 11400000, guid: e82001e141ae19045b00c19622a8c7a9, type: 2}
+  - {fileID: 11400000, guid: e82001e141ae19045b00c19622a8c7a9, type: 2}
+  - {fileID: 11400000, guid: 5922120d5baef104a910f7133f08f9d5, type: 2}
+  - {fileID: 11400000, guid: e82001e141ae19045b00c19622a8c7a9, type: 2}
+  - {fileID: 11400000, guid: 4520cb571a7a8874cb620fbd4d882663, type: 2}
+  - {fileID: 11400000, guid: b324cb209deb80947a2ed950daddbd89, type: 2}
+  - {fileID: 11400000, guid: 5922120d5baef104a910f7133f08f9d5, type: 2}
+  missionSlotNumber: 3
+  missionsFolder: {fileID: 0}
+  missionPrefab: {fileID: 7011966080211762253, guid: 6eee6c6daae779e4c9e953884c3151df, type: 3}
+  activePoolMin: 0
+  activePoolMax: -1
+  mPageShakingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -1.9769617
+      outSlope: -1.9769617
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5026032
+      value: 0.006372734
+      inSlope: -0.013352755
+      outSlope: -0.013352755
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.46863264
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.020962602
+      outSlope: -0.020962602
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.45
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.0083313
+      value: 0.0023498535
+      inSlope: -0.010604495
+      outSlope: -0.010604495
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.18047367
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  shakeMagnitude: 3
+  shakeValues: {x: 1, y: 0}
+  timeToComplete: 1
+  lerpEaseIn:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &6354948749326121285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NotificationBehavior: 0
+  m_MaxPlayerCount: 4
+  m_AllowJoining: 1
+  m_JoinBehavior: 0
+  m_PlayerJoinedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_PlayerLeftEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_JoinAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_PlayerPrefab: {fileID: 5703151869213024695, guid: da5aecc5912d8e34182e975467977ecf, type: 3}
+  m_SplitScreen: 0
+  m_MaintainAspectRatioInSplitScreen: 0
+  m_FixedNumberOfSplitScreens: -1
+  m_SplitScreenRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!114 &6354948749326121287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1857797935
+      Data2: 1091402882
+      Data3: -1218984030
+      Data4: 266828565
+    Path: event:/Tile/Tilee/Enviro
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
