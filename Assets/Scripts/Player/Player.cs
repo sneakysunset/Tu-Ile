@@ -20,8 +20,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public Item heldItem;
     [HideInInspector] public Item closestItem;
     [HideInInspector] public bool isMining;
-    /*[HideInInspector]*/ public List<Interactor> interactors;
-    ///*[HideInInspector]*/ public Interactor interactor;
+    [HideInInspector] public List<Interactor> interactors;
     public ParticleSystem waterSplash;
     bool waterValidate;
     public float throwStrength;
@@ -36,7 +35,7 @@ public class Player : MonoBehaviour
             respawnTile = TileSystem.Instance.centerTile;
             transform.position = respawnTile.transform.position + Vector3.up * 22.5f;
         }
-        FindObjectOfType<CameraCtr>().AddPlayer(transform);
+        //FindObjectOfType<CameraCtr>().AddPlayer(transform);
         col = GetComponent<Collider>();
         pointers = new List<Transform>();
         Transform pointerFolder = transform.Find("PointerFolder");

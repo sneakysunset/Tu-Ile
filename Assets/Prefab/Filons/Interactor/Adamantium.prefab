@@ -80,6 +80,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4300000, guid: e875f5a6ac7c1b24bb9e5195eb81c6d3, type: 3}
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: type
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: spawnPrefab
       value: 
       objectReference: {fileID: 4809533256932301442, guid: 8f0589a40c34d864c9357921864c653f, type: 3}
@@ -90,7 +94,7 @@ PrefabInstance:
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: meshs.Array.data[0]
       value: 
-      objectReference: {fileID: 4300000, guid: 8ef29a0a52483e345b87390d79ebcb15, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: meshs.Array.data[1]
       value: 
@@ -104,6 +108,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4300000, guid: e875f5a6ac7c1b24bb9e5195eb81c6d3, type: 3}
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[0].mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 8ef29a0a52483e345b87390d79ebcb15, type: 3}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[1].mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 6b717b9714264374b91094e366e3f0d0, type: 3}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[2].mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 6bed97e2c18df9e4baac2a95b3d34c83, type: 3}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: a148dfd9566cf574e942a28854723245, type: 2}
@@ -115,6 +131,14 @@ PrefabInstance:
       propertyPath: materials.Array.data[3]
       value: 
       objectReference: {fileID: 2100000, guid: a148dfd9566cf574e942a28854723245, type: 2}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[1].material
+      value: 
+      objectReference: {fileID: 2100000, guid: 4ea8e2de4ac6b564c98a36f67a2ad64f, type: 2}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[2].material
+      value: 
+      objectReference: {fileID: 2100000, guid: 4ea8e2de4ac6b564c98a36f67a2ad64f, type: 2}
     - target: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: m_Name
       value: Adamantium

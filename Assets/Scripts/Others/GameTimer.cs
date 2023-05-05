@@ -17,7 +17,7 @@ public class GameTimer : MonoBehaviour
     public enum Events { Neutral, Apocalypse, AddMissionSlot, ExtendMissionPool, ReduceMissionPool, EnlargeMissionPool};
     public List<Event> events;
     public float gameTimer;
-    /*[HideInInspector]*/ public float timer;
+    [HideNormalInspector] public float timer;
     public UnityEvent LevelEnd;
     public Image timerFillImage;
     public Transform eventFolder;

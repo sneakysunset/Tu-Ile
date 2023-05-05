@@ -30,9 +30,9 @@ public class SOM_Boussole : SO_Mission
         }
     }
 
-    public override void OnCompleted(ref missionPage page)
+    public override void OnCompleted(ref missionPage page, float scoreMult)
     {
-        base.OnCompleted(ref page);
+        base.OnCompleted(ref page, scoreMult);
 
         Item_Boussole[] items = FindObjectsOfType<Item_Boussole>();
         foreach (Item_Boussole item in items)

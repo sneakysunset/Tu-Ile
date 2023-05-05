@@ -108,6 +108,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -4567348496979632973, guid: 828fde1256d16194d8bceb324610139b, type: 3}
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[0].mesh
+      value: 
+      objectReference: {fileID: -5173784165117462099, guid: 38257ff9d88e8eb4895cd20b35f07b47, type: 3}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[1].mesh
+      value: 
+      objectReference: {fileID: 851234457627048148, guid: 25ff1cb14afdcfe4babf768bc4db5eb6, type: 3}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[2].mesh
+      value: 
+      objectReference: {fileID: -4567348496979632973, guid: 828fde1256d16194d8bceb324610139b, type: 3}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: d53adf57e4972f8448d1b690e02582ec, type: 2}
@@ -123,6 +135,14 @@ PrefabInstance:
       propertyPath: numberOfRessourceGenerated
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[1].material
+      value: 
+      objectReference: {fileID: 2100000, guid: d53adf57e4972f8448d1b690e02582ec, type: 2}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[2].material
+      value: 
+      objectReference: {fileID: 2100000, guid: d53adf57e4972f8448d1b690e02582ec, type: 2}
     - target: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: m_Name
       value: Rock

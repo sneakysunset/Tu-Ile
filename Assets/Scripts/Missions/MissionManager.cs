@@ -5,18 +5,25 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
+
+[System.Serializable, HideInInspector]
 public struct missionPage
 {
     /*[HideInInspector]*/ public SO_Mission m;
     [HideInInspector] public RectTransform missionUI;
     [HideInInspector] public TextMeshProUGUI missionText;
     [HideInInspector] public Image missionFillBar;
+    [HideInInspector] public Image missionFillBarOver;
     [HideInInspector] public Image missionChecker;
     [HideInInspector] public IEnumerator shakeCor;
     [HideInInspector] public Item_Etabli chantier;
     [HideInInspector] public Tile boussoleTile;
     [HideInInspector] public bool tresorFound;
+    [HideInInspector] public int numOfTileOnActivation;
+    [HideInInspector] public bool isReady;
+    [HideInInspector] public int completionLevel;
+    [HideInInspector] public bool completed;
+    
     public float timer;
     public float deliveryTime;
     public bool activated;
@@ -28,29 +35,38 @@ public struct missionPool
     public SO_Mission[] missionList;
 }
 
+[System.Serializable]
+public struct barColor
+{
+    public Color fillBarColor;
+    [Range(0,1)] public float fillBarColorAmount;
+    [Range(0, 2)] public float scoreMultiple;
+}
+
 public class MissionManager : MonoBehaviour
 {
     #region variables
-    /*[HideInInspector]*/ public missionPage[] activeMissions;
+    [HideInInspector] public missionPage[] activeMissions;
     private TileCounter tileCounter;
     private WaitForEndOfFrame lerpWaiter;
     private WaitForSeconds shakeWaiter;
 
     [Header("Mission")]
     public missionPool[] missionPools;
-    /*[HideInInspector]*/ public List<SO_Mission> missionList;
+    [HideInInspector] public List<SO_Mission> missionList;
     public int missionSlotNumber;
     public RectTransform missionsFolder;
     public GameObject missionPrefab;
-
+    public barColor[] barColors;
+ 
     /*[HideInInspector]*/ public int activePoolMin = 0;
     /*[HideInInspector]*/ public int activePoolMax = -1;
 
-    [Space(10)]
+/*    [Space(10)]
     [Header("Mission Shake")]
     public AnimationCurve mPageShakingCurve;
     public float shakeMagnitude = 1;
-    public Vector2 shakeValues;
+    public Vector2 shakeValues;*/
 
     [Space(10)]
     [Header("Mission Lerps")]
@@ -76,8 +92,17 @@ public class MissionManager : MonoBehaviour
         {
             if (activeMissions[i].m != null)
             {
-                activeMissions[i].timer -= Time.deltaTime;
-                if (activeMissions[i].timer < 0 && activeMissions[i].m && activeMissions[i].activated)
+                if(activeMissions[i].isReady) activeMissions[i].timer -= Time.deltaTime;
+                activeMissions[i].timer = Mathf.Clamp(activeMissions[i].timer, 0, activeMissions[i].deliveryTime);
+
+                //print(1 - (activeMissions[i].timer / activeMissions[i].deliveryTime) + " " + activeMissions[i].completionLevel);
+                if (1 - (activeMissions[i].timer / activeMissions[i].deliveryTime) > barColors[activeMissions[i].completionLevel].fillBarColorAmount)
+                {
+                    activeMissions[i].missionFillBarOver.color = barColors[activeMissions[i].completionLevel].fillBarColor;
+                    activeMissions[i].completionLevel ++;
+                }
+
+                if (activeMissions[i].timer <= 0 && activeMissions[i].m && activeMissions[i].activated)
                 {
                     StartCoroutine(SetNewMission(i));
                 }
@@ -93,11 +118,14 @@ public class MissionManager : MonoBehaviour
         RectTransform rec = activeMissions[missionIndex].missionUI.GetChild(0).GetComponent<RectTransform>();
         Vector3 startPos = Vector3.zero;
         Vector3 endPos = - Vector3.right * 700;
+        activeMissions[missionIndex].isReady = false;
+        activeMissions[missionIndex].missionFillBarOver.color = Color.gray;
         if (activeMissions[missionIndex].m != null)
         {
             //Complete Previous Mission + Stop Mission Shaking
             rec.localPosition = startPos;
-            activeMissions[missionIndex].m.OnCompleted(ref activeMissions[missionIndex]);
+
+            activeMissions[missionIndex].m.OnCompleted(ref activeMissions[missionIndex], barColors[activeMissions[missionIndex].completionLevel].scoreMultiple);
             StopCoroutine(activeMissions[missionIndex].shakeCor);
             //Lerp Out Of Screen
             while (f < 1f)
@@ -118,13 +146,21 @@ public class MissionManager : MonoBehaviour
 
         //Set up New Mission
         SO_Mission m = missionList[Random.Range(0, missionList.Count)];
-        if (m.GetType() == typeof(SOM_Chantier) && !CheckIfChantier())
+        int r = 0;
+        if ((m.GetType() == typeof(SOM_Chantier) && !CheckIfChantier()) || (m.GetType() == typeof(SOM_Tile) && !CheckIfTile(m as SOM_Tile)))
         {
             do
             {
+                r++;
+                if (r > 1000)
+                {
+                    Debug.LogError("NO MISSION AVAILABLE");
+                    throw new System.Exception();
+                } 
+                 
                 m = missionList[Random.Range(0, missionList.Count)];
             }
-            while (m.GetType() == typeof(SOM_Chantier)) ;
+            while (m.GetType() == typeof(SOM_Chantier) || (m.GetType() == typeof(SOM_Tile) && !CheckIfTile(m as SOM_Tile))) ;
         }
 
         activeMissions[missionIndex].m = m;
@@ -145,7 +181,8 @@ public class MissionManager : MonoBehaviour
         }
 
         rec.localPosition = startPos;
-
+        activeMissions[missionIndex].isReady = true;
+        activeMissions[missionIndex].completionLevel = 0;
         //Start Mission Shaking
         activeMissions[missionIndex].shakeCor = ShakeMission(missionIndex);
         StartCoroutine(activeMissions[missionIndex].shakeCor);
@@ -166,6 +203,7 @@ public class MissionManager : MonoBehaviour
         activeMissions[i].missionUI = Instantiate(missionPrefab, missionsFolder).GetComponent<RectTransform>();
         activeMissions[i].missionText = activeMissions[i].missionUI.GetComponentInChildren<TextMeshProUGUI>();
         activeMissions[i].missionChecker = activeMissions[i].missionUI.GetChild(0).GetChild(1).GetComponent<Image>();
+        activeMissions[i].missionFillBarOver = activeMissions[i].missionUI.GetChild(0).GetChild(3).GetChild(0).GetComponent<Image>();
         activeMissions[i].missionFillBar = activeMissions[i].missionUI.GetChild(0).GetChild(3).GetChild(0).GetChild(0).GetComponent<Image>();
         activeMissions[i].timer = 100;
 
@@ -197,11 +235,11 @@ public class MissionManager : MonoBehaviour
     {
         for (int i = 0; i < activeMissions.Length; i++)
         {
-            CheckMissionCompletion(activeMissions[i], i);
+            CheckMissionCompletion( activeMissions[i], i);
         }
     }
 
-    private void CheckMissionCompletion(missionPage page, int pageNum)
+    private void CheckMissionCompletion( missionPage page, int pageNum)
     {
         switch (page.m.GetType().ToString())
         {
@@ -214,14 +252,15 @@ public class MissionManager : MonoBehaviour
 
     private IEnumerator CheckTileMission(SOM_Tile mission, missionPage page, int pageNum)
     {
-        if (mission.requiredNumber <= tileCounter.GetStat(mission.requiredType))
+        if (mission.requiredNumber <=   tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation)
         {
             page.missionChecker.color = Color.yellow;
             page.missionText.color = Color.yellow;
+            activeMissions[pageNum].completed = true;
         }
-        page.missionText.text = mission.description + " " + tileCounter.GetStat(mission.requiredType).ToString() + " / " + mission.requiredNumber.ToString();
+        page.missionText.text = mission.description + " " + (tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation).ToString() + " / " + mission.requiredNumber.ToString();
 
-        if(tileCounter.GetStat(mission.requiredType) >= mission.requiredNumber)
+        if(tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation >= mission.requiredNumber)
         {
             yield return new WaitForSeconds(1);
             StartCoroutine(SetNewMission(pageNum));
@@ -234,6 +273,7 @@ public class MissionManager : MonoBehaviour
         {
             page.missionChecker.color = Color.yellow;
             page.missionText.color = Color.yellow;
+            activeMissions[pageNum].completed = true;
             yield return new WaitForSeconds(1);
             StartCoroutine(SetNewMission(pageNum));
         }
@@ -249,6 +289,7 @@ public class MissionManager : MonoBehaviour
         {
             page.missionChecker.color = Color.yellow;
             page.missionText.color = Color.yellow;
+            activeMissions[pageNum].completed = true;
             yield return new WaitForSeconds(1);
             StartCoroutine(SetNewMission(pageNum));
         }
@@ -302,5 +343,21 @@ public class MissionManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    bool CheckIfTile(SOM_Tile m)
+    {
+        foreach (missionPage n in activeMissions)
+        {
+            if (n.m != null && n.m.GetType() == typeof(SOM_Tile))
+            {
+                var t = (SOM_Tile)n.m;
+                if (t.requiredType == m.requiredType)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

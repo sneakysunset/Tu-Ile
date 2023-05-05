@@ -11,6 +11,8 @@ public class Item_Stack : Item
     public int numberStacked = 0;
     protected RessourcesManager rMan;
     protected MeshFilter meshF;
+    protected MeshFilter meshFH;
+    protected MeshCollider meshC;
     ressourceMeshsCollec rMC;
     public bool isTile;
     int prevNum;
@@ -21,6 +23,8 @@ public class Item_Stack : Item
         col = GetComponent<Collider>();
         rMan = FindObjectOfType<RessourcesManager>();
         meshF = GetComponent<MeshFilter>();
+        meshC = GetComponent<MeshCollider>();
+        meshFH = Highlight.GetComponent<MeshFilter>();
     }
 
     public override void Update()
@@ -71,6 +75,8 @@ public class Item_Stack : Item
                 if (meshF.mesh != rMC.meshs[i])
                 {
                     meshF.mesh = rMC.meshs[i];
+                    meshFH.mesh = rMC.meshs[i];
+                    meshC.sharedMesh = rMC.meshs[i];
                     meshR.material = rMC.materials[i];
                 }
                 return;
@@ -79,6 +85,8 @@ public class Item_Stack : Item
         if (meshF.mesh != rMC.meshs[rMC.necessaryNum.Count - 1])
         {
             meshF.mesh = rMC.meshs[rMC.necessaryNum.Count - 1];
+            meshFH.mesh = rMC.meshs[rMC.necessaryNum.Count - 1];
+            meshC.sharedMesh = rMC.meshs[rMC.necessaryNum.Count - 1];
             meshR.material = rMC.materials[rMC.necessaryNum.Count - 1];
         }
     }

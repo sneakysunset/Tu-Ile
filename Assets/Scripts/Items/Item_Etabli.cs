@@ -119,6 +119,7 @@ public class Item_Etabli : Item
             {
                 if(isChantier)
                 {
+                    OnDestroyMethod();
                     Destroy(gameObject);
                 }
                 m.enabled = false;
@@ -128,15 +129,16 @@ public class Item_Etabli : Item
         }
     }
 
-    private void OnDestroy()
+    public void OnDestroyMethod()
     {
         isDestroyed = true;
-        if(isChantier && tileUnder.tileSpawnType != Tile.TileType.construction) tileUnder.tileSpawnType = Tile.TileType.construction;
-        if( isChantier && !constructed)
+        if (isChantier && tileUnder.tileSpawnType != Tile.TileType.construction) tileUnder.tileSpawnType = Tile.TileType.construction;
+        if (isChantier && !constructed)
         {
             FindObjectOfType<MissionManager>().CheckMissions();
         }
     }
+
 
 
     void TransferItems(Player player)

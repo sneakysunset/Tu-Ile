@@ -20,11 +20,11 @@ public class GetClosestItem : MonoBehaviour
         else player.closestItem = null;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.TryGetComponent(out Item item) && !player.holdableItems.Contains(item))
         {
-            if (player.heldItem != item && !player.holdableItems.Contains(item) && item.holdable)
+            if (player.heldItem != item && item.holdable)
             {
                 if(item.GetType() == typeof(Item_Stack))
                 {
@@ -38,6 +38,20 @@ public class GetClosestItem : MonoBehaviour
                     if (!player.heldItem || !Utils.CheckIfItemInRecette(player.heldItem, item_.recette)) return;
                 }
                 GetItemOnTriggerEnter(item);
+            }
+            
+        }
+        else if (other.TryGetComponent(out Item_Stack citem) && player.holdableItems.Contains(citem))
+        {
+            if(player.heldItem && player.heldItem.GetType() == typeof(Item_Stack))
+            {
+                Item_Stack itemSt = player.heldItem as Item_Stack;
+                if(itemSt.stackType == citem.stackType)
+                {
+                    itemSt.numberStacked += citem.numberStacked;
+                    Destroy(citem.gameObject);
+                    return;
+                }
             }
         }
     }
@@ -77,7 +91,6 @@ public class GetClosestItem : MonoBehaviour
             Item_Stack heldItemS = player.heldItem as Item_Stack;
             if (tempItem.stackType == heldItemS.stackType)
             {
-                print(1);
                 heldItemS.numberStacked += tempItem.numberStacked;
                 Destroy(tempItem.gameObject);
                 return;

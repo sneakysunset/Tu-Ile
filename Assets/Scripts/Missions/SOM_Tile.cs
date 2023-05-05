@@ -15,6 +15,7 @@ public class SOM_Tile : SO_Mission
     {
         base.OnActivated(_missionChecker, _missionText, ref page);
         TileCounter tileCounter = FindObjectOfType<TileCounter>();
-        _missionText.text = description + " " + tileCounter.GetStat(requiredType).ToString() + " / " + requiredNumber.ToString();
+        page.numOfTileOnActivation = tileCounter.GetStat(requiredType);
+        _missionText.text = description + " " + (tileCounter.GetStat(requiredType) - page.numOfTileOnActivation).ToString() + " / " + requiredNumber.ToString();
     }
 }

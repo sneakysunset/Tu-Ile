@@ -25,7 +25,7 @@ public class TileSystem : MonoBehaviour
     public bool isHub;
     public static TileSystem Instance { get; private set; }
     [HideNormalInspector] public float degradationTimerModifier;
-
+    float timerInterpolateValue;
     private void Awake()
     {
 
@@ -58,7 +58,8 @@ public class TileSystem : MonoBehaviour
 
     private void Update()
     {
-        degradationTimerModifier += tileP.degradationTimerAnimCurve.Evaluate(Time.deltaTime * (1 / gT.gameTimer)); 
+        timerInterpolateValue += Time.deltaTime * (1 / gT.gameTimer);
+        degradationTimerModifier = tileP.degradationTimerAnimCurve.Evaluate(timerInterpolateValue); 
     }
 
     public Tile WorldPosToTile(Vector3 pos)
@@ -107,9 +108,9 @@ public class TileSystem : MonoBehaviour
                 {
                     t.degradable = true;
                     t.currentPos.y = -t.heightByTile;
-                    t.tourbillon = false;
-                    t.tourbillonT.gameObject.SetActive(false);
                 }
+                t.tourbillon = false;
+                t.tourbillonT.gameObject.SetActive(false);
             }
             tile.degradable = false;
 

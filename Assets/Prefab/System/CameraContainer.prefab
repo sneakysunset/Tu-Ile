@@ -745,7 +745,7 @@ MonoBehaviour:
   medianPos: {x: 0, y: 0, z: 0}
   virtualCamera: {fileID: 4190664559342532176}
   endVirtualCam: {fileID: 0}
-  distanceToSplit: 25
+  distanceToSplit: 0
   strongSS: 0.15
   mediumSS: 0.3
   weakSS: 0.6
@@ -1049,15 +1049,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Material: {fileID: 2100000, guid: 0a8fb2a9a4b7d954cba00419d1f7de87, type: 2}
   Screens:
-  - Camera: {fileID: 0}
+  - Camera: {fileID: 4011574765727089725}
     Target: {fileID: 0}
-  - Camera: {fileID: 0}
+  - Camera: {fileID: 5322919456615939003}
     Target: {fileID: 0}
   - Camera: {fileID: 7082783602206227098}
     Target: {fileID: 0}
   - Camera: {fileID: 2189626686411318990}
     Target: {fileID: 0}
-  Distance: 80
+  Distance: 70
   BoundsRadius: 0.3
   Translating:
     Blend: 0.2

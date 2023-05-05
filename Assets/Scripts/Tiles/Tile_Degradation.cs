@@ -41,8 +41,6 @@ public class Tile_Degradation : MonoBehaviour
 
     private void Degrading()
     {
-
-
         //Effect while degrading
         if (tile.timer > 0)
         {

@@ -29,11 +29,12 @@ public class SOM_Chantier : SO_Mission
         _missionText.text = description;
     }
 
-    public override void OnCompleted(ref missionPage page)
+    public override void OnCompleted(ref missionPage page, float scoreMult)
     {
-        base.OnCompleted(ref page);
+        base.OnCompleted(ref page, scoreMult);
         if(page.chantier && !page.chantier.constructed)
         {
+            page.chantier.OnDestroyMethod();
             Destroy(page.chantier.gameObject);
         }
     }

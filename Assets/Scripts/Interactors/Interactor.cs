@@ -3,6 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 
+[System.Serializable]
+public struct visualComp
+{
+    public Mesh mesh;
+    public Material material;
+}
 
 public class Interactor : MonoBehaviour
 {
@@ -21,16 +27,15 @@ public class Interactor : MonoBehaviour
     #endregion
 
     #region Mesh Variables
-    public Mesh[] meshs;
-    public Material[] materials;
+    public visualComp[] comp;
     protected MeshRenderer meshR;
     protected MeshFilter meshF;
     protected MeshCollider meshC;
     #endregion
 
     #region States
-    public bool isInteractedWith;
-    public bool interactable = true;
+    [HideNormalInspector] public bool isInteractedWith;
+    [HideNormalInspector] public bool interactable = true;
     #endregion
 
     #region Ressource Stacks
@@ -47,22 +52,23 @@ public class Interactor : MonoBehaviour
 
     #region Feedbacks
     bool ps;
-    public ParticleSystem pSysRegrowth;
+    [HideInInspector] public ParticleSystem pSysRegrowth;
     #endregion
     #endregion
 
     #region SystemCallBacks
     private void Start()
     {
-        regrowthTimer /= meshs.Length;
+        regrowthTimer /= comp.Length;
+        pSysRegrowth = GetComponentInChildren<ParticleSystem>();
         regrowthWaiter = new WaitForSeconds(regrowthTimer);
-        stateIndex = meshs.Length - 1;
+        stateIndex = comp.Length - 1;
         meshF = GetComponent<MeshFilter>();
         meshR = GetComponent<MeshRenderer>();
         meshC = GetComponent<MeshCollider>();
-        meshR.sharedMaterial = materials[stateIndex];
-        meshF.mesh = meshs[stateIndex]; 
-        meshC.sharedMesh = meshs[stateIndex]; 
+        meshR.sharedMaterial = comp[stateIndex].material;
+        meshF.mesh = comp[stateIndex].mesh; 
+        meshC.sharedMesh = comp[stateIndex].mesh; 
         _player = new List<Player>();
         Transform p = transform.parent.parent.parent;
         stackPosT = p.Find("StackPos");
@@ -125,9 +131,9 @@ public class Interactor : MonoBehaviour
         if (stateIndex > 0)
         {
             stateIndex--;
-            meshF.mesh = meshs[stateIndex];
-            meshC.sharedMesh = meshs[stateIndex];
-            meshR.material = materials[stateIndex];
+            meshF.mesh = comp[stateIndex].mesh;
+            meshC.sharedMesh = comp[stateIndex].mesh;
+            meshR.material = comp[stateIndex].material;
         }
 
         if (stateIndex == 0)
@@ -154,7 +160,7 @@ public class Interactor : MonoBehaviour
 
     IEnumerator Regrowth()
     {
-        while (stateIndex < meshs.Length - 1)
+        while (stateIndex < comp.Length - 1)
         {
             stateIndex++;
 /*            if(interactable)
@@ -165,9 +171,9 @@ public class Interactor : MonoBehaviour
             }*/
             yield return regrowthWaiter;
         }
-        meshF.mesh = meshs[stateIndex];
-        meshC.sharedMesh = meshs[stateIndex];
-        meshR.material = materials[stateIndex];
+        meshF.mesh = comp[stateIndex].mesh;
+        meshC.sharedMesh = comp[stateIndex].mesh;
+        meshR.material = comp[stateIndex].material;
         interactable = true;
         tag = "Interactor";
         regrowth = null;

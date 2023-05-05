@@ -8,8 +8,6 @@ public class Player_StopDegradation : MonoBehaviour
 {
     private Player player;
     bool isGrowing;
-    public float growingSpeed;
-    public int growPrice;
     [HideInInspector] public RessourcesManager ressourcesManager;
 
     private void Start()

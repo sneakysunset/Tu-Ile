@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: M_TC_WoodTIleSmall
   m_EditorClassIdentifier: 
   description: Build 3 Wood Tiles
-  deliveryTimeMin: 10
-  deliveryTimeMax: 22
+  deliveryTimeMin: 20
+  deliveryTimeMax: 30
+  scoreValue: 100
+  malusValue: -10
   requiredNumber: 3
   requiredType: 1

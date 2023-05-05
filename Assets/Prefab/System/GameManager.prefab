@@ -9,10 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6354948749326121286}
+  - component: {fileID: 329582481206523742}
   - component: {fileID: 6472450743787329740}
   - component: {fileID: 8299111489155243357}
   - component: {fileID: 6354948749326121285}
   - component: {fileID: 6354948749326121287}
+  - component: {fileID: 5061697531550802697}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -35,6 +37,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &329582481206523742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8477bd4d600e9fe4ca3131a783a86a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNumber: 1
+  players: []
 --- !u!114 &6472450743787329740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,52 +122,24 @@ MonoBehaviour:
   missionSlotNumber: 3
   missionsFolder: {fileID: 0}
   missionPrefab: {fileID: 7011966080211762253, guid: 6eee6c6daae779e4c9e953884c3151df, type: 3}
+  barColors:
+  - fillBarColor: {r: 0.04033768, g: 1, b: 0, a: 1}
+    fillBarColorAmount: 0
+    scoreMultiple: 1
+  - fillBarColor: {r: 1, g: 0.93669045, b: 0.015723169, a: 1}
+    fillBarColorAmount: 0.4
+    scoreMultiple: 0
+  - fillBarColor: {r: 1, g: 0.56189847, b: 0.33725488, a: 1}
+    fillBarColorAmount: 0.7
+    scoreMultiple: 0
+  - fillBarColor: {r: 1, g: 0, b: 0, a: 1}
+    fillBarColorAmount: 0.9
+    scoreMultiple: 0
+  - fillBarColor: {r: 1, g: 0, b: 0, a: 1}
+    fillBarColorAmount: 1
+    scoreMultiple: 0
   activePoolMin: 0
   activePoolMax: -1
-  mPageShakingCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -1.9769617
-      outSlope: -1.9769617
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5026032
-      value: 0.006372734
-      inSlope: -0.013352755
-      outSlope: -0.013352755
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.46863264
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -0.020962602
-      outSlope: -0.020962602
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.45
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1.0083313
-      value: 0.0023498535
-      inSlope: -0.010604495
-      outSlope: -0.010604495
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.18047367
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  shakeMagnitude: 3
-  shakeValues: {x: 1, y: 0}
   timeToComplete: 1
   lerpEaseIn:
     serializedVersion: 2
@@ -251,3 +239,16 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &5061697531550802697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ed516d516837f94d875d1341e876652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 0}

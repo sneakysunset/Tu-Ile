@@ -41,7 +41,7 @@ public class CameraCtr : MonoBehaviour
             {
                 sCE.enabled = true;
             }
-            else
+            else if(Vector3.Distance(players[0].transform.position, players[1].transform.position) < distanceToSplit + 15)
             {
                 sCE.enabled = false;
             }        

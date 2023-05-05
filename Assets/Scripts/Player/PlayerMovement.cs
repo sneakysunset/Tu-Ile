@@ -20,10 +20,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public float speedOnRocks;
     [SerializeField] public float jumpStrength = 10;
     [SerializeField] public float jumpStrengthOnBounce = 20;
-    [SerializeField] private float dashStrength;
-    [SerializeField] public float pushStrength;
-    [SerializeField] private float dashDuration;
-    [SerializeField] public float dashCooldown = 1;
+    [HideInInspector] private float dashStrength;
+    [HideInInspector] public float pushStrength;
+    [HideInInspector] private float dashDuration;
+    [HideInInspector] public float dashCooldown = 1;
     [Header("1 = 0.1 sec, .1 = 1 sec")]
     //[SerializeField, Range(0.01f, 1)] private float acceleration = .7f;
     //[SerializeField, Range(0.01f, 1)] private float deceleration = .6f;

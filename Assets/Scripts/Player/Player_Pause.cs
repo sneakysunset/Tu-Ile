@@ -7,14 +7,12 @@ public class Player_Pause : MonoBehaviour
 {
     public bool isPaused;
     PlayerInput[] players;
-    PauseMenu pauseMenu;
+    [HideInInspector] public PauseMenu pauseMenu;
 
     private void Start()
     {
         players = FindObjectsOfType<PlayerInput>();
-        pauseMenu = FindObjectOfType<PauseMenu>();
-        pauseMenu.gameObject.SetActive(false);
-        pauseMenu.transform.GetChild(0).gameObject.SetActive(true);
+
     }
 
     public void PauseGame()

@@ -15,11 +15,13 @@ public class SO_Recette : ScriptableObject
     {
         for (int i = 0; i < requiredItemStacks.Length; i++)
         {
+            //requiredItemStacks[i] = new stack();
             requiredItemStacks[i].currentNumber = 0;
         }
 
-        for (int i = 0;i < requiredItemUnstackable.Length; i++)
+        for (int i = 0; i < requiredItemUnstackable.Length; i++)
         {
+            //requiredItemUnstackable[i] = new item();
             requiredItemUnstackable[i].isFilled = false;
         }
     }

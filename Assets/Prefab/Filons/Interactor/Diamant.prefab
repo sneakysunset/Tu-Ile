@@ -181,6 +181,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6255687079079774844, guid: 23d9a48205c10dd46bb3e4ffc59d8f10, type: 3}
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[0].mesh
+      value: 
+      objectReference: {fileID: 8691780276856062721, guid: 0b4825cbfaf242045874d32e497e1cb4, type: 3}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[1].mesh
+      value: 
+      objectReference: {fileID: -7387706064836869012, guid: 94045834fd4e07e4a9265fcb4d50685f, type: 3}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[2].mesh
+      value: 
+      objectReference: {fileID: 6255687079079774844, guid: 23d9a48205c10dd46bb3e4ffc59d8f10, type: 3}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
@@ -196,6 +208,14 @@ PrefabInstance:
       propertyPath: numberOfRessourceGenerated
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[1].material
+      value: 
+      objectReference: {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: comp.Array.data[2].material
+      value: 
+      objectReference: {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
     - target: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: m_Name
       value: Diamant
