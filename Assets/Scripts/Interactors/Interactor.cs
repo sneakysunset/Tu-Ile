@@ -1,114 +1,49 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-using System.Collections;
-
+using Unity.VisualScripting;
 
 public class Interactor : MonoBehaviour
 {
-    #region Variables
-
-    #region mainVariables
     public Tile.TileType type;
-    [HideInInspector] public List<Player> _player;
-    protected int stateIndex;
-    #endregion
-
-    #region Regrowth
-    IEnumerator regrowth;
-    WaitForSeconds regrowthWaiter;
-    public float regrowthTimer;
-    #endregion
-
-    #region Mesh Variables
     public Mesh[] meshs;
     public Material[] materials;
     protected MeshRenderer meshR;
     protected MeshFilter meshF;
-    protected MeshCollider meshC;
-    #endregion
-
-    #region States
+    public float regrowthTimer;
+    protected float timer;
+    protected int stateIndex;
     public bool isInteractedWith;
     public bool interactable = true;
-    #endregion
-
-    #region Ressource Stacks
-    public Item_Stack stackPrefab;
-    Transform stackPosT;
+    protected float currentHitTimer;
+    protected List<Player> _player;
+    public GameObject spawnPrefab;
+    public int ressourceNum = 10;
+    Transform stackT;
     private Item_Stack stackItem;
-    #endregion
-
-    #region Fade
+    [Range(1, 10)] public int numberOfRessourceGenerated = 3;
     [HideNormalInspector] public bool fadeChecker;
     [HideNormalInspector] bool isFaded;
-    [Range(1, 10)] public int numberOfRessourceGenerated = 3;
-    #endregion
-
-    #region Feedbacks
-    bool ps;
-    public ParticleSystem pSysRegrowth;
-    #endregion
-    #endregion
-
-    #region SystemCallBacks
     private void Start()
     {
-        regrowthTimer /= meshs.Length;
-        regrowthWaiter = new WaitForSeconds(regrowthTimer);
         stateIndex = meshs.Length - 1;
         meshF = GetComponent<MeshFilter>();
         meshR = GetComponent<MeshRenderer>();
-        meshC = GetComponent<MeshCollider>();
         meshR.sharedMaterial = materials[stateIndex];
         meshF.mesh = meshs[stateIndex]; 
-        meshC.sharedMesh = meshs[stateIndex]; 
         _player = new List<Player>();
         Transform p = transform.parent.parent.parent;
-        stackPosT = p.Find("StackPos");
+        stackT = p.Find("StackPos");
         CreateStack();
     }
 
-    private void Update()
-    {
-        isFaded = false;
-    }
-
-    public virtual void OnInteractionEnter(Player player)
-    {
-        player.isMining = true;
-        if(!_player.Contains(player))
-        {
-            _player.Add(player);
-        }
-        isInteractedWith = true;
-        if(regrowth != null) StopCoroutine(regrowth);
-    }
-
-    public virtual void OnInteractionExit(Player player)
-    {
-        if (_player.Contains(player)) _player.Remove(player);
-        if (player.interactors.Contains(this)) player.interactors.Remove(this);
-        if(player.interactors.Count == 0)
-        {
-            player.isMining = false;
-        }
-        if (_player.Count == 0)
-        {
-            isInteractedWith = false;
-        }
-    }
-
-    #endregion
-
-    #region Other Methods
     void CreateStack()
     {
-        if (stackPosT.childCount == 0)
+        if (stackT.childCount == 0)
         {
-            Item_Stack obj = Instantiate(stackPrefab, stackPosT.position, Quaternion.identity, null);
-            obj.transform.parent = stackPosT;
-            stackItem = obj;
+            GameObject obj = Instantiate(spawnPrefab, stackT.position, Quaternion.identity, null);
+            obj.transform.parent = stackT;
+            stackItem = obj.GetComponent<Item_Stack>();
             foreach(Player player in _player)
             {
                 player.holdableItems.Add(stackItem);
@@ -116,68 +51,114 @@ public class Interactor : MonoBehaviour
         }
         else
         {
-            stackItem = stackPosT.GetChild(0).GetComponent<Item_Stack>();
+            stackItem = stackT.GetChild(0).GetComponent<Item_Stack>();
         }
     }
 
-    public virtual void OnFilonMined()
+    public virtual void OnInteractionEnter(float hitTimer, Player player)
     {
-        if (stateIndex > 0)
+        if(_player.Count == 0) 
+        { 
+            
+        }
+        timer = hitTimer;
+        currentHitTimer = hitTimer;
+        _player.Add(player);
+        isInteractedWith = true;
+        if(stateIndex == meshs.Length - 1)
         {
             stateIndex--;
             meshF.mesh = meshs[stateIndex];
-            meshC.sharedMesh = meshs[stateIndex];
             meshR.material = materials[stateIndex];
         }
+    }
 
-        if (stateIndex == 0)
+    
+
+    private void LateUpdate()
+    {
+        UnFadeTile();
+    }
+
+    bool ps;
+    public ParticleSystem pSysRegrowth;
+    private void Update()
+    {
+        isFaded = false;
+        if(!isInteractedWith && stateIndex < meshs.Length - 1)
         {
-            EmptyInteractor();
+            timer -= Time.deltaTime;
+            if (timer < 1 && !ps && _player != null)
+            {
+                ps = true;
+                pSysRegrowth.Play();
+            }
+            if (timer <= 0)
+            {
+                timer = regrowthTimer;
+                stateIndex = meshs.Length - 1;
+            }
+        }
+        else if(!interactable && stateIndex == meshs.Length - 1)
+        {
+            interactable = true;
+            meshF.mesh = meshs[stateIndex];
+            meshR.material = materials[stateIndex];
+            ps = false;
         }
     }
-    
+
+    public virtual void OnInteractionExit()
+    {
+        OnEndInteraction();
+    }
+
+    protected virtual void OnEndInteraction()
+    {
+        isInteractedWith = false;
+        timer = regrowthTimer;
+        if(_player != null)
+        {
+            if(_player.Count > 0)
+            {
+                foreach (var player in _player) 
+                { 
+                    player.isMining = false;
+                    player.interactor = null; 
+                }
+            }
+            _player.Clear();
+        }
+    }
+
     protected virtual void EmptyInteractor()
     {
         CreateStack();
         stackItem.numberStacked += numberOfRessourceGenerated;
-
-        for (int i = _player.Count - 1; i <= 0 ; i--)
-        {
-            if (i < 0) break;
-            OnInteractionExit(_player[i]);
-        }
-        regrowth = Regrowth();
-        StartCoroutine(regrowth);
+        //GameObject obj = Instantiate(spawnPrefab, spawnPoint.position, Quaternion.identity);
+        //obj.transform.parent = this.transform;
+        OnEndInteraction();
         interactable = false;
-        tag = "InteractorOff";
     }
 
-    IEnumerator Regrowth()
+    public virtual void OnFilonMined()
     {
-        while (stateIndex < meshs.Length - 1)
+        if (/*timer <= 0 &&*/ stateIndex > 0)
         {
-            stateIndex++;
-/*            if(interactable)
+            timer = currentHitTimer;
+            if (stateIndex == 1)
             {
-                meshF.mesh = meshs[stateIndex];
-                meshC.sharedMesh = meshs[stateIndex];
-                meshR.material = materials[stateIndex];
-            }*/
-            yield return regrowthWaiter;
-        }
-        meshF.mesh = meshs[stateIndex];
-        meshC.sharedMesh = meshs[stateIndex];
-        meshR.material = materials[stateIndex];
-        interactable = true;
-        tag = "Interactor";
-        regrowth = null;
-    }
-    #endregion
 
-    #region FadeTile
-    private void LateUpdate()
-    {
-        UnFadeTile();
+                EmptyInteractor();
+            }
+            stateIndex--;
+            meshF.mesh = meshs[stateIndex];
+            meshR.material = materials[stateIndex];
+        }
+        else 
+        {
+            //EmptyInteractor();
+        }
     }
 
     public void FadeTile(float t)
@@ -204,5 +185,4 @@ public class Interactor : MonoBehaviour
             meshR.material.color = col;
         }
     }
-    #endregion
 }

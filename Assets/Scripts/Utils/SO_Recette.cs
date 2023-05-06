@@ -7,20 +7,6 @@ public class SO_Recette : ScriptableObject
 {
     public float convertionTime;
     public stack[] requiredItemStacks;
-    public item[] requiredItemUnstackable;
-    public Item craftedItemPrefab;
+    public Item_Stack craftedItemPrefab;
     public int numberOfCrafted;
-
-    public void ResetRecette()
-    {
-        for (int i = 0; i < requiredItemStacks.Length; i++)
-        {
-            requiredItemStacks[i].currentNumber = 0;
-        }
-
-        for (int i = 0;i < requiredItemUnstackable.Length; i++)
-        {
-            requiredItemUnstackable[i].isFilled = false;
-        }
-    }
 }

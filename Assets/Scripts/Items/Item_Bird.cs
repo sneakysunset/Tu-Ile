@@ -52,14 +52,6 @@ public class Item_Bird : Item
         featherPSYS.Play();
     }
 
-    private void OnDestroy()
-    {
-        if(isHeld)
-        {
-            GrabRelease();
-        }
-    }
-
     public override void ThrowAction(Player player, float throwStrength, Vector3 direction)
     {
         isThrown = true;

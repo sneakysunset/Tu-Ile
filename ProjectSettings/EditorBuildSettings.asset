@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/Scenes/Ile et tatoin/MainMenu.unity
     guid: d519455b95e6968409f52a53b2eca93d
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
-    path: Assets/Scenes/Hub.unity
-    guid: 82c9078fd0e071246af390bc335c3468
-  - enabled: 1
-    path: Assets/Scenes/Ile.unity
+  - enabled: 0
+    path: Assets/Scenes/Ile et tatoin/Ile.unity
     guid: 06f1bc3f33334ab41a25236c246310a3
+  - enabled: 1
+    path: Assets/Scenes/Ile et tatoin/Ile 2.unity
+    guid: cd6f09d14365bb44596ebffc36bb2d23
   m_configObjects: {}

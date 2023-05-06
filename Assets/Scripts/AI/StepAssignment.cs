@@ -54,7 +54,6 @@ public class StepAssignment
     {
         bool cd1 = x < tileSystem.rows && x > -1;
         bool cd2 = y < tileSystem.columns && y > -1;
-        if (cd1 || cd2) return false;
         bool cd3 = tiles[x, y].step == - 1;
         bool cd4 = height - tiles[x, y].transform.position.y <= tileSystem.tileP.heightByTile;
         bool cd5 = tiles[x, y].walkable;

@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class Item_Stack_Tile : Item_Stack
 {
-    public float degradingSpeed = 1;
+    public Mesh _mesh;
+    public Material _material;
 }

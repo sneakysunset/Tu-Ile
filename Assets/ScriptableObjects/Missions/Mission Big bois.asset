@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a16248e38c15a7449b8b92b088d0fff, type: 3}
-  m_Name: Scriptable Objects_Missions
+  m_Script: {fileID: 11500000, guid: c3f0c63004c19064e9b9493dd9e80649, type: 3}
+  m_Name: Mission Big bois
   m_EditorClassIdentifier: 
-  description: 
-  deliveryTimeMin: 0
-  deliveryTimeMax: 0
-  minDistanceFromCenter: 3
-  maxDistanceFromCenter: 4
+  description: Tape Mois ces bois
+  requiredNumber: 12
+  requiredType: 1
+  missionChecker: {fileID: 0}
+  missionText: {fileID: 0}

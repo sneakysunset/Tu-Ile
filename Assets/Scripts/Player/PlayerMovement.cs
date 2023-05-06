@@ -7,7 +7,7 @@ using FMOD.Studio;
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController _characterController;
-    private Player player;
+
     #region Variables: Movement
     [HideInInspector] public Vector2 _input;
     [HideInInspector] public bool jumpInput;
@@ -17,9 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public bool moveFlag;
 
     [SerializeField] public float speed;
-    [SerializeField] public float speedOnRocks;
     [SerializeField] public float jumpStrength = 10;
-    [SerializeField] public float jumpStrengthOnBounce = 20;
     [SerializeField] private float dashStrength;
     [SerializeField] public float pushStrength;
     [SerializeField] private float dashDuration;
@@ -46,12 +44,12 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public float _velocity;
 
     #endregion
+    private FMOD.Studio.EventInstance movingSound;
     private void Awake()
     {
         /*movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/Moove");
         movingSound.set3DAttributes(new FMOD.ATTRIBUTES_3D());*/
         _characterController = GetComponent<CharacterController>();
-        player = GetComponent<Player>();
     }
 
     private void OnGroundedCallBack()
@@ -61,7 +59,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        
         if (_characterController.isGrounded && !groundedCallback)
         {
             OnGroundedCallBack();
@@ -108,14 +105,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_characterController.isGrounded && jumpInput)
         {
-            if(player.tileUnder.tileType == Tile.TileType.BouncyTile)
-            {
-                _velocity = jumpStrengthOnBounce;
-            }
-            else
-            {
-                _velocity = jumpStrength;
-            }
+            _velocity = jumpStrength;
         }
         jumpInput = false;
     }
@@ -133,15 +123,7 @@ public class PlayerMovement : MonoBehaviour
     {
         /*        float ax = isDashing ? acceleration : -deceleration;
                 speedValue = Mathf.Lerp(speed, sprintingSpeed, ax * Time.deltaTime * 10);*/
-
-        if(player.tileUnder != null && player.tileUnder.tileType == Tile.TileType.Rock)
-        {
-            speedValue = speedOnRocks;
-        }
-        else
-        {
-            speedValue = speed;
-        }
+        speedValue = speed;
     }
 
     private void ApplyMovement()
@@ -173,12 +155,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void Dash(InputAction.CallbackContext context)
     {
-        if (context.started && dashTimer <= 0 && _characterController.isGrounded)
+        if (context.started && dashTimer <= 0)
         {
-            jumpInput = true;
-            player.anim.Play("Jump", 0);
-            //isDashing = true;
-            //dashTimer = dashCooldown;   
+            isDashing = true;
+            dashTimer = dashCooldown;   
         }
         else if (context.canceled || context.performed)
         {

@@ -132,7 +132,6 @@ MonoBehaviour:
   isHeld: 0
   rb: {fileID: 0}
   Highlight: {fileID: 0}
-  _player: {fileID: 0}
   physic: 1
   col: {fileID: 0}
   stackType: 1
@@ -142,4 +141,3 @@ MonoBehaviour:
   trueHoldable: 1
   _mesh: {fileID: 5277989484200199865, guid: 6e5ecc62d6dd7604fbe8d74dd2c5fef5, type: 3}
   _material: {fileID: 2100000, guid: 3d1c24753a226eb41a3cc511896b3d37, type: 2}
-  degradingSpeed: 1

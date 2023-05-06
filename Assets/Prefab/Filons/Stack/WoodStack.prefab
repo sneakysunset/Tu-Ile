@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9082331299247059843}
   - component: {fileID: 3386082269457033343}
   - component: {fileID: 7673631659234805233}
-  m_Layer: 14
+  m_Layer: 3
   m_Name: ItemNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 5258852451746746810}
   - component: {fileID: 2979304577226618784}
   - component: {fileID: 5381922511841605039}
-  m_Layer: 14
+  m_Layer: 3
   m_Name: WoodNum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 2803863685642405295}
   - component: {fileID: 890786511098940494}
   - component: {fileID: 5827491891019003766}
-  m_Layer: 14
+  m_Layer: 3
   m_Name: RessourceItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -465,7 +465,6 @@ MonoBehaviour:
   isHeld: 0
   rb: {fileID: 0}
   Highlight: {fileID: 0}
-  _player: {fileID: 0}
   physic: 1
   col: {fileID: 0}
   stackType: 1
