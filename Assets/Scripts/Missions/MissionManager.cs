@@ -50,6 +50,7 @@ public class MissionManager : MonoBehaviour
     private TileCounter tileCounter;
     private WaitForEndOfFrame lerpWaiter;
     private WaitForSeconds shakeWaiter;
+    private WaitForSeconds cooldownWaiter;
 
     [Header("Mission")]
     public missionPool[] missionPools;
@@ -71,6 +72,7 @@ public class MissionManager : MonoBehaviour
     [Space(10)]
     [Header("Mission Lerps")]
     public float timeToComplete;
+    public float missionCooldown;
     public AnimationCurve lerpEaseIn;
     #endregion
 
@@ -84,6 +86,7 @@ public class MissionManager : MonoBehaviour
         SetMissionPages();
         shakeWaiter = new WaitForSeconds(.08f);
         lerpWaiter = new WaitForEndOfFrame();
+        cooldownWaiter = new WaitForSeconds(missionCooldown);
     }
 
     private void Update()
@@ -143,6 +146,8 @@ public class MissionManager : MonoBehaviour
 
         rec.localPosition = endPos;
         f = 1;
+
+        yield return cooldownWaiter;
 
         //Set up New Mission
         SO_Mission m = missionList[Random.Range(0, missionList.Count)];

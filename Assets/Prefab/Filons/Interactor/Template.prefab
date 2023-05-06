@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 299278744861249905}
   - component: {fileID: 2570529597728753543}
   m_Layer: 10
-  m_Name: Tree
+  m_Name: Template
   m_TagString: Interactor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,6 +59,14 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 9f2f7a6a9db6d604d9dcca6e285c1ea4, type: 2}
   - mesh: {fileID: -5062959012617849059, guid: 1ff967a8e90a77643abc9697d0c0db74, type: 3}
     material: {fileID: 2100000, guid: 9f2f7a6a9db6d604d9dcca6e285c1ea4, type: 2}
+  meshs:
+  - {fileID: 5780153809476524596, guid: 58524e9a219587a499fda68a6f3a4957, type: 3}
+  - {fileID: 5780153809476524596, guid: cc283046e2046ad459200e7430afda7e, type: 3}
+  - {fileID: -5062959012617849059, guid: 1ff967a8e90a77643abc9697d0c0db74, type: 3}
+  materials:
+  - {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
+  - {fileID: 2100000, guid: 9f2f7a6a9db6d604d9dcca6e285c1ea4, type: 2}
+  - {fileID: 2100000, guid: 9f2f7a6a9db6d604d9dcca6e285c1ea4, type: 2}
   isInteractedWith: 0
   interactable: 1
   stackPrefab: {fileID: -1034060959200090777, guid: 916ede32b917e24448f062a764b82885, type: 3}

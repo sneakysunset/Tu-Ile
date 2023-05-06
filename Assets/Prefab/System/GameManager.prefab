@@ -141,6 +141,7 @@ MonoBehaviour:
   activePoolMin: 0
   activePoolMax: -1
   timeToComplete: 1
+  missionCooldown: 2
   lerpEaseIn:
     serializedVersion: 2
     m_Curve:
