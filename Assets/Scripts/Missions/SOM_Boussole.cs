@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "Scriptable Objects/Missions", menuName = "Missions/Boussole", order = 1)]
+[CreateAssetMenu(fileName = "Scriptable Objects/Missions", menuName = "Missions/Compass", order = 1)]
 public class SOM_Boussole : SO_Mission
 {
     public int minDistanceFromCenter;

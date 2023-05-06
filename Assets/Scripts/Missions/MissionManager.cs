@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -20,10 +21,12 @@ public struct missionPage
     [HideInInspector] public Tile boussoleTile;
     [HideInInspector] public bool tresorFound;
     [HideInInspector] public int numOfTileOnActivation;
+    [HideInInspector] public int numOfKilledItem;
     [HideInInspector] public bool isReady;
     [HideInInspector] public int completionLevel;
     [HideInInspector] public bool completed;
-    
+    [HideInInspector] public bool isEphemeral;
+    [HideInInspector] public SO_Mission potentialMission;
     public float timer;
     public float deliveryTime;
     public bool activated;
@@ -59,15 +62,17 @@ public class MissionManager : MonoBehaviour
     public RectTransform missionsFolder;
     public GameObject missionPrefab;
     public barColor[] barColors;
- 
-    /*[HideInInspector]*/ public int activePoolMin = 0;
-    /*[HideInInspector]*/ public int activePoolMax = -1;
 
-/*    [Space(10)]
-    [Header("Mission Shake")]
-    public AnimationCurve mPageShakingCurve;
-    public float shakeMagnitude = 1;
-    public Vector2 shakeValues;*/
+    /*[HideInInspector]*/
+    public int activePoolMin = 0;
+    /*[HideInInspector]*/
+    public int activePoolMax = -1;
+
+    /*    [Space(10)]
+        [Header("Mission Shake")]
+        public AnimationCurve mPageShakingCurve;
+        public float shakeMagnitude = 1;
+        public Vector2 shakeValues;*/
 
     [Space(10)]
     [Header("Mission Lerps")]
@@ -77,6 +82,22 @@ public class MissionManager : MonoBehaviour
     #endregion
 
     #region System CallBacks
+
+    public static MissionManager Instance;
+
+    private void Awake()
+    {
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
     private void Start()
     {
         tileCounter = FindObjectOfType<TileCounter>();
@@ -95,14 +116,14 @@ public class MissionManager : MonoBehaviour
         {
             if (activeMissions[i].m != null)
             {
-                if(activeMissions[i].isReady) activeMissions[i].timer -= Time.deltaTime;
+                if (activeMissions[i].isReady) activeMissions[i].timer -= Time.deltaTime;
                 activeMissions[i].timer = Mathf.Clamp(activeMissions[i].timer, 0, activeMissions[i].deliveryTime);
 
                 //print(1 - (activeMissions[i].timer / activeMissions[i].deliveryTime) + " " + activeMissions[i].completionLevel);
                 if (1 - (activeMissions[i].timer / activeMissions[i].deliveryTime) > barColors[activeMissions[i].completionLevel].fillBarColorAmount)
                 {
                     activeMissions[i].missionFillBarOver.color = barColors[activeMissions[i].completionLevel].fillBarColor;
-                    activeMissions[i].completionLevel ++;
+                    activeMissions[i].completionLevel++;
                 }
 
                 if (activeMissions[i].timer <= 0 && activeMissions[i].m && activeMissions[i].activated)
@@ -120,9 +141,8 @@ public class MissionManager : MonoBehaviour
         float f = 0;
         RectTransform rec = activeMissions[missionIndex].missionUI.GetChild(0).GetComponent<RectTransform>();
         Vector3 startPos = Vector3.zero;
-        Vector3 endPos = - Vector3.right * 700;
+        Vector3 endPos = -Vector3.right * 700;
         activeMissions[missionIndex].isReady = false;
-        activeMissions[missionIndex].missionFillBarOver.color = Color.gray;
         if (activeMissions[missionIndex].m != null)
         {
             //Complete Previous Mission + Stop Mission Shaking
@@ -142,33 +162,23 @@ public class MissionManager : MonoBehaviour
 
                 yield return lerpWaiter;
             }
+            if (activeMissions[missionIndex].isEphemeral)
+            {
+                TimeLineEvents.RemoveMissionPage(this);
+                yield break;
+            }
         }
 
         rec.localPosition = endPos;
         f = 1;
 
         yield return cooldownWaiter;
+        activeMissions[missionIndex].missionFillBarOver.color = Color.gray;
 
         //Set up New Mission
-        SO_Mission m = missionList[Random.Range(0, missionList.Count)];
-        int r = 0;
-        if ((m.GetType() == typeof(SOM_Chantier) && !CheckIfChantier()) || (m.GetType() == typeof(SOM_Tile) && !CheckIfTile(m as SOM_Tile)))
-        {
-            do
-            {
-                r++;
-                if (r > 1000)
-                {
-                    Debug.LogError("NO MISSION AVAILABLE");
-                    throw new System.Exception();
-                } 
-                 
-                m = missionList[Random.Range(0, missionList.Count)];
-            }
-            while (m.GetType() == typeof(SOM_Chantier) || (m.GetType() == typeof(SOM_Tile) && !CheckIfTile(m as SOM_Tile))) ;
-        }
 
-        activeMissions[missionIndex].m = m;
+        if (!activeMissions[missionIndex].isEphemeral) activeMissions[missionIndex].m = GetNewMission(activeMissions[missionIndex]);
+        else activeMissions[missionIndex].m = activeMissions[missionIndex].potentialMission;
         activeMissions[missionIndex].m.OnActivated(activeMissions[missionIndex].missionChecker, activeMissions[missionIndex].missionText, ref activeMissions[missionIndex]);
         activeMissions[missionIndex].timer = activeMissions[missionIndex].deliveryTime;
         activeMissions[missionIndex].missionFillBar.fillAmount = 0;
@@ -199,6 +209,25 @@ public class MissionManager : MonoBehaviour
         {
             SetMissionPage(i);
         }
+    }
+
+    private SO_Mission GetNewMission(missionPage page)
+    {
+        SO_Mission m = null;
+        int r = 0;
+        do
+        {
+            r++;
+            if (r > 100000)
+            {
+                Debug.LogError("NO MISSION AVAILABLE");
+                throw new System.Exception();
+            }
+
+            m = missionList[Random.Range(0, missionList.Count)];
+        }
+        while (!CheckIfChantier(m, page) || !CheckIfTile(m, page) || !CheckIfElim(m, page));
+        return m;
     }
 
     public void SetMissionPage(int i)
@@ -240,24 +269,25 @@ public class MissionManager : MonoBehaviour
     {
         for (int i = 0; i < activeMissions.Length; i++)
         {
-            CheckMissionCompletion( activeMissions[i], i);
+            CheckMissionCompletion(activeMissions[i], i);
         }
     }
 
-    private void CheckMissionCompletion( missionPage page, int pageNum)
+    private void CheckMissionCompletion(missionPage page, int pageNum)
     {
         switch (page.m.GetType().ToString())
         {
             case "SOM_Tile": StartCoroutine(CheckTileMission(page.m as SOM_Tile, page, pageNum)); break;
             case "SOM_Chantier": StartCoroutine(CheckChantierMission(page.m as SOM_Chantier, page, pageNum)); break;
             case "SOM_Boussole": StartCoroutine(CheckBoussoleMission(page.m as SOM_Boussole, page, pageNum)); break;
+                //case "SOM_ELim": StartCoroutine(); break;
         }
-        
+
     }
 
     private IEnumerator CheckTileMission(SOM_Tile mission, missionPage page, int pageNum)
     {
-        if (mission.requiredNumber <=   tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation)
+        if (mission.requiredNumber <= tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation)
         {
             page.missionChecker.color = Color.yellow;
             page.missionText.color = Color.yellow;
@@ -265,7 +295,7 @@ public class MissionManager : MonoBehaviour
         }
         page.missionText.text = mission.description + " " + (tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation).ToString() + " / " + mission.requiredNumber.ToString();
 
-        if(tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation >= mission.requiredNumber)
+        if (tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation >= mission.requiredNumber)
         {
             yield return new WaitForSeconds(1);
             StartCoroutine(SetNewMission(pageNum));
@@ -298,6 +328,41 @@ public class MissionManager : MonoBehaviour
             yield return new WaitForSeconds(1);
             StartCoroutine(SetNewMission(pageNum));
         }
+    }
+
+    public IEnumerator CheckElimMission(System.Type type)
+    {
+        int pageNum = -1;
+        SOM_Elim sE = null;
+        for (int i = 0; i < activeMissions.Length; i++)
+        {
+            if (activeMissions[i].m != null && activeMissions[i].activated)
+            {
+                if (activeMissions[i].m.GetType() == typeof(SOM_Elim))
+                {
+                    pageNum = i;
+                    sE = activeMissions[i].m as SOM_Elim; break;
+                }
+            }
+        }
+        if (pageNum == -1) yield return null;
+        else
+        {
+            if (sE.itemToKill.GetType() == type)
+            {
+                activeMissions[pageNum].numOfKilledItem++;
+                activeMissions[pageNum].missionText.text = sE.description + " " + activeMissions[pageNum].numOfKilledItem.ToString() + " / " + sE.requiredNum.ToString();
+                if (activeMissions[pageNum].numOfKilledItem >= sE.requiredNum)
+                {
+                    activeMissions[pageNum].missionChecker.color = Color.yellow;
+                    activeMissions[pageNum].missionText.color = Color.yellow;
+                    activeMissions[pageNum].completed = true;
+                    yield return new WaitForSeconds(1);
+                    StartCoroutine(SetNewMission(pageNum));
+                }
+            }
+        }
+
     }
     #endregion
 
@@ -337,8 +402,10 @@ public class MissionManager : MonoBehaviour
         rec.localPosition = ogPos;
     }
 
-    bool CheckIfChantier()
+    bool CheckIfChantier(SO_Mission m, missionPage page)
     {
+        if (m.GetType() != typeof(SOM_Chantier)) return true;
+        
         List<Tile> ts = TileSystem.Instance.GetTilesAround(4, TileSystem.Instance.centerTile);
         for (int i = ts.Count - 1; i >= 0; i--)
         {
@@ -350,14 +417,35 @@ public class MissionManager : MonoBehaviour
         return false;
     }
 
-    bool CheckIfTile(SOM_Tile m)
+    bool CheckIfTile(SO_Mission m, missionPage page)
     {
+        if (m.GetType() != typeof(SOM_Tile)) return true;
+        SOM_Tile mT = m as SOM_Tile;
         foreach (missionPage n in activeMissions)
         {
             if (n.m != null && n.m.GetType() == typeof(SOM_Tile))
             {
                 var t = (SOM_Tile)n.m;
-                if (t.requiredType == m.requiredType)
+
+                if (t.requiredType == mT.requiredType)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    bool CheckIfElim(SO_Mission m, missionPage page)
+    {
+        if (m.GetType() != typeof(SOM_Elim)) return true;
+        SOM_Elim mE = m as SOM_Elim;
+        foreach (missionPage n in activeMissions)
+        {
+            if (n.m != null && n.m.GetType() == typeof(SOM_Elim))
+            {
+                var t = (SOM_Elim)n.m;
+                if (t.itemToKill == mE.itemToKill)
                 {
                     return false;
                 }

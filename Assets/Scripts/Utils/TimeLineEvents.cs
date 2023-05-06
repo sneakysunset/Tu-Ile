@@ -25,16 +25,44 @@ public class TimeLineEvents
         {
             newPages[i] = missionManager.activeMissions[i];
         }
-        //newPages[newPages.Length - 1] = new missionPage();
-        //newPages[newPages.Length - 1].missionUI = GameObject.Instantiate(missionManager.missionPrefab, missionManager.missionsFolder).GetComponent<RectTransform>();
-        //newPages[newPages.Length - 1].missionText = newPages[newPages.Length - 1].missionUI.GetComponentInChildren<TextMeshProUGUI>();
-        //newPages[newPages.Length - 1].missionChecker = newPages[newPages.Length - 1].missionUI.GetChild(0).GetChild(1).GetComponent<UnityEngine.UI.Image>();
-        //newPages[newPages.Length - 1].timer = 100;
         missionManager.activeMissions = newPages;
         missionManager.missionSlotNumber++;
         missionManager.SetMissionPage(missionManager.activeMissions.Length - 1);
-        //missionManager.StartCoroutine(missionManager.SetNewMission(newPages.Length - 1));
+    }
 
+    static public void AddEphemeralMission(MissionManager missionManager, SO_Mission ephemeralMission, GameObject elTender, int numOfChicken, float spreadOfChicken)
+    {
+        int v = 0;
+        while(v < numOfChicken)
+        {
+            Vector3 offSet = Random.insideUnitSphere * spreadOfChicken;
+            offSet.y = 0;
+            Vector3 pos = TileSystem.Instance.centerTile.transform.position + Vector3.up * 50 + offSet;
+            GameObject.Instantiate(elTender, pos, Quaternion.identity);
+            v++;
+        }
+        missionPage[] newPages = new missionPage[missionManager.activeMissions.Length + 1];
+        for (int i = 0; i < missionManager.activeMissions.Length; i++)
+        {
+            newPages[i] = missionManager.activeMissions[i];
+        }
+        missionManager.activeMissions = newPages;
+        missionManager.missionSlotNumber++;
+        missionManager.SetMissionPage(missionManager.activeMissions.Length - 1);
+        missionManager.activeMissions[missionManager.activeMissions.Length - 1].isEphemeral = true;
+        missionManager.activeMissions[missionManager.activeMissions.Length - 1].potentialMission = ephemeralMission;
+    }
+
+    static public void RemoveMissionPage(MissionManager missionManager)
+    {
+        missionPage[] newPages = new missionPage[missionManager.activeMissions.Length - 1];
+        for (int i = 0; i < newPages.Length; i++)
+        {
+            newPages[i] = missionManager.activeMissions[i];
+        }
+        GameObject.Destroy(missionManager.activeMissions[missionManager.activeMissions.Length - 1].missionUI.gameObject);
+        missionManager.activeMissions = newPages;
+        missionManager.missionSlotNumber--;
     }
 
     static public void ReduceMissionPool(MissionManager missionManager)
