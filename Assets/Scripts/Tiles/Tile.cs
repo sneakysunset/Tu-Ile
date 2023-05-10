@@ -64,14 +64,14 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public AnimationCurve degradationTimerAnimCurve;
     [HideInInspector] public float degradingSpeed;
     [HideInInspector] public float typeDegradingSpeed = 1;
-    [HideInInspector] public bool isGrowing;
+    [HideNormalInspector] public bool isGrowing;
     [HideInInspector] public float degSpeed = 1;
     [HideNormalInspector] public float timeToGetToMaxDegradationSpeed;
     #endregion
 
     #region Interactor Spawning
     [HideInInspector] public List<Transform> spawnPoints;
-    [HideInInspector] public bool readyToRoll;
+    [HideNormalInspector] public bool readyToRoll;
     bool spawning;
     #endregion
 
@@ -290,7 +290,7 @@ public class Tile : MonoBehaviour
     {
         TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
         float rot = UnityEngine.Random.Range(0, 360);
-
+        readyToRoll = true;
         transform.Rotate(0, rot - (rot % 60), 0);
         tileType = tType;
         spawning = true;
@@ -310,6 +310,7 @@ public class Tile : MonoBehaviour
         currentPos.y = height - (height % heightByTile);
         isGrowing = true;
         tileS.tileC.Count();
+
     }
     private void GetAdjCoords()
     {
