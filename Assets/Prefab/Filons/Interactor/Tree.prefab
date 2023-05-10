@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8818747911436434145}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.19508362, y: 1.003, z: -0.016588848}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 0.5, y: 1.25, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2947226589253691276}
@@ -53,12 +53,14 @@ MonoBehaviour:
   _player: []
   regrowthTimer: 3
   comp:
-  - mesh: {fileID: 5780153809476524596, guid: 58524e9a219587a499fda68a6f3a4957, type: 3}
+  - mesh: {fileID: 6577239707841081451, guid: 9b0070d059e4a6c4bbd9b6d4bc42ffe4, type: 3}
     material: {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
-  - mesh: {fileID: 5780153809476524596, guid: cc283046e2046ad459200e7430afda7e, type: 3}
-    material: {fileID: 2100000, guid: 9f2f7a6a9db6d604d9dcca6e285c1ea4, type: 2}
-  - mesh: {fileID: -5062959012617849059, guid: 1ff967a8e90a77643abc9697d0c0db74, type: 3}
-    material: {fileID: 2100000, guid: 9f2f7a6a9db6d604d9dcca6e285c1ea4, type: 2}
+  - mesh: {fileID: 1896894840935864692, guid: acf87927c2f19dc4298332c04f7c0be8, type: 3}
+    material: {fileID: 2100000, guid: 0c2f16435414d0f49a3b954603ac2eeb, type: 2}
+  - mesh: {fileID: 753460235747731815, guid: bb8efc3a10d57514daf1d1f6a45c4f23, type: 3}
+    material: {fileID: 2100000, guid: adfb35f8ec81c9544a7f7564d29f7105, type: 2}
+  - mesh: {fileID: 3815730490910410741, guid: c95ddde15ed4f754b9b3864ab3036ff5, type: 3}
+    material: {fileID: 2100000, guid: f5b34de4947b9d94c8c7254396abe0d4, type: 2}
   isInteractedWith: 0
   interactable: 1
   stackPrefab: {fileID: -1034060959200090777, guid: 916ede32b917e24448f062a764b82885, type: 3}
@@ -72,7 +74,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8818747911436434145}
-  m_Mesh: {fileID: -5062959012617849059, guid: 1ff967a8e90a77643abc9697d0c0db74, type: 3}
+  m_Mesh: {fileID: 3815730490910410741, guid: c95ddde15ed4f754b9b3864ab3036ff5, type: 3}
 --- !u!23 &3293183830676129177
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -93,7 +95,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9f2f7a6a9db6d604d9dcca6e285c1ea4, type: 2}
+  - {fileID: 2100000, guid: f5b34de4947b9d94c8c7254396abe0d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -144,7 +146,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 8766849558974579512, guid: 96bf2447306896d46b28895adc77f4dc, type: 3}
+  m_Mesh: {fileID: 3815730490910410741, guid: c95ddde15ed4f754b9b3864ab3036ff5, type: 3}
 --- !u!1001 &9036979536215653050
 PrefabInstance:
   m_ObjectHideFlags: 0
