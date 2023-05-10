@@ -12,10 +12,9 @@ public class ItemSpawner : MonoBehaviour
     Tile tile;
     private void Start()
     {
-        spawnPoint = transform.Find("SpawnPositions");
-        SpawnItem();
-        baseTimerValue = spawnTimer;
         tile = GetComponent<Tile>();
+        spawnPoint = transform.Find("SpawnPositions");
+        baseTimerValue = spawnTimer;
     }
 
     private void SpawnItem()
@@ -25,7 +24,7 @@ public class ItemSpawner : MonoBehaviour
 
     private void Update()
     {
-        if(spawnedItem == null && tile.walkable)
+        if(TileSystem.Instance.ready && spawnedItem == null && tile.walkable)
         {
             spawnTimer -= Time.deltaTime;
             if(spawnTimer < 0)

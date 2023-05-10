@@ -285,10 +285,10 @@ MonoBehaviour:
   m_VerticalDamping: 6.5
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_DeadZoneWidth: 0.01124859
-  m_DeadZoneHeight: 0
-  m_SoftZoneWidth: 0.8
-  m_SoftZoneHeight: 0.8
+  m_DeadZoneWidth: 0.19
+  m_DeadZoneHeight: 0.23
+  m_SoftZoneWidth: 1.04
+  m_SoftZoneHeight: 1.09
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1
@@ -713,8 +713,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6667387659152772183}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.1, y: 28.67, z: 10}
+  m_LocalRotation: {x: -0, y: 0.83403486, z: -0, w: 0.5517118}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -782,8 +782,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6667387659626017476}
-  m_LocalRotation: {x: 0.40506452, y: -0.459517, z: 0.24797624, w: 0.7505163}
-  m_LocalPosition: {x: -22.900002, y: 102.8, z: 19.000002}
+  m_LocalRotation: {x: 0.43095046, y: -0.428214, z: 0.24414836, w: 0.7558478}
+  m_LocalPosition: {x: -24.300007, y: 103.5, z: 19.800001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1036,7 +1036,7 @@ MonoBehaviour:
   LineMaterial: {fileID: 2100000, guid: e07aeeef5b1839f40a677e925d9b6555, type: 2}
   CircleMaterial: {fileID: 2100000, guid: 5f0f431aa0f234d4eae5c5ba5e44ff96, type: 2}
   Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  Width: 15
+  Width: 5
 --- !u!114 &1001488021
 MonoBehaviour:
   m_ObjectHideFlags: 0

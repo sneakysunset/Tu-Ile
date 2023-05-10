@@ -40,7 +40,7 @@ public class Player_StopDegradation : MonoBehaviour
     {
         if(player.tileUnder && player.tileUnder.tileType == Tile.TileType.LevelLoader && isGrowing)
         {
-            StartCoroutine(TileSystem.Instance.SinkWorld(TileSystem.Instance.centerTile, player.tileUnder.levelName));
+            StartCoroutine(TileSystem.Instance.SinkWorld(player.tileUnder.levelName));
         }
         isGrowing = false;
     }

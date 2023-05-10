@@ -57,15 +57,18 @@ public class TileSystem : MonoBehaviour
 
     private void Start()
     {
-        gT = FindObjectOfType<GameTimer>();
-        StartCoroutine(ElevateWorld(centerTile));
+        if(!isHub)
+            gT = FindObjectOfType<GameTimer>();
+        StartCoroutine(ElevateWorld());
     }
 
     private void Update()
     {
-        
-        timerInterpolateValue += Time.deltaTime * (1 / gT.gameTimer);
-        degradationTimerModifier = tileP.degradationTimerAnimCurve.Evaluate(timerInterpolateValue); 
+        if (!isHub)
+        {
+            timerInterpolateValue += Time.deltaTime * (1 / gT.gameTimer);
+            degradationTimerModifier = tileP.degradationTimerAnimCurve.Evaluate(timerInterpolateValue); 
+        } 
     }
 
     public Tile WorldPosToTile(Vector3 pos)
@@ -82,8 +85,11 @@ public class TileSystem : MonoBehaviour
         return tiles[x, z];
     }
 
-    public IEnumerator SinkWorld(Tile tile, string levelToLoad)
+    public IEnumerator SinkWorld(string levelToLoad)
     {
+        if (!isHub)
+            StartCoroutine(gT.LerpTimeLine(gT.UIPos.anchoredPosition, gT.UIPos.anchoredPosition + Vector2.up * -100, gT.UIPos, gT.lerpCurveEaseIn, gT.lerpSpeed));
+        Tile tile = centerTile;
         List<Tile> ts = new List<Tile>();
         ts.Add(tile);
         bool isOver = false;
@@ -145,13 +151,20 @@ public class TileSystem : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
-        yield return new WaitForSeconds(3);
+        
+
+        yield return new WaitForSeconds(1);
         SceneManager.LoadScene(levelToLoad);
         ready = false;
     }
 
-    public IEnumerator ElevateWorld(Tile tile)
+    public IEnumerator ElevateWorld()
     {
+        Tile tile = centerTile;
+        if(!isHub)
+            gT.UIPos.anchoredPosition += Vector2.up * -100;
+        if (!isHub)
+            StartCoroutine(gT.LerpTimeLine(gT.UIPos.anchoredPosition, gT.UIPos.anchoredPosition + Vector2.up * 100, gT.UIPos, gT.lerpCurveEaseOut, gT.lerpSpeed));
         List<Tile> ts = new List<Tile>();
         ts.Add(tile);
         bool isOver = false;
@@ -209,7 +222,10 @@ public class TileSystem : MonoBehaviour
         }
         TileSystem.Instance.lerpingSpeed = 1;
         ready = true;
-        foreach(Tile t in ts)
+
+        
+
+        foreach (Tile t in ts)
         {
             t.isPathChecked = false;
         }

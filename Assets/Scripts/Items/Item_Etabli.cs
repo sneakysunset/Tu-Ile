@@ -50,6 +50,31 @@ public class Item_Etabli : Item
         rb.isKinematic = true;
         itemNum = GetComponentInChildren<EtabliCanvas>();
         stackT = transform.Find("Stacks");
+        RessourcesManager rMan = FindObjectOfType<RessourcesManager>(); 
+        for (int i = 0; i < recette.requiredItemUnstackable.Length; i++)
+        {
+            foreach(ressourceMeshCollecUnstackable r in rMan.RessourceMeshsUnstackable)
+            {
+                if (recette.requiredItemUnstackable[i].itemType == r.itemType)
+                {
+                    stackT.GetChild(i).GetComponent<MeshFilter>().mesh = r.mesh;
+                    stackT.GetChild(i).GetComponent<MeshRenderer>().material = r.mat;
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < recette.requiredItemStacks.Length; i++)
+        {
+            foreach (ressourceMeshsCollec r in rMan.RessourceMeshs)
+            {
+                if (recette.requiredItemStacks[i].stackType == r.stackType)
+                {
+                    stackT.GetChild(i + recette.requiredItemUnstackable.Length).GetComponent<MeshFilter>().mesh = r.meshs[0];
+                    stackT.GetChild(i + recette.requiredItemUnstackable.Length).GetComponent<MeshRenderer>().material = r.materials[0];
+                    break;
+                }
+            }
+        }
     }
 
     private void Start()
@@ -171,6 +196,14 @@ public class Item_Etabli : Item
                             Destroy(itemS.gameObject);
                         }
                     }
+                    if (recette.requiredItemStacks[i].currentNumber > 0)
+                    {
+                        stackT.GetChild(i + recette.requiredItemUnstackable.Length).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        stackT.GetChild(i + recette.requiredItemUnstackable.Length).gameObject.SetActive(false);
+                    }
                     Highlight.SetActive(false);
                     break;
                 }
@@ -188,6 +221,8 @@ public class Item_Etabli : Item
                     Item tempItem = player.heldItem;
                     player.heldItem = null;
                     Destroy(tempItem.gameObject);
+                    stackT.GetChild(i).gameObject.SetActive(true);
+
                     Highlight.SetActive(false);
                     break;
                 }
@@ -202,11 +237,16 @@ public class Item_Etabli : Item
         for (int i = 0; i < recette.requiredItemStacks.Length; i++)
         {
             recette.requiredItemStacks[i].currentNumber -= recette.requiredItemStacks[i].cost;
+            if (recette.requiredItemStacks[i].currentNumber == 0)
+            {
+                stackT.GetChild(i + recette.requiredItemUnstackable.Length).gameObject.SetActive(false);
+            }
         }
         int f = 0;
         for (int i = 0; i < recette.requiredItemUnstackable.Length; i++)
         {
             recette.requiredItemUnstackable[i].isFilled = false;
+            stackT.GetChild(i).gameObject.SetActive(false);
             f++;
         }
         if(craftedItem == null)

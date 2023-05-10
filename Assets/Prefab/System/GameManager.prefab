@@ -63,13 +63,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da51dc8b74db77d4f8aba95ec59398a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  events:
-  - timeLineEvent: 2
-    eventTime: 15
-    eventTrigger:
-      m_PersistentCalls:
-        m_Calls: []
-  gameTimer: 300
+  events: []
+  gameTimer: 5
   timer: 0
   LevelEnd:
     m_PersistentCalls:
@@ -79,9 +74,60 @@ MonoBehaviour:
   eventVisualPrefab: {fileID: 2026664673166425894, guid: b8ce6079d7aa49945a1fb7cd9373b195, type: 3}
   apocalypseImage: {fileID: 21300000, guid: a7c6f9ade6c4b504385395ac8af38f7b, type: 3}
   newPageImage: {fileID: 21300000, guid: 639445af5561eaa438655cabe913244c, type: 3}
+  ephemeralMissionImage: {fileID: 21300000, guid: 3c6c1f7c30a584c42b958af4e3f85bfd, type: 3}
   minuteBar: {fileID: 7334830493600781002, guid: 60a3955a1a4772640805888a853845b8, type: 3}
   secondBar: {fileID: 1185876906053481542, guid: 4041be0b1c80c044b87440fcc76d724f, type: 3}
   minuteFolder: {fileID: 0}
+  UIPos: {fileID: 0}
+  lerpCurveEaseIn:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  lerpCurveEaseOut:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  lerpSpeed: 3
 --- !u!114 &8299111489155243357
 MonoBehaviour:
   m_ObjectHideFlags: 0

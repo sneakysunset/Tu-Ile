@@ -396,6 +396,8 @@ public class Tile : MonoBehaviour
         }
     }
 #endif
+
+    public Mesh constructionMesh;
     private void OnDrawGizmos()
     {
         if(heightByTile != 0 && !Application.isPlaying)
@@ -403,7 +405,13 @@ public class Tile : MonoBehaviour
             float r = transform.position.y % heightByTile;
             transform.position = new Vector3(transform.position.x, transform.position.y - r, transform.position.z);
         }
+        
+        if(tileSpawnType == TileType.construction)
+        {
+            Gizmos.DrawMesh(constructionMesh, 0, transform.position + GameConstant.tileHeight * Vector3.up, Quaternion.identity);
+        }
     }
+
     private void StepText()
     {
         AI_Text.text = step.ToString();

@@ -135,8 +135,7 @@ public class Player : MonoBehaviour
             transform.position = respawnTile.transform.position + 25f * Vector3.up;
             if (heldItem != null)
             {
-                print(2);
-                heldItem.GrabRelease();
+                heldItem.GrabRelease(true);
                 Destroy(heldItem.gameObject);
                 heldItem = null;
             }

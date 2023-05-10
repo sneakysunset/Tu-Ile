@@ -858,6 +858,7 @@ MonoBehaviour:
   step: 0
   isPenguined: 0
   fadeChecker: 0
+  constructionMesh: {fileID: 4493585093827132993, guid: 1f6189940713b064abbc4c99fe3e3ffb, type: 3}
 --- !u!33 &8540724609792189564
 MeshFilter:
   m_ObjectHideFlags: 0
