@@ -143,7 +143,7 @@ MonoBehaviour:
   defaultTileMesh: {fileID: -2623256933809513941, guid: 40c21bedeba5d5741a50a62d507fbc8e, type: 3}
   woodTileMesh: {fileID: 5277989484200199865, guid: 6e5ecc62d6dd7604fbe8d74dd2c5fef5, type: 3}
   rockTileMesh: {fileID: -2264791619151738641, guid: c2defaef50f9dba44ac127b3f33ddd7a, type: 3}
-  treePrefab: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+  treePrefab: {fileID: 8818747911436434145, guid: 79b9421b777be9b48964ef34298b9825, type: 3}
   rockPrefab: {fileID: 2678278403484233012, guid: a1486965bb17ef34d9505a95cad1a333, type: 3}
   goldPrefab: {fileID: 7937501208438684671, guid: 72f3d0f0b08c81645984d3b9dffe7bde, type: 3}
   diamondPrefab: {fileID: 1548326296132660425, guid: e4fdb4ab491feff47aa6ac0bb155e34a, type: 3}
