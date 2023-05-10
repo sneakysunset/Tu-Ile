@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "Scriptable Objects/Missions", menuName = "Missions/Boussole", order = 1)]
+[CreateAssetMenu(fileName = "Scriptable Objects/Missions", menuName = "Missions/Compass", order = 1)]
 public class SOM_Boussole : SO_Mission
 {
     public int minDistanceFromCenter;
@@ -18,7 +18,7 @@ public class SOM_Boussole : SO_Mission
 
         TileSystem tileSystem = TileSystem.Instance;
         List<Tile> tiles = tileSystem.GetTilesBetweenRaws(minDistanceFromCenter, maxDistanceFromCenter, tileSystem.centerTile);
-        page.boussoleTile = tiles[Random.Range(0, tiles.Count)];
+        if(TileSystem.Instance.ready) page.boussoleTile = tiles[Random.Range(0, tiles.Count)];
         Item_Boussole[] items = FindObjectsOfType<Item_Boussole>();
         foreach(Item_Boussole item in items)
         {

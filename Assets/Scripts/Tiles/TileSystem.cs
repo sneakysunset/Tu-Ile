@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using AmplifyShaderEditor;
 #endif
@@ -26,6 +27,9 @@ public class TileSystem : MonoBehaviour
     public static TileSystem Instance { get; private set; }
     [HideNormalInspector] public float degradationTimerModifier;
     float timerInterpolateValue;
+    [HideInInspector] public bool ready;
+    [HideNormalInspector] public float lerpingSpeed = 1;
+    [HideInInspector] public float waitTimer = .3f;
     private void Awake()
     {
 
@@ -54,10 +58,12 @@ public class TileSystem : MonoBehaviour
     private void Start()
     {
         gT = FindObjectOfType<GameTimer>();
+        StartCoroutine(ElevateWorld(centerTile));
     }
 
     private void Update()
     {
+        
         timerInterpolateValue += Time.deltaTime * (1 / gT.gameTimer);
         degradationTimerModifier = tileP.degradationTimerAnimCurve.Evaluate(timerInterpolateValue); 
     }
@@ -76,11 +82,16 @@ public class TileSystem : MonoBehaviour
         return tiles[x, z];
     }
 
-    public IEnumerator SinkWorld(Tile tile)
+    public IEnumerator SinkWorld(Tile tile, string levelToLoad)
     {
         List<Tile> ts = new List<Tile>();
         ts.Add(tile);
         bool isOver = false;
+        lerpingSpeed = .1f;
+        int j = 0;
+        ready = false;
+        FindObjectOfType<CameraCtr>().DezoomCam();
+        MissionManager.Instance.CloseMissions();
         while (!isOver)
         {
             isOver = true;
@@ -108,13 +119,19 @@ public class TileSystem : MonoBehaviour
                 {
                     t.degradable = true;
                     t.currentPos.y = -t.heightByTile;
+                    
+                }
+                else if(t == tile)
+                {
+                    tile.currentPos.y = 2; 
                 }
                 t.tourbillon = false;
                 t.tourbillonT.gameObject.SetActive(false);
             }
             tile.degradable = false;
 
-            float timer = .3f;
+            j++;
+            float timer = waitTimer / j;
             while (timer > 0)
             {
                 timer -= Time.deltaTime;
@@ -127,6 +144,74 @@ public class TileSystem : MonoBehaviour
                 }
                 yield return new WaitForEndOfFrame();
             }
+        }
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(levelToLoad);
+        ready = false;
+    }
+
+    public IEnumerator ElevateWorld(Tile tile)
+    {
+        List<Tile> ts = new List<Tile>();
+        ts.Add(tile);
+        bool isOver = false;
+        int j = 0;
+        while (!isOver)
+        {
+            isOver = true;
+            int ix = ts.Count;
+            for (int i = 0; i < ix; i++)
+            {
+                if (!ts[i].isPathChecked)
+                {
+                    foreach (Vector2Int vecs in ts[i].adjTCoords)
+                    {
+                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns /*&& tiles[vecs.x, vecs.y].walkable*/ && !ts.Contains(tiles[vecs.x, vecs.y]))
+                        {
+                            ts.Add(tiles[vecs.x, vecs.y]);
+                            isOver = false;
+                        }
+                    }
+                    ts[i].isPathChecked = true;
+                }
+            }
+
+
+            foreach (Tile t in ts)
+            {
+                if (t.walkable /*&& t != tile*/)
+                {
+                    //t.degradable = true;
+                    //t.currentPos.y = -t.heightByTile;
+                    t.readyToRoll = true;
+                }
+                //t.tourbillon = false;
+                //t.tourbillonT.gameObject.SetActive(false);
+            }
+            tile.degradable = false;
+            j++;
+            float timer = waitTimer / j;
+            //float timer = .1f + Random.Range(-.1f, .3f);
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                foreach (Tile t in ts)
+                {
+                    TileSystem.Instance.lerpingSpeed /= 2.5f;
+                    if (t.walkable && t != tile)
+                    {
+                        
+                        //t.degSpeed *= 1 + Time.deltaTime * 3 * Random.Range(0f,1f);
+                    }
+                }
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        TileSystem.Instance.lerpingSpeed = 1;
+        ready = true;
+        foreach(Tile t in ts)
+        {
+            t.isPathChecked = false;
         }
     }
 

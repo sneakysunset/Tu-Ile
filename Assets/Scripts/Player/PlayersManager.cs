@@ -8,9 +8,9 @@ using UnityEngine;
 public class PlayersManager : MonoBehaviour
 {
     public int playerNumber;
+    [HideInInspector] public Player[] players;
     public static PlayersManager Instance;
     
-    [HideInInspector] public Player[] players;
     private void Awake()
     {
 

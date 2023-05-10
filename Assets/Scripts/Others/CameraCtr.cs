@@ -26,11 +26,16 @@ public class CameraCtr : MonoBehaviour
         direction = cam.transform.position - transform.position;
         sCE = GetComponentInChildren<SplitScreenEffect>();
         sCE.enabled = false;
-        yield return new WaitUntil(()=> Input.GetKeyDown(KeyCode.Space));
+        yield return new WaitUntil(()=> TileSystem.Instance.ready);
         if(virtualCamera != null)
         {
             virtualCamera.Priority = 2;
         }
+    }
+
+    public void Dezoom()
+    {
+        virtualCamera.Priority = 4;
     }
 
     private void Update()
@@ -48,11 +53,11 @@ public class CameraCtr : MonoBehaviour
         }
     }
 
-    public void Dezoom()
+    public void DezoomCam()
     {
         if (virtualCamera != null)
         {
-            endVirtualCam.Priority = 4;
+            virtualCamera.Priority = 4;
         }
     }
     private void LateUpdate()

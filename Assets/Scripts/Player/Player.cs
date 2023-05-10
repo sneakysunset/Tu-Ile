@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public Tile tileUnder;
     private TileSystem tileS;
     [HideInInspector] public List<Item> holdableItems;
-    [HideInInspector] public Item heldItem;
+    [HideNormalInspector] public Item heldItem;
     [HideInInspector] public Item closestItem;
     [HideInInspector] public bool isMining;
     [HideInInspector] public List<Interactor> interactors;
@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
             respawnTile = TileSystem.Instance.centerTile;
             transform.position = respawnTile.transform.position + Vector3.up * 22.5f;
         }
+        //DontDestroyOnLoad(this.gameObject);
         //FindObjectOfType<CameraCtr>().AddPlayer(transform);
         col = GetComponent<Collider>();
         pointers = new List<Transform>();
@@ -134,6 +135,7 @@ public class Player : MonoBehaviour
             transform.position = respawnTile.transform.position + 25f * Vector3.up;
             if (heldItem != null)
             {
+                print(2);
                 heldItem.GrabRelease();
                 Destroy(heldItem.gameObject);
                 heldItem = null;

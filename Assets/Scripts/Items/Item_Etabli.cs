@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.Rendering.DebugUI;
 
 #region structs
 [System.Serializable]
@@ -56,11 +57,11 @@ public class Item_Etabli : Item
         recette.ResetRecette();
         if(Utils.IsSameOrSubclass(recette.craftedItemPrefab.GetType(), typeof(Item_Chantier))) isChantier = true;
         tileUnder = FindObjectOfType<TileSystem>().WorldPosToTile(transform.position);
+        transform.position = new Vector3(transform.position.x, tileUnder.transform.position.y + 23.4f, transform.position.z);
         transform.parent = tileUnder.transform;
         createdItem = transform.Find("TileCreator/CreatedPos");
         itemNum.UpdateText(this);
     }
-
     public override void Update()
     {
         base.Update();

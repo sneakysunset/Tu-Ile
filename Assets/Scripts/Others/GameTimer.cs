@@ -6,15 +6,20 @@ using UnityEngine.UI ;
 using System.Linq;
 
 [System.Serializable]
-public struct Event
+public class Event
 {
     public GameTimer.Events timeLineEvent;
     public float eventTime;
     public UnityEvent eventTrigger;
+    [Header("FOR EPHEMERAL ONLY")]
+    public SO_Mission ephemeralMission;
 }
+
+
+
 public class GameTimer : MonoBehaviour
 {
-    public enum Events { Neutral, Apocalypse, AddMissionSlot, ExtendMissionPool, ReduceMissionPool, EnlargeMissionPool};
+    public enum Events { Neutral, Apocalypse, AddMissionSlot, ExtendMissionPool, ReduceMissionPool, EnlargeMissionPool, EphemeralMission};
     public List<Event> events;
     public float gameTimer;
     [HideNormalInspector] public float timer;
@@ -24,6 +29,7 @@ public class GameTimer : MonoBehaviour
     public GameObject eventVisualPrefab;
     public Sprite apocalypseImage;
     public Sprite newPageImage;
+    public Sprite ephemeralMissionImage;
     private Player[] players;
     public Image minuteBar;
     public Image secondBar;
@@ -31,7 +37,7 @@ public class GameTimer : MonoBehaviour
     MissionManager missionManager;
     private void Start()
     {
-        missionManager = GetComponent<MissionManager>();
+        missionManager = MissionManager.Instance;
         //SortList();
         RectTransform r = timerFillImage.transform as RectTransform;
 
@@ -49,6 +55,11 @@ public class GameTimer : MonoBehaviour
                     t = Instantiate(eventVisualPrefab, eventFolder).transform as RectTransform;
                     t.localPosition += new Vector3((e.eventTime / gameTimer) * 2 * (r.sizeDelta.x * r.localScale.x), 0, 0);
                     t.GetComponent<Image>().sprite = newPageImage;
+                    break;
+                case Events.EphemeralMission:
+                    t = Instantiate(eventVisualPrefab, eventFolder).transform as RectTransform;
+                    t.localPosition += new Vector3((e.eventTime / gameTimer) * 2 * (r.sizeDelta.x * r.localScale.x), 0, 0);
+                    t.GetComponent<Image>().sprite = ephemeralMissionImage;
                     break;
                 default:
                     break;
@@ -81,9 +92,12 @@ public class GameTimer : MonoBehaviour
 
     private void Update()
     {
-        GameTimerFunction();
+        if (TileSystem.Instance.ready)
+        {
+            GameTimerFunction();
 
-        TimelineEvent();
+            TimelineEvent();
+        }
     }
 
     private void GameTimerFunction()
@@ -96,7 +110,8 @@ public class GameTimer : MonoBehaviour
             {
                 p.respawnTile = players[0].tileUnder;
             }
-            StartCoroutine(TileSystem.Instance.SinkWorld(players[0].tileUnder));
+            
+            StartCoroutine(TileSystem.Instance.SinkWorld(players[0].tileUnder, "Hub"));
         }
 
         timerFillImage.fillAmount = timer / gameTimer;
@@ -122,6 +137,9 @@ public class GameTimer : MonoBehaviour
                     break;
                 case Events.EnlargeMissionPool:
                     TimeLineEvents.EnlargeMissionPool(missionManager);
+                    break;
+                case Events.EphemeralMission:
+                    TimeLineEvents.AddEphemeralMission(missionManager, events[0].ephemeralMission);
                     break;
                 default:
                     break;

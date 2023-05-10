@@ -84,8 +84,11 @@ public class Item : MonoBehaviour
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
         Physics.IgnoreCollision(other, col, true);
+        System.Type type = this.GetType();
+        StartCoroutine(MissionManager.Instance.CheckElimMission(type));
         if (_player)
         {
+            print(3);
             _player.heldItem = null;
             if (_player.holdableItems.Contains(this))
             {

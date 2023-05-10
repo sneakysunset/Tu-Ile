@@ -56,15 +56,15 @@ MonoBehaviour:
   tilePrefab: {fileID: 6595983220944661741, guid: 4b77018d1ea53484e93b04c2c0fba8da, type: 3}
   tileP: {fileID: 3120364899379129663}
   tileM: {fileID: 4173279834238775216}
-  ogSelectedTileX: 57
-  ogSelectedTileY: 0
   gridOgTile: {x: 0, y: 0, z: 0}
-  targetTileCoords: {x: 21, y: 5}
-  numOfRows: 3
   centerTile: {fileID: 0}
   tileFolder: {fileID: 0}
   tileC: {fileID: 0}
   isHub: 0
+  degradationTimerModifier: 0
+  ready: 0
+  lerpingSpeed: 1
+  waitTimer: 0.3
 --- !u!114 &2198949688653012757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,63 +77,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82028caebf84b5d4dbd2a545e8b79356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isNearSighted: 0
-  distanceConvertorCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: -0.00000398361
-      outSlope: -0.00000398361
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.48717946
-    - serializedVersion: 3
-      time: 0.495
-      value: 0
-      inSlope: -0.005119393
-      outSlope: -0.005119393
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.23375992
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.49579632
-      value: 0.954488
-      inSlope: 1.407806
-      outSlope: 1.407806
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.14885129
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: -0.025193421
-      outSlope: -0.025193421
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  fallDistance: 50
-  sightRange: 20
-  lerpSpeed: 0.7
-  degradationLerpSpeed: 0.02
-  tileGrowthLerpSpeed: 0.05
+  degradationLerpSpeed: 8
+  tileGrowthLerpSpeed: 0.2
 --- !u!114 &3120364899379129663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,43 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8760f18c4ccdd8645b0033d1a28259ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terraFormingSpeed: 10
-  terraFormingNormalisingSpeed: 0.1
-  distanceSpeedNormaliserModifier: 25
-  bumpStrength: 10
-  bumpDistanceCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0.35046825
-      outSlope: 0.35046825
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.6260605
-      value: 0.21941432
-      inSlope: 1.2189666
-      outSlope: 1.2189666
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2.087465
-      outSlope: 2.087465
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   minTimer: 30
   maxTimer: 150
   degradationTimerAnimCurve:
@@ -209,8 +117,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  timeToGetToMaxDegradationSpeed: 3000
-  degradingSpeed: 3
   heightByTile: 2
 --- !u!114 &4173279834238775216
 MonoBehaviour:
@@ -242,6 +148,9 @@ MonoBehaviour:
   goldPrefab: {fileID: 7937501208438684671, guid: 72f3d0f0b08c81645984d3b9dffe7bde, type: 3}
   diamondPrefab: {fileID: 1548326296132660425, guid: e4fdb4ab491feff47aa6ac0bb155e34a, type: 3}
   adamantiumPrefab: {fileID: 7786200326323085320, guid: a896e8445800e1e46ad1a5d8b6049d41, type: 3}
+  notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
+  walkedOnColor: {r: 0.8509804, g: 0.73333335, b: 0.73333335, a: 1}
+  acceleratedDegradationColor: {r: 0.85882354, g: 0.28235295, b: 0.28235295, a: 1}
 --- !u!114 &9222783304278118907
 MonoBehaviour:
   m_ObjectHideFlags: 0

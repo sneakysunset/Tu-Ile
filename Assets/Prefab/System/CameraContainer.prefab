@@ -229,8 +229,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1261720702177954515}
   - component: {fileID: 8410540253618953418}
-  - component: {fileID: 4562668774749162104}
   - component: {fileID: 3446329860656314627}
+  - component: {fileID: 8861628031070961677}
   m_Layer: 14
   m_Name: cm
   m_TagString: Untagged
@@ -265,28 +265,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4562668774749162104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1426115927129095564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_BindingMode: 5
-  m_FollowOffset: {x: 0, y: 25, z: -25}
-  m_XDamping: 1
-  m_YDamping: 0.6
-  m_ZDamping: 1
-  m_AngularDampingMode: 0
-  m_PitchDamping: 0
-  m_YawDamping: 0
-  m_RollDamping: 0
-  m_AngularDamping: 0
 --- !u!114 &3446329860656314627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,10 +300,34 @@ MonoBehaviour:
   m_MaxDollyOut: 5000
   m_MinimumDistance: 1
   m_MaximumDistance: 5000
-  m_MinimumFOV: 12
+  m_MinimumFOV: 18
   m_MaximumFOV: 20
   m_MinimumOrthoSize: 18.81
   m_MaximumOrthoSize: 5000
+--- !u!114 &8861628031070961677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426115927129095564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damping: {x: 0.1, y: 0.5, z: 0.3}
+  ShoulderOffset: {x: 0.5, y: -0.4, z: 0}
+  VerticalArmLength: 0.4
+  CameraSide: 1
+  CameraDistance: 2
+  CameraCollisionFilter:
+    serializedVersion: 2
+    m_Bits: 0
+  IgnoreTag: 
+  CameraRadius: 0.2
+  DampingIntoCollision: 0
+  DampingFromCollision: 2
 --- !u!1 &2477285550501659672
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,7 +477,7 @@ MonoBehaviour:
     GateFit: 2
     m_SensorSize: {x: 1, y: 1}
   m_Transitions:
-    m_BlendHint: 1
+    m_BlendHint: 3
     m_InheritPosition: 0
     m_OnCameraLive:
       m_PersistentCalls:
@@ -494,7 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44d70cc20219cd84593f67d248eafe36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Offset: {x: 0, y: -5.31, z: -75.12}
+  m_Offset: {x: -65, y: 70, z: -20}
   m_ApplyAfter: 0
   m_PreserveComposition: 1
 --- !u!1 &3789268158561119973
@@ -521,8 +523,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3789268158561119973}
-  m_LocalRotation: {x: 0.40506458, y: -0.45951697, z: 0.2479763, w: 0.7505163}
-  m_LocalPosition: {x: -22.9, y: 102.8, z: 19}
+  m_LocalRotation: {x: 0.43095052, y: -0.428214, z: 0.24414834, w: 0.75584793}
+  m_LocalPosition: {x: -24.3, y: 103.5, z: 19.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -741,7 +743,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1088
   sphereCastRadius: 0.3
-  transparencyLevel: 0.182
+  transparencyLevel: 0.8
   medianPos: {x: 0, y: 0, z: 0}
   virtualCamera: {fileID: 4190664559342532176}
   endVirtualCam: {fileID: 0}

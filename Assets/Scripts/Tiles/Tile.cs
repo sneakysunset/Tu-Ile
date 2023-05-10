@@ -71,6 +71,7 @@ public class Tile : MonoBehaviour
 
     #region Interactor Spawning
     [HideInInspector] public List<Transform> spawnPoints;
+    [HideInInspector] public bool readyToRoll;
     bool spawning;
     #endregion
 
@@ -108,10 +109,17 @@ public class Tile : MonoBehaviour
     private void Awake()
     {
         degSpeed = 1;
+        Vector3 v = transform.position;
+        v.y = -heightByTile * 5;
         AI_Text = GetComponentInChildren<TextMeshProUGUI>();   
         minableItems = transform.Find("SpawnPositions");
         coordFX = coordX - coordY / 2;
         currentPos = transform.position;
+        if(this != TileSystem.Instance.centerTile) transform.position = v;
+        else
+        {
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
         pSys = transform.GetChild(3).GetComponent<ParticleSystem>();
         pSysCreation = transform.GetChild(7).GetComponent<ParticleSystem>();
         tourbillonT = transform.Find("Tourbillon");
@@ -119,7 +127,9 @@ public class Tile : MonoBehaviour
         timer = UnityEngine.Random.Range(minTimer, maxTimer);
         GetAdjCoords();
 
-        SetMatOnStart();    
+        SetMatOnStart();
+        int rotation = UnityEngine.Random.Range(0, 6);
+        transform.Rotate(0, rotation * 60, 0);
     }
  
 
