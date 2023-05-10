@@ -8,21 +8,22 @@ public class Tile_Degradation : MonoBehaviour
     Tile tile;
     private float degradationTimerModifier;
     [HideNormalInspector] private bool walkedOntoChecker;
-
+    bool started = false;
     private void Start()
     {
+        
         tile = GetComponent<Tile>();
 
     }
     private void Update()
     {
+        if (transform.position == tile.currentPos) started = true;
         if(tile.isGrowing) Elevating();
         else if (tile.walkable && tile.degradable && tile.walkedOnto && tile.tileType != Tile.TileType.Sand) Degrading();
-        if (!tile.isDegrading && tile.walkable && ((transform.position.y <= -tile.heightByTile && tile.currentPos.y <= -tile.heightByTile)))
+        if (started && !tile.isDegrading && tile.walkable && ((transform.position.y <= -tile.heightByTile && tile.currentPos.y <= -tile.heightByTile)))
         {
             SinkTile();
         }
-        
         if (tile.tileType == Tile.TileType.Sand)
         {
             SandDegradation();

@@ -15,7 +15,7 @@ public class TileMovements : MonoBehaviour
     //[Range(0,1)]public float lerpSpeed;
     [Range(0,10)]public float degradationLerpSpeed;
     [Range(0,10)]public float tileGrowthLerpSpeed;
-
+    
     private void Start()
     {
         tileS = GetComponent<TileSystem>();
@@ -74,13 +74,20 @@ public class TileMovements : MonoBehaviour
             foreach (Tile tile in tileS.tiles)
             {
                 Vector3 localPos = tile.transform.localPosition;
-                if (tile.isGrowing)
+                float distance = 1;
+                if(!tileS.ready) distance = tile.transform.position.y;
+                distance = Mathf.Clamp(distance, 1f, 8f);
+                if(tile.readyToRoll)
                 {
-                    tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), (1 / tileGrowthLerpSpeed) * Time.deltaTime * tile.degSpeed);
-                }
-                else
-                {
-                    tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), degradationLerpSpeed * Time.deltaTime * tile.degSpeed);
+                    if (tile.isGrowing)
+                    {
+                    
+                        tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), (1 / tileGrowthLerpSpeed) * Time.deltaTime * tile.degSpeed);
+                    }
+                    else
+                    {
+                        tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), degradationLerpSpeed * Time.deltaTime * tile.degSpeed * tileS.lerpingSpeed * distance);
+                    }   
                 }
             }
         //}
@@ -88,9 +95,14 @@ public class TileMovements : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!tileS.isHub)
-        {
-            TileMovement();
-        }
+        /*        if (!tileS.isHub)
+                {
+                    TileMovement();
+                }
+                else
+                {
+
+                }*/
+        TileMovement();
     }
 }

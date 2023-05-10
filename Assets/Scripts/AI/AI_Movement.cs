@@ -135,6 +135,7 @@ public class AI_Movement : MonoBehaviour
 
     private void ApplyMovement()
     {
+        if(_characterController.enabled)
         _characterController.Move(_direction * speedValue * Time.deltaTime);
     }
 

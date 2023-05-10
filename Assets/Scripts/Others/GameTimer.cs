@@ -13,8 +13,6 @@ public class Event
     public UnityEvent eventTrigger;
     [Header("FOR EPHEMERAL ONLY")]
     public SO_Mission ephemeralMission;
-    public int numberOfChickens;
-    public float widthOfSpawn;
 }
 
 
@@ -37,7 +35,6 @@ public class GameTimer : MonoBehaviour
     public Image secondBar;
     public Transform minuteFolder;
     MissionManager missionManager;
-    public GameObject eltender;
     private void Start()
     {
         missionManager = MissionManager.Instance;
@@ -95,9 +92,12 @@ public class GameTimer : MonoBehaviour
 
     private void Update()
     {
-        GameTimerFunction();
+        if (TileSystem.Instance.ready)
+        {
+            GameTimerFunction();
 
-        TimelineEvent();
+            TimelineEvent();
+        }
     }
 
     private void GameTimerFunction()
@@ -110,7 +110,8 @@ public class GameTimer : MonoBehaviour
             {
                 p.respawnTile = players[0].tileUnder;
             }
-            StartCoroutine(TileSystem.Instance.SinkWorld(players[0].tileUnder));
+            
+            StartCoroutine(TileSystem.Instance.SinkWorld(players[0].tileUnder, "Hub"));
         }
 
         timerFillImage.fillAmount = timer / gameTimer;
@@ -138,7 +139,7 @@ public class GameTimer : MonoBehaviour
                     TimeLineEvents.EnlargeMissionPool(missionManager);
                     break;
                 case Events.EphemeralMission:
-                    TimeLineEvents.AddEphemeralMission(missionManager, events[0].ephemeralMission, eltender , events[0].numberOfChickens, events[0].widthOfSpawn);
+                    TimeLineEvents.AddEphemeralMission(missionManager, events[0].ephemeralMission);
                     break;
                 default:
                     break;
