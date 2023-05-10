@@ -21,6 +21,7 @@ public class ItemSystem : MonoBehaviour
         bool isSameOrSubClass = player.closestItem != null && Utils.IsSameOrSubclass(player.closestItem.GetType(), typeof(Item_Etabli));
         if (context.started && player.heldItem != null && player.holdableItems.Count == 0 && !isSameOrSubClass)
         {
+            print(6);
             player.heldItem.GrabRelease();
             player.holdableItems.Add(player.heldItem);
             if (player.closestItem == null) player.closestItem = player.heldItem;
@@ -67,6 +68,7 @@ public class ItemSystem : MonoBehaviour
             player.heldItem.ThrowAction(player, player.throwStrength, direction);
             player.holdableItems.Add(player.heldItem);
             if (player.closestItem == null) player.closestItem = player.heldItem;
+            print(5);
             player.heldItem = null;
             return;
         }

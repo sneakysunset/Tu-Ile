@@ -17,6 +17,7 @@ public struct missionPage
     [HideInInspector] public Image missionFillBarOver;
     [HideInInspector] public Image missionChecker;
     [HideInInspector] public IEnumerator shakeCor;
+    [HideInInspector] public IEnumerator lerpCor;
     [HideInInspector] public Item_Etabli chantier;
     [HideInInspector] public Tile boussoleTile;
     [HideInInspector] public bool tresorFound;
@@ -27,6 +28,7 @@ public struct missionPage
     [HideInInspector] public bool completed;
     [HideInInspector] public bool isEphemeral;
     [HideInInspector] public SO_Mission potentialMission;
+    
     public float timer;
     public float deliveryTime;
     public bool activated;
@@ -98,37 +100,46 @@ public class MissionManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    IEnumerator Start()
     {
         tileCounter = FindObjectOfType<TileCounter>();
         activeMissions = new missionPage[missionSlotNumber];
         missionList = new List<SO_Mission>();
-        AddMissionPool();
-        SetMissionPages();
         shakeWaiter = new WaitForSeconds(.08f);
         lerpWaiter = new WaitForEndOfFrame();
         cooldownWaiter = new WaitForSeconds(missionCooldown);
+        yield return new WaitUntil(() => TileSystem.Instance.ready);
+        AddMissionPool();
+        SetMissionPages();
     }
 
     private void Update()
     {
-        for (int i = 0; i < activeMissions.Length; i++)
+        if (TileSystem.Instance.ready)
         {
-            if (activeMissions[i].m != null)
+            for (int i = 0; i < activeMissions.Length; i++)
             {
-                if (activeMissions[i].isReady) activeMissions[i].timer -= Time.deltaTime;
-                activeMissions[i].timer = Mathf.Clamp(activeMissions[i].timer, 0, activeMissions[i].deliveryTime);
-
-                //print(1 - (activeMissions[i].timer / activeMissions[i].deliveryTime) + " " + activeMissions[i].completionLevel);
-                if (1 - (activeMissions[i].timer / activeMissions[i].deliveryTime) > barColors[activeMissions[i].completionLevel].fillBarColorAmount)
+                if (activeMissions[i].m != null)
                 {
-                    activeMissions[i].missionFillBarOver.color = barColors[activeMissions[i].completionLevel].fillBarColor;
-                    activeMissions[i].completionLevel++;
-                }
+                    if (activeMissions[i].isReady) activeMissions[i].timer -= Time.deltaTime;
+                    activeMissions[i].timer = Mathf.Clamp(activeMissions[i].timer, 0, activeMissions[i].deliveryTime);
 
-                if (activeMissions[i].timer <= 0 && activeMissions[i].m && activeMissions[i].activated)
-                {
-                    StartCoroutine(SetNewMission(i));
+                    //print(1 - (activeMissions[i].timer / activeMissions[i].deliveryTime) + " " + activeMissions[i].completionLevel);
+                    if (1 - (activeMissions[i].timer / activeMissions[i].deliveryTime) > barColors[activeMissions[i].completionLevel].fillBarColorAmount)
+                    {
+                        activeMissions[i].missionFillBarOver.color = barColors[activeMissions[i].completionLevel].fillBarColor;
+                        activeMissions[i].completionLevel++;
+                    }
+
+                    if (activeMissions[i].timer <= 0 && activeMissions[i].m && activeMissions[i].activated)
+                    {
+                        if (activeMissions[i].lerpCor != null)
+                        {
+                            StopCoroutine(activeMissions[i].lerpCor);
+                        }
+                        activeMissions[i].lerpCor = SetNewMission(i);
+                        StartCoroutine(activeMissions[i].lerpCor);
+                    }
                 }
             }
         }
@@ -162,13 +173,19 @@ public class MissionManager : MonoBehaviour
 
                 yield return lerpWaiter;
             }
+
             if (activeMissions[missionIndex].isEphemeral)
             {
                 TimeLineEvents.RemoveMissionPage(this);
                 yield break;
             }
         }
-
+        if (!TileSystem.Instance.ready)
+        {
+            activeMissions[missionIndex].activated = false;
+            activeMissions[missionIndex].timer = 100;
+            yield break;
+        }
         rec.localPosition = endPos;
         f = 1;
 
@@ -201,6 +218,7 @@ public class MissionManager : MonoBehaviour
         //Start Mission Shaking
         activeMissions[missionIndex].shakeCor = ShakeMission(missionIndex);
         StartCoroutine(activeMissions[missionIndex].shakeCor);
+        activeMissions[missionIndex].lerpCor = null;
     }
 
     private void SetMissionPages()
@@ -261,6 +279,50 @@ public class MissionManager : MonoBehaviour
             missionList.Remove(item);
         }
         activePoolMin++;
+    }
+
+    public void CloseMissions()
+    {
+        for (int i = 0; i < activeMissions.Length; i++)
+        {
+            if (activeMissions[i].lerpCor != null)
+            {
+                StopCoroutine(activeMissions[i].lerpCor);
+            }
+            activeMissions[i].lerpCor = CloseMission(i);
+            StartCoroutine(activeMissions[i].lerpCor);
+        }
+    }
+
+    IEnumerator CloseMission(int missionIndex)
+    {
+        float f = 0;
+        RectTransform rec = activeMissions[missionIndex].missionUI.GetChild(0).GetComponent<RectTransform>();
+        Vector3 startPos = Vector3.zero;
+        Vector3 endPos = -Vector3.right * 700;
+        activeMissions[missionIndex].isReady = false;
+        if (activeMissions[missionIndex].m != null)
+        {
+            //Complete Previous Mission + Stop Mission Shaking
+            rec.localPosition = startPos;
+
+            activeMissions[missionIndex].m.OnCompleted(ref activeMissions[missionIndex], barColors[activeMissions[missionIndex].completionLevel].scoreMultiple);
+            StopCoroutine(activeMissions[missionIndex].shakeCor);
+            //Lerp Out Of Screen
+            while (f < 1f)
+            {
+                f += Time.deltaTime * (1 / timeToComplete);
+
+                float lerpValue;
+                lerpValue = lerpEaseIn.Evaluate(f);
+
+                rec.localPosition = Vector3.Lerp(startPos, endPos, lerpValue);
+
+                yield return lerpWaiter;
+            }
+        }
+        activeMissions[missionIndex].activated = false;
+
     }
     #endregion
 
@@ -364,43 +426,6 @@ public class MissionManager : MonoBehaviour
         }
 
     }
-    #endregion
-
-    IEnumerator ShakeMission(int mI)
-    {
-        RectTransform rec = activeMissions[mI].missionUI.GetChild(0).GetComponent<RectTransform>();
-        yield return new WaitForEndOfFrame();
-        Vector3 ogPos = rec.localPosition;
-        SO_Mission m = activeMissions[mI].m;
-        //bool yo = false;
-        while (activeMissions[mI].m = m)
-        {
-            /*            float i = mPageShakingCurve.Evaluate(activeMissions[mI].timer / activeMissions[mI].deliveryTime);
-                        *//*            float x = Random.Range(-i, i) * shakeMagnitude;
-                                    float y = Random.Range(-i, i) * shakeMagnitude;*//*
-                        float x = 0;
-                        float y = 0;
-                        if(yo)
-                        {
-                            x = -i * shakeMagnitude * shakeValues.x;
-                            y = -i * shakeMagnitude * shakeValues.y;
-                            yo = false;
-                        }
-                        else
-                        {
-                            x = i * shakeMagnitude * shakeValues.x;
-                            y = i * shakeMagnitude * shakeValues.y;
-                            yo = true;
-                        }*/
-            //rec.localPosition = new Vector3(ogPos.x + x, ogPos.y + y, ogPos.z);
-            float i = activeMissions[mI].timer / activeMissions[mI].deliveryTime;
-            activeMissions[mI].missionFillBar.fillAmount = 1 - i;
-
-            yield return lerpWaiter;
-        }
-
-        rec.localPosition = ogPos;
-    }
 
     bool CheckIfChantier(SO_Mission m, missionPage page)
     {
@@ -453,4 +478,42 @@ public class MissionManager : MonoBehaviour
         }
         return true;
     }
+    #endregion
+
+    IEnumerator ShakeMission(int mI)
+    {
+        RectTransform rec = activeMissions[mI].missionUI.GetChild(0).GetComponent<RectTransform>();
+        yield return new WaitForEndOfFrame();
+        Vector3 ogPos = rec.localPosition;
+        SO_Mission m = activeMissions[mI].m;
+        //bool yo = false;
+        while (activeMissions[mI].m = m)
+        {
+            /*            float i = mPageShakingCurve.Evaluate(activeMissions[mI].timer / activeMissions[mI].deliveryTime);
+                        *//*            float x = Random.Range(-i, i) * shakeMagnitude;
+                                    float y = Random.Range(-i, i) * shakeMagnitude;*//*
+                        float x = 0;
+                        float y = 0;
+                        if(yo)
+                        {
+                            x = -i * shakeMagnitude * shakeValues.x;
+                            y = -i * shakeMagnitude * shakeValues.y;
+                            yo = false;
+                        }
+                        else
+                        {
+                            x = i * shakeMagnitude * shakeValues.x;
+                            y = i * shakeMagnitude * shakeValues.y;
+                            yo = true;
+                        }*/
+            //rec.localPosition = new Vector3(ogPos.x + x, ogPos.y + y, ogPos.z);
+            float i = activeMissions[mI].timer / activeMissions[mI].deliveryTime;
+            activeMissions[mI].missionFillBar.fillAmount = 1 - i;
+
+            yield return lerpWaiter;
+        }
+
+        rec.localPosition = ogPos;
+    }
+
 }

@@ -830,6 +830,7 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1949783130783487149}
   - {fileID: 4691495834763128532}
+  readyToRoll: 0
   tileS: {fileID: 0}
   myMeshR: {fileID: 5864329386916401334}
   myMeshF: {fileID: 8540724609792189564}

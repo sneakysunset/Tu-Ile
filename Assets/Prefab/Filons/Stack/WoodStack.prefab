@@ -441,7 +441,7 @@ Transform:
   m_GameObject: {fileID: 7307083508970999916}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 67.351, y: 25.482, z: 41.51272}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8262531233289611556}
@@ -468,8 +468,8 @@ MonoBehaviour:
   _player: {fileID: 0}
   physic: 1
   col: {fileID: 0}
-  stackType: 1
   meshR: {fileID: 0}
+  stackType: 1
   numberStacked: 0
   isTile: 0
   trueHoldable: 1

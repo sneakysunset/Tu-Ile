@@ -30,17 +30,21 @@ public class TimeLineEvents
         missionManager.SetMissionPage(missionManager.activeMissions.Length - 1);
     }
 
-    static public void AddEphemeralMission(MissionManager missionManager, SO_Mission ephemeralMission, GameObject elTender, int numOfChicken, float spreadOfChicken)
+    static public void InstantiateItems(GameObject elTender, int numOfChicken, float spreadOfChicken, float spawnHeight)
     {
         int v = 0;
-        while(v < numOfChicken)
+        while (v < numOfChicken)
         {
             Vector3 offSet = Random.insideUnitSphere * spreadOfChicken;
             offSet.y = 0;
-            Vector3 pos = TileSystem.Instance.centerTile.transform.position + Vector3.up * 50 + offSet;
+            Vector3 pos = TileSystem.Instance.centerTile.transform.position + Vector3.up * spawnHeight + offSet;
             GameObject.Instantiate(elTender, pos, Quaternion.identity);
             v++;
         }
+    }
+
+    static public void AddEphemeralMission(MissionManager missionManager, SO_Mission ephemeralMission)
+    {
         missionPage[] newPages = new missionPage[missionManager.activeMissions.Length + 1];
         for (int i = 0; i < missionManager.activeMissions.Length; i++)
         {
