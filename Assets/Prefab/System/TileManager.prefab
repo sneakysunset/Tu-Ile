@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   degradationLerpSpeed: 8
-  tileGrowthLerpSpeed: 0.2
+  tileGrowthLerpSpeed: 0.02
 --- !u!114 &3120364899379129663
 MonoBehaviour:
   m_ObjectHideFlags: 0
