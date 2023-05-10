@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e6d710341a2d44981296c8b12d235e, type: 3}
   m_Name: M_TC_WoodTIleSmall
   m_EditorClassIdentifier: 
-  description: Build 3 Wood Tiles
-  deliveryTimeMin: 20
-  deliveryTimeMax: 30
+  description: Build 2 Wood Tiles
+  deliveryTimeMin: 40
+  deliveryTimeMax: 50
   scoreValue: 100
   malusValue: -10
-  requiredNumber: 3
+  requiredNumber: 2
   requiredType: 1

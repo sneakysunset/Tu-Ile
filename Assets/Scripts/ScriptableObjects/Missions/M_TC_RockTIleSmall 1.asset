@@ -17,5 +17,5 @@ MonoBehaviour:
   deliveryTimeMax: 60
   scoreValue: 100
   malusValue: -10
-  requiredNumber: 2
+  requiredNumber: 3
   requiredType: 2
