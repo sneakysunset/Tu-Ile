@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: M_C_1
   m_EditorClassIdentifier: 
   description: Build  a House
-  deliveryTimeMin: 20
-  deliveryTimeMax: 30
+  deliveryTimeMin: 100
+  deliveryTimeMax: 110
   scoreValue: 100
   malusValue: -10
   chantierPrefab: {fileID: 7644044209496618638, guid: bf93c3324d307044f873e1db14dc7521, type: 3}

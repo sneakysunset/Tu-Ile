@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: M_B_1
   m_EditorClassIdentifier: 
   description: Find the Treasure using a boussole
-  deliveryTimeMin: 20
-  deliveryTimeMax: 30
+  deliveryTimeMin: 120
+  deliveryTimeMax: 140
   scoreValue: 100
   malusValue: -10
   minDistanceFromCenter: 3
