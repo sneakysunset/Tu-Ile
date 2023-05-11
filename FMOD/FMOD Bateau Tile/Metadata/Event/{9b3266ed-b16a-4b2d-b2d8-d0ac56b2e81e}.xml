@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{9b3266ed-b16a-4b2d-b2d8-d0ac56b2e81e}">
 		<property name="name">
-			<value>Incantation</value>
+			<value>Cast</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -121,6 +121,9 @@
 	<object class="MixerBusPanner" id="{268ab4d0-cfab-437f-a9e3-21f1600a4777}" />
 	<object class="MixerBusFader" id="{ee463e12-8a8b-4083-ab30-eb7ebd148123}" />
 	<object class="SingleSound" id="{663bd0b9-8dbb-492d-a87c-3bc296b9cd36}">
+		<property name="volume">
+			<value>9</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{71e91c04-7e81-475a-a356-8d934216a2a5}</destination>
 		</relationship>
