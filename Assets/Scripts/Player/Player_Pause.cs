@@ -17,31 +17,34 @@ public class Player_Pause : MonoBehaviour
 
     public void PauseGame()
     {
-        if (isPaused)
+        if(TileSystem.Instance.isHub)
         {
-            isPaused = false;
-            Time.timeScale = 1.0f;
-            pauseMenu.gameObject.SetActive(false);
-            pauseMenu.player = null;
-            foreach(PlayerInput p in players)
+            if (isPaused)
             {
-                if(p.transform != transform)
+                isPaused = false;
+                Time.timeScale = 1.0f;
+                pauseMenu.gameObject.SetActive(false);
+                pauseMenu.player = null;
+                foreach(PlayerInput p in players)
                 {
-                    p.enabled = true;
+                    if(p.transform != transform)
+                    {
+                        p.enabled = true;
+                    }
                 }
             }
-        }
-        else
-        {
-            isPaused = true;
-            Time.timeScale = 0;
-            pauseMenu.gameObject.SetActive(true);
-            pauseMenu.player = this;
-            foreach (PlayerInput p in players)
+            else
             {
-                if (p.transform != transform)
+                isPaused = true;
+                Time.timeScale = 0;
+                pauseMenu.gameObject.SetActive(true);
+                pauseMenu.player = this;
+                foreach (PlayerInput p in players)
                 {
-                    p.enabled = false;
+                    if (p.transform != transform)
+                    {
+                        p.enabled = false;
+                    }
                 }
             }
         }

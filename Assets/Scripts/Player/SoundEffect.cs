@@ -15,13 +15,13 @@ public class SoundEffect : MonoBehaviour
 
     public void PlayMooveRight()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Moove");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Move");
         pSysWalkingR.Play();
     }
 
     public void PlayMooveLeft()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Moove");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Move");
         pSysWalkingL.Play();
     }
 
@@ -36,24 +36,24 @@ public class SoundEffect : MonoBehaviour
                 if (i > player.interactors.Count - 1 || i < 0 || player.interactors[i] == null) break;
                 switch (player.interactors[i].type)
                 {
-                    case Tile.TileType.Wood:
-                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Wood_Cutting");
+                    case TileType.Wood:
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Tree");
                         ma.material.color = woodCol;
                         break;
-                    case Tile.TileType.Rock:
-                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                    case TileType.Rock:
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Rock");
                         ma.material.color = rockCol;
                         break;
-                    case Tile.TileType.Gold:
-                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                    case TileType.Gold:
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Rock");
                         ma.material.color = goldCol;
                         break;
-                    case Tile.TileType.Diamond:
-                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                    case TileType.Diamond:
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Rock");
                         ma.material.color = diamondCol;
                         break;
-                    case Tile.TileType.Adamantium:
-                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Rock_Mining");
+                    case TileType.Adamantium:
+                        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Rock");
                         ma.material.color = adamCol;
                         break;
                 }
@@ -66,3 +66,4 @@ public class SoundEffect : MonoBehaviour
         }
     }
 }
+

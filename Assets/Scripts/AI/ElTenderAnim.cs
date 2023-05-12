@@ -15,8 +15,8 @@ public class ElTenderAnim : MonoBehaviour
 
     private void Start()
     {
-        fmodGrabbed = FMODUnity.RuntimeManager.CreateInstance("event:/Monster/Angry_Chicken");
-        fmodIdle = FMODUnity.RuntimeManager.CreateInstance("event:/Monster/Idle_Chicken");
+        fmodGrabbed = FMODUnity.RuntimeManager.CreateInstance("event:/Tuile/Monster/Angry_Chicken");
+        fmodIdle = FMODUnity.RuntimeManager.CreateInstance("event:/Tuile/Monster/Idle_Chicken");
         fmodIdle.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform));
         fmodGrabbed.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform));
         fmodIdle.start();
@@ -84,6 +84,6 @@ public class ElTenderAnim : MonoBehaviour
 
         fmodGrabbed.release();
         fmodIdle.release();
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Monster/Dying_Chicken");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Monster/Dying_Chicken");
     }
 }

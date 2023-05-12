@@ -803,6 +803,37 @@ Transform:
   m_Father: {fileID: 6606306174556088089}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5310187233020753159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8271108300823675985}
+  m_Layer: 0
+  m_Name: DummyTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8271108300823675985
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5310187233020753159}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5703151869213025866}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5335920903635671444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1309,7 +1340,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5703151869213024695}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.2, y: 28.68, z: 6.02}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1322,6 +1353,7 @@ Transform:
   - {fileID: 3364913800309430903}
   - {fileID: 6034203353206020045}
   - {fileID: 6606306174556088089}
+  - {fileID: 8271108300823675985}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1352,6 +1384,8 @@ MonoBehaviour:
   col: {fileID: 0}
   hitParticleSystem: {fileID: 7029059976543268879}
   pointers: []
+  drawningTimer: 2
+  dummyTarget: {fileID: 0}
 --- !u!114 &5703151869213025868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1374,13 +1408,12 @@ MonoBehaviour:
   speedOnRocks: 15
   jumpStrength: 2
   jumpStrengthOnBounce: 3
-  dashStrength: 50
   pushStrength: 30
-  dashDuration: 0.05
   dashCooldown: 0.5
   smoothTime: 0.05
   gravityMultiplier: 1
   _velocity: 0
+  canMove: 1
 --- !u!114 &6593446547532280454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1426,8 +1459,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af79565d09272c444baf0be632f71368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  growingSpeed: 10
-  growPrice: 5
   ressourcesManager: {fileID: 0}
 --- !u!114 &5610916058789591604
 MonoBehaviour:
@@ -1722,6 +1753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
+  pauseMenu: {fileID: 0}
 --- !u!1 &6390738519330706863
 GameObject:
   m_ObjectHideFlags: 0

@@ -81,7 +81,6 @@ public class TileMovements : MonoBehaviour
                 {
                     if (tile.isGrowing)
                     {
-                    print(1);
                         tile.transform.position = Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), (1 / tileGrowthLerpSpeed) * Time.deltaTime * tile.degSpeed);
                     }
                     else

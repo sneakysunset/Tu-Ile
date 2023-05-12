@@ -32,6 +32,7 @@ public class Item_Etabli : Item
     private WaitForSeconds waiter;
     UnityEngine.Transform createdItem;
     private MeshRenderer[] meshs;
+    public FMOD.Studio.EventInstance creationInst;
     bool isActive;
     Tile tileUnder;
     EtabliCanvas itemNum;
@@ -126,7 +127,9 @@ public class Item_Etabli : Item
         {
             if(isChantier) StartCoroutine(ChantierConvert());
             else StartCoroutine(Convert());
-        } 
+        }
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Hit");
     }
     #endregion
 
@@ -158,7 +161,7 @@ public class Item_Etabli : Item
     public void OnDestroyMethod()
     {
         isDestroyed = true;
-        if (isChantier && tileUnder.tileSpawnType != Tile.TileType.construction) tileUnder.tileSpawnType = Tile.TileType.construction;
+        if (isChantier && tileUnder.tileSpawnType != TileType.construction) tileUnder.tileSpawnType = TileType.construction;
         if (isChantier && !constructed)
         {
             FindObjectOfType<MissionManager>().CheckMissions();
@@ -233,7 +236,9 @@ public class Item_Etabli : Item
     IEnumerator Convert()
     {
         convertorFlag = true;
+        FMODUtils.SetFMODEvent(ref creationInst, "event:/Tuile/Tile/TileCreation", transform);
         yield return waiter;
+        FMODUtils.StopFMODEvent(ref creationInst, true);
         for (int i = 0; i < recette.requiredItemStacks.Length; i++)
         {
             recette.requiredItemStacks[i].currentNumber -= recette.requiredItemStacks[i].cost;

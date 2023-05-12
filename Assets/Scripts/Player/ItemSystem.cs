@@ -67,7 +67,6 @@ public class ItemSystem : MonoBehaviour
             player.heldItem.ThrowAction(player, player.throwStrength, direction);
             player.holdableItems.Add(player.heldItem);
             if (player.closestItem == null) player.closestItem = player.heldItem;
-            print(5);
             player.heldItem = null;
             return;
         }

@@ -9,22 +9,57 @@ public class Tile_Degradation : MonoBehaviour
     private float degradationTimerModifier;
     [HideNormalInspector] private bool walkedOntoChecker;
     bool started = false;
+    FMOD.Studio.EventInstance tfFI;
+    Transform spawnPos;
     private void Start()
     {
-        
+        spawnPos = transform.GetChild(0).GetChild(0);
+
         tile = GetComponent<Tile>();
 
     }
+    bool to;
+
+    private void OnDestroy()
+    {
+        if(FMODUtils.IsPlaying(tfFI))
+        {
+            FMODUtils.StopFMODEvent(ref tfFI, true);
+        }
+    }
+
     private void Update()
     {
+        if(!TileSystem.Instance.ready && tile.readyToRoll && !FMODUtils.IsPlaying(tfFI))
+        {
+            FMODUtils.SetFMODEvent(ref tfFI, "event:/Tuile/Tile/Terraformingdown", spawnPos);
+        }
+
+        if(!TileSystem.Instance.ready && transform.position == tile.currentPos)
+        {
+            FMODUtils.StopFMODEvent(ref tfFI, true);
+        }
+
+        if(transform.position == tile.currentPos && !to)
+        {
+            to = true;
+            FMODUtils.StopFMODEvent(ref tfFI, true);
+        }
+
+        if(to == true && !TileSystem.Instance.ready)
+        {
+            to = false;
+            FMODUtils.SetFMODEvent(ref tfFI, "event:/Tuile/Tile/Terraformingdown", spawnPos);
+        }
+
         if (transform.position == tile.currentPos) started = true;
         if(tile.isGrowing) Elevating();
-        else if (tile.walkable && tile.degradable && tile.walkedOnto && tile.tileType != Tile.TileType.Sand) Degrading();
+        else if (tile.walkable && tile.degradable && tile.walkedOnto && tile.tileType != TileType.Sand) Degrading();
         if (started && !tile.isDegrading && tile.walkable && ((transform.position.y <= -tile.heightByTile && tile.currentPos.y <= -tile.heightByTile)))
         {
             SinkTile();
         }
-        if (tile.tileType == Tile.TileType.Sand)
+        if (tile.tileType == TileType.Sand)
         {
             SandDegradation();
         }
@@ -53,6 +88,7 @@ public class Tile_Degradation : MonoBehaviour
             tile.isDegrading = true;
             gameObject.tag = "DegradingTile";
             tile.currentPos.y -= tile.heightByTile;
+            FMODUtils.SetFMODEvent(ref tfFI, "event:/Tuile/Tile/Terraformingdown", spawnPos);
         }
 
         //DegradationEnd
@@ -60,6 +96,7 @@ public class Tile_Degradation : MonoBehaviour
         {
             tile.isDegrading = false;
             tile.timer = Random.Range(tile.minTimer, tile.maxTimer);
+            FMODUtils.StopFMODEvent(ref tfFI, true);
         }
 
         if (tile.currentPos.y == GameConstant.maxTileHeight && CompareTag("DegradingTile"))
@@ -70,8 +107,13 @@ public class Tile_Degradation : MonoBehaviour
     
     private void Elevating()
     {
+        if(!FMODUtils.IsPlaying(tfFI))
+        {
+            FMODUtils.SetFMODEvent(ref tfFI, "event:/Tuile/Tile/Terraformingdown", spawnPos);
+        }
         if(transform.position.y == tile.currentPos.y)
         {
+            FMODUtils.StopFMODEvent(ref tfFI, true);
             tile.isGrowing = false;
             tile.timer = Random.Range(tile.minTimer, tile.maxTimer);
         }

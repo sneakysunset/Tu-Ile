@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class SOM_Tile : SO_Mission
 {
     public int requiredNumber;
-    public Tile.TileType requiredType;
+    public TileType requiredType;
 
 
     public override void OnActivated(Image _missionChecker, TextMeshProUGUI _missionText, ref missionPage page)

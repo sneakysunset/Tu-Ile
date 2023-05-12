@@ -86,6 +86,7 @@ public class GameTimer : MonoBehaviour
         players = FindObjectsOfType<Player>();
     }
 
+
     private void SortList()
     {
         for (int i = 0; i < events.Count - 1; i++)
@@ -130,6 +131,8 @@ public class GameTimer : MonoBehaviour
 
             TimelineEvent();
         }
+        if(Input.GetKeyDown(KeyCode.V)) timer = gameTimer - 5;
+        if(Input.GetKeyDown(KeyCode.B)) timer = 100 - 5;
     }
 
     private void GameTimerFunction()

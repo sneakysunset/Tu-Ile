@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   degradationLerpSpeed: 8
-  tileGrowthLerpSpeed: 0.02
+  tileGrowthLerpSpeed: 0.5
 --- !u!114 &3120364899379129663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,16 +134,16 @@ MonoBehaviour:
   undegradableTileMat: {fileID: 2100000, guid: a73c746518bb3c04eaf33974af53a5e2, type: 2}
   sandTileMat: {fileID: 2100000, guid: e92f8dd77f940e840a8360b14316adce, type: 2}
   bounceTileMat: {fileID: 2100000, guid: 3193cf6cf65b8a748b1a843c78e6c26d, type: 2}
-  plaineTileMat: {fileID: 2100000, guid: a752ece4f9822b348a30335ee3ef0244, type: 2}
-  woodTileMat: {fileID: 2100000, guid: 3d1c24753a226eb41a3cc511896b3d37, type: 2}
+  plaineTileMat: {fileID: 2100000, guid: 4b7c1835df7b9dc4ca1f2d50df02d62a, type: 2}
+  woodTileMat: {fileID: 2100000, guid: dc03cf713a323ab41820437ea272e810, type: 2}
   rockTileMat: {fileID: 2100000, guid: 233524805364cea4e93ab69049e5bfd7, type: 2}
   goldTileMat: {fileID: 2100000, guid: 326db776b16202c4bb20fb62a2ed0f9a, type: 2}
   diamondTileMat: {fileID: 2100000, guid: 056df16b00997df49b3b50dcdbefd92d, type: 2}
   adamantiumTileMat: {fileID: 2100000, guid: 056df16b00997df49b3b50dcdbefd92d, type: 2}
-  defaultTileMesh: {fileID: -2623256933809513941, guid: 40c21bedeba5d5741a50a62d507fbc8e, type: 3}
-  woodTileMesh: {fileID: 5277989484200199865, guid: 6e5ecc62d6dd7604fbe8d74dd2c5fef5, type: 3}
+  defaultTileMesh: {fileID: -7451443636088110008, guid: 0ea1725fd71cd554c89da528d7ae6f75, type: 3}
+  woodTileMesh: {fileID: -371179953123635698, guid: 0d3237167e2c7184ba48d34c7b16935d, type: 3}
   rockTileMesh: {fileID: -2264791619151738641, guid: c2defaef50f9dba44ac127b3f33ddd7a, type: 3}
-  treePrefab: {fileID: 8818747911436434145, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+  treePrefab: {fileID: 8818747911436434145, guid: 79b9421b777be9b48964ef34298b9825, type: 3}
   rockPrefab: {fileID: 2678278403484233012, guid: a1486965bb17ef34d9505a95cad1a333, type: 3}
   goldPrefab: {fileID: 7937501208438684671, guid: 72f3d0f0b08c81645984d3b9dffe7bde, type: 3}
   diamondPrefab: {fileID: 1548326296132660425, guid: e4fdb4ab491feff47aa6ac0bb155e34a, type: 3}

@@ -31,7 +31,7 @@ public class TileSelector : MonoBehaviour
         }
         if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && !targettedTile.tourbillon && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
         {
-            tileBluePrint.position = targettedTile.transform.position + Vector3.up * (22.1f + tileUnder.transform.position.y);
+            tileBluePrint.position = new Vector3(targettedTile.transform.position.x, (GameConstant.tileHeight + tileUnder.transform.position.y), targettedTile.transform.position.z) ;
         }
         else
         {
@@ -85,6 +85,7 @@ public class TileSelector : MonoBehaviour
                         player.heldItem = null;
                         Destroy(item.gameObject);
                     }
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Cast");
                 }
             }
             else if(player.heldItem && player.heldItem.GetType() == typeof(Item_Boussole))

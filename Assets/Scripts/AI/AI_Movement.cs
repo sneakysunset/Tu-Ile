@@ -46,7 +46,7 @@ public class AI_Movement : MonoBehaviour
 
     private void OnGroundedCallBack()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/stomp");
+        //FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Stomp");
     }
 
     private void Update()

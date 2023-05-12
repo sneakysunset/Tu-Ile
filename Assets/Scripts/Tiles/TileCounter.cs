@@ -20,27 +20,27 @@ public class TileCounter : MonoBehaviour
         tileSystem = GetComponent<TileSystem>();
     }
 
-    public int GetStat(Tile.TileType tType)
+    public int GetStat(TileType tType)
     {
         int returnValue = 0;
         switch (tType)
         {
-            case Tile.TileType.Neutral:
+            case TileType.Neutral:
                 returnValue = neutralCount;
                 break;
-            case Tile.TileType.Wood:
+            case TileType.Wood:
                 returnValue = woodCount;
                 break;
-            case Tile.TileType.Rock:
+            case TileType.Rock:
                 returnValue = rockCount;
                 break;
-            case Tile.TileType.Gold:
+            case TileType.Gold:
                 returnValue = goldCount;
                 break;
-            case Tile.TileType.Diamond:
+            case TileType.Diamond:
                 returnValue = diamondCount;
                 break;
-            case Tile.TileType.Adamantium:
+            case TileType.Adamantium:
                 returnValue = adamantiumCount;
                 break;
         }
@@ -63,17 +63,17 @@ public class TileCounter : MonoBehaviour
             num++;
             switch(tile.tileType)
             {
-                case Tile.TileType.Neutral: neutNum++;
+                case TileType.Neutral: neutNum++;
                 break;
-                case Tile.TileType.Wood: woodNum++;
+                case TileType.Wood: woodNum++;
                 break;
-                case Tile.TileType.Rock: rockNum++;
+                case TileType.Rock: rockNum++;
                 break; 
-                case Tile.TileType.Gold: goldNum++;
+                case TileType.Gold: goldNum++;
                 break; 
-                case Tile.TileType.Diamond: diaNum++;
+                case TileType.Diamond: diaNum++;
                 break;
-                case Tile.TileType.Adamantium: adamNum++;
+                case TileType.Adamantium: adamNum++;
                 break;
             }
         }

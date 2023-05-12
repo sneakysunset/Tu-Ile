@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -74,18 +75,16 @@ public class MissionManager : MonoBehaviour
         [Header("Mission Shake")]
         public AnimationCurve mPageShakingCurve;
         public float shakeMagnitude = 1;
-        public Vector2 shakeValues;*/
-
-    [Space(10)]
-    [Header("Mission Lerps")]
-    public float timeToComplete;
-    public float missionCooldown;
-    public AnimationCurve lerpEaseIn;
+        public Vector2 shakeValues;*/    
+    [BoxGroup("MissionLerps"), Space(5)] public float timeToComplete;
+    [BoxGroup("MissionLerps")] public float missionCooldown;
+    [BoxGroup("MissionLerps")] public AnimationCurve lerpEaseIn;
     #endregion
-
     #region System CallBacks
 
     public static MissionManager Instance;
+
+
 
     private void Awake()
     {
@@ -109,12 +108,14 @@ public class MissionManager : MonoBehaviour
         lerpWaiter = new WaitForEndOfFrame();
         cooldownWaiter = new WaitForSeconds(missionCooldown);
         yield return new WaitUntil(() => TileSystem.Instance.ready);
+
         AddMissionPool();
         SetMissionPages();
     }
 
+
     private void Update()
-    {
+    { 
         if (TileSystem.Instance.ready)
         {
             for (int i = 0; i < activeMissions.Length; i++)
@@ -434,7 +435,7 @@ public class MissionManager : MonoBehaviour
         List<Tile> ts = TileSystem.Instance.GetTilesAround(4, TileSystem.Instance.centerTile);
         for (int i = ts.Count - 1; i >= 0; i--)
         {
-            if (ts[i].walkable && ts[i].tileSpawnType == Tile.TileType.construction)
+            if (ts[i].walkable && ts[i].tileSpawnType == TileType.construction)
             {
                 return true;
             }

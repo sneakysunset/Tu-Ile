@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using System.Linq;
 #if UNITY_EDITOR
 using AmplifyShaderEditor;
 #endif
@@ -153,8 +154,10 @@ public class TileSystem : MonoBehaviour
         }
         
 
-        yield return new WaitForSeconds(1);
-        SceneManager.LoadScene(levelToLoad);
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(levelToLoad, LoadSceneMode.Single);
+        //PlayersManager.playerNumber = FindObjectsOfType<Player>().Length;
+        PlayerPrefs.SetInt("PlayerNumber", FindObjectsOfType<Player>().Length);
         ready = false;
     }
 
@@ -192,19 +195,15 @@ public class TileSystem : MonoBehaviour
 
             foreach (Tile t in ts)
             {
-                if (t.walkable /*&& t != tile*/)
+                if (t.walkable)
                 {
-                    //t.degradable = true;
-                    //t.currentPos.y = -t.heightByTile;
                     t.readyToRoll = true;
                 }
-                //t.tourbillon = false;
-                //t.tourbillonT.gameObject.SetActive(false);
             }
             tile.degradable = false;
             j++;
             float timer = waitTimer / j;
-            //float timer = .1f + Random.Range(-.1f, .3f);
+
             while (timer > 0)
             {
                 timer -= Time.deltaTime;
@@ -417,6 +416,10 @@ public class TileSystemEditor : Editor
     private void OnEnable()
     {
         tileS = (TileSystem)target;
+        foreach(var tile in tileS.tiles)
+        {
+            tile.UpdateObject();
+        }
     }
 
 

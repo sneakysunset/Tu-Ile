@@ -34,7 +34,8 @@ public class Item : MonoBehaviour
         _player = player;
         isHeld = true;
         rb.constraints = RigidbodyConstraints.FreezePosition;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Collect_Item");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Collect");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Take");
         rb.isKinematic = true;
         if (player.holdableItems.Contains(this))
             player.holdableItems.Remove(this);
@@ -51,7 +52,7 @@ public class Item : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.isKinematic = false;
         rb.velocity = Vector2.zero;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Release_Item");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Release");
         _player.holdableItems.Add(this);
         if (!etablied)
         {
@@ -68,7 +69,7 @@ public class Item : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.isKinematic = false;
         rb.velocity = Vector2.zero;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Release_Item");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Throw");
         player.holdableItems.Add(this);
         transform.parent = null;
         transform.rotation = Quaternion.identity;
@@ -86,7 +87,7 @@ public class Item : MonoBehaviour
 
     public  virtual IEnumerator KillItem(Collider other)
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning");
         Physics.IgnoreCollision(other, col, true);
         System.Type type = this.GetType();
         StartCoroutine(MissionManager.Instance.CheckElimMission(type));
