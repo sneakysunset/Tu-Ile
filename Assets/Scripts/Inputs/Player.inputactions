@@ -227,7 +227,7 @@
                 {
                     "name": "",
                     "id": "0c81042c-810c-49cd-a505-28a4fa0d7cb4",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "Hold(duration=100000)",
                     "processors": "",
                     "groups": "Gamepad",

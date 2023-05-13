@@ -19,6 +19,6 @@ MonoBehaviour:
   malusValue: -30
   itemToKill: {fileID: 3388698492052617966, guid: fce0e83e28c991d42a35cd94a6409487, type: 3}
   requiredNum: 3
-  numToSpawn: 5
+  numToSpawn: 2
   radiusWidth: 10
   spawnHeight: 30

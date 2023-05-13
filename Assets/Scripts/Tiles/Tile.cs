@@ -138,7 +138,7 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
-        if(transform.position.y == currentPos.y && spawning)
+        if(transform.position.y == currentPos.y && spawning && !TileSystem.Instance.isHub)
         {
             spawning = false;
             pSys.transform.position = new Vector3(pSys.transform.position.x, 0, pSys.transform.position.z) ;
@@ -151,7 +151,7 @@ public class Tile : MonoBehaviour
         }
         // StepText();
         isFaded = false;
-        if (pSysIsPlaying && walkedOnto && degradable && tileType == TileType.Neutral)
+        if (pSysIsPlaying && walkedOnto && degradable && tileType == TileType.Neutral && !TileSystem.Instance.isHub)
         {
             pSys.Stop(); 
             myMeshR.material.color = walkedOnColor;
