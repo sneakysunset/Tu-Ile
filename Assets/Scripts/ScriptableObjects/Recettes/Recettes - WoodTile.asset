@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0bd74352288d2458f97fc29f161fa8, type: 3}
   m_Name: Recettes - WoodTile
   m_EditorClassIdentifier: 
-  convertionTime: 1
+  convertionTime: 1.4
   requiredItemStacks:
   - stackType: 1
     currentNumber: 0

@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{e887dda1-7ffd-4e10-bdd4-e72944d8208a}">
 		<property name="name">
-			<value>Terraformingup</value>
+			<value>Terraformingdown</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
 		</property>
 		<relationship name="folder">
-			<destination>{d6664914-7b2f-4ab1-95b6-11c8bc67f060}</destination>
+			<destination>{397d8fa1-130c-410e-a31e-b7fdc28f00aa}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{e5b56738-05b5-4b10-971f-26b9aeaa3f05}</destination>

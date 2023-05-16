@@ -14,7 +14,7 @@ public class SOM_Chantier : SO_Mission
         Tile tile = null;
         for (int i = ts.Count - 1; i >= 0 ; i--)
         {
-            if (ts[i].walkable && ts[i].tileSpawnType == Tile.TileType.construction)
+            if (ts[i].walkable && ts[i].tileSpawnType == TileType.construction)
             {
                 tile = ts[i];
             }
@@ -25,7 +25,7 @@ public class SOM_Chantier : SO_Mission
             return;
         }
         page.chantier = Instantiate(chantierPrefab, tile.transform.position + Vector3.up * GameConstant.tileHeight, Quaternion.identity);
-        tile.tileSpawnType = Tile.TileType.Neutral;
+        tile.tileSpawnType = TileType.Neutral;
         _missionText.text = description;
     }
 

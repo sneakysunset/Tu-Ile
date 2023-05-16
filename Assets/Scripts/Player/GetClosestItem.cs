@@ -22,6 +22,7 @@ public class GetClosestItem : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+
         if (other.TryGetComponent(out Item item) && !player.holdableItems.Contains(item))
         {
             if (player.heldItem != item && item.holdable)

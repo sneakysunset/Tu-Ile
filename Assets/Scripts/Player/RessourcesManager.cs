@@ -21,6 +21,8 @@ public struct ressourceMeshCollecUnstackable
     public string name;
     public Item_Stack.ItemType itemType;
     public Sprite sprite;
+    public Mesh mesh;
+    public Material mat;
 }
 
 public class RessourcesManager : MonoBehaviour
@@ -29,7 +31,4 @@ public class RessourcesManager : MonoBehaviour
     public List<ressourceMeshsCollec> RessourceMeshs;
     public List<ressourceMeshCollecUnstackable> RessourceMeshsUnstackable;
 
-    private void Update()
-    {
-    }
 }

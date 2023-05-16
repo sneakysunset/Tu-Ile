@@ -6,6 +6,7 @@ using TMPro;
 using System;
 using FMOD;
 using Unity.VisualScripting;
+using NaughtyAttributes;
 
 [System.Flags]
 public enum SpawnPositions
@@ -20,6 +21,9 @@ public enum SpawnPositions
     Pos7 = 64,
     Everything = 0b1111
 }
+
+public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, BouncyTile, LevelLoader, construction };
+
 
 public class Tile : MonoBehaviour
 {
@@ -40,7 +44,6 @@ public class Tile : MonoBehaviour
     public SpawnPositions spawnPositions;
     [SerializeField] public bool spawnSpawners;
 
-    public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, BouncyTile, LevelLoader, construction };
     [HideNormalInspector] public int coordX, coordFX, coordY;
     [HideNormalInspector] public bool walkedOnto = false;
     [HideNormalInspector] public Vector3 currentPos;
@@ -53,7 +56,7 @@ public class Tile : MonoBehaviour
     public bool tourbillon;
     public float tourbillonSpeed;
     [HideNormalInspector] public bool sand_WalkedOnto;
-    public string levelName;
+     public string levelName;
     #endregion
 
     #region Degradation
@@ -64,14 +67,14 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public AnimationCurve degradationTimerAnimCurve;
     [HideInInspector] public float degradingSpeed;
     [HideInInspector] public float typeDegradingSpeed = 1;
-    [HideInInspector] public bool isGrowing;
+    [HideNormalInspector] public bool isGrowing;
     [HideInInspector] public float degSpeed = 1;
     [HideNormalInspector] public float timeToGetToMaxDegradationSpeed;
     #endregion
 
     #region Interactor Spawning
     [HideInInspector] public List<Transform> spawnPoints;
-    [HideInInspector] public bool readyToRoll;
+    [HideNormalInspector] public bool readyToRoll;
     bool spawning;
     #endregion
 
@@ -135,20 +138,20 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
-        if(transform.position.y == currentPos.y && spawning)
+        if(transform.position.y == currentPos.y && spawning && !TileSystem.Instance.isHub)
         {
             spawning = false;
             pSys.transform.position = new Vector3(pSys.transform.position.x, 0, pSys.transform.position.z) ;
             pSysCreation.Play();
         }
 
-        if(transform.position!=currentPos && !shakeFlag && !tileS.isHub)
+        if(transform.position!=currentPos && !shakeFlag && !tileS.isHub && walkable)
         {
             StartCoroutine(TileShake(.1f));
         }
         // StepText();
         isFaded = false;
-        if (pSysIsPlaying && walkedOnto && degradable && tileType == TileType.Neutral)
+        if (pSysIsPlaying && walkedOnto && degradable && tileType == TileType.Neutral && !TileSystem.Instance.isHub)
         {
             pSys.Stop(); 
             myMeshR.material.color = walkedOnColor;
@@ -290,7 +293,7 @@ public class Tile : MonoBehaviour
     {
         TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
         float rot = UnityEngine.Random.Range(0, 360);
-
+        readyToRoll = true;
         transform.Rotate(0, rot - (rot % 60), 0);
         tileType = tType;
         spawning = true;
@@ -310,6 +313,7 @@ public class Tile : MonoBehaviour
         currentPos.y = height - (height % heightByTile);
         isGrowing = true;
         tileS.tileC.Count();
+
     }
     private void GetAdjCoords()
     {
@@ -342,10 +346,14 @@ public class Tile : MonoBehaviour
         if (!fadeChecker)
         {
             fadeChecker = true;
-            ChangeRenderMode.ChangeRenderModer(myMeshR.material, ChangeRenderMode.BlendMode.Transparent);
-            Color col = myMeshR.material.color;
+            ChangeRenderMode.ChangeRenderModer(myMeshR.materials[0], ChangeRenderMode.BlendMode.Transparent);
+            ChangeRenderMode.ChangeRenderModer(myMeshR.materials[1], ChangeRenderMode.BlendMode.Transparent);
+            Color col = myMeshR.materials[0].color;
+            Color col2 = myMeshR.materials[1].color;
             col.a = t;
-            myMeshR.material.color = col;
+            col2.a = t;
+            myMeshR.materials[0].color = col;
+            myMeshR.materials[1].color = col2;
         }
     }
 
@@ -354,10 +362,14 @@ public class Tile : MonoBehaviour
         if (!isFaded && fadeChecker)
         {
             fadeChecker = false;
-            ChangeRenderMode.ChangeRenderModer(myMeshR.material, ChangeRenderMode.BlendMode.Opaque);
-            Color col = myMeshR.material.color;
+            ChangeRenderMode.ChangeRenderModer(myMeshR.materials[0], ChangeRenderMode.BlendMode.Opaque);
+            ChangeRenderMode.ChangeRenderModer(myMeshR.materials[1], ChangeRenderMode.BlendMode.Opaque);
+            Color col = myMeshR.materials[0].color;
+            Color col2 = myMeshR.materials[1].color;
             col.a = .2f;
+            col2.a = .2f;
             myMeshR.material.color = col;
+            myMeshR.materials[1].color = col2;
         }
     }
     #endregion
@@ -379,9 +391,9 @@ public class Tile : MonoBehaviour
             if (!myMeshF) myMeshF = GetComponent<MeshFilter>();
             if (!myMeshC) myMeshC = GetComponent<MeshCollider>();
             minableItems = transform.Find("SpawnPositions");
-            myMeshR.sharedMaterial = getCorrespondingMat(tileType);
-            myMeshF.sharedMesh = getCorrespondingMesh(tileType);
-            myMeshC.sharedMesh = myMeshF.sharedMesh;
+            if (getCorrespondingMat(tileType) != null) myMeshR.sharedMaterial = getCorrespondingMat(tileType);
+            if (getCorrespondingMesh(tileType) != null) myMeshF.sharedMesh = getCorrespondingMesh(tileType);
+            //myMeshC.sharedMesh = myMeshF.sharedMesh;
             if (!walkable)
             {
                 transform.Find("Additional Visuals").gameObject.SetActive(false);
@@ -395,6 +407,8 @@ public class Tile : MonoBehaviour
         }
     }
 #endif
+
+    public Mesh constructionMesh;
     private void OnDrawGizmos()
     {
         if(heightByTile != 0 && !Application.isPlaying)
@@ -402,7 +416,13 @@ public class Tile : MonoBehaviour
             float r = transform.position.y % heightByTile;
             transform.position = new Vector3(transform.position.x, transform.position.y - r, transform.position.z);
         }
+        
+        if(tileSpawnType == TileType.construction)
+        {
+            Gizmos.DrawMesh(constructionMesh, 0, transform.position + GameConstant.tileHeight * Vector3.up, Quaternion.identity);
+        }
     }
+
     private void StepText()
     {
         AI_Text.text = step.ToString();
@@ -424,7 +444,7 @@ public class TileEditor : Editor
         tile = (Tile)target;
         tile.UpdateObject();
     }
-
+    
 
 
     private void OnSceneGUI()
@@ -462,7 +482,7 @@ public class TileEditor : Editor
         TileMats tileM = FindObjectOfType<TileMats>();
 
 
-        if (tile.spawnSpawners && tile.tileSpawnType != Tile.TileType.Neutral)
+        if (tile.spawnSpawners && tile.tileSpawnType != TileType.Neutral)
         {
             Transform t = tile.transform.Find("SpawnPositions");
             foreach (Transform tr in t)
@@ -484,7 +504,7 @@ public class TileEditor : Editor
             }
             tile.spawnSpawners = false;
         }
-        else if (tile.spawnSpawners && tile.tileSpawnType == Tile.TileType.Neutral)
+        else if (tile.spawnSpawners && tile.tileSpawnType == TileType.Neutral)
         {
             tile.spawnSpawners = false;
 
@@ -503,19 +523,19 @@ public class TileEditor : Editor
         GameObject prefab = null;
         switch (tile.tileSpawnType)
         {
-            case Tile.TileType.Wood:
+            case TileType.Wood:
                 prefab = tileM.treePrefab;
                 break;
-            case Tile.TileType.Rock:
+            case TileType.Rock:
                 prefab = tileM.rockPrefab;
                 break;
-            case Tile.TileType.Gold:
+            case TileType.Gold:
                 prefab = tileM.goldPrefab;
                 break;
-            case Tile.TileType.Diamond:
+            case TileType.Diamond:
                 prefab = tileM.diamondPrefab;
                 break;
-            case Tile.TileType.Adamantium:
+            case TileType.Adamantium:
                 prefab = tileM.adamantiumPrefab;
                 break;
         }

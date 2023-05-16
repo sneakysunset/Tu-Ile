@@ -17,6 +17,7 @@ public class SOM_Elim : SO_Mission
 
     public override void OnActivated(Image _missionChecker, TextMeshProUGUI _missionText, ref missionPage page)
     {
+        page.numOfKilledItem = 0;
         base.OnActivated(_missionChecker, _missionText, ref page);
         TimeLineEvents.InstantiateItems(itemToKill.gameObject, numToSpawn, radiusWidth, spawnHeight);
         _missionText.text = description;

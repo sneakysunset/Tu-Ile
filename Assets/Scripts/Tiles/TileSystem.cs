@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using System.Linq;
 #if UNITY_EDITOR
 using AmplifyShaderEditor;
 #endif
@@ -57,15 +58,18 @@ public class TileSystem : MonoBehaviour
 
     private void Start()
     {
-        gT = FindObjectOfType<GameTimer>();
-        StartCoroutine(ElevateWorld(centerTile));
+        if(!isHub)
+            gT = FindObjectOfType<GameTimer>();
+        StartCoroutine(ElevateWorld());
     }
 
     private void Update()
     {
-        
-        timerInterpolateValue += Time.deltaTime * (1 / gT.gameTimer);
-        degradationTimerModifier = tileP.degradationTimerAnimCurve.Evaluate(timerInterpolateValue); 
+        if (!isHub)
+        {
+            timerInterpolateValue += Time.deltaTime * (1 / gT.gameTimer);
+            degradationTimerModifier = tileP.degradationTimerAnimCurve.Evaluate(timerInterpolateValue); 
+        } 
     }
 
     public Tile WorldPosToTile(Vector3 pos)
@@ -82,8 +86,11 @@ public class TileSystem : MonoBehaviour
         return tiles[x, z];
     }
 
-    public IEnumerator SinkWorld(Tile tile, string levelToLoad)
+    public IEnumerator SinkWorld(string levelToLoad)
     {
+        if (!isHub)
+            StartCoroutine(gT.LerpTimeLine(gT.UIPos.anchoredPosition, gT.UIPos.anchoredPosition + Vector2.up * -100, gT.UIPos, gT.lerpCurveEaseIn, gT.lerpSpeed));
+        Tile tile = centerTile;
         List<Tile> ts = new List<Tile>();
         ts.Add(tile);
         bool isOver = false;
@@ -145,13 +152,22 @@ public class TileSystem : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
-        yield return new WaitForSeconds(3);
-        SceneManager.LoadScene(levelToLoad);
+        
+
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(levelToLoad, LoadSceneMode.Single);
+        //PlayersManager.playerNumber = FindObjectsOfType<Player>().Length;
+        PlayerPrefs.SetInt("PlayerNumber", FindObjectsOfType<Player>().Length);
         ready = false;
     }
 
-    public IEnumerator ElevateWorld(Tile tile)
+    public IEnumerator ElevateWorld()
     {
+        Tile tile = centerTile;
+        if(!isHub)
+            gT.UIPos.anchoredPosition += Vector2.up * -100;
+        if (!isHub)
+            StartCoroutine(gT.LerpTimeLine(gT.UIPos.anchoredPosition, gT.UIPos.anchoredPosition + Vector2.up * 100, gT.UIPos, gT.lerpCurveEaseOut, gT.lerpSpeed));
         List<Tile> ts = new List<Tile>();
         ts.Add(tile);
         bool isOver = false;
@@ -179,19 +195,15 @@ public class TileSystem : MonoBehaviour
 
             foreach (Tile t in ts)
             {
-                if (t.walkable /*&& t != tile*/)
+                if (t.walkable)
                 {
-                    //t.degradable = true;
-                    //t.currentPos.y = -t.heightByTile;
                     t.readyToRoll = true;
                 }
-                //t.tourbillon = false;
-                //t.tourbillonT.gameObject.SetActive(false);
             }
             tile.degradable = false;
             j++;
             float timer = waitTimer / j;
-            //float timer = .1f + Random.Range(-.1f, .3f);
+
             while (timer > 0)
             {
                 timer -= Time.deltaTime;
@@ -209,7 +221,10 @@ public class TileSystem : MonoBehaviour
         }
         TileSystem.Instance.lerpingSpeed = 1;
         ready = true;
-        foreach(Tile t in ts)
+
+        
+
+        foreach (Tile t in ts)
         {
             t.isPathChecked = false;
         }
@@ -401,6 +416,10 @@ public class TileSystemEditor : Editor
     private void OnEnable()
     {
         tileS = (TileSystem)target;
+        foreach(var tile in tileS.tiles)
+        {
+            tile.UpdateObject();
+        }
     }
 
 

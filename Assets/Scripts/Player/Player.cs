@@ -1,5 +1,7 @@
+using Cinemachine;
 using FMOD;
 using FMOD.Studio;
+using ProjectDawn.SplitScreen;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
@@ -28,15 +30,20 @@ public class Player : MonoBehaviour
     [HideInInspector] public Collider col;
     public ParticleSystem hitParticleSystem;
     [HideInInspector] public List<Transform> pointers;
+    public float drawningTimer = 2;
+    bool waterFlag = false;
+    CinemachineTargetGroup targetGroup;
+    SplitScreenEffect sse;
+    [HideInInspector] public Transform dummyTarget;
     private void Awake()
     {
+
         if (respawnTile == null)
         {
             respawnTile = TileSystem.Instance.centerTile;
-            transform.position = respawnTile.transform.position + Vector3.up * 22.5f;
         }
-        //DontDestroyOnLoad(this.gameObject);
-        //FindObjectOfType<CameraCtr>().AddPlayer(transform);
+        dummyTarget = transform.Find("DummyTarget");
+        if (TileSystem.Instance.isHub && Time.time > 1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget);
         col = GetComponent<Collider>();
         pointers = new List<Transform>();
         Transform pointerFolder = transform.Find("PointerFolder");
@@ -44,18 +51,26 @@ public class Player : MonoBehaviour
         {
             pointers.Add(go);
         }
+
+
     }
 
     private void Start()
     {
-        tileS = FindObjectOfType<TileSystem>();
+       
+        tileS = TileSystem.Instance;
+        respawnTile = tileS.centerTile;
         interactors = new List<Interactor>();   
         holdableItems = new List<Item>();
         pM = GetComponent<PlayerMovement>();
         _characterController = pM.GetComponent<CharacterController>();
+        _characterController.enabled = false;
+        transform.position = new Vector3(TileSystem.Instance.centerTile.transform.position.x, GameConstant.tileHeight + 10, TileSystem.Instance.centerTile.transform.position.z);
+        _characterController.enabled = true ;
         anim = GetComponentInChildren<Animator>();
         tileSelec = GetComponent<TileSelector>();
-
+        targetGroup = FindObjectOfType<CinemachineTargetGroup>();
+        sse = Camera.main.GetComponent<SplitScreenEffect>();
     }
 
     private void Update()
@@ -127,24 +142,50 @@ public class Player : MonoBehaviour
             pM.jumpInput = true;
             anim.Play("Jump", 0);
         }
-        else if (hit.transform.CompareTag("Water") && !waterValidate)
+        else if (hit.transform.CompareTag("Water") && !waterValidate && !waterFlag)
         {
-            waterValidate = true;
-            Instantiate(waterSplash, hit.point + 2 * Vector3.up, Quaternion.identity, null);
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
-            transform.position = respawnTile.transform.position + 25f * Vector3.up;
-            if (heldItem != null)
-            {
-                print(2);
-                heldItem.GrabRelease();
-                Destroy(heldItem.gameObject);
-                heldItem = null;
-            }
+            StartCoroutine(Drawning(hit));
+            
         }
         else if (hit.transform.TryGetComponent<PlayerMovement>(out PlayerMovement player) && pM.dashFlag && !player.dashFlag)
         {
             StartCoroutine(player.Dashed(-hit.normal, pM.pushStrength));
         }
+    }
+
+    IEnumerator Drawning(ControllerColliderHit hit)
+    {
+        waterValidate = true;
+        waterFlag = true;
+        
+        Physics.IgnoreCollision(col, hit.collider, true);
+        Instantiate(waterSplash, hit.point + 2 * Vector3.up, Quaternion.identity, null);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning");
+        dummyTarget.parent = null;
+        pM.canMove = false;
+
+        if (heldItem != null)
+        {
+            heldItem.GrabRelease(true);
+            Destroy(heldItem.gameObject);
+        }
+
+        pM._velocity = 0;
+        float currentGravityMult = pM.gravityMultiplier;
+        pM.gravityMultiplier = .03f;
+        yield return new WaitForSeconds(drawningTimer);
+        Physics.IgnoreCollision(col, hit.collider, false);
+        pM._velocity = 0;
+        _characterController.enabled = false;
+        transform.position = respawnTile.transform.position + (25f + 3f) * Vector3.up;
+        _characterController.enabled = true;
+        pM.canMove = true;
+/*        targetGroup.m_Targets[j].target = transform;
+        sse.Screens[k].Target = transform ;*/
+        dummyTarget.parent = transform;
+        dummyTarget.localPosition = Vector3.zero;
+        pM.gravityMultiplier = currentGravityMult;
+        waterFlag = false;
     }
 
     private void OnDestroy()

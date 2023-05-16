@@ -38,9 +38,9 @@ public class Player_StopDegradation : MonoBehaviour
 
     private void LoadScene()
     {
-        if(player.tileUnder && player.tileUnder.tileType == Tile.TileType.LevelLoader && isGrowing)
+        if(player.tileUnder && player.tileUnder.tileType == TileType.LevelLoader && isGrowing)
         {
-            StartCoroutine(TileSystem.Instance.SinkWorld(TileSystem.Instance.centerTile, player.tileUnder.levelName));
+            StartCoroutine(TileSystem.Instance.SinkWorld(player.tileUnder.levelName));
         }
         isGrowing = false;
     }
@@ -72,6 +72,7 @@ public class Player_StopDegradation : MonoBehaviour
             stackItem.numberStacked -= ressourcesManager.growthCost;
             tile.currentPos.y += tile.heightByTile;
             tile.isGrowing = true;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Cast");
         }
         isGrowing = false;
     }

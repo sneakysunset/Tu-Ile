@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI ;
 using System.Linq;
+using UnityEditor;
 
 [System.Serializable]
 public class Event
@@ -24,19 +25,35 @@ public class GameTimer : MonoBehaviour
     public float gameTimer;
     [HideNormalInspector] public float timer;
     public UnityEvent LevelEnd;
-    public Image timerFillImage;
-    public Transform eventFolder;
-    public GameObject eventVisualPrefab;
     public Sprite apocalypseImage;
     public Sprite newPageImage;
     public Sprite ephemeralMissionImage;
     private Player[] players;
-    public Image minuteBar;
-    public Image secondBar;
-    public Transform minuteFolder;
+    public GameObject eventVisualPrefab;
     MissionManager missionManager;
+    public Image secondBar;
+    public Image minuteBar;
+
+    [HideInInspector] public RectTransform UIPos;
+    [HideInInspector] public Image timerFillImage;
+    [HideInInspector] public Transform eventFolder;
+    [HideInInspector] public Transform minuteFolder;
+
+    [Space(10)]
+    [Header("LERP")]
+    [Space(5)]
+    public AnimationCurve lerpCurveEaseIn;
+    public AnimationCurve lerpCurveEaseOut;
+    public float lerpSpeed;
+
+
+
     private void Start()
     {
+        UIPos = FindObjectOfType<LoadScene>().transform.Find("TimeBar").GetComponent<RectTransform>();
+        timerFillImage = UIPos.GetChild(0).GetChild(0).GetChild(1).GetComponent<Image>();
+        eventFolder = timerFillImage.transform.parent.GetChild(2);
+        minuteFolder = timerFillImage.transform.parent.GetChild(0);
         missionManager = MissionManager.Instance;
         //SortList();
         RectTransform r = timerFillImage.transform as RectTransform;
@@ -69,6 +86,7 @@ public class GameTimer : MonoBehaviour
         players = FindObjectsOfType<Player>();
     }
 
+
     private void SortList()
     {
         for (int i = 0; i < events.Count - 1; i++)
@@ -90,6 +108,21 @@ public class GameTimer : MonoBehaviour
         }
     }
 
+
+    public IEnumerator LerpTimeLine(Vector3 startPos, Vector3 endPos, RectTransform tr, AnimationCurve curve, float speed)
+    {
+        float t = 0;
+        tr.anchoredPosition = startPos;
+        WaitForEndOfFrame waiter = new WaitForEndOfFrame();
+        while(t < 1)
+        {
+            t += Time.deltaTime * (1/speed);
+            tr.anchoredPosition = Vector3.Lerp(startPos, endPos, curve.Evaluate(t));
+            yield return waiter;
+        }
+        tr.anchoredPosition = endPos;
+    }
+
     private void Update()
     {
         if (TileSystem.Instance.ready)
@@ -98,6 +131,8 @@ public class GameTimer : MonoBehaviour
 
             TimelineEvent();
         }
+        if(Input.GetKeyDown(KeyCode.V)) timer = gameTimer - 5;
+        if(Input.GetKeyDown(KeyCode.B)) timer = 100 - 5;
     }
 
     private void GameTimerFunction()
@@ -111,7 +146,7 @@ public class GameTimer : MonoBehaviour
                 p.respawnTile = players[0].tileUnder;
             }
             
-            StartCoroutine(TileSystem.Instance.SinkWorld(players[0].tileUnder, "Hub"));
+            StartCoroutine(TileSystem.Instance.SinkWorld("Hub"));
         }
 
         timerFillImage.fillAmount = timer / gameTimer;
