@@ -11,11 +11,12 @@ public class SOM_Boussole : SO_Mission
     public int minDistanceFromCenter;
     public int maxDistanceFromCenter;
 
-    public override void OnActivated(Image _missionChecker, TextMeshProUGUI _missionText, ref missionPage page)
+    public override void OnActivated(MissionUI mUIInGame, MissionUI mUIInPause, ref missionPage page)
     {
-        base.OnActivated(_missionChecker, _missionText, ref page);
-        _missionText.text = description;
-
+        base.OnActivated(mUIInGame ,mUIInPause, ref page);
+        mUIInPause.missionText.text = description;
+        mUIInGame.missionText.text = "";
+        mUIInGame.missionChecker.sprite = ressourcesManager.mCompass;
         TileSystem tileSystem = TileSystem.Instance;
         List<Tile> tiles = tileSystem.GetTilesBetweenRaws(minDistanceFromCenter, maxDistanceFromCenter, tileSystem.centerTile);
         if(TileSystem.Instance.ready) page.boussoleTile = tiles[Random.Range(0, tiles.Count)];

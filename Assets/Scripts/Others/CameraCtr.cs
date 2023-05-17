@@ -3,6 +3,7 @@ using ProjectDawn.SplitScreen;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static Unity.Burst.Intrinsics.X86;
 
 public class CameraCtr : MonoBehaviour
@@ -10,39 +11,65 @@ public class CameraCtr : MonoBehaviour
     public float smoother;
     private Vector3 velocity;
     private Camera cam;
-    private List<Transform> players;
+    [HideNormalInspector] public List<Transform> players;
     public LayerMask lineCastLayers;
     public float sphereCastRadius;
     [Range(0,1)]public float transparencyLevel;
     public Vector3 medianPos;
-    public CinemachineVirtualCamera virtualCamera, endVirtualCam;
+    public CinemachineVirtualCamera dezoomCamera;
     private Vector3 direction;
     private float distance;
     private SplitScreenEffect sCE;
     public float distanceToSplit;
     private CinemachineTargetGroup targetGroup;
+    private List<ScreenData> tempScreens;
 
     public Material player1Mat, player2Mat, player3Mat, player4Mat;
-    IEnumerator Start()
+    private void Start()
     {
-        
+        DontDestroyOnLoad(this.gameObject);
         cam = Camera.main;
         direction = cam.transform.position - transform.position;
-        if (!TileSystem.Instance.isHub)
+        SceneManager.sceneLoaded += OnLoad;
+        sCE = GetComponentInChildren<SplitScreenEffect>();
+        StartCoroutine(changeCam());
+        tempScreens = sCE.Screens;
+    }
+
+
+    IEnumerator changeCam()
+    {
+        yield return new WaitForSeconds(3);
+        dezoomCamera.Priority = 2;
+    }
+
+    public void OnLoad(Scene scene, LoadSceneMode mode)
+    {
+
+        TileSystem.Instance.StartCoroutine(OnLevelLoad());
+        dezoomCamera.LookAt = TileSystem.Instance.centerTile.transform.GetChild(0).GetChild(0) ;
+        for (int i = 0; i < sCE.Screens.Count; i++)
         {
-            sCE = GetComponentInChildren<SplitScreenEffect>();
-            sCE.enabled = false;
+            if (sCE.Screens[i].Target == null)
+            {
+                sCE.Screens.RemoveAt(i);
+                i--;
+            } 
         }
-        yield return new WaitUntil(()=> TileSystem.Instance.ready);
-        if(virtualCamera != null)
+    }   
+
+    public IEnumerator OnLevelLoad()
+    {
+        yield return new WaitUntil(() => TileSystem.Instance.ready);
+        if (dezoomCamera != null)
         {
-            virtualCamera.Priority = 2;
+            dezoomCamera.Priority = 2;
         }
     }
 
     public void Dezoom()
     {
-        virtualCamera.Priority = 4;
+        dezoomCamera.Priority = 4;
     }
 
     private void Update()
@@ -55,28 +82,22 @@ public class CameraCtr : MonoBehaviour
             }
             else if(Vector3.Distance(players[0].transform.position, players[1].transform.position) < distanceToSplit + 15)
             {
-                sCE.enabled = false;
+                sCE.enabled = false;   
             }        
         }
     }
 
     public void DezoomCam()
     {
-        if (virtualCamera != null)
+        if (dezoomCamera != null)
         {
-            virtualCamera.Priority = 4;
+            dezoomCamera.Priority = 4;
         }
     }
     private void LateUpdate()
     {
         LineCastToPlayer();
-        Vector3 medianPos = Vector3.zero;
-        foreach (Transform player in players)
-        {
-            medianPos += player.transform.position;
-        }
-        medianPos /= players.Count;
-        //transform.position = Vector3.SmoothDamp(transform.position, medianPos, ref velocity, smoother);
+       
     }
 
     public void AddPlayer(Transform player)
@@ -88,6 +109,15 @@ public class CameraCtr : MonoBehaviour
         players.Add(player);
         SkinnedMeshRenderer[] sRs = player.parent.GetComponentsInChildren<SkinnedMeshRenderer>();
         MeshRenderer meshRenderer = player.parent.GetComponentInChildren<MeshRenderer>();
+
+        foreach(ScreenData screen in sCE.Screens)
+        {
+            if(screen.Target == null)
+            {
+                screen.Target = player;
+                break;
+            }
+        }
 
         switch (players.Count)
         {
@@ -161,22 +191,25 @@ public class CameraCtr : MonoBehaviour
     private void LineCastToPlayer()
     {
         Vector3 camPos = cam.transform.position;
-        foreach(Transform player in  players)
+        if (TileSystem.Instance.ready)
         {
-            Vector3 direction = (player.position - camPos).normalized;
-            float distance = Vector3.Distance(player.position, cam.transform.position) - sphereCastRadius;
-            RaycastHit[] hits = Physics.SphereCastAll(camPos, sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
-            if (hits.Length > 0)
+            foreach(Transform player in  players)
             {
-                foreach (RaycastHit hit in hits)
+                Vector3 direction = (player.position - camPos).normalized;
+                float distance = Vector3.Distance(player.position, cam.transform.position) - sphereCastRadius;
+                RaycastHit[] hits = Physics.SphereCastAll(camPos, sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
+                if (hits.Length > 0)
                 {
-                    if (hit.transform.TryGetComponent<Tile>(out Tile tile))
+                    foreach (RaycastHit hit in hits)
                     {
-                            tile.FadeTile(transparencyLevel);
-                    }
-                    else if (hit.transform.TryGetComponent<Interactor>(out Interactor inter))
-                    {
-                            inter.FadeTile(transparencyLevel);
+                        if (hit.transform.TryGetComponent<Tile>(out Tile tile))
+                        {
+                                tile.FadeTile(transparencyLevel);
+                        }
+                        else if (hit.transform.TryGetComponent<Interactor>(out Interactor inter))
+                        {
+                                inter.FadeTile(transparencyLevel);
+                        }
                     }
                 }
             }

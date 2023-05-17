@@ -58,7 +58,7 @@ public class SoundEffect : MonoBehaviour
                         break;
                 }
                 player.hitParticleSystem.Play();
-                if(player.interactors[i].isInteractedWith && player.interactors[i].interactable) 
+                if(player.interactors[i].isInteractedWith && player.interactors[i].interactable && TileSystem.Instance.ready) 
                 {
                     player.interactors[i].OnFilonMined();
                 }

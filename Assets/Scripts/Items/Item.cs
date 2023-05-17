@@ -93,7 +93,6 @@ public class Item : MonoBehaviour
         StartCoroutine(MissionManager.Instance.CheckElimMission(type));
         if (_player)
         {
-            print(3);
             _player.heldItem = null;
             if (_player.holdableItems.Contains(this))
             {

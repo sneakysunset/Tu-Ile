@@ -15,12 +15,14 @@ public class SOM_Elim : SO_Mission
     public float radiusWidth = 10;
     public float spawnHeight = 30;
 
-    public override void OnActivated(Image _missionChecker, TextMeshProUGUI _missionText, ref missionPage page)
+    public override void OnActivated(MissionUI mUIInGame, MissionUI mUIInPause, ref missionPage page)
     {
+        base.OnActivated(mUIInGame, mUIInPause, ref page);
         page.numOfKilledItem = 0;
-        base.OnActivated(_missionChecker, _missionText, ref page);
+        mUIInGame.missionChecker.sprite = ressourcesManager.mChickenElim;
+        mUIInPause.missionChecker.sprite = ressourcesManager.mChickenElim;
         TimeLineEvents.InstantiateItems(itemToKill.gameObject, numToSpawn, radiusWidth, spawnHeight);
-        _missionText.text = description;
-        _missionText.text = description + " " + page.numOfKilledItem.ToString() + " / " + requiredNum.ToString();
+        mUIInGame.missionText.text = page.numOfKilledItem.ToString() + " / " + requiredNum.ToString();
+        mUIInPause.missionText.text = description + " " + page.numOfKilledItem.ToString() + " / " + requiredNum.ToString();
     }
 }

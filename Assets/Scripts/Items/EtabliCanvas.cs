@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class EtabliCanvas : MonoBehaviour
 {
     CameraCtr cam;
     Item_Etabli etabli;
-    TextMeshProUGUI[] texts;
+    public TextMeshProUGUI[] textsNear;
+    public TextMeshProUGUI[] textsFar;
     Transform mainCamera;
-    Image[] images;
+    public UnityEngine.UI.Image[] imagesNear;
+    public UnityEngine.UI.Image[] imagesFar;
+    public UnityEngine.UI.Image resultImageFar;
+    public UnityEngine.UI.Image resultImageNear;
+    public RectTransform backGroundNear;
+    public RectTransform backGroundFar;
     private RessourcesManager rMan;
 
 
@@ -20,14 +28,16 @@ public class EtabliCanvas : MonoBehaviour
     {
         rMan = FindObjectOfType<RessourcesManager>();
         cam = FindObjectOfType<CameraCtr>();
-        texts = GetComponentsInChildren<TextMeshProUGUI>();
-        mainCamera = Camera.main.transform;
-        images = GetComponentsInChildren<Image>();
-        images[0].rectTransform.localScale = new Vector3(images[0].rectTransform.localScale.x, 0, images[0].rectTransform.localScale.z);
-        for (int i = 0; i < images.Length - 1; i++)
+        backGroundFar.localScale = new Vector3(0.35f, backGroundFar.localScale.y, backGroundFar.localScale.z);
+        backGroundNear.localScale = new Vector3(backGroundNear.localScale.x, 0.65f, backGroundNear.localScale.z);
+        
+        if(Camera.main) mainCamera = Camera.main.transform;
+        for (int i = 0; i < imagesNear.Length; i++)
         {
-            images[i + 1].gameObject.SetActive(false);
-            texts[i].text = string.Empty;
+            imagesNear[i].gameObject.SetActive(false);
+            imagesFar[i].gameObject.SetActive(false);
+            textsNear[i].gameObject.SetActive(false);
+            if(i - 1 >= 0) textsFar[i - 1].gameObject.SetActive(false);
         }
 
         int f = 0;
@@ -38,9 +48,16 @@ public class EtabliCanvas : MonoBehaviour
             {
                 if (rMC.stackType == etabli.recette.requiredItemStacks[i].stackType)
                 {
-                    images[i + 1].sprite = rMC.sprite;
-                    images[i + 1].gameObject.SetActive(true);
-                    images[0].rectTransform.localScale += .35f * Vector3.up;
+                    imagesNear[i].sprite = rMC.sprite;
+                    imagesNear[i].gameObject.SetActive(true);
+                    imagesFar[i].gameObject.SetActive(true);
+                    imagesFar[i].sprite = rMC.sprite;
+                    if(i - 1 >= 0) textsFar[i - 1].gameObject.SetActive(true);
+                    textsNear[f].gameObject.SetActive(true);
+                    backGroundNear.localScale += .35f * Vector3.up;
+                    backGroundFar.localScale += .30f * Vector3.right;
+                    RectTransform p = backGroundFar.parent as RectTransform;
+                    //p.anchoredPosition += 75 * Vector2.right;
                     f++;
                 }
             }
@@ -52,16 +69,59 @@ public class EtabliCanvas : MonoBehaviour
             {
                 if (rMC.itemType == etabli.recette.requiredItemUnstackable[i].itemType)
                 {
-                    images[f + 1].gameObject.SetActive(true);
-                    images[f + 1].sprite = rMC.sprite;
-                    images[0].rectTransform.localScale += .35f * Vector3.up;
+                    imagesNear[f].gameObject.SetActive(true);
+                    imagesNear[f].sprite = rMC.sprite;
+                    imagesFar[f].gameObject.SetActive(true);
+                    imagesFar[f].sprite = rMC.sprite;
+                    if (f - 1 >= 0) textsFar[f - 1].gameObject.SetActive(true);
+                    textsNear[f].gameObject.SetActive(true);
+                    backGroundNear.localScale += .35f * Vector3.up;
+                    backGroundFar.localScale += .35f * Vector3.right;
+                    RectTransform p = backGroundFar.parent as RectTransform;
+                    //p.anchoredPosition += 75 * Vector2.right;
                     f++;
                 }
             }
         }
 
-        
+        foreach (var r in rMan.ressourceRecettesResults)
+        {
+            bool yo = false;
+            switch (etabli.recette.craftedItemPrefab.GetType().ToString())
+            {
+                case "Item_Stack_Tile":
+                Item_Stack_Tile iS = etabli.recette.craftedItemPrefab as Item_Stack_Tile;
+                if (iS.stackType == r.tileType && r.isTile)
+                {
+                    resultImageFar.sprite = r.sprite;
+                    resultImageNear.sprite = r.sprite;
+                    yo = true;
+                }
+                break;
+            case "Item_Bird":
+                if (r.itemType == Item.ItemType.Bird && !r.isTile)
+                {
+                    resultImageFar.sprite = r.sprite;
+                    resultImageNear.sprite = r.sprite;
+                    yo = true;
+                }
+                break;
+                case "Item_Boussole":
+                if (r.itemType == Item.ItemType.Boussole && !r.isTile)
+                {
+                    resultImageFar.sprite = r.sprite;
+                    resultImageNear.sprite = r.sprite;
+                    yo = true;
+                }
+                break;
+            }
+            if (yo) break;
+        }
+
+
     }
+
+
 
     public void UpdateText(Item_Etabli et)
     {
@@ -77,14 +137,14 @@ public class EtabliCanvas : MonoBehaviour
             {
                 if (rMC.stackType == etabli.recette.requiredItemStacks[i].stackType)
                 {
-                    texts[i].text = "x " + etabli.recette.requiredItemStacks[i].currentNumber + " / " + etabli.recette.requiredItemStacks[i].cost.ToString();
+                    textsNear[i].text = "x " + etabli.recette.requiredItemStacks[i].currentNumber + " / " + etabli.recette.requiredItemStacks[i].cost.ToString();
                     if (etabli.recette.requiredItemStacks[i].currentNumber >= etabli.recette.requiredItemStacks[i].cost)
                     {
-                        texts[i].color = Color.green;
+                        textsNear[i].color = Color.green;
                     }
                     else
                     {
-                        texts[i].color = Color.white;
+                        textsNear[i].color = Color.white;
                     }
                     f++;
                     break;
@@ -100,13 +160,13 @@ public class EtabliCanvas : MonoBehaviour
                 {
                     if (etabli.recette.requiredItemUnstackable[i].isFilled)
                     {
-                        texts[f].text = " V";
-                        texts[f].color = Color.green;
+                        textsNear[f].text = " V";
+                        textsNear[f].color = Color.green;
                     }
                     else
                     {
-                        texts[f].text = "X";
-                        texts[f].color = Color.white;
+                        textsNear[f].text = "X";
+                        textsNear[f].color = Color.white;
                     }
                     f++;
                     break;
@@ -117,6 +177,32 @@ public class EtabliCanvas : MonoBehaviour
 
     void Update()
     {
-        transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
+        if (mainCamera) transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
+    }
+
+    public void PlayerNear()
+    {
+        backGroundNear.parent.gameObject.SetActive(true);
+        backGroundFar.parent.gameObject.SetActive(false);
+    }
+
+    public void PlayerFar()
+    {
+        backGroundFar.parent.gameObject.SetActive(true);
+        backGroundNear.parent.gameObject.SetActive(false);
+    }
+
+    IEnumerator rebuildLayout()
+    {
+        print(90);
+        GetComponent<Canvas>().worldCamera = Camera.main;
+        GetComponentInChildren<HorizontalLayoutGroup>().enabled = false;
+        yield return new WaitForEndOfFrame();
+        GetComponentInChildren<HorizontalLayoutGroup>().CalculateLayoutInputHorizontal();
+        GetComponentInChildren<HorizontalLayoutGroup>().SetLayoutHorizontal();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
+        Canvas.ForceUpdateCanvases();
+        yield return new WaitForEndOfFrame();
+        GetComponentInChildren<HorizontalLayoutGroup>().enabled = true;
     }
 }

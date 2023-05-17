@@ -127,7 +127,7 @@ public class GameTimer : MonoBehaviour
     {
         if (TileSystem.Instance.ready)
         {
-            GameTimerFunction();
+            GameTimerFunction("Hub2");
 
             TimelineEvent();
         }
@@ -135,7 +135,7 @@ public class GameTimer : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.B)) timer = 100 - 5;
     }
 
-    private void GameTimerFunction()
+    private void GameTimerFunction(string levelName)
     {
         timer += Time.deltaTime;
         if (timer >= gameTimer)
@@ -146,7 +146,7 @@ public class GameTimer : MonoBehaviour
                 p.respawnTile = players[0].tileUnder;
             }
             
-            StartCoroutine(TileSystem.Instance.SinkWorld("Hub"));
+            StartCoroutine(TileSystem.Instance.SinkWorld(TileSystem.Instance.centerTile, levelName));
         }
 
         timerFillImage.fillAmount = timer / gameTimer;

@@ -6,13 +6,11 @@ using UnityEngine.InputSystem;
 public class ItemSystem : MonoBehaviour
 {
     private Player player;
-    Item myItem;
     public Transform holdPoint;
 
     private void Start()
     {
         player = GetComponent<Player>();
-        myItem = GetComponent<Item>();
     }
 
     //normal grab action

@@ -10,16 +10,10 @@ using UnityEngine.InputSystem.Users;
 
 public class PlayersManager : MonoBehaviour
 {
-    //public static int playerNumber = 1;
     [HideInInspector] public Player[] players;
     public static PlayersManager Instance;
     CameraCtr cam;
 
-    private void OnApplicationQuit()
-    {
-        //playerNumber = 1;
-        PlayerPrefs.SetInt("PlayerNumber", 1);
-    }
 
     private void Awake()
     {
@@ -36,7 +30,6 @@ public class PlayersManager : MonoBehaviour
 
     private void Start()
     {
-        if (PlayerPrefs.GetInt("PlayerNumber") == 0) PlayerPrefs.SetInt("PlayerNumber", 1);
         players = FindObjectsOfType<Player>();
         cam = FindObjectOfType<CameraCtr>();
         PauseMenu pM = FindObjectOfType<PauseMenu>();
@@ -45,30 +38,13 @@ public class PlayersManager : MonoBehaviour
         SplitScreenEffect sse = FindObjectOfType<SplitScreenEffect>();
         for (int i = 0; i < players.Length; i++)
         {
-            if(i > PlayerPrefs.GetInt("PlayerNumber") - 1)
-            {
-                players[i].gameObject.SetActive(false);
-                foreach(ScreenData sd in sse.Screens)
-                {
-                    if(sd.Target == players[i].dummyTarget)
-                    {
-                        sse.Screens.Remove(sd);
-                        break;
-                    }
-                }
-                
-            }
-            else
-            {
-                cam.AddPlayer(players[i].dummyTarget);
-                players[i].GetComponent<Player_Pause>().pauseMenu = pM;
-            }
+            if(TileSystem.Instance.isHub && !cam.players.Contains(players[i].dummyTarget)) cam.AddPlayer(players[i].dummyTarget);
+            players[i].GetComponent<Player_Pause>().pauseMenu = pM;
         }
     }
 
     private void OnEnable()
     {
-        // Subscribe to the onDeviceChange event
         InputSystem.onDeviceChange += PlayerDisconnect;
     }
 
