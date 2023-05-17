@@ -834,14 +834,15 @@ MonoBehaviour:
   tileS: {fileID: 0}
   myMeshR: {fileID: 5864329386916401334}
   myMeshF: {fileID: 8540724609792189564}
-  myMeshC: {fileID: 1723577319114880016}
   rb: {fileID: 0}
   minableItems: {fileID: 8755437412334106841}
   tourbillonT: {fileID: 0}
   disabledMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
+  falaiseMat: {fileID: 0}
   plaineMat: {fileID: 0}
   undegradableMat: {fileID: 0}
-  sandMat: {fileID: 0}
+  sandMatTop: {fileID: 0}
+  sandMatBottom: {fileID: 0}
   bounceMat: {fileID: 0}
   woodMat: {fileID: 0}
   rockMat: {fileID: 0}
@@ -851,12 +852,15 @@ MonoBehaviour:
   defaultMesh: {fileID: 0}
   woodMesh: {fileID: 0}
   rockMesh: {fileID: 0}
+  sandMesh: {fileID: 0}
   walkedOnColor: {r: 0.8490566, g: 0.734247, b: 0.734247, a: 1}
   notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
   penguinedColor: {r: 0.8584906, g: 0.28076416, b: 0.28076416, a: 1}
+  falaiseColor: {r: 0.7921569, g: 0.64705884, b: 0.64705884, a: 1}
   isPathChecked: 0
   step: 0
   isPenguined: 0
+  etabli: {fileID: 0}
   fadeChecker: 0
   constructionMesh: {fileID: 4493585093827132993, guid: 1f6189940713b064abbc4c99fe3e3ffb, type: 3}
 --- !u!33 &8540724609792189564
@@ -887,8 +891,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4b7c1835df7b9dc4ca1f2d50df02d62a, type: 2}
-  - {fileID: 2100000, guid: 371f099980f497d49817c091b2e0ac46, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -923,7 +927,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -8006216529251997772, guid: 5602145dd92316f43894ceeb9327a67a, type: 3}
+  m_Mesh: {fileID: -2623256933809513941, guid: 40c21bedeba5d5741a50a62d507fbc8e, type: 3}
 --- !u!114 &6588057917838640578
 MonoBehaviour:
   m_ObjectHideFlags: 0

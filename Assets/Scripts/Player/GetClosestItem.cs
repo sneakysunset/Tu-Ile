@@ -107,7 +107,7 @@ public class GetClosestItem : MonoBehaviour
         Item cItem = null;
         float distance = Mathf.Infinity;
 
-        if(player.holdableItems.Count > 0)
+        if(player.holdableItems.Count > 0 && TileSystem.Instance.ready)
         {
             foreach (Item item in player.holdableItems)
             {
@@ -119,12 +119,12 @@ public class GetClosestItem : MonoBehaviour
             }
         }
 
-        if (player.closestItem != null && cItem != player.closestItem)
+        if (TileSystem.Instance.ready && player.closestItem != null && cItem != player.closestItem)
         {
             player.closestItem.Highlight.SetActive(false);
             cItem.Highlight.SetActive(true);
         }
-        else if (player.closestItem == null) cItem.Highlight.SetActive(true);
+        else if (TileSystem.Instance.ready && player.closestItem == null) cItem.Highlight.SetActive(true);
 
         return cItem;
     }

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Windows;
 
 public class Player : MonoBehaviour
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour
     CinemachineTargetGroup targetGroup;
     SplitScreenEffect sse;
     [HideInInspector] public Transform dummyTarget;
+
     private void Awake()
     {
 
@@ -55,9 +57,16 @@ public class Player : MonoBehaviour
 
     }
 
+    public void OnLoad(Scene scene, LoadSceneMode mode)
+    {
+        tileS = TileSystem.Instance;
+        respawnTile = tileS.centerTile;
+        //transform.position = tileS.centerTile.transform.position + Vector3.up * (GameConstant.tileHeight + 10);
+    }
+
     private void Start()
     {
-       
+        DontDestroyOnLoad(this.gameObject);
         tileS = TileSystem.Instance;
         respawnTile = tileS.centerTile;
         interactors = new List<Interactor>();   
@@ -71,6 +80,7 @@ public class Player : MonoBehaviour
         tileSelec = GetComponent<TileSelector>();
         targetGroup = FindObjectOfType<CinemachineTargetGroup>();
         sse = Camera.main.GetComponent<SplitScreenEffect>();
+        SceneManager.sceneLoaded += OnLoad;
     }
 
     private void Update()
@@ -151,6 +161,11 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(player.Dashed(-hit.normal, pM.pushStrength));
         }
+    }
+
+    private void OnTileChange()
+    {
+
     }
 
     IEnumerator Drawning(ControllerColliderHit hit)

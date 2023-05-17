@@ -18,8 +18,8 @@ namespace ProjectDawn.SplitScreen.Editor
         static T Load<T>(string path) where T : UnityEngine.Object
         {
             var asset = AssetDatabase.LoadAssetAtPath<T>(path);
-            if (asset == null)
-                Debug.LogError($"Could not find default material at path ({DefaultMaterialPath})!");
+           /* if (asset == null)
+                Debug.LogError($"Could not find default material at path ({DefaultMaterialPath})!");*/
             return asset;
         }
     }

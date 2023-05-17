@@ -709,9 +709,8 @@ MonoBehaviour:
   sphereCastRadius: 0.3
   transparencyLevel: 0.8
   medianPos: {x: 0, y: 0, z: 0}
-  virtualCamera: {fileID: 4190664559342532176}
-  endVirtualCam: {fileID: 0}
-  distanceToSplit: 0
+  dezoomCamera: {fileID: 4190664559342532176}
+  distanceToSplit: 35
   player1Mat: {fileID: 2100000, guid: 055fe735eddbdd441930e33a087b71df, type: 2}
   player2Mat: {fileID: 2100000, guid: f3b0f822856f82146992a8c6710058da, type: 2}
   player3Mat: {fileID: 2100000, guid: a2bef3be2cdee4943b576a4e070257c6, type: 2}

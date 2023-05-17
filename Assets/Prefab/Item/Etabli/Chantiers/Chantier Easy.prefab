@@ -1548,6 +1548,7 @@ MonoBehaviour:
   col: {fileID: 0}
   limitItemsReceived: 1
   recette: {fileID: 11400000, guid: b2eba017ae60a474b9fb6d58f0718ec6, type: 2}
+  isChantier: 0
   EventOnCreation:
     m_PersistentCalls:
       m_Calls: []
@@ -1779,7 +1780,7 @@ GameObject:
   - component: {fileID: 8465799527373767425}
   - component: {fileID: 5552486035284194820}
   - component: {fileID: 7102473360368394073}
-  - component: {fileID: 3717696624939033127}
+  - component: {fileID: 3860396106793871773}
   m_Layer: 14
   m_Name: ItemNumber
   m_TagString: Untagged
@@ -1794,7 +1795,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8825808984648690822}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.015, y: 0.015, z: 0.015}
   m_ConstrainProportionsScale: 1
@@ -1808,7 +1809,7 @@ RectTransform:
   - {fileID: 2059494930777914861}
   m_Father: {fileID: 7644044209496618637}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 2.59}
@@ -1875,7 +1876,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3717696624939033127
+--- !u!114 &3860396106793871773
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1884,6 +1885,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8825808984648690822}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59e90d8962a3b384cb4cc19a9bcdefd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e524d3b5162afb4199fce0809edd516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

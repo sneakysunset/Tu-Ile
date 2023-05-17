@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 329582481206523742}
   - component: {fileID: 6472450743787329740}
   - component: {fileID: 8299111489155243357}
+  - component: {fileID: 3453117944727851650}
   - component: {fileID: 6354948749326121285}
   - component: {fileID: 6354948749326121287}
   - component: {fileID: 5061697531550802697}
@@ -50,10 +51,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: []
-  player1Mat: {fileID: 2100000, guid: 055fe735eddbdd441930e33a087b71df, type: 2}
-  player2Mat: {fileID: 2100000, guid: f3b0f822856f82146992a8c6710058da, type: 2}
-  player3Mat: {fileID: 2100000, guid: a2bef3be2cdee4943b576a4e070257c6, type: 2}
-  player4Mat: {fileID: 2100000, guid: fba6bc4c9412d8844b6d51a4a6cee66f, type: 2}
 --- !u!114 &6472450743787329740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +212,19 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3453117944727851650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2db6a7674620ec344b5581cc7db0a7c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputEvents: []
 --- !u!114 &6354948749326121285
 MonoBehaviour:
   m_ObjectHideFlags: 0

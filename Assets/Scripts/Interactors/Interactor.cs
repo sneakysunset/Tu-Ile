@@ -18,6 +18,7 @@ public class Interactor : MonoBehaviour
     public TileType type;
     [HideInInspector] public List<Player> _player;
     protected int stateIndex;
+    public float hitRateSpeedModifier;
     #endregion
 
     #region Regrowth
