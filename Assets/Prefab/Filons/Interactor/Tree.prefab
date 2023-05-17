@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   _player: []
-  hitRateSpeedModifier: 0
+  hitRateSpeedModifier: 1
   regrowthTimer: 3
   comp:
   - mesh: {fileID: 6577239707841081451, guid: 9b0070d059e4a6c4bbd9b6d4bc42ffe4, type: 3}

@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0bd74352288d2458f97fc29f161fa8, type: 3}
   m_Name: Recettes - WoodTile
   m_EditorClassIdentifier: 
-  convertionTime: 1.4
+  convertionTime: 3
   requiredItemStacks:
   - stackType: 1
     currentNumber: 0
     cost: 4
   requiredItemUnstackable: []
   craftedItemPrefab: {fileID: -7700456598475612927, guid: af6ef38888d32a347baba23a3302fbf0, type: 3}
-  numberOfCrafted: 3
+  numberOfCrafted: 1
