@@ -130,7 +130,7 @@ public class TileSystem : MonoBehaviour
                 }
                 else if(t == tile)
                 {
-                    tile.currentPos.y = 2; 
+                    tile.currentPos.y = 0; 
                 }
                 t.tourbillon = false;
                 t.tourbillonT.gameObject.SetActive(false);
@@ -234,7 +234,6 @@ public class TileSystem : MonoBehaviour
     {
         float xOffset = 0;
         if (z % 2 == 1) xOffset = tiles[x, z].transform.localScale.x * .85f;
-        print(x +  " " + (x * transform.localScale.x * 1.7f + xOffset));
         Vector3 pos = ogPos + new Vector3(x * tiles[x, z].transform.localScale.x * 1.7f + xOffset, 0, z * tiles[x, z].transform.localScale.z * 1.48f);
         tiles[x, z].coordX = x;
 

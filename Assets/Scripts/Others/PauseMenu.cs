@@ -18,6 +18,8 @@ public class PauseMenu : MonoBehaviour
 
     public void HUB()
     {
-        StartCoroutine(TileSystem.Instance.SinkWorld("Hub"));
+        //StartCoroutine(TileSystem.Instance.SinkWorld("Hub"));
+        FindObjectOfType<GameTimer>().timer = FindObjectOfType<GameTimer>().gameTimer;
+        player.PauseGame();
     }
 }

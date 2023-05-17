@@ -64,7 +64,7 @@ public class TimeLineEvents
         {
             newPages[i] = missionManager.activeMissions[i];
         }
-        GameObject.Destroy(missionManager.activeMissions[missionManager.activeMissions.Length - 1].missionUI.gameObject);
+        GameObject.Destroy(missionManager.activeMissions[missionManager.activeMissions.Length - 1].mUIInGame.missionUI.parent.gameObject);
         missionManager.activeMissions = newPages;
         missionManager.missionSlotNumber--;
     }

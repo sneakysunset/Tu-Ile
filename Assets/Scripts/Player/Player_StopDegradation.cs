@@ -14,6 +14,12 @@ public class Player_StopDegradation : MonoBehaviour
     {
         player = GetComponent<Player>();
         ressourcesManager = FindObjectOfType<RessourcesManager>();
+        SceneManager.sceneLoaded += OnLoad;
+    }
+
+    public void OnLoad(Scene scene, LoadSceneMode mode)
+    {
+        ressourcesManager = FindObjectOfType<RessourcesManager>();
     }
 
     public void OnStopDegrading(InputAction.CallbackContext context)

@@ -104,6 +104,7 @@ public class Tile : MonoBehaviour
     private TextMeshProUGUI AI_Text;
     [HideInInspector] public bool isPenguined;
     bool pSysIsPlaying;
+    [HideInInspector] public Item_Etabli etabli;
     #endregion
     #endregion
 
@@ -239,6 +240,7 @@ public class Tile : MonoBehaviour
             tourbillonT.gameObject.SetActive(true);
         }
     }
+
 
     public Material getCorrespondingMat(TileType tType)
     {

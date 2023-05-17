@@ -112,3 +112,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 3c6c1f7c30a584c42b958af4e3f85bfd, type: 3}
     mesh: {fileID: 4300000, guid: c9a49e581aa666b4daeb7d60c95e2825, type: 3}
     mat: {fileID: 2100000, guid: 579080bda9f89ee42a5447d6d997e266, type: 2}
+  mSTileCreation:
+  - {fileID: 21300000, guid: 735c47635f623f64598ecfc1e86a3282, type: 3}
+  - {fileID: 21300000, guid: a31c360b21ac51e4b9a995104ebc333c, type: 3}
+  - {fileID: 21300000, guid: 4d5d6fa22366da3428ea7f0a76e3c2e6, type: 3}
+  mChickenElim: {fileID: 21300000, guid: b684b903aba26e14185bbba8b3903f91, type: 3}
+  mCompass: {fileID: 21300000, guid: 3d4e128ca7f2e8f49935a65f17906165, type: 3}
+  mConstr: {fileID: 21300000, guid: 606673800bf48d74396797ec07b7fa7b, type: 3}

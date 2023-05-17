@@ -146,7 +146,7 @@ public class GameTimer : MonoBehaviour
                 p.respawnTile = players[0].tileUnder;
             }
             
-            StartCoroutine(TileSystem.Instance.SinkWorld("Hub"));
+            StartCoroutine(TileSystem.Instance.SinkWorld("Hub2"));
         }
 
         timerFillImage.fillAmount = timer / gameTimer;
