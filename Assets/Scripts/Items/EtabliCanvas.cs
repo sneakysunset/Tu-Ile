@@ -177,7 +177,7 @@ public class EtabliCanvas : MonoBehaviour
 
     void Update()
     {
-        //if (mainCamera) transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
+        if (mainCamera) transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
 
     public void PlayerNear()

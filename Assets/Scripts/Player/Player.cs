@@ -61,6 +61,7 @@ public class Player : MonoBehaviour
     {
         tileS = TileSystem.Instance;
         respawnTile = tileS.centerTile;
+        //transform.position = tileS.centerTile.transform.position + Vector3.up * (GameConstant.tileHeight + 10);
     }
 
     private void Start()

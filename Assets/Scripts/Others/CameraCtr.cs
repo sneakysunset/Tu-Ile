@@ -39,7 +39,7 @@ public class CameraCtr : MonoBehaviour
 
     IEnumerator changeCam()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(3);
         dezoomCamera.Priority = 2;
     }
 

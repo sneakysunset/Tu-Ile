@@ -86,11 +86,11 @@ public class TileSystem : MonoBehaviour
         return tiles[x, z];
     }
 
-    public IEnumerator SinkWorld(string levelToLoad)
+    public IEnumerator SinkWorld(Tile _centerTile, string levelToLoad)
     {
         if (!isHub)
             StartCoroutine(gT.LerpTimeLine(gT.UIPos.anchoredPosition, gT.UIPos.anchoredPosition + Vector2.up * -100, gT.UIPos, gT.lerpCurveEaseIn, gT.lerpSpeed));
-        Tile tile = centerTile;
+        Tile tile = _centerTile;
         List<Tile> ts = new List<Tile>();
         ts.Add(tile);
         bool isOver = false;

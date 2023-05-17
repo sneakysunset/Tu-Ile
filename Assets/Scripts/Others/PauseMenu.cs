@@ -13,7 +13,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Options()
     {
-        StartCoroutine(TileSystem.Instance.SinkWorld(SceneManager.GetActiveScene().name));
+        StartCoroutine(TileSystem.Instance.SinkWorld(TileSystem.Instance.centerTile, SceneManager.GetActiveScene().name));
     }
 
     public void HUB()
