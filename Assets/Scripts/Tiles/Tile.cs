@@ -96,6 +96,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public Mesh defaultMesh, woodMesh, rockMesh, sandMesh;
     [HideInInspector] public Color walkedOnColor, notWalkedOnColor;
     [HideInInspector] public Color penguinedColor;
+     public Color falaiseColor;
     #endregion
 
     #region AI
@@ -169,7 +170,7 @@ public class Tile : MonoBehaviour
             myMeshR.material.color = penguinedColor;
 
         }
-        else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType == TileType.Neutral)
+        else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType == TileType.Neutral && !tileS.isHub)
         {
             myMeshR.material.color = walkedOnColor;
         }
@@ -220,12 +221,12 @@ public class Tile : MonoBehaviour
             myMeshR.materials = getCorrespondingMat(tileType);
         }
 
-        if (walkable && (!degradable || tileType == TileType.Sand || tileType == TileType.BouncyTile))
+        if (walkable && (!degradable || tileType == TileType.Sand || tileType == TileType.BouncyTile) && !tileS.isHub)
         {
             pSysIsPlaying = false;
             walkedOnto = true;
         }
-        else if (walkable && !walkedOnto && degradable)
+        else if (walkable && !walkedOnto && degradable && !tileS.isHub)
         {
             pSys.Play();
             pSysIsPlaying = true;
@@ -240,6 +241,7 @@ public class Tile : MonoBehaviour
         {
             tourbillonT.gameObject.SetActive(true);
         }
+
     }
 
 
@@ -247,6 +249,9 @@ public class Tile : MonoBehaviour
     {
         Material[] mat = new Material[2];
         mat[0] = falaiseMat;
+        float f = UnityEngine.Random.Range(0f, 1f);
+        print(f);
+        mat[0].color = Color.Lerp(falaiseColor, Color.white, f);
         if (!walkable)
         {
             mat[1] = disabledMat;
@@ -262,7 +267,11 @@ public class Tile : MonoBehaviour
             {
                 case TileType.Neutral: mat[1] = plaineMat; break;
                 case TileType.Wood: mat[1] = woodMat; break;
-                case TileType.Rock: mat[1] = rockMat; break;
+                case TileType.Rock: 
+                    mat[0] = rockMat; 
+                    mat[1] = falaiseMat; 
+                    mat[1].color = Color.Lerp(falaiseColor, Color.white, f); 
+                    break;
                 case TileType.Gold: mat[1] = goldMat; break;
                 case TileType.Diamond: mat[1] = diamondMat; break;
                 case TileType.Adamantium: mat[1] = adamantiumMat; break;
