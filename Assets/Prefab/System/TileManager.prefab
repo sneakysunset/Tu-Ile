@@ -144,7 +144,7 @@ MonoBehaviour:
   desertTileMatBottom: {fileID: 2100000, guid: 6b9159a64b2e6f94f93438ec2015bc9e, type: 2}
   defaultTileMesh: {fileID: 7977201894681853894, guid: 7a41b0ed20e6cc641ab40bb7ed6fdb86, type: 3}
   woodTileMesh: {fileID: 4875431340664065088, guid: 003a3471824955b4f9f2e276941fd183, type: 3}
-  rockTileMesh: {fileID: 460409086418856781, guid: d826d9c0681316f43bcaea13900ab294, type: 3}
+  rockTileMesh: {fileID: 460409086418856781, guid: 3353843d8894c5a418c69098fc287d76, type: 3}
   sandTileMesh: {fileID: 1405593227103162905, guid: b66f4ff2c2bd7a945b29cae39efe6bf3, type: 3}
   treePrefab: {fileID: 8818747911436434145, guid: 79b9421b777be9b48964ef34298b9825, type: 3}
   rockPrefab: {fileID: 2678278403484233012, guid: a1486965bb17ef34d9505a95cad1a333, type: 3}

@@ -13,13 +13,13 @@ public class SoundEffect : MonoBehaviour
         
     }
 
-    public void PlayMooveRight()
+    public void FootSoundleft()
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Move");
         pSysWalkingR.Play();
     }
 
-    public void PlayMooveLeft()
+    public void FootSoundRight()
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Move");
         pSysWalkingL.Play();
@@ -30,7 +30,7 @@ public class SoundEffect : MonoBehaviour
     {
         if(player.interactors.Count > 0)
         {
-            ParticleSystemRenderer ma = player.hitParticleSystem.GetComponent<ParticleSystemRenderer>();
+            ParticleSystemRenderer ma = player.hitParticleSystem.GetComponent<ParticleSystemRenderer>();    
             for (int i = 0; i < player.interactors.Count; i++)
             {
                 if (i > player.interactors.Count - 1 || i < 0 || player.interactors[i] == null) break;

@@ -23,6 +23,7 @@ public class ItemSystem : MonoBehaviour
             player.holdableItems.Add(player.heldItem);
             if (player.closestItem == null) player.closestItem = player.heldItem;
             player.heldItem = null;
+            player.interactors.Clear();
             return;
         }
 
@@ -51,6 +52,11 @@ public class ItemSystem : MonoBehaviour
 
                 player.closestItem.GrabStarted(holdPoint, player);
                 player.holdableItems.Remove(player.closestItem);
+            }
+
+            foreach(Interactor inte in player.interactors)
+            {
+                inte.OnInteractionExit(player);
             }
         }
 

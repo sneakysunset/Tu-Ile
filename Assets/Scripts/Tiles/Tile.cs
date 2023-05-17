@@ -155,8 +155,11 @@ public class Tile : MonoBehaviour
         isFaded = false;
         if (pSysIsPlaying && walkedOnto && degradable && tileType == TileType.Neutral && !TileSystem.Instance.isHub)
         {
-            pSys.Stop(); 
-            myMeshR.material.color = walkedOnColor;
+            pSys.Stop();
+            //myMeshR.material.color = walkedOnColor;
+            Material[] mats = myMeshR.materials;
+            mats[1].color = walkedOnColor;
+            myMeshR.materials = mats;
             pSysIsPlaying = false;
         }
 
@@ -172,7 +175,10 @@ public class Tile : MonoBehaviour
         }
         else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType == TileType.Neutral && !tileS.isHub)
         {
-            myMeshR.material.color = walkedOnColor;
+            //myMeshR.material.color = walkedOnColor;
+            Material[] mats = myMeshR.materials;
+            mats[1].color = walkedOnColor;
+            myMeshR.materials = mats;
         }
     }
     bool shakeFlag;
@@ -230,7 +236,10 @@ public class Tile : MonoBehaviour
         {
             pSys.Play();
             pSysIsPlaying = true;
-            myMeshR.material.color = notWalkedOnColor;
+            Material[] mats = myMeshR.materials;
+            mats[1].color = notWalkedOnColor;
+            myMeshR.materials = mats;
+            //myMeshR.material.color = notWalkedOnColor;
         }
 /*        else if (!walkable && walkedOnto && degradable && tileType == TileType.Neutral)
         {
@@ -250,7 +259,6 @@ public class Tile : MonoBehaviour
         Material[] mat = new Material[2];
         mat[0] = falaiseMat;
         float f = UnityEngine.Random.Range(0f, 1f);
-        print(f);
         mat[0].color = Color.Lerp(falaiseColor, Color.white, f);
         if (!walkable)
         {
@@ -267,11 +275,7 @@ public class Tile : MonoBehaviour
             {
                 case TileType.Neutral: mat[1] = plaineMat; break;
                 case TileType.Wood: mat[1] = woodMat; break;
-                case TileType.Rock: 
-                    mat[0] = rockMat; 
-                    mat[1] = falaiseMat; 
-                    mat[1].color = Color.Lerp(falaiseColor, Color.white, f); 
-                    break;
+                case TileType.Rock: mat[1] = rockMat; break;
                 case TileType.Gold: mat[1] = goldMat; break;
                 case TileType.Diamond: mat[1] = diamondMat; break;
                 case TileType.Adamantium: mat[1] = adamantiumMat; break;
@@ -316,8 +320,7 @@ public class Tile : MonoBehaviour
         myMeshR.enabled = true;
         myMeshF.mesh = getCorrespondingMesh(tileType);
         Material[] mats = getCorrespondingMat(tileType);
-        myMeshR.materials[0] = mats[0];
-        myMeshR.materials[1] = mats[1];
+        myMeshR.materials = mats;
         typeDegradingSpeed = degradingSpeed;
         //myMeshR.material.color = walkedOnColor;
         transform.Find("Additional Visuals").gameObject.SetActive(true);
@@ -409,7 +412,8 @@ public class Tile : MonoBehaviour
             if (getCorrespondingMat(tileType) != null)
             {
                 Material[] mats = getCorrespondingMat(tileType);
-                myMeshR.sharedMaterials = mats;
+                if(!Application.isPlaying) myMeshR.sharedMaterials = mats;
+                else myMeshR.materials = mats;
             }
             if (getCorrespondingMesh(tileType) != null) myMeshF.sharedMesh = getCorrespondingMesh(tileType);
             //myMeshC.sharedMesh = myMeshF.sharedMesh;

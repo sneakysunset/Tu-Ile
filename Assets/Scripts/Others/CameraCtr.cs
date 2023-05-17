@@ -92,7 +92,7 @@ public class CameraCtr : MonoBehaviour
     {
         if (dezoomCamera != null)
         {
-            dezoomCamera.LookAt = transform;
+            dezoomCamera.LookAt = targetTile;
             dezoomCamera.Priority = 4;
         }
     }
