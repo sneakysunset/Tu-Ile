@@ -44,6 +44,7 @@ public class Item_Etabli : Item
     [HideInInspector] public bool isDestroyed = false;
     [HideNormalInspector] public bool isNear;
     [HideNormalInspector] public List<Player> playersOn;
+    public bool restraintEditorMovement = true;
     #endregion
 
     #region SystemCallbacks
@@ -103,28 +104,29 @@ public class Item_Etabli : Item
             itemNum.UpdateText(this);
         }
     }
+
+   
     public override void Update()
     {
-        base.Update();
+            base.Update();
 
-
-        if (isActive && !tileUnder.walkable)
-        {
-            SetActiveMesh(false);
-        }
-        else if(!isActive && tileUnder.walkable)
-        {
-            SetActiveMesh(true);
-        }
-
-        if(craftedItem != null && craftedItem.isHeld) 
-        {
-            craftedItem = null;
-            if (CheckStacks())
+            if (isActive && !tileUnder.walkable)
             {
-                StartCoroutine(Convert());
+                SetActiveMesh(false);
             }
-        }
+            else if(!isActive && tileUnder.walkable)
+            {
+                SetActiveMesh(true);
+            }
+
+            if(craftedItem != null && craftedItem.isHeld) 
+            {
+                craftedItem = null;
+                if (CheckStacks())
+                {
+                    StartCoroutine(Convert());
+                }
+            }
 
 
     }
@@ -336,6 +338,17 @@ public class Item_Etabli : Item
         }
         else return false;
     }
+
+
+    void OnValidate() { UnityEditor.EditorApplication.delayCall += _OnValidate; }
+    private void _OnValidate()
+    {
+        if (!Application.isPlaying)
+        {
+            itemNum = GetComponentInChildren<EtabliCanvas>();
+            itemNum.OnActivated();
+        }
+    }
     #endregion
 }
 
@@ -367,9 +380,12 @@ public class EtablieSystemEditor : Editor
         if (!Application.isPlaying)
         {
             Tile tileUnder = TileSystem.Instance.WorldPosToTile(etabli.transform.position);
-            if(tileUnder != null)
+            if(tileUnder != null && etabli.restraintEditorMovement)
             {
-                etabli.transform.position = new Vector3(etabli.transform.position.x, tileUnder.transform.position.y + 23.4f, etabli.transform.position.z);
+                float yAngle = etabli.transform.eulerAngles.y - (etabli.transform.eulerAngles.y - 30) % 60;
+                Quaternion quat = Quaternion.Euler(0, yAngle, 0);
+                etabli.transform.rotation = quat;
+                etabli.transform.position = new Vector3(etabli.transform.position.x, tileUnder.transform.position.y + GameConstant.tileHeight, etabli.transform.position.z);
             }
         }
     }

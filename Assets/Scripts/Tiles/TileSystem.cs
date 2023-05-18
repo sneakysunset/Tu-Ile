@@ -97,7 +97,7 @@ public class TileSystem : MonoBehaviour
         lerpingSpeed = .1f;
         int j = 0;
         ready = false;
-        FindObjectOfType<CameraCtr>().DezoomCam();
+        FindObjectOfType<CameraCtr>().DezoomCam(tile.transform.GetChild(0));
         MissionManager.Instance.CloseMissions();
         while (!isOver)
         {
@@ -357,7 +357,7 @@ public class TileSystem : MonoBehaviour
         editorFlag = true;
     }
 
-    void UpdateGridParameters()
+    public void UpdateGridParameters()
     {
         tileM = GetComponent<TileMats>();
         tileP = GetComponent<TileParameters>();
@@ -368,9 +368,11 @@ public class TileSystem : MonoBehaviour
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
             tile.heightByTile = tileP.heightByTile;
 
+            tile.falaiseMat = tileM.falaiseTileMat;
             tile.plaineMat = tileM.plaineTileMat;
             tile.disabledMat = tileM.disabledTileMaterial;
-            tile.sandMat = tileM.sandTileMat;
+            tile.sandMatTop = tileM.desertTileMatTop;
+            tile.sandMatBottom = tileM.desertTileMatBottom;
             tile.bounceMat = tileM.bounceTileMat;
             tile.undegradableMat = tileM.undegradableTileMat;
             tile.woodMat = tileM.woodTileMat;
@@ -381,6 +383,7 @@ public class TileSystem : MonoBehaviour
             tile.defaultMesh = tileM.defaultTileMesh;
             tile.woodMesh = tileM.woodTileMesh;
             tile.rockMesh = tileM.rockTileMesh;
+            tile.sandMesh = tileM.sandTileMesh;
             tile.notWalkedOnColor = tileM.notWalkedOnColor;
             tile.walkedOnColor = tileM.walkedOnColor;
             tile.penguinedColor = tileM.acceleratedDegradationColor;
@@ -513,32 +516,10 @@ public class TileSystemEditor : Editor
 
     void UpdateGridParameters()
     {
-        tileS.tileM = tileS.GetComponent<TileMats>();
-        tileS.tileP = tileS.GetComponent<TileParameters>();
+
         tileS.UpdateParameters = false;
         if (tileS.tiles == null) return;
-        foreach(Tile tile in tileS.tiles)
-        {
-            tile.maxTimer = tileS.tileP.maxTimer;
-            tile.minTimer = tileS.tileP.minTimer;
-            tile.degradationTimerAnimCurve = tileS.tileP.degradationTimerAnimCurve;
-            tile.heightByTile = tileS.tileP.heightByTile;
-
-            tile.plaineMat = tileS.tileM.plaineTileMat;
-            tile.disabledMat = tileS.tileM.disabledTileMaterial;
-            tile.sandMat = tileS.tileM.sandTileMat;
-            tile.undegradableMat = tileS.tileM.undegradableTileMat;
-            tile.bounceMat = tileS.tileM.bounceTileMat;
-            tile.woodMat = tileS.tileM.woodTileMat;
-            tile.rockMat = tileS.tileM.rockTileMat;
-            tile.goldMat = tileS.tileM.goldTileMat;
-            tile.diamondMat = tileS.tileM.diamondTileMat;
-            tile.adamantiumMat = tileS.tileM.adamantiumTileMat;
-            tile.notWalkedOnColor = tileS.tileM.notWalkedOnColor;
-            tile.walkedOnColor = tileS.tileM.walkedOnColor;
-            tile.penguinedColor = tileS.tileM.acceleratedDegradationColor;
-            tile.UpdateObject();
-        }
+        tileS.UpdateGridParameters();
     }
 
     void DestroyGrid()

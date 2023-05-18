@@ -67,8 +67,9 @@ public class CameraCtr : MonoBehaviour
         }
     }
 
-    public void Dezoom()
+    public void Dezoom(Transform targetTile)
     {
+
         dezoomCamera.Priority = 4;
     }
 
@@ -87,10 +88,11 @@ public class CameraCtr : MonoBehaviour
         }
     }
 
-    public void DezoomCam()
+    public void DezoomCam(Transform targetTile)
     {
         if (dezoomCamera != null)
         {
+            dezoomCamera.LookAt = targetTile;
             dezoomCamera.Priority = 4;
         }
     }

@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     bool waterFlag = false;
     CinemachineTargetGroup targetGroup;
     SplitScreenEffect sse;
+    [HideNormalInspector] public bool isDrawning;
     [HideInInspector] public Transform dummyTarget;
 
     private void Awake()
@@ -91,11 +92,13 @@ public class Player : MonoBehaviour
         }
         tileUnder = tileS.WorldPosToTile(transform.position);
         tileUnder.sand_WalkedOnto = true;
-/*        if(_characterController.isGrounded && inter.terraforming)
+
+
+        if(isDrawning)
         {
-            anim.Play("Terraform", 0);
+            anim.Play("Drawning");
         }
-        else*/ if(_characterController.isGrounded && isMining)
+        if(_characterController.isGrounded && isMining)
         {
             anim.Play("Mine", 0);
             Vector3 pos = Vector3.zero;
@@ -172,7 +175,7 @@ public class Player : MonoBehaviour
     {
         waterValidate = true;
         waterFlag = true;
-        
+        isDrawning = true;
         Physics.IgnoreCollision(col, hit.collider, true);
         Instantiate(waterSplash, hit.point + 2 * Vector3.up, Quaternion.identity, null);
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning");
@@ -201,6 +204,7 @@ public class Player : MonoBehaviour
         dummyTarget.localPosition = Vector3.zero;
         pM.gravityMultiplier = currentGravityMult;
         waterFlag = false;
+        isDrawning = false;
     }
 
     private void OnDestroy()
