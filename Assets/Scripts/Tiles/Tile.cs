@@ -135,6 +135,7 @@ public class Tile : MonoBehaviour
         SetMatOnStart();
         int rotation = UnityEngine.Random.Range(0, 6);
         transform.Rotate(0, rotation * 60, 0);
+        transform.GetChild(0).Rotate(0, -rotation * 60, 0);
     }
  
 
