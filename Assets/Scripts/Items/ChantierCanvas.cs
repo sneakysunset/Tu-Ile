@@ -18,7 +18,7 @@ public class ChantierCanvas : MonoBehaviour
         rMan = FindObjectOfType<RessourcesManager>();
         cam = FindObjectOfType<CameraCtr>();
         texts = GetComponentsInChildren<TextMeshProUGUI>();
-        if(mainCamera) mainCamera = Camera.main.transform;
+        if (mainCamera) mainCamera = Camera.main.transform;
         images = GetComponentsInChildren<Image>();
         images[0].rectTransform.localScale = new Vector3(images[0].rectTransform.localScale.x, 0, images[0].rectTransform.localScale.z);
         for (int i = 0; i < images.Length - 1; i++)
@@ -63,7 +63,7 @@ public class ChantierCanvas : MonoBehaviour
     public void UpdateText(Item_Etabli et)
     {
         int f = 0;
-        if (etabli == null)
+        if (etabli == null || rMan == null)
         {
             etabli = et;
             OnActivated();
@@ -114,6 +114,6 @@ public class ChantierCanvas : MonoBehaviour
 
     void Update()
     {
-        if(mainCamera)transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
+        if(mainCamera) transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
 }

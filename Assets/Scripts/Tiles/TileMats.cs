@@ -14,7 +14,7 @@ public class TileMats : MonoBehaviour
     [Header("Game Mats")]
     public Material plaineTileMat; 
     public Material falaiseTileMat, woodTileMat, rockTileMat, goldTileMat, diamondTileMat, adamantiumTileMat, desertTileMatTop, desertTileMatBottom;
-    public Mesh defaultTileMesh, woodTileMesh, rockTileMesh, sandTileMesh;
+    public Mesh defaultTileMesh, woodTileMesh, rockTileMesh, sandTileMesh, undegradableTileMesh;
     public GameObject treePrefab, rockPrefab, goldPrefab, diamondPrefab, adamantiumPrefab;
     private TileSystem tileSystem;
 

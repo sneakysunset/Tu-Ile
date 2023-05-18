@@ -38,6 +38,9 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        if(TileSystem.Instance.isHub) GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = FindObjectOfType<CameraCtr>().pCols[0];
+
+        transform.parent = null;
         dummyTarget = transform.Find("DummyTarget");
         if (TileSystem.Instance.isHub && Time.time > 1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget);
         col = GetComponent<Collider>();

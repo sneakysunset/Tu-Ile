@@ -371,7 +371,6 @@ public class TileSystem : MonoBehaviour
             tile.minTimer = tileP.minTimer;
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
             tile.heightByTile = tileP.heightByTile;
-
             tile.falaiseMat = tileM.falaiseTileMat;
             tile.plaineMat = tileM.plaineTileMat;
             tile.disabledMat = tileM.disabledTileMaterial;
@@ -388,6 +387,7 @@ public class TileSystem : MonoBehaviour
             tile.woodMesh = tileM.woodTileMesh;
             tile.rockMesh = tileM.rockTileMesh;
             tile.sandMesh = tileM.sandTileMesh;
+            tile.undegradableMesh = tileM.undegradableTileMesh;
             tile.notWalkedOnColor = tileM.notWalkedOnColor;
             tile.walkedOnColor = tileM.walkedOnColor;
             tile.penguinedColor = tileM.acceleratedDegradationColor;
@@ -422,6 +422,7 @@ public class TileSystemEditor : Editor
     private void OnEnable()
     {
         tileS = (TileSystem)target;
+        tileS.UpdateGridParameters();
         foreach(var tile in tileS.tiles)
         {
             tile.UpdateObject();

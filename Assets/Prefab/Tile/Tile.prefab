@@ -659,6 +659,7 @@ MonoBehaviour:
   isGrowing: 0
   degSpeed: 0
   timeToGetToMaxDegradationSpeed: 0
+  sandFlag: 0
   spawnPoints:
   - {fileID: 1949783130783487149}
   - {fileID: 4691495834763128532}
@@ -685,6 +686,7 @@ MonoBehaviour:
   woodMesh: {fileID: 0}
   rockMesh: {fileID: 0}
   sandMesh: {fileID: 0}
+  undegradableMesh: {fileID: 0}
   walkedOnColor: {r: 0.8490566, g: 0.734247, b: 0.734247, a: 1}
   notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
   penguinedColor: {r: 0.8584906, g: 0.28076416, b: 0.28076416, a: 1}

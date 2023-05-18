@@ -97,7 +97,7 @@ public class Tile : MonoBehaviour
     #region Materials
     [HideInInspector, SerializeField] public Material disabledMat;
     [HideNormalInspector] public Material falaiseMat, plaineMat, undegradableMat, sandMatTop, sandMatBottom, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat;
-    [HideInInspector] public Mesh defaultMesh, woodMesh, rockMesh, sandMesh;
+    [HideInInspector] public Mesh defaultMesh, woodMesh, rockMesh, sandMesh, undegradableMesh;
     [HideInInspector] public Color walkedOnColor, notWalkedOnColor;
     [HideInInspector] public Color penguinedColor;
      public Color falaiseColor;
@@ -261,6 +261,7 @@ public class Tile : MonoBehaviour
         }
         else if (!degradable)
         {
+            mat[0] = undegradableMat;
             mat[1] = undegradableMat;
         }
         else
@@ -286,16 +287,24 @@ public class Tile : MonoBehaviour
     public Mesh getCorrespondingMesh(TileType tType)
     {
         Mesh mesh;
-        switch (tType)
+
+        if (!degradable)
         {
-            case TileType.Neutral: mesh = defaultMesh; break;
-            case TileType.Wood: mesh = woodMesh; break;
-            case TileType.Rock: mesh = rockMesh; break;
-            case TileType.Gold: mesh = rockMesh; break;
-            case TileType.Diamond: mesh = rockMesh; break;
-            case TileType.Adamantium: mesh = rockMesh; break;
-            case TileType.Sand: mesh = sandMesh; break;
-            default: mesh = defaultMesh; break;
+            mesh = undegradableMesh;
+        }
+        else
+        {
+            switch (tType)
+            {
+                case TileType.Neutral: mesh = defaultMesh; break;
+                case TileType.Wood: mesh = woodMesh; break;
+                case TileType.Rock: mesh = rockMesh; break;
+                case TileType.Gold: mesh = rockMesh; break;
+                case TileType.Diamond: mesh = rockMesh; break;
+                case TileType.Adamantium: mesh = rockMesh; break;
+                case TileType.Sand: mesh = sandMesh; break;
+                default: mesh = defaultMesh; break;
+            }
         }
 
         return mesh;
@@ -409,9 +418,8 @@ public class Tile : MonoBehaviour
                 Material[] mats = getCorrespondingMat(tileType);
                 if (!Application.isPlaying) myMeshR.sharedMaterials = mats;
                 else myMeshR.materials = mats;
-                print(myMeshR.sharedMaterials[0]);
             }
-            else print(1);
+
             if (getCorrespondingMesh(tileType) != null) myMeshF.sharedMesh = getCorrespondingMesh(tileType);
             //myMeshC.sharedMesh = myMeshF.sharedMesh;
             if (!walkable)
@@ -463,6 +471,7 @@ public class TileEditor : Editor
     private void OnEnable()
     {
         tile = (Tile)target;
+        
         tile.UpdateObject();
     }
     
