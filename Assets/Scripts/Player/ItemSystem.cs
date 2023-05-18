@@ -54,6 +54,13 @@ public class ItemSystem : MonoBehaviour
                 player.holdableItems.Remove(player.closestItem);
             }
 
+            for (int i = 0; i < player.interactors.Count; i++)
+            {
+                player.interactors.RemoveAt(i);
+                i--;
+                if (player.interactors.Count == 0) break;
+            }
+
             foreach(Interactor inte in player.interactors)
             {
                 inte.OnInteractionExit(player);

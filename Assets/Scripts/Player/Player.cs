@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
         pState = PlayerState.Drawning;
         Physics.IgnoreCollision(col, hit.collider, true);
         Instantiate(waterSplash, hit.point + 2 * Vector3.up, Quaternion.identity, null);
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning", transform.position);
         dummyTarget.parent = null;
         pM.canMove = false;
 

@@ -72,6 +72,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public bool isGrowing;
     [HideInInspector] public float degSpeed = 1;
     [HideNormalInspector] public float timeToGetToMaxDegradationSpeed;
+    [HideNormalInspector] public bool sandFlag;
     #endregion
 
     #region Interactor Spawning
