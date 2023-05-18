@@ -677,7 +677,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5796970740498951858
 RectTransform:
   m_ObjectHideFlags: 0
@@ -727,7 +727,7 @@ RectTransform:
   m_GameObject: {fileID: 2350118983955779161}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.000046359168}
-  m_LocalScale: {x: 1, y: 1.35, z: 1}
+  m_LocalScale: {x: 1, y: 0.65, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7829280309331671085}
@@ -791,7 +791,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1085601151077374099
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1381,7 +1381,7 @@ RectTransform:
   m_GameObject: {fileID: 3730838537899762079}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 0.95, y: 1, z: 1}
+  m_LocalScale: {x: 0.35, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1728370781295721276}
@@ -1787,7 +1787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59e90d8962a3b384cb4cc19a9bcdefd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  etabli: {fileID: 6122129862733760004}
+  etabli: {fileID: 0}
   textsNear:
   - {fileID: 5838469112705647285}
   - {fileID: 4911165902237318712}
@@ -2579,7 +2579,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9058916148864704924
 RectTransform:
   m_ObjectHideFlags: 0

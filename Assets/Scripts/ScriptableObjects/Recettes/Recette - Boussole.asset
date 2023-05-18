@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   convertionTime: 1.4
   requiredItemStacks:
-  - stackType: 1
+  - stackType: 2
     currentNumber: 0
-    cost: 3
+    cost: 6
+  - stackType: 4
+    currentNumber: 0
+    cost: 2
   requiredItemUnstackable: []
   craftedItemPrefab: {fileID: 2041979085027706192, guid: 71185b92ee0534b43bea6e105743a8d2, type: 3}
   numberOfCrafted: 1
