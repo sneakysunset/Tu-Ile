@@ -50,9 +50,9 @@ public class Item_Boussole : Item
         }
     }
 
-    public override void GrabRelease()
+    public override void GrabRelease(bool etablied)
     {
-        base.GrabRelease();
+        base.GrabRelease(etablied);
         foreach (Transform pointer in pointers)
         {
             pointer.gameObject.SetActive(false);

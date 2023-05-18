@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -11,11 +12,7 @@ using UnityEngine.UI;
 public struct missionPage
 {
     /*[HideInInspector]*/ public SO_Mission m;
-    [HideInInspector] public RectTransform missionUI;
-    [HideInInspector] public TextMeshProUGUI missionText;
-    [HideInInspector] public Image missionFillBar;
-    [HideInInspector] public Image missionFillBarOver;
-    [HideInInspector] public Image missionChecker;
+    public MissionUI mUIInGame, mUIInPause;
     [HideInInspector] public IEnumerator shakeCor;
     [HideInInspector] public IEnumerator lerpCor;
     [HideInInspector] public Item_Etabli chantier;
@@ -34,6 +31,24 @@ public struct missionPage
     public bool activated;
 }
 
+public class MissionUI
+{
+    [HideInInspector] public RectTransform missionUI;
+    [HideInInspector] public TextMeshProUGUI missionText;
+    [HideInInspector] public Image missionChecker;
+    [HideInInspector] public Image missionFillBar;
+    [HideInInspector] public Image missionFillBarOver;
+
+    public MissionUI(RectTransform _missionUI, TextMeshProUGUI _missionText, Image _missionChecker, Image _missionFillBar, Image _missionFillBarOver)
+    {
+        missionUI = _missionUI;
+        missionText = _missionText;
+        missionChecker = _missionChecker;
+        missionFillBar = _missionFillBar;
+        missionFillBarOver = _missionFillBarOver;
+    }
+}
+
 [System.Serializable]
 public struct missionPool
 {
@@ -47,6 +62,7 @@ public struct barColor
     [Range(0,1)] public float fillBarColorAmount;
     [Range(0, 2)] public float scoreMultiple;
 }
+
 
 public class MissionManager : MonoBehaviour
 {
@@ -74,18 +90,16 @@ public class MissionManager : MonoBehaviour
         [Header("Mission Shake")]
         public AnimationCurve mPageShakingCurve;
         public float shakeMagnitude = 1;
-        public Vector2 shakeValues;*/
-
-    [Space(10)]
-    [Header("Mission Lerps")]
-    public float timeToComplete;
-    public float missionCooldown;
-    public AnimationCurve lerpEaseIn;
+        public Vector2 shakeValues;*/    
+    [BoxGroup("MissionLerps"), Space(5)] public float timeToComplete;
+    [BoxGroup("MissionLerps")] public float missionCooldown;
+    [BoxGroup("MissionLerps")] public AnimationCurve lerpEaseIn;
     #endregion
-
     #region System CallBacks
 
     public static MissionManager Instance;
+
+
 
     private void Awake()
     {
@@ -109,12 +123,38 @@ public class MissionManager : MonoBehaviour
         lerpWaiter = new WaitForEndOfFrame();
         cooldownWaiter = new WaitForSeconds(missionCooldown);
         yield return new WaitUntil(() => TileSystem.Instance.ready);
+        Player_Pause.pauseMenuActivation += OnPause;
+        Player_Pause.pauseMenuDesactivation += OnUnpause;
         AddMissionPool();
         SetMissionPages();
     }
 
-    private void Update()
+    private void OnDisable()
     {
+        Player_Pause.pauseMenuActivation -= OnPause;
+        Player_Pause.pauseMenuDesactivation -= OnUnpause;
+    }
+
+    private void OnPause()
+    {
+        foreach(var page in activeMissions)
+        {
+            page.mUIInGame.missionUI.gameObject.SetActive(false);
+            page.mUIInPause.missionUI.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnUnpause()
+    {
+        foreach (var page in activeMissions)
+        {
+            page.mUIInGame.missionUI.gameObject.SetActive(true);
+            page.mUIInPause.missionUI.gameObject.SetActive(false);
+        }
+    }
+
+    private void Update()
+    { 
         if (TileSystem.Instance.ready)
         {
             for (int i = 0; i < activeMissions.Length; i++)
@@ -124,10 +164,16 @@ public class MissionManager : MonoBehaviour
                     if (activeMissions[i].isReady) activeMissions[i].timer -= Time.deltaTime;
                     activeMissions[i].timer = Mathf.Clamp(activeMissions[i].timer, 0, activeMissions[i].deliveryTime);
 
+                    float f = activeMissions[i].timer / activeMissions[i].deliveryTime;
+                    activeMissions[i].mUIInGame.missionFillBarOver.fillAmount = 1 - f;
+                    activeMissions[i].mUIInPause.missionFillBarOver.fillAmount = 1 - f;
+
+
                     //print(1 - (activeMissions[i].timer / activeMissions[i].deliveryTime) + " " + activeMissions[i].completionLevel);
                     if (1 - (activeMissions[i].timer / activeMissions[i].deliveryTime) > barColors[activeMissions[i].completionLevel].fillBarColorAmount)
                     {
-                        activeMissions[i].missionFillBarOver.color = barColors[activeMissions[i].completionLevel].fillBarColor;
+                        activeMissions[i].mUIInGame.missionFillBar.color = barColors[activeMissions[i].completionLevel].fillBarColor;
+                        activeMissions[i].mUIInPause.missionFillBar.color = barColors[activeMissions[i].completionLevel].fillBarColor;
                         activeMissions[i].completionLevel++;
                     }
 
@@ -150,7 +196,7 @@ public class MissionManager : MonoBehaviour
     public IEnumerator SetNewMission(int missionIndex)
     {
         float f = 0;
-        RectTransform rec = activeMissions[missionIndex].missionUI.GetChild(0).GetComponent<RectTransform>();
+        RectTransform rec = activeMissions[missionIndex].mUIInGame.missionUI.parent as RectTransform;
         Vector3 startPos = Vector3.zero;
         Vector3 endPos = -Vector3.right * 700;
         activeMissions[missionIndex].isReady = false;
@@ -190,15 +236,17 @@ public class MissionManager : MonoBehaviour
         f = 1;
 
         yield return cooldownWaiter;
-        activeMissions[missionIndex].missionFillBarOver.color = Color.gray;
+        activeMissions[missionIndex].mUIInGame.missionFillBarOver.color = Color.gray;
+        activeMissions[missionIndex].mUIInPause.missionFillBarOver.color = Color.gray;
 
         //Set up New Mission
 
         if (!activeMissions[missionIndex].isEphemeral) activeMissions[missionIndex].m = GetNewMission(activeMissions[missionIndex]);
         else activeMissions[missionIndex].m = activeMissions[missionIndex].potentialMission;
-        activeMissions[missionIndex].m.OnActivated(activeMissions[missionIndex].missionChecker, activeMissions[missionIndex].missionText, ref activeMissions[missionIndex]);
+        activeMissions[missionIndex].m.OnActivated(activeMissions[missionIndex].mUIInGame, activeMissions[missionIndex].mUIInPause, ref activeMissions[missionIndex]);
         activeMissions[missionIndex].timer = activeMissions[missionIndex].deliveryTime;
-        activeMissions[missionIndex].missionFillBar.fillAmount = 0;
+        activeMissions[missionIndex].mUIInGame.missionFillBarOver.fillAmount = 0;
+        activeMissions[missionIndex].mUIInPause.missionFillBarOver.fillAmount = 0;
         //Lerp Into Screen
         while (f > 0f)
         {
@@ -252,11 +300,25 @@ public class MissionManager : MonoBehaviour
     {
 
         activeMissions[i] = new missionPage();
-        activeMissions[i].missionUI = Instantiate(missionPrefab, missionsFolder).GetComponent<RectTransform>();
-        activeMissions[i].missionText = activeMissions[i].missionUI.GetComponentInChildren<TextMeshProUGUI>();
-        activeMissions[i].missionChecker = activeMissions[i].missionUI.GetChild(0).GetChild(1).GetComponent<Image>();
-        activeMissions[i].missionFillBarOver = activeMissions[i].missionUI.GetChild(0).GetChild(3).GetChild(0).GetComponent<Image>();
-        activeMissions[i].missionFillBar = activeMissions[i].missionUI.GetChild(0).GetChild(3).GetChild(0).GetChild(0).GetComponent<Image>();
+        Transform missionUI = Instantiate(missionPrefab, missionsFolder).transform;
+        RectTransform mUIInGame = missionUI.GetChild(0).GetChild(1) as RectTransform;
+        RectTransform mUIInPause = missionUI.GetChild(0).GetChild(0) as RectTransform;
+        activeMissions[i].mUIInGame = new MissionUI
+            (
+            mUIInGame,
+            mUIInGame.GetComponentInChildren<TextMeshProUGUI>(),
+            mUIInGame.GetChild(1).GetComponent<Image>(),
+            mUIInGame.GetChild(3).GetChild(0).GetComponent<Image>(),
+            mUIInGame.GetChild(3).GetChild(0).GetChild(0).GetComponent<Image>()
+            );
+        activeMissions[i].mUIInPause = new MissionUI
+            (
+            mUIInPause,
+            mUIInPause.GetComponentInChildren<TextMeshProUGUI>(),
+            mUIInPause.GetChild(1).GetComponent<Image>(),
+            mUIInPause.GetChild(3).GetChild(0).GetComponent<Image>(),
+            mUIInPause.GetChild(3).GetChild(0).GetChild(0).GetComponent<Image>()
+            );
         activeMissions[i].timer = 100;
 
 
@@ -297,7 +359,7 @@ public class MissionManager : MonoBehaviour
     IEnumerator CloseMission(int missionIndex)
     {
         float f = 0;
-        RectTransform rec = activeMissions[missionIndex].missionUI.GetChild(0).GetComponent<RectTransform>();
+        RectTransform rec = activeMissions[missionIndex].mUIInGame.missionUI.parent as RectTransform;
         Vector3 startPos = Vector3.zero;
         Vector3 endPos = -Vector3.right * 700;
         activeMissions[missionIndex].isReady = false;
@@ -351,11 +413,12 @@ public class MissionManager : MonoBehaviour
     {
         if (mission.requiredNumber <= tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation)
         {
-            page.missionChecker.color = Color.yellow;
-            page.missionText.color = Color.yellow;
+            page.mUIInGame.missionText.color = Color.yellow;
+            page.mUIInPause.missionText.color = Color.yellow;
             activeMissions[pageNum].completed = true;
         }
-        page.missionText.text = mission.description + " " + (tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation).ToString() + " / " + mission.requiredNumber.ToString();
+        page.mUIInPause.missionText.text = mission.description + " " + (tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation).ToString() + " / " + mission.requiredNumber.ToString();
+        page.mUIInGame.missionText.text = (tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation).ToString() + " / " + mission.requiredNumber.ToString();
 
         if (tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation >= mission.requiredNumber)
         {
@@ -368,8 +431,8 @@ public class MissionManager : MonoBehaviour
     {
         if (page.chantier != null && page.chantier.constructed)
         {
-            page.missionChecker.color = Color.yellow;
-            page.missionText.color = Color.yellow;
+            page.mUIInGame.missionText.color = Color.yellow;
+            page.mUIInPause.missionText.color = Color.yellow;
             activeMissions[pageNum].completed = true;
             yield return new WaitForSeconds(1);
             StartCoroutine(SetNewMission(pageNum));
@@ -384,8 +447,8 @@ public class MissionManager : MonoBehaviour
     {
         if (page.boussoleTile != null && page.tresorFound)
         {
-            page.missionChecker.color = Color.yellow;
-            page.missionText.color = Color.yellow;
+            page.mUIInGame.missionText.color = Color.yellow;
+            page.mUIInPause.missionText.color = Color.yellow;
             activeMissions[pageNum].completed = true;
             yield return new WaitForSeconds(1);
             StartCoroutine(SetNewMission(pageNum));
@@ -413,11 +476,11 @@ public class MissionManager : MonoBehaviour
             if (sE.itemToKill.GetType() == type)
             {
                 activeMissions[pageNum].numOfKilledItem++;
-                activeMissions[pageNum].missionText.text = sE.description + " " + activeMissions[pageNum].numOfKilledItem.ToString() + " / " + sE.requiredNum.ToString();
+                activeMissions[pageNum].mUIInPause.missionText.text = sE.description + " " + activeMissions[pageNum].numOfKilledItem.ToString() + " / " + sE.requiredNum.ToString();
+                activeMissions[pageNum].mUIInGame.missionText.text =  activeMissions[pageNum].numOfKilledItem.ToString() + " / " + sE.requiredNum.ToString();
                 if (activeMissions[pageNum].numOfKilledItem >= sE.requiredNum)
                 {
-                    activeMissions[pageNum].missionChecker.color = Color.yellow;
-                    activeMissions[pageNum].missionText.color = Color.yellow;
+                    activeMissions[pageNum].mUIInGame.missionText.color = Color.yellow;
                     activeMissions[pageNum].completed = true;
                     yield return new WaitForSeconds(1);
                     StartCoroutine(SetNewMission(pageNum));
@@ -434,7 +497,7 @@ public class MissionManager : MonoBehaviour
         List<Tile> ts = TileSystem.Instance.GetTilesAround(4, TileSystem.Instance.centerTile);
         for (int i = ts.Count - 1; i >= 0; i--)
         {
-            if (ts[i].walkable && ts[i].tileSpawnType == Tile.TileType.construction)
+            if (ts[i].walkable && ts[i].tileSpawnType == TileType.construction)
             {
                 return true;
             }
@@ -482,7 +545,7 @@ public class MissionManager : MonoBehaviour
 
     IEnumerator ShakeMission(int mI)
     {
-        RectTransform rec = activeMissions[mI].missionUI.GetChild(0).GetComponent<RectTransform>();
+        RectTransform rec = activeMissions[mI].mUIInGame.missionUI.parent as RectTransform;
         yield return new WaitForEndOfFrame();
         Vector3 ogPos = rec.localPosition;
         SO_Mission m = activeMissions[mI].m;
@@ -508,7 +571,8 @@ public class MissionManager : MonoBehaviour
                         }*/
             //rec.localPosition = new Vector3(ogPos.x + x, ogPos.y + y, ogPos.z);
             float i = activeMissions[mI].timer / activeMissions[mI].deliveryTime;
-            activeMissions[mI].missionFillBar.fillAmount = 1 - i;
+            activeMissions[mI].mUIInGame.missionFillBarOver.fillAmount = 1 - i;
+            activeMissions[mI].mUIInPause.missionFillBarOver.fillAmount = 1 - i;
 
             yield return lerpWaiter;
         }

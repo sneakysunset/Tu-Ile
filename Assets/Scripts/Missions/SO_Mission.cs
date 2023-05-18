@@ -11,13 +11,14 @@ public class SO_Mission : ScriptableObject
     public float deliveryTimeMin;
     public float deliveryTimeMax;
     public int scoreValue, malusValue;
-    public virtual void OnActivated(Image _missionChecker, TextMeshProUGUI _missionText, ref missionPage page)
+    protected RessourcesManager ressourcesManager;
+    public virtual void OnActivated(MissionUI mUIInGame, MissionUI mUIInPause, ref missionPage page)
     {
+        if(ressourcesManager == null) ressourcesManager = FindObjectOfType<RessourcesManager>();    
         page.timer = Random.Range(deliveryTimeMin, deliveryTimeMax);
         page.deliveryTime = page.timer;
         page.activated = true;
-        _missionChecker.color = Color.black;
-        _missionText.color = Color.white;
+        mUIInGame.missionText.color = Color.white;
         page.completed = false;
     }
 

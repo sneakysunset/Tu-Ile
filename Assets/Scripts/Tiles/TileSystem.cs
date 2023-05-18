@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using System.Linq;
 #if UNITY_EDITOR
 using AmplifyShaderEditor;
 #endif
@@ -57,15 +58,18 @@ public class TileSystem : MonoBehaviour
 
     private void Start()
     {
-        gT = FindObjectOfType<GameTimer>();
-        StartCoroutine(ElevateWorld(centerTile));
+        if(!isHub)
+            gT = FindObjectOfType<GameTimer>();
+        StartCoroutine(ElevateWorld());
     }
 
     private void Update()
     {
-        
-        timerInterpolateValue += Time.deltaTime * (1 / gT.gameTimer);
-        degradationTimerModifier = tileP.degradationTimerAnimCurve.Evaluate(timerInterpolateValue); 
+        if (!isHub)
+        {
+            timerInterpolateValue += Time.deltaTime * (1 / gT.gameTimer);
+            degradationTimerModifier = tileP.degradationTimerAnimCurve.Evaluate(timerInterpolateValue); 
+        } 
     }
 
     public Tile WorldPosToTile(Vector3 pos)
@@ -82,15 +86,18 @@ public class TileSystem : MonoBehaviour
         return tiles[x, z];
     }
 
-    public IEnumerator SinkWorld(Tile tile, string levelToLoad)
+    public IEnumerator SinkWorld(Tile _centerTile, string levelToLoad)
     {
+        if (!isHub)
+            StartCoroutine(gT.LerpTimeLine(gT.UIPos.anchoredPosition, gT.UIPos.anchoredPosition + Vector2.up * -100, gT.UIPos, gT.lerpCurveEaseIn, gT.lerpSpeed));
+        Tile tile = _centerTile;
         List<Tile> ts = new List<Tile>();
         ts.Add(tile);
         bool isOver = false;
         lerpingSpeed = .1f;
         int j = 0;
         ready = false;
-        FindObjectOfType<CameraCtr>().DezoomCam();
+        FindObjectOfType<CameraCtr>().DezoomCam(tile.transform.GetChild(0));
         MissionManager.Instance.CloseMissions();
         while (!isOver)
         {
@@ -123,7 +130,7 @@ public class TileSystem : MonoBehaviour
                 }
                 else if(t == tile)
                 {
-                    tile.currentPos.y = 2; 
+                    tile.currentPos.y = 0; 
                 }
                 t.tourbillon = false;
                 t.tourbillonT.gameObject.SetActive(false);
@@ -145,13 +152,22 @@ public class TileSystem : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
-        yield return new WaitForSeconds(3);
-        SceneManager.LoadScene(levelToLoad);
+        
+
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(levelToLoad, LoadSceneMode.Single);
+        //PlayersManager.playerNumber = FindObjectsOfType<Player>().Length;
+        PlayerPrefs.SetInt("PlayerNumber", FindObjectsOfType<Player>().Length);
         ready = false;
     }
 
-    public IEnumerator ElevateWorld(Tile tile)
+    public IEnumerator ElevateWorld()
     {
+        Tile tile = centerTile;
+        if(!isHub)
+            gT.UIPos.anchoredPosition += Vector2.up * -100;
+        if (!isHub)
+            StartCoroutine(gT.LerpTimeLine(gT.UIPos.anchoredPosition, gT.UIPos.anchoredPosition + Vector2.up * 100, gT.UIPos, gT.lerpCurveEaseOut, gT.lerpSpeed));
         List<Tile> ts = new List<Tile>();
         ts.Add(tile);
         bool isOver = false;
@@ -179,19 +195,15 @@ public class TileSystem : MonoBehaviour
 
             foreach (Tile t in ts)
             {
-                if (t.walkable /*&& t != tile*/)
+                if (t.walkable)
                 {
-                    //t.degradable = true;
-                    //t.currentPos.y = -t.heightByTile;
                     t.readyToRoll = true;
                 }
-                //t.tourbillon = false;
-                //t.tourbillonT.gameObject.SetActive(false);
             }
             tile.degradable = false;
             j++;
             float timer = waitTimer / j;
-            //float timer = .1f + Random.Range(-.1f, .3f);
+
             while (timer > 0)
             {
                 timer -= Time.deltaTime;
@@ -209,7 +221,10 @@ public class TileSystem : MonoBehaviour
         }
         TileSystem.Instance.lerpingSpeed = 1;
         ready = true;
-        foreach(Tile t in ts)
+
+        
+
+        foreach (Tile t in ts)
         {
             t.isPathChecked = false;
         }
@@ -219,7 +234,6 @@ public class TileSystem : MonoBehaviour
     {
         float xOffset = 0;
         if (z % 2 == 1) xOffset = tiles[x, z].transform.localScale.x * .85f;
-        print(x +  " " + (x * transform.localScale.x * 1.7f + xOffset));
         Vector3 pos = ogPos + new Vector3(x * tiles[x, z].transform.localScale.x * 1.7f + xOffset, 0, z * tiles[x, z].transform.localScale.z * 1.48f);
         tiles[x, z].coordX = x;
 
@@ -343,7 +357,7 @@ public class TileSystem : MonoBehaviour
         editorFlag = true;
     }
 
-    void UpdateGridParameters()
+    public void UpdateGridParameters()
     {
         tileM = GetComponent<TileMats>();
         tileP = GetComponent<TileParameters>();
@@ -354,9 +368,11 @@ public class TileSystem : MonoBehaviour
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
             tile.heightByTile = tileP.heightByTile;
 
+            tile.falaiseMat = tileM.falaiseTileMat;
             tile.plaineMat = tileM.plaineTileMat;
             tile.disabledMat = tileM.disabledTileMaterial;
-            tile.sandMat = tileM.sandTileMat;
+            tile.sandMatTop = tileM.desertTileMatTop;
+            tile.sandMatBottom = tileM.desertTileMatBottom;
             tile.bounceMat = tileM.bounceTileMat;
             tile.undegradableMat = tileM.undegradableTileMat;
             tile.woodMat = tileM.woodTileMat;
@@ -367,6 +383,7 @@ public class TileSystem : MonoBehaviour
             tile.defaultMesh = tileM.defaultTileMesh;
             tile.woodMesh = tileM.woodTileMesh;
             tile.rockMesh = tileM.rockTileMesh;
+            tile.sandMesh = tileM.sandTileMesh;
             tile.notWalkedOnColor = tileM.notWalkedOnColor;
             tile.walkedOnColor = tileM.walkedOnColor;
             tile.penguinedColor = tileM.acceleratedDegradationColor;
@@ -401,6 +418,10 @@ public class TileSystemEditor : Editor
     private void OnEnable()
     {
         tileS = (TileSystem)target;
+        foreach(var tile in tileS.tiles)
+        {
+            tile.UpdateObject();
+        }
     }
 
 
@@ -495,32 +516,10 @@ public class TileSystemEditor : Editor
 
     void UpdateGridParameters()
     {
-        tileS.tileM = tileS.GetComponent<TileMats>();
-        tileS.tileP = tileS.GetComponent<TileParameters>();
+
         tileS.UpdateParameters = false;
         if (tileS.tiles == null) return;
-        foreach(Tile tile in tileS.tiles)
-        {
-            tile.maxTimer = tileS.tileP.maxTimer;
-            tile.minTimer = tileS.tileP.minTimer;
-            tile.degradationTimerAnimCurve = tileS.tileP.degradationTimerAnimCurve;
-            tile.heightByTile = tileS.tileP.heightByTile;
-
-            tile.plaineMat = tileS.tileM.plaineTileMat;
-            tile.disabledMat = tileS.tileM.disabledTileMaterial;
-            tile.sandMat = tileS.tileM.sandTileMat;
-            tile.undegradableMat = tileS.tileM.undegradableTileMat;
-            tile.bounceMat = tileS.tileM.bounceTileMat;
-            tile.woodMat = tileS.tileM.woodTileMat;
-            tile.rockMat = tileS.tileM.rockTileMat;
-            tile.goldMat = tileS.tileM.goldTileMat;
-            tile.diamondMat = tileS.tileM.diamondTileMat;
-            tile.adamantiumMat = tileS.tileM.adamantiumTileMat;
-            tile.notWalkedOnColor = tileS.tileM.notWalkedOnColor;
-            tile.walkedOnColor = tileS.tileM.walkedOnColor;
-            tile.penguinedColor = tileS.tileM.acceleratedDegradationColor;
-            tile.UpdateObject();
-        }
+        tileS.UpdateGridParameters();
     }
 
     void DestroyGrid()

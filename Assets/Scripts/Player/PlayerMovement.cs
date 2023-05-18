@@ -44,19 +44,17 @@ public class PlayerMovement : MonoBehaviour
     private float _gravity = -9.81f;
     [SerializeField] public float gravityMultiplier = 3.0f;
     [HideInInspector] public float _velocity;
-
+    [HideNormalInspector] public bool canMove = true;
     #endregion
     private void Awake()
     {
-        /*movingSound = FMODUnity.RuntimeManager.CreateInstance("event:/Tile/Charactere/Moove");
-        movingSound.set3DAttributes(new FMOD.ATTRIBUTES_3D());*/
         _characterController = GetComponent<CharacterController>();
         player = GetComponent<Player>();
     }
 
     private void OnGroundedCallBack()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/stomp");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Stomp");
     }
 
     private void Update()
@@ -69,9 +67,11 @@ public class PlayerMovement : MonoBehaviour
 
         groundedCallback = _characterController.isGrounded;
         ApplyGravity();
-        ApplyJump();
+
+        if (canMove) ApplyJump();
         ApplyRotation();
         SpeedModifier();
+        if(!canMove) _direction = new Vector3(0, _direction.y, 0);
         if (isDashing)
         {
             StartCoroutine(Dash());
@@ -108,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_characterController.isGrounded && jumpInput)
         {
-            if(player.tileUnder.tileType == Tile.TileType.BouncyTile)
+            if(player.tileUnder.tileType == TileType.BouncyTile)
             {
                 _velocity = jumpStrengthOnBounce;
             }
@@ -133,8 +133,8 @@ public class PlayerMovement : MonoBehaviour
     {
         /*        float ax = isDashing ? acceleration : -deceleration;
                 speedValue = Mathf.Lerp(speed, sprintingSpeed, ax * Time.deltaTime * 10);*/
-
-        if(player.tileUnder != null && player.tileUnder.tileType == Tile.TileType.Rock)
+        
+        if(player.tileUnder != null && player.tileUnder.tileType == TileType.Rock)
         {
             speedValue = speedOnRocks;
         }

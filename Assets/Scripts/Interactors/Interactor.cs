@@ -15,9 +15,10 @@ public class Interactor : MonoBehaviour
     #region Variables
 
     #region mainVariables
-    public Tile.TileType type;
+    public TileType type;
     [HideInInspector] public List<Player> _player;
     protected int stateIndex;
+    public float hitRateSpeedModifier;
     #endregion
 
     #region Regrowth

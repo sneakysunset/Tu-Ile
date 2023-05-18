@@ -7,14 +7,16 @@ using UnityEngine.UI;
 public class SOM_Chantier : SO_Mission
 {
     public Item_Etabli chantierPrefab;
-    public override void OnActivated(Image _missionChecker, TextMeshProUGUI _missionText, ref missionPage page)
+    public override void OnActivated(MissionUI mUIInGame, MissionUI mUIInPause, ref missionPage page)
     {
-        base.OnActivated(_missionChecker, _missionText, ref page);
+        base.OnActivated(mUIInGame, mUIInPause, ref page);
+        mUIInGame.missionChecker.sprite = ressourcesManager.mConstr;
+        mUIInPause.missionChecker.sprite = ressourcesManager.mConstr;
         List<Tile> ts = TileSystem.Instance.GetTilesAround(4, TileSystem.Instance.centerTile);
         Tile tile = null;
         for (int i = ts.Count - 1; i >= 0 ; i--)
         {
-            if (ts[i].walkable && ts[i].tileSpawnType == Tile.TileType.construction)
+            if (ts[i].walkable && ts[i].tileSpawnType == TileType.construction)
             {
                 tile = ts[i];
             }
@@ -25,8 +27,9 @@ public class SOM_Chantier : SO_Mission
             return;
         }
         page.chantier = Instantiate(chantierPrefab, tile.transform.position + Vector3.up * GameConstant.tileHeight, Quaternion.identity);
-        tile.tileSpawnType = Tile.TileType.Neutral;
-        _missionText.text = description;
+        tile.tileSpawnType = TileType.Neutral;
+        mUIInGame.missionText.text = "";
+        mUIInPause.missionText.text = description;
     }
 
     public override void OnCompleted(ref missionPage page, float scoreMult)

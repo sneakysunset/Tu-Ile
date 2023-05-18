@@ -61,7 +61,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1593762699274421953}
   - component: {fileID: 7082783602206227098}
-  - component: {fileID: 1295410622954702569}
   m_Layer: 0
   m_Name: CamJ3
   m_TagString: Untagged
@@ -127,14 +126,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1295410622954702569
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720058141857215998}
-  m_Enabled: 1
 --- !u!1 &1093957070919577489
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,7 +136,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3814257362619804553}
   - component: {fileID: 4011574765727089725}
-  - component: {fileID: 436517479430759038}
   m_Layer: 0
   m_Name: CamJ1
   m_TagString: Untagged
@@ -211,14 +201,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &436517479430759038
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1093957070919577489}
-  m_Enabled: 1
 --- !u!1 &1426115927129095564
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,10 +267,10 @@ MonoBehaviour:
   m_VerticalDamping: 6.5
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_DeadZoneWidth: 0.01124859
-  m_DeadZoneHeight: 0
-  m_SoftZoneWidth: 0.8
-  m_SoftZoneHeight: 0.8
+  m_DeadZoneWidth: 0.19
+  m_DeadZoneHeight: 0.23
+  m_SoftZoneWidth: 1.04
+  m_SoftZoneHeight: 1.09
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1
@@ -338,7 +320,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4633048407095141622}
   - component: {fileID: 2189626686411318990}
-  - component: {fileID: 6714979506693117644}
   m_Layer: 0
   m_Name: CamJ4
   m_TagString: Untagged
@@ -404,14 +385,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &6714979506693117644
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2477285550501659672}
-  m_Enabled: 1
 --- !u!1 &2518524962447889848
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,7 +436,7 @@ MonoBehaviour:
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
   m_Priority: 3
-  m_StandbyUpdate: 0
+  m_StandbyUpdate: 1
   m_LookAt: {fileID: 3426644808954196511}
   m_Follow: {fileID: 3426644808954196511}
   m_Lens:
@@ -615,7 +588,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4757466604514347847}
   - component: {fileID: 5322919456615939003}
-  - component: {fileID: 6784215242264310241}
   m_Layer: 0
   m_Name: CamJ2
   m_TagString: Untagged
@@ -681,14 +653,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &6784215242264310241
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6571976704542706377}
-  m_Enabled: 1
 --- !u!1 &6667387659152772183
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,8 +677,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6667387659152772183}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.1, y: 28.67, z: 10}
+  m_LocalRotation: {x: -0, y: 0.83403486, z: -0, w: 0.5517118}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -745,9 +709,12 @@ MonoBehaviour:
   sphereCastRadius: 0.3
   transparencyLevel: 0.8
   medianPos: {x: 0, y: 0, z: 0}
-  virtualCamera: {fileID: 4190664559342532176}
-  endVirtualCam: {fileID: 0}
-  distanceToSplit: 0
+  dezoomCamera: {fileID: 4190664559342532176}
+  distanceToSplit: 35
+  player1Mat: {fileID: 2100000, guid: 055fe735eddbdd441930e33a087b71df, type: 2}
+  player2Mat: {fileID: 2100000, guid: f3b0f822856f82146992a8c6710058da, type: 2}
+  player3Mat: {fileID: 2100000, guid: a2bef3be2cdee4943b576a4e070257c6, type: 2}
+  player4Mat: {fileID: 2100000, guid: fba6bc4c9412d8844b6d51a4a6cee66f, type: 2}
   strongSS: 0.15
   mediumSS: 0.3
   weakSS: 0.6
@@ -782,8 +749,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6667387659626017476}
-  m_LocalRotation: {x: 0.40506452, y: -0.459517, z: 0.24797624, w: 0.7505163}
-  m_LocalPosition: {x: -22.900002, y: 102.8, z: 19.000002}
+  m_LocalRotation: {x: 0.43095046, y: -0.428214, z: 0.24414836, w: 0.7558478}
+  m_LocalPosition: {x: -24.300007, y: 103.5, z: 19.800001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1036,7 +1003,7 @@ MonoBehaviour:
   LineMaterial: {fileID: 2100000, guid: e07aeeef5b1839f40a677e925d9b6555, type: 2}
   CircleMaterial: {fileID: 2100000, guid: 5f0f431aa0f234d4eae5c5ba5e44ff96, type: 2}
   Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  Width: 15
+  Width: 5
 --- !u!114 &1001488021
 MonoBehaviour:
   m_ObjectHideFlags: 0

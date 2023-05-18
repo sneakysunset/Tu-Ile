@@ -32,6 +32,7 @@ public class Item_Bird : Item
         pM = player.GetComponent<PlayerMovement>();
         pM.gravityMultiplier /= gravityDivider;
         pM.jumpStrength /= jumpModifier;
+        pM.jumpStrengthOnBounce /= jumpModifier;
         AIM.enabled = false;
         AIB.ClearPath();
         gameObject.layer = 13;
@@ -39,12 +40,13 @@ public class Item_Bird : Item
 
     }
 
-    public override void GrabRelease()
+    public override void GrabRelease(bool etablied)
     {
-        base.GrabRelease();
+        base.GrabRelease(etablied);
         rb.isKinematic = true;
         pM.gravityMultiplier *= gravityDivider;
         pM.jumpStrength *= jumpModifier;
+        pM.jumpStrengthOnBounce *= jumpModifier;
         AIB.stopRefreshing = false;
         AIM.enabled = true;
         AIC.enabled = true;
@@ -56,7 +58,7 @@ public class Item_Bird : Item
     {
         if(isHeld)
         {
-            GrabRelease();
+            GrabRelease(true);
         }
     }
 
@@ -66,6 +68,7 @@ public class Item_Bird : Item
         rb.useGravity = true;
         pM.gravityMultiplier *= gravityDivider;
         pM.jumpStrength *= jumpModifier;
+        pM.jumpStrengthOnBounce *= jumpModifier;
         base.ThrowAction(player, throwStrength, direction);
         featherPSYS.Play();
     }

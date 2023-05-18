@@ -22,7 +22,7 @@ public class Player_Mining : MonoBehaviour
         }
         numInt = player.interactors.Count;
 
-        player.anim.SetFloat("MiningSpeed", hitRate);
+        if(player.interactors.Count > 0)player.anim.SetFloat("MiningSpeed", hitRate * player.interactors[0].hitRateSpeedModifier);
     }
 
 

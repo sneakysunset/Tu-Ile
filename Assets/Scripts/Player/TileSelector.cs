@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+
 public class TileSelector : MonoBehaviour
 {
     TileSystem tileS;
@@ -12,6 +14,7 @@ public class TileSelector : MonoBehaviour
     public LayerMask tileLayer;
     public float hitDistance = 4;
     private Tile targettedTile;
+    private Tile previousTile;
     private Player player;
     private MissionManager mM;
     private void Start()
@@ -20,18 +23,45 @@ public class TileSelector : MonoBehaviour
         tileS = FindObjectOfType<TileSystem>();
         player = GetComponent<Player>();
         mM = FindObjectOfType<MissionManager>();
+        SceneManager.sceneLoaded += OnLoad;
+    }
+
+    public void OnLoad(Scene scene, LoadSceneMode mode)
+    {
+        tileBluePrint = Instantiate(bluePrintPrefab).transform;
+        tileS = FindObjectOfType<TileSystem>();
+        mM = FindObjectOfType<MissionManager>();
+    }
+
+    private void OnChangeTileUnder()
+    {
+        if(tileUnder.etabli != null)
+        {
+            tileUnder.etabli.playersOn.Add(player);
+            if (tileUnder.etabli.playersOn.Count == 1) tileUnder.etabli.PlayerNear();
+        }
+        if(previousTile && previousTile.etabli != null)
+        {
+            previousTile.etabli.playersOn.Remove(player);
+            if(previousTile.etabli.playersOn.Count == 0) previousTile.etabli.PlayerFar();
+        }
     }
 
     private void Update()
     {
         tileUnder = tileS.WorldPosToTile(transform.position);
+        if(previousTile != tileUnder)
+        {
+            OnChangeTileUnder();
+        }
+        previousTile = tileUnder;
         if (!tileUnder.walkedOnto)
         {
             tileUnder.walkedOnto = true;
         }
         if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && !targettedTile.tourbillon && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
         {
-            tileBluePrint.position = targettedTile.transform.position + Vector3.up * (22.1f + tileUnder.transform.position.y);
+            tileBluePrint.position = new Vector3(targettedTile.transform.position.x, (GameConstant.tileHeight + tileUnder.transform.position.y), targettedTile.transform.position.z) ;
         }
         else
         {
@@ -85,6 +115,7 @@ public class TileSelector : MonoBehaviour
                         player.heldItem = null;
                         Destroy(item.gameObject);
                     }
+                    FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Cast");
                 }
             }
             else if(player.heldItem && player.heldItem.GetType() == typeof(Item_Boussole))

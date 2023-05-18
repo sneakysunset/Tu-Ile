@@ -5,7 +5,7 @@
 			<value>Monster</value>
 		</property>
 		<relationship name="folder">
-			<destination>{af8b6ed9-b365-4944-bd68-b2dc946b9989}</destination>
+			<destination>{ebb3380e-70e3-44f6-be26-07d6a1b21ba7}</destination>
 		</relationship>
 	</object>
 </objects>

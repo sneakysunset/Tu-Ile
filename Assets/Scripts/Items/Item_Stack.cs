@@ -52,9 +52,9 @@ public class Item_Stack : Item
 
     }
 
-    public override void GrabRelease()
+    public override void GrabRelease(bool etablied)
     {
-        base.GrabRelease();
+        base.GrabRelease(etablied);
     }
 
     public void ChangeMesh()

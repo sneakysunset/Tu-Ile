@@ -6,13 +6,11 @@ using UnityEngine.InputSystem;
 public class ItemSystem : MonoBehaviour
 {
     private Player player;
-    Item myItem;
     public Transform holdPoint;
 
     private void Start()
     {
         player = GetComponent<Player>();
-        myItem = GetComponent<Item>();
     }
 
     //normal grab action
@@ -21,11 +19,11 @@ public class ItemSystem : MonoBehaviour
         bool isSameOrSubClass = player.closestItem != null && Utils.IsSameOrSubclass(player.closestItem.GetType(), typeof(Item_Etabli));
         if (context.started && player.heldItem != null && player.holdableItems.Count == 0 && !isSameOrSubClass)
         {
-            print(6);
-            player.heldItem.GrabRelease();
+            player.heldItem.GrabRelease(false);
             player.holdableItems.Add(player.heldItem);
             if (player.closestItem == null) player.closestItem = player.heldItem;
             player.heldItem = null;
+            player.interactors.Clear();
             return;
         }
 
@@ -34,13 +32,13 @@ public class ItemSystem : MonoBehaviour
             if(player.heldItem != null && !isSameOrSubClass)
             {
                 //player.holdableItems.Add(player.heldItem);
-                player.heldItem.GrabRelease();
+                player.heldItem.GrabRelease(false);
             }
             if(player.closestItem.GetType() != typeof(Item_Etabli))
             {
                 if (player.closestItem.isHeld)
                 {
-                    player.closestItem.GrabRelease();
+                    player.closestItem.GrabRelease(false);
                     Player pl = player.closestItem._player;
                     pl.holdableItems.Add(player.closestItem);
                     pl.heldItem = null;
@@ -55,6 +53,11 @@ public class ItemSystem : MonoBehaviour
                 player.closestItem.GrabStarted(holdPoint, player);
                 player.holdableItems.Remove(player.closestItem);
             }
+
+            foreach(Interactor inte in player.interactors)
+            {
+                inte.OnInteractionExit(player);
+            }
         }
 
     }
@@ -68,7 +71,6 @@ public class ItemSystem : MonoBehaviour
             player.heldItem.ThrowAction(player, player.throwStrength, direction);
             player.holdableItems.Add(player.heldItem);
             if (player.closestItem == null) player.closestItem = player.heldItem;
-            print(5);
             player.heldItem = null;
             return;
         }

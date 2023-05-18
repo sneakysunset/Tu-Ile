@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -33,7 +34,8 @@ public class Item : MonoBehaviour
         _player = player;
         isHeld = true;
         rb.constraints = RigidbodyConstraints.FreezePosition;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Collect_Item");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Collect");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Take");
         rb.isKinematic = true;
         if (player.holdableItems.Contains(this))
             player.holdableItems.Remove(this);
@@ -44,18 +46,21 @@ public class Item : MonoBehaviour
         transform.parent = heldPoint;
     }
 
-    public virtual void GrabRelease()
+    public virtual void GrabRelease(bool etablied)
     {
         isHeld = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.isKinematic = false;
         rb.velocity = Vector2.zero;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Release_Item");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Release");
         _player.holdableItems.Add(this);
-        transform.parent = null;
-        transform.rotation = Quaternion.identity;
-        physic = true;
-        Highlight.SetActive(true);
+        if (!etablied)
+        {
+            transform.parent = null;
+            transform.rotation = Quaternion.identity;
+            physic = true;
+            Highlight.SetActive(true);            
+        }
     }
 
     public virtual void ThrowAction(Player player, float throwStrength, Vector3 direction)
@@ -64,7 +69,7 @@ public class Item : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.isKinematic = false;
         rb.velocity = Vector2.zero;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Cha_Release_Item");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Throw");
         player.holdableItems.Add(this);
         transform.parent = null;
         transform.rotation = Quaternion.identity;
@@ -82,13 +87,12 @@ public class Item : MonoBehaviour
 
     public  virtual IEnumerator KillItem(Collider other)
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tile/Charactere/Water_fall");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning");
         Physics.IgnoreCollision(other, col, true);
         System.Type type = this.GetType();
         StartCoroutine(MissionManager.Instance.CheckElimMission(type));
         if (_player)
         {
-            print(3);
             _player.heldItem = null;
             if (_player.holdableItems.Contains(this))
             {

@@ -629,7 +629,6 @@ MonoBehaviour:
   _player: {fileID: 0}
   physic: 1
   col: {fileID: 0}
-  stackType: 0
   gravityDivider: 6
   jumpModifier: 2.3
   featherPSYS: {fileID: 3630517554770355513}
@@ -711,7 +710,7 @@ MonoBehaviour:
       Data2: 1074831051
       Data3: -762815854
       Data4: 1321083193
-    Path: event:/Monster/Dying_Chicken
+    Path: event:/Tuile/Monster/Dying_Chicken
   Event: 
   PlayEvent: 2
   StopEvent: 0
