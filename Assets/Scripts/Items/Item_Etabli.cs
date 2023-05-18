@@ -385,7 +385,7 @@ public class EtablieSystemEditor : Editor
                 float yAngle = etabli.transform.eulerAngles.y - (etabli.transform.eulerAngles.y - 30) % 60;
                 Quaternion quat = Quaternion.Euler(0, yAngle, 0);
                 etabli.transform.rotation = quat;
-                etabli.transform.position = new Vector3(etabli.transform.position.x, tileUnder.transform.position.y + GameConstant.tileHeight, etabli.transform.position.z);
+                etabli.transform.position = new Vector3(etabli.transform.position.x, tileUnder.transform.position.y + GameConstant.tileHeight + 2.3f, etabli.transform.position.z);
             }
         }
     }

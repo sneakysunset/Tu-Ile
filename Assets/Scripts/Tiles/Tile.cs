@@ -407,9 +407,11 @@ public class Tile : MonoBehaviour
             if (getCorrespondingMat(tileType) != null)
             {
                 Material[] mats = getCorrespondingMat(tileType);
-                if(!Application.isPlaying) myMeshR.sharedMaterials = mats;
+                if (!Application.isPlaying) myMeshR.sharedMaterials = mats;
                 else myMeshR.materials = mats;
+                print(myMeshR.sharedMaterials[0]);
             }
+            else print(1);
             if (getCorrespondingMesh(tileType) != null) myMeshF.sharedMesh = getCorrespondingMesh(tileType);
             //myMeshC.sharedMesh = myMeshF.sharedMesh;
             if (!walkable)
