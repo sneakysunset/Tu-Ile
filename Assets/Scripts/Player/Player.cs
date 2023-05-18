@@ -57,12 +57,16 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+
         DontDestroyOnLoad(this.gameObject);
         respawnTile = TileSystem.Instance.centerTile;
         interactors = new List<Interactor>();   
         holdableItems = new List<Item>();
         pM = GetComponent<PlayerMovement>();
         _characterController = pM.GetComponent<CharacterController>();
+        _characterController.enabled = false;
+        transform.position = TileSystem.Instance.centerTile.transform.GetChild(0).position + Vector3.up * 3;
+        _characterController.enabled = true;
         anim = GetComponentInChildren<Animator>();
         SceneManager.sceneLoaded += OnLoad;
     }
