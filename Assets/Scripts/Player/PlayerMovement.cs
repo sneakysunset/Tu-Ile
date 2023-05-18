@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if(!groundHit && _characterController.isGrounded)
+        if(!groundHit && _characterController.isGrounded && player.pState == Player.PlayerState.Jump)
         {
             player.pState = Player.PlayerState.Idle;
         }

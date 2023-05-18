@@ -34,6 +34,8 @@ public class Tile : MonoBehaviour
     [Header("Type de Tile")]
     [Space(10)]
     [SerializeField] public bool walkable = true;
+    private bool isMoving;
+    public bool movingP { get { return isMoving; } set { if (isMoving != value) IsMoving(value); } }
     public bool degradable = true;
     [SerializeField] public TileType tileType = TileType.Neutral;
 
@@ -88,6 +90,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public Transform tourbillonT;
     [HideInInspector] private ParticleSystem pSys;
     [HideInInspector] ParticleSystem pSysCreation;
+    [HideInInspector] Tile_Degradation tileD;
     #endregion
 
     #region Materials
@@ -111,9 +114,17 @@ public class Tile : MonoBehaviour
 
     #region Call Methods
 
+    private void IsMoving(bool value)
+    {
+        isMoving = value;
+        if (value) tileD.StartMoveSound();
+        else tileD.EndMoveSound();
+    }
+
     private void Awake()
     {
         degSpeed = 1;
+        tileD = GetComponent<Tile_Degradation>();
         Vector3 v = transform.position;
         v.y = -heightByTile * 5;
         AI_Text = GetComponentInChildren<TextMeshProUGUI>();   
@@ -148,10 +159,6 @@ public class Tile : MonoBehaviour
             pSysCreation.Play();
         }
 
-        if(transform.position!=currentPos && !shakeFlag && !tileS.isHub && walkable)
-        {
-            StartCoroutine(TileShake(.1f));
-        }
         // StepText();
         isFaded = false;
         if (pSysIsPlaying && walkedOnto && degradable && tileType == TileType.Neutral && !TileSystem.Instance.isHub)
@@ -182,22 +189,7 @@ public class Tile : MonoBehaviour
             myMeshR.materials = mats;
         }
     }
-    bool shakeFlag;
-    public IEnumerator TileShake(float magnitude)
-    {
-        shakeFlag = true;
-        while (transform.position.y != currentPos.y)
-        {
-            float x = UnityEngine.Random.Range(-1f, 1f) * magnitude;
-            float y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
 
-            transform.localPosition = new Vector3(currentPos.x + x, transform.position.y, currentPos.z + y);
-
-            yield return new WaitForEndOfFrame();
-        }
-        transform.localPosition = currentPos;
-        shakeFlag = false;
-    }
 
     private void LateUpdate()
     {
@@ -276,7 +268,7 @@ public class Tile : MonoBehaviour
             {
                 case TileType.Neutral: mat[1] = plaineMat; break;
                 case TileType.Wood: mat[1] = woodMat; break;
-                case TileType.Rock: mat[1] = rockMat; break;
+                case TileType.Rock: mat[1] = mat[0]; mat[0] = rockMat; break;
                 case TileType.Gold: mat[1] = goldMat; break;
                 case TileType.Diamond: mat[1] = diamondMat; break;
                 case TileType.Adamantium: mat[1] = adamantiumMat; break;
@@ -317,6 +309,7 @@ public class Tile : MonoBehaviour
         tileType = tType;
         spawning = true;
         walkable = true;
+        movingP = true;
         gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;
         myMeshF.mesh = getCorrespondingMesh(tileType);
