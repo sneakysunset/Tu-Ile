@@ -13,12 +13,15 @@ public class PauseMenu : MonoBehaviour
 
     public void Options()
     {
-        StartCoroutine(TileSystem.Instance.SinkWorld(TileSystem.Instance.centerTile, SceneManager.GetActiveScene().name));
+        GameTimer gameTimer = FindObjectOfType<GameTimer>();
+        gameTimer.sceneLoadName = SceneManager.GetActiveScene().name;
+        gameTimer.timer = gameTimer.gameTimer;
+
+        player.PauseGame();
     }
 
     public void HUB()
     {
-        //StartCoroutine(TileSystem.Instance.SinkWorld("Hub"));
         FindObjectOfType<GameTimer>().timer = FindObjectOfType<GameTimer>().gameTimer;
         player.PauseGame();
     }

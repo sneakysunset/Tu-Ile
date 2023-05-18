@@ -18,7 +18,7 @@ public class ChantierCanvas : MonoBehaviour
         rMan = FindObjectOfType<RessourcesManager>();
         cam = FindObjectOfType<CameraCtr>();
         texts = GetComponentsInChildren<TextMeshProUGUI>();
-        if (mainCamera) mainCamera = Camera.main.transform;
+        if (Camera.main) mainCamera = Camera.main.transform;
         images = GetComponentsInChildren<Image>();
         images[0].rectTransform.localScale = new Vector3(images[0].rectTransform.localScale.x, 0, images[0].rectTransform.localScale.z);
         for (int i = 0; i < images.Length - 1; i++)

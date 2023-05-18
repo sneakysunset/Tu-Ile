@@ -146,6 +146,7 @@ public class EtabliCanvas : MonoBehaviour
             etabli = et;
             OnActivated();
         }
+
         for (int i = 0; i < etabli.recette.requiredItemStacks.Length; i++)
         {
             foreach (ressourceMeshsCollec rMC in rMan.RessourceMeshs)

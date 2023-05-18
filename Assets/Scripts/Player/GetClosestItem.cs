@@ -111,6 +111,7 @@ public class GetClosestItem : MonoBehaviour
         {
             foreach (Item item in player.holdableItems)
             {
+                if (item == null) return null;
                  float itemDistance = Vector2.Distance(item.transform.position, transform.position);
                  if (itemDistance < distance)
                  {

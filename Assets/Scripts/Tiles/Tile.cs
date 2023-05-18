@@ -162,7 +162,7 @@ public class Tile : MonoBehaviour
 
         // StepText();
         isFaded = false;
-        if (pSysIsPlaying && walkedOnto && degradable && tileType == TileType.Neutral && !TileSystem.Instance.isHub)
+        if (pSysIsPlaying && walkedOnto && degradable && tileType != TileType.Sand && !TileSystem.Instance.isHub)
         {
             pSys.Stop();
             //myMeshR.material.color = walkedOnColor;
@@ -177,12 +177,12 @@ public class Tile : MonoBehaviour
             tourbillonT.Rotate(0, tourbillonSpeed * Time.deltaTime, 0);
         }
 
-        if(isPenguined && myMeshR.material.color != penguinedColor && tileType == TileType.Neutral)
+        if(isPenguined && myMeshR.material.color != penguinedColor && tileType != TileType.Sand)
         {
             myMeshR.material.color = penguinedColor;
 
         }
-        else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType == TileType.Neutral && !tileS.isHub)
+        else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType != TileType.Sand && !tileS.isHub)
         {
             //myMeshR.material.color = walkedOnColor;
             Material[] mats = myMeshR.materials;

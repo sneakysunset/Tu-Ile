@@ -33,8 +33,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public List<Transform> pointers;
     public float drawningTimer = 2;
     [HideInInspector] public Transform dummyTarget;
-
-
+    bool respawning;
+    float currentGravMult;
 
     private void Awake()
     {
@@ -98,6 +98,11 @@ public class Player : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        if(respawning)
+        {
+            pM.canMove = true;
+            pM.gravityMultiplier = currentGravMult;
+        }
         if (hit.transform.TryGetComponent<Tile>(out Tile tileO) && hit.normal.y > -0.2f && hit.normal.y < 0.2f && hit.transform.position.y - tileUnder.transform.position.y <= 3 && hit.transform.position.y - tileUnder.transform.position.y > 1)
         {
             pM.jumpInput = true;
@@ -115,10 +120,15 @@ public class Player : MonoBehaviour
 
     IEnumerator Drawning(ControllerColliderHit hit)
     {
-        float currentGravityMult = pM.gravityMultiplier;
+        if (heldItem != null)
+        {
+            heldItem.GrabRelease(true);
+            Destroy(heldItem.gameObject);
+        }
+        currentGravMult = pM.gravityMultiplier;
         WaterHit(hit);
         yield return new WaitForSeconds(drawningTimer);
-        DrawningEnd(hit, currentGravityMult);
+        DrawningEnd(hit);
     }
 
     private void WaterHit(ControllerColliderHit hit)
@@ -130,29 +140,25 @@ public class Player : MonoBehaviour
         dummyTarget.parent = null;
         pM.canMove = false;
 
-        if (heldItem != null)
-        {
-            heldItem.GrabRelease(true);
-            Destroy(heldItem.gameObject);
-        }
+
         pM._velocity = 0;
         pM.gravityMultiplier = .03f;
     }
 
-    private void DrawningEnd(ControllerColliderHit hit, float currentGravMult)
+    private void DrawningEnd(ControllerColliderHit hit)
     {
         Physics.IgnoreCollision(col, hit.collider, false);
         pM._velocity = 0;
         _characterController.enabled = false;
         transform.position = respawnTile.transform.position + (25f + 3f) * Vector3.up;
         _characterController.enabled = true;
-        pM.canMove = true;
         dummyTarget.parent = transform;
         dummyTarget.localPosition = Vector3.zero;
-        pM.gravityMultiplier = currentGravMult;
+        respawning = true;
         pState = PlayerState.Idle;
+
     }
-    
+
     private void PlayerStateChange(PlayerState value)
     {
         playerState = value;
