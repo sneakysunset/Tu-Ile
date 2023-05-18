@@ -303,7 +303,7 @@ public class Item_Etabli : Item
     IEnumerator ChantierConvert()
     {
         yield return waiter;
-        GameObject chantier = Instantiate(recette.craftedItemPrefab, tileUnder.transform.position + Vector3.up * GameConstant.tileHeight, Quaternion.identity).gameObject;
+        GameObject chantier = Instantiate(recette.craftedItemPrefab, tileUnder.transform.position + recette.craftedItemPrefab.transform.position + Vector3.up * GameConstant.tileHeight, recette.craftedItemPrefab.transform.rotation).gameObject;
         chantier.transform.parent = tileUnder.transform;
         constructed = true;
         FindObjectOfType<MissionManager>().CheckMissions();

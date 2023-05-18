@@ -131,7 +131,9 @@ public class TileSystem : MonoBehaviour
                 }
                 else if(t == tile)
                 {
-                    tile.currentPos.y = 0; 
+                    tile.currentPos.y = 0;
+                    t.movingP = true;
+                    t.degSpeed *= 5;
                 }
                 t.tourbillon = false;
                 t.tourbillonT.gameObject.SetActive(false);
