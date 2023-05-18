@@ -46,8 +46,7 @@ public class PlayersManager : MonoBehaviour
         {
             if(cam.players == null || cam.players.Count == 0)
             {
-                print(players[0]);
-                cam.AddPlayer(players[0].dummyTarget);  
+                cam.AddPlayer(players[0].dummyTarget);      
             } 
             if ((TileSystem.Instance.isHub) && !cam.players.Contains(players[i].dummyTarget)) cam.AddPlayer(players[i].dummyTarget);
             players[i].GetComponent<Player_Pause>().pauseMenu = pM;
