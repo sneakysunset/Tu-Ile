@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public float gravityMultiplier = 3.0f;
     [HideInInspector] public float _velocity;
     [HideNormalInspector] public bool canMove = true;
+    private bool groundHit;
     #endregion
     private void Awake()
     {
@@ -59,7 +60,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        
+        if(!groundHit && _characterController.isGrounded && player.pState == Player.PlayerState.Jump)
+        {
+            player.pState = Player.PlayerState.Idle;
+        }
+        groundHit = _characterController.isGrounded;
+
         if (_characterController.isGrounded && !groundedCallback)
         {
             OnGroundedCallBack();
@@ -116,7 +122,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 _velocity = jumpStrength;
             }
+            player.pState = Player.PlayerState.Jump;
         }
+
         jumpInput = false;
     }
 
@@ -176,7 +184,6 @@ public class PlayerMovement : MonoBehaviour
         if (context.started && dashTimer <= 0 && _characterController.isGrounded)
         {
             jumpInput = true;
-            player.anim.Play("Jump", 0);
             //isDashing = true;
             //dashTimer = dashCooldown;   
         }

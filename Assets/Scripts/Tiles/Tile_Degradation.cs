@@ -6,19 +6,19 @@ using UnityEngine;
 public class Tile_Degradation : MonoBehaviour
 {
     Tile tile;
-    private float degradationTimerModifier;
     [HideNormalInspector] private bool walkedOntoChecker;
     bool started = false;
     FMOD.Studio.EventInstance tfFI;
     Transform spawnPos;
-    private void Start()
+    bool to;
+
+    private void Awake()
     {
         spawnPos = transform.GetChild(0).GetChild(0);
 
         tile = GetComponent<Tile>();
 
     }
-    bool to;
 
     private void OnDestroy()
     {
@@ -30,7 +30,8 @@ public class Tile_Degradation : MonoBehaviour
 
     private void Update()
     {
-        if(!TileSystem.Instance.ready && tile.readyToRoll && !FMODUtils.IsPlaying(tfFI))
+        if(transform.position == tile.currentPos) { tile.movingP = false; }
+        /*if(!TileSystem.Instance.ready && tile.readyToRoll && !FMODUtils.IsPlaying(tfFI))
         {
             FMODUtils.SetFMODEvent(ref tfFI, "event:/Tuile/Tile/Terraformingdown", spawnPos);
         }
@@ -40,17 +41,19 @@ public class Tile_Degradation : MonoBehaviour
             FMODUtils.StopFMODEvent(ref tfFI, true);
         }
 
-        if(transform.position == tile.currentPos && !to)
+        if(FMODUtils.IsPlaying(tfFI)) tfFI.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform));
+
+        if (transform.position == tile.currentPos && !to)
         {
             to = true;
             FMODUtils.StopFMODEvent(ref tfFI, true);
-        }
+        }*/
 
-        if(to == true && !TileSystem.Instance.ready)
+        /*if(to == true && !TileSystem.Instance.ready)
         {
             to = false;
             FMODUtils.SetFMODEvent(ref tfFI, "event:/Tuile/Tile/Terraformingdown", spawnPos);
-        }
+        }*/
 
         if (transform.position == tile.currentPos) started = true;
         if(tile.isGrowing) Elevating();
@@ -70,6 +73,7 @@ public class Tile_Degradation : MonoBehaviour
         if(!tile.sand_WalkedOnto && walkedOntoChecker)
         {
             tile.currentPos.y -= tile.heightByTile;
+            tile.movingP = true;
         }
 
         walkedOntoChecker = tile.sand_WalkedOnto;
@@ -88,6 +92,7 @@ public class Tile_Degradation : MonoBehaviour
             tile.isDegrading = true;
             gameObject.tag = "DegradingTile";
             tile.currentPos.y -= tile.heightByTile;
+            tile.movingP = true;
             FMODUtils.SetFMODEvent(ref tfFI, "event:/Tuile/Tile/Terraformingdown", spawnPos);
         }
 
@@ -95,6 +100,7 @@ public class Tile_Degradation : MonoBehaviour
         if (transform.position == tile.currentPos && tile.isDegrading)
         {
             tile.isDegrading = false;
+            tile.movingP = false;
             tile.timer = Random.Range(tile.minTimer, tile.maxTimer);
             FMODUtils.StopFMODEvent(ref tfFI, true);
         }
@@ -116,17 +122,44 @@ public class Tile_Degradation : MonoBehaviour
             FMODUtils.StopFMODEvent(ref tfFI, true);
             tile.isGrowing = false;
             tile.timer = Random.Range(tile.minTimer, tile.maxTimer);
+            tile.movingP = false;
         }
     }
 
     void SinkTile()
     {
         tile.walkable = false;
+        tile.movingP = false;
         gameObject.layer = LayerMask.NameToLayer("DisabledTile");
         tile.myMeshR.enabled = false;
         //GetComponent<Collider>().enabled = false;
         transform.Find("Additional Visuals").gameObject.SetActive(false);
         tile.minableItems.gameObject.SetActive(false);
         tile.tileS.tileC.Count();
+    }
+
+    public void StartMoveSound()
+    {
+        FMODUtils.SetFMODEvent(ref tfFI, "event:/Tuile/Tile/Terraformingdown", spawnPos);
+        StartCoroutine(TileShake(.1f));
+    }
+
+    public void EndMoveSound()
+    {
+        FMODUtils.StopFMODEvent(ref tfFI, true);
+    }
+
+    public IEnumerator TileShake(float magnitude)
+    {
+        while (transform.position.y != tile.currentPos.y)
+        {
+            float x = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+            float y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
+
+            transform.localPosition = new Vector3(tile.currentPos.x + x, transform.position.y, tile.currentPos.z + y);
+
+            yield return new WaitForEndOfFrame();
+        }
+        transform.localPosition = tile.currentPos;
     }
 }

@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class TileSelector : MonoBehaviour
 {
     TileSystem tileS;
-    [HideInInspector] public Tile tileUnder;
     public GameObject bluePrintPrefab;
     Transform tileBluePrint;
     public float maxAngleToTarget = 50;
@@ -35,10 +34,10 @@ public class TileSelector : MonoBehaviour
 
     private void OnChangeTileUnder()
     {
-        if(tileUnder.etabli != null)
+        if(player.tileUnder.etabli != null)
         {
-            tileUnder.etabli.playersOn.Add(player);
-            if (tileUnder.etabli.playersOn.Count == 1) tileUnder.etabli.PlayerNear();
+            player.tileUnder.etabli.playersOn.Add(player);
+            if (player.tileUnder.etabli.playersOn.Count == 1) player.tileUnder.etabli.PlayerNear();
         }
         if(previousTile && previousTile.etabli != null)
         {
@@ -49,53 +48,32 @@ public class TileSelector : MonoBehaviour
 
     private void Update()
     {
-        tileUnder = tileS.WorldPosToTile(transform.position);
-        if(previousTile != tileUnder)
+        if (player.tileUnder != null)
+        {
+            player.tileUnder.sand_WalkedOnto = false;
+        }
+        player.tileUnder = TileSystem.Instance.WorldPosToTile(transform.position);
+        player.tileUnder.sand_WalkedOnto = true;
+        
+        if (previousTile != player.tileUnder)
         {
             OnChangeTileUnder();
         }
-        previousTile = tileUnder;
-        if (!tileUnder.walkedOnto)
+
+        previousTile = player.tileUnder;
+        if (!player.tileUnder.walkedOnto)
         {
-            tileUnder.walkedOnto = true;
+            player.tileUnder.walkedOnto = true;
         }
-        if (Physics.Raycast(tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && !targettedTile.tourbillon && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
+        if (Physics.Raycast(player.tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && !targettedTile.tourbillon && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
         {
-            tileBluePrint.position = new Vector3(targettedTile.transform.position.x, (GameConstant.tileHeight + tileUnder.transform.position.y), targettedTile.transform.position.z) ;
+            tileBluePrint.position = new Vector3(targettedTile.transform.position.x, (GameConstant.tileHeight + player.tileUnder.transform.position.y), targettedTile.transform.position.z) ;
         }
         else
         {
             tileBluePrint.position = new Vector3(0, -100, 0);
             targettedTile = null; 
         }
-/*        float angle = 180;
-        float tempAngle = 180;*/
-
-/*        Tile targettedTile = null;
-        foreach(Vector2Int vec in tileUnder.adjTCoords) 
-        {
-            tempAngle = Vector2.Angle(transform.forward, (tileS.tiles[vec.x, vec.y].transform.position - tileUnder.transform.position).normalized);
-                Debug.DrawRay(transform.position, (tileS.tiles[vec.x, vec.y].transform.position - tileUnder.transform.position).normalized * 3, Color.blue) ;
-            print(tempAngle);
-            if(tempAngle < angle)
-            {
-                angle = tempAngle;
-                targettedTile = tileS.tiles[vec.x, vec.y];
-            }
-        }
-                Debug.DrawRay(transform.position, (targettedTile.transform.position - tileUnder.transform.position).normalized * 3, Color.red) ;
-                Debug.DrawRay(transform.position, transform.forward.normalized * 3, Color.black) ;
-        if(targettedTile != null && !targettedTile.walkable)
-        {
-            
-        }
-        else
-        {
-            
-           // print(tileUnder.gameObject.name + " " + targettedTile.coordX + " " + targettedTile.coordY);
-            
-        }*/
-        
     }
 
 
@@ -109,7 +87,7 @@ public class TileSelector : MonoBehaviour
                 if(item.numberStacked >= 1)
                 {
                     item.numberStacked --;
-                    targettedTile.Spawn(tileUnder.transform.position.y, item.stackType.ToString(), item.degradingSpeed) ;
+                    targettedTile.Spawn(player.tileUnder.transform.position.y, item.stackType.ToString(), item.degradingSpeed) ;
                     if(item.numberStacked == 0)
                     {
                         player.heldItem = null;

@@ -6379,6 +6379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c29b01ead37ac041a2667d201e2e433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerState: 0
   anim: {fileID: 0}
   _characterController: {fileID: 0}
   respawnTile: {fileID: 0}
@@ -6386,7 +6387,6 @@ MonoBehaviour:
   holdableItems: []
   heldItem: {fileID: 0}
   closestItem: {fileID: 0}
-  isMining: 0
   interactors: []
   waterSplash: {fileID: 3827855509166264532, guid: a9a25cd28fa105047b5420e6548167dc, type: 3}
   throwStrength: 10
@@ -6395,7 +6395,6 @@ MonoBehaviour:
   hitParticleSystem: {fileID: 6184105888123498867}
   pointers: []
   drawningTimer: 2
-  isDrawning: 0
   dummyTarget: {fileID: 0}
 --- !u!114 &5703151869213025868
 MonoBehaviour:
@@ -6437,7 +6436,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a3fced447c41d04b85edca42b02fc47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileUnder: {fileID: 0}
   bluePrintPrefab: {fileID: 8529813801529767196, guid: 6caf9a39780de684da768536eca535b8, type: 3}
   maxAngleToTarget: 50
   tileLayer:
@@ -6706,7 +6704,7 @@ CharacterController:
   m_SlopeLimit: 45
   m_StepOffset: 1
   m_SkinWidth: 0.1
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &5703151869213025865
 CapsuleCollider:
@@ -6719,9 +6717,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 2
+  m_Height: 2.6
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.16, z: 0}
 --- !u!114 &6803972686401513448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7502,7 +7500,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.05
+      value: -1.06
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7549,17 +7547,29 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8417361359673230750, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -5495902117074765545, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
+    - target: {fileID: 8417361359673230750, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417361359673230750, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 784914d82204984419237f2403eaa5e2, type: 2}
     - target: {fileID: 8417361359673230750, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 1f9efb100084b0a4eb3ee25d3ac2ddb7, type: 2}
+      objectReference: {fileID: 2100000, guid: 374279236c49d1e4cab867e9ef6c1805, type: 2}
     - target: {fileID: 8417361359673230750, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
       propertyPath: m_Materials.Array.data[2]
       value: 
-      objectReference: {fileID: 2100000, guid: bf35c815f724f0249b4faf5b410f9709, type: 2}
+      objectReference: {fileID: 2100000, guid: 4374ea658e08c474587d6136feda050b, type: 2}
+    - target: {fileID: 8417361359673230750, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: a96353c39d90b0e4eba3bcad1e9ddb0f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
 --- !u!4 &609720125585007253 stripped
