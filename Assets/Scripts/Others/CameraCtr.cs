@@ -23,7 +23,6 @@ public class CameraCtr : MonoBehaviour
     public float distanceToSplit;
     private CinemachineTargetGroup targetGroup;
     private List<ScreenData> tempScreens;
-    public Color pCol1, pCol2, pCol3, pCol4;
     public Color[] pCols;
     private void Start()
     {

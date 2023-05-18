@@ -97,6 +97,10 @@ public class TileSystem : MonoBehaviour
         lerpingSpeed = .1f;
         int j = 0;
         ready = false;
+        foreach (var item in FindObjectsOfType<Player>())
+        {
+            item.respawnTile = tile;
+        }
         FindObjectOfType<CameraCtr>().DezoomCam(tile.transform.GetChild(0));
         MissionManager.Instance.CloseMissions();
         while (!isOver)
