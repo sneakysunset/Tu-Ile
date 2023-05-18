@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: []
+  pnc: {fileID: 6855134037142202626, guid: 0c6e1024a45c10247ae645502d083cd8, type: 3}
 --- !u!114 &6472450743787329740
 MonoBehaviour:
   m_ObjectHideFlags: 0

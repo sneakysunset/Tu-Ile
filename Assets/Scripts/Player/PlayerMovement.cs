@@ -169,6 +169,8 @@ public class PlayerMovement : MonoBehaviour
         float cameraAngle = -Camera.main.transform.rotation.eulerAngles.y;
         _input = Rotate(_input, cameraAngle);
         _direction = new Vector3(_input.x, 0.0f, _input.y);
+        player.anim.SetFloat("walkingSpeed", _input.magnitude);
+
     }
 
     public void OnJump(InputAction.CallbackContext context)

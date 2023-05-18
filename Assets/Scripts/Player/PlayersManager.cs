@@ -13,7 +13,7 @@ public class PlayersManager : MonoBehaviour
     [HideInInspector] public Player[] players;
     public static PlayersManager Instance;
     CameraCtr cam;
-
+    public GameObject pnc;
 
     private void Awake()
     {
@@ -30,15 +30,26 @@ public class PlayersManager : MonoBehaviour
 
     private void Start()
     {
-        players = FindObjectsOfType<Player>();
         cam = FindObjectOfType<CameraCtr>();
+        if (cam == null)
+        {
+            Instantiate(pnc);
+
+            cam = FindObjectOfType<CameraCtr>();
+        }
+        players = FindObjectsOfType<Player>();
         PauseMenu pM = FindObjectOfType<PauseMenu>();
         pM.transform.GetChild(0).gameObject.SetActive(true);
         pM.gameObject.SetActive(false);
         SplitScreenEffect sse = FindObjectOfType<SplitScreenEffect>();
         for (int i = 0; i < players.Length; i++)
         {
-            if(TileSystem.Instance.isHub && !cam.players.Contains(players[i].dummyTarget)) cam.AddPlayer(players[i].dummyTarget);
+            if(cam.players == null || cam.players.Count == 0)
+            {
+                print(players[0]);
+                cam.AddPlayer(players[0].dummyTarget);  
+            } 
+            if ((TileSystem.Instance.isHub) && !cam.players.Contains(players[i].dummyTarget)) cam.AddPlayer(players[i].dummyTarget);
             players[i].GetComponent<Player_Pause>().pauseMenu = pM;
         }
     }
