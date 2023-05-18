@@ -32,6 +32,10 @@ public class Item_Stack : Item
         base.Update();
         if ((meshR.enabled || holdable) && numberStacked == 0)
         {
+            if(isHeld)
+            {
+                Destroy(this.gameObject);
+            }
             meshR.enabled = false;
             col.enabled = false;
             holdable = false;

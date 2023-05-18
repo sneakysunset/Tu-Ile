@@ -126,6 +126,7 @@ public class TileSystem : MonoBehaviour
                 {
                     t.degradable = true;
                     t.currentPos.y = -t.heightByTile;
+                    t.movingP = true;
                     
                 }
                 else if(t == tile)
@@ -198,6 +199,7 @@ public class TileSystem : MonoBehaviour
                 if (t.walkable)
                 {
                     t.readyToRoll = true;
+                    t.movingP = true;
                 }
             }
             tile.degradable = false;

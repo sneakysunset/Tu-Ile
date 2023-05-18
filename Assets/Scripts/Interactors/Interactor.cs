@@ -83,7 +83,7 @@ public class Interactor : MonoBehaviour
 
     public virtual void OnInteractionEnter(Player player)
     {
-        player.isMining = true;
+        player.pState = Player.PlayerState.Mine;
         if(!_player.Contains(player))
         {
             _player.Add(player);
@@ -98,7 +98,7 @@ public class Interactor : MonoBehaviour
         if (player.interactors.Contains(this)) player.interactors.Remove(this);
         if(player.interactors.Count == 0)
         {
-            player.isMining = false;
+            player.pState = Player.PlayerState.Idle;
         }
         if (_player.Count == 0)
         {

@@ -23,8 +23,7 @@ public class CameraCtr : MonoBehaviour
     public float distanceToSplit;
     private CinemachineTargetGroup targetGroup;
     private List<ScreenData> tempScreens;
-
-    public Material player1Mat, player2Mat, player3Mat, player4Mat;
+    Color pCol1, pCol2, pCol3, pCol4;
     private void Start()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -110,7 +109,6 @@ public class CameraCtr : MonoBehaviour
         }
         players.Add(player);
         SkinnedMeshRenderer[] sRs = player.parent.GetComponentsInChildren<SkinnedMeshRenderer>();
-        MeshRenderer meshRenderer = player.parent.GetComponentInChildren<MeshRenderer>();
 
         foreach(ScreenData screen in sCE.Screens)
         {
@@ -123,10 +121,10 @@ public class CameraCtr : MonoBehaviour
 
         switch (players.Count)
         {
-            case 1: for (int j = 0; j < sRs.Length; j++) sRs[j].material = player1Mat; meshRenderer.material = player1Mat; break;
-            case 2: for (int j = 0; j < sRs.Length; j++) sRs[j].material = player2Mat; meshRenderer.material = player2Mat; break;
-            case 3: for (int j = 0; j < sRs.Length; j++) sRs[j].material = player3Mat; meshRenderer.material = player3Mat; break;
-            case 4: for (int j = 0; j < sRs.Length; j++) sRs[j].material = player4Mat; meshRenderer.material = player4Mat; break;
+            case 1: for (int j = 0; j < sRs.Length; j++) sRs[j].material.color = pCol1; break;
+            case 2: for (int j = 0; j < sRs.Length; j++) sRs[j].material.color = pCol2; break;
+            case 3: for (int j = 0; j < sRs.Length; j++) sRs[j].material.color = pCol3; break;
+            case 4: for (int j = 0; j < sRs.Length; j++) sRs[j].material.color = pCol1; break;
         }
 
         List<CinemachineTargetGroup.Target> targets = new List<CinemachineTargetGroup.Target>();
