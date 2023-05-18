@@ -87,7 +87,7 @@ public class Item : MonoBehaviour
 
     public  virtual IEnumerator KillItem(Collider other)
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning", transform.position);
         Physics.IgnoreCollision(other, col, true);
         System.Type type = this.GetType();
         StartCoroutine(MissionManager.Instance.CheckElimMission(type));

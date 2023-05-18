@@ -133,7 +133,7 @@ public class TileSystem : MonoBehaviour
                 {
                     tile.currentPos.y = 0;
                     t.movingP = true;
-                    t.degSpeed *= 5;
+                    t.degSpeed *= 2;
                 }
                 t.tourbillon = false;
                 t.tourbillonT.gameObject.SetActive(false);

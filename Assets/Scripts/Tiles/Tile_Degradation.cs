@@ -70,10 +70,11 @@ public class Tile_Degradation : MonoBehaviour
 
     private void SandDegradation()
     {
-        if(!tile.sand_WalkedOnto && walkedOntoChecker)
+        if(!tile.sand_WalkedOnto && walkedOntoChecker && tile.sandFlag)
         {
             tile.currentPos.y -= tile.heightByTile;
             tile.movingP = true;
+            tile.sandFlag = false;
         }
 
         walkedOntoChecker = tile.sand_WalkedOnto;
