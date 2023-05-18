@@ -113,7 +113,7 @@ AnimatorStateMachine:
     m_Position: {x: 800, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1512417010992872095}
-    m_Position: {x: 520, y: 290, z: 0}
+    m_Position: {x: 520, y: 280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 206846947456720981}
     m_Position: {x: 520, y: 190, z: 0}
@@ -328,7 +328,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: JumpFlip
-  m_Speed: 1
+  m_Speed: 2.5
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
