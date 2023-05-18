@@ -55,7 +55,7 @@ public class TileSelector : MonoBehaviour
         {
             player.tileUnder.sandFlag = true;
         }
-
+            
 
         if (previousTile != player.tileUnder)
         {
