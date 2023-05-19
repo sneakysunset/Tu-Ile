@@ -39,8 +39,8 @@ public class PlayersManager : MonoBehaviour
         }
         players = FindObjectsOfType<Player>();
         PauseMenu pM = FindObjectOfType<PauseMenu>();
-        pM.transform.GetChild(0).gameObject.SetActive(true);
-        pM.gameObject.SetActive(false);
+        //pM.transform.GetChild(0).gameObject.SetActive(true);
+        //pM.gameObject.SetActive(false);
         SplitScreenEffect sse = FindObjectOfType<SplitScreenEffect>();
         for (int i = 0; i < players.Length; i++)
         {
