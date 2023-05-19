@@ -102,6 +102,7 @@ public class Player : MonoBehaviour
         {
             pM.canMove = true;
             pM.gravityMultiplier = currentGravMult;
+            respawning = false;
         }
         if (hit.transform.TryGetComponent<Tile>(out Tile tileO) && hit.normal.y > -0.2f && hit.normal.y < 0.2f && hit.transform.position.y - tileUnder.transform.position.y <= 3 && hit.transform.position.y - tileUnder.transform.position.y > 1)
         {

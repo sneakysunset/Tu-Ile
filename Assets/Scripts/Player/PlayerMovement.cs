@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private float mvtStr;
     private float speedValue;
     private float dashTimer;
+    private float jp;
     #endregion
     #region Variables: Rotation
 
@@ -77,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
         if (canMove) ApplyJump();
         ApplyRotation();
         SpeedModifier();
+        jumpValueLerp();
         if(!canMove) _direction = new Vector3(0, _direction.y, 0);
         if (isDashing)
         {
@@ -110,19 +112,23 @@ public class PlayerMovement : MonoBehaviour
         _direction.y = _velocity;
     }
 
+    private void jumpValueLerp()
+    {
+        if (player.tileUnder.tileType == TileType.BouncyTile)
+        {
+            jp = Mathf.Lerp(jp, jumpStrengthOnBounce, .4f);
+        }
+        else
+        {
+            jp = Mathf.Lerp(jp, jumpStrength, .4f);
+        }
+    }
+
     private void ApplyJump()
     {
         if (_characterController.isGrounded && jumpInput)
         {
-            if(player.tileUnder.tileType == TileType.BouncyTile)
-            {
-                _velocity = jumpStrengthOnBounce;
-            }
-            else
-            {
-                _velocity = jumpStrength;
-            }
-            player.pState = Player.PlayerState.Jump;
+            _velocity = jp;
         }
 
         jumpInput = false;
@@ -142,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
         /*        float ax = isDashing ? acceleration : -deceleration;
                 speedValue = Mathf.Lerp(speed, sprintingSpeed, ax * Time.deltaTime * 10);*/
         
-        if(player.tileUnder != null && player.tileUnder.tileType == TileType.Rock)
+        if(_characterController.isGrounded && player.tileUnder != null && player.tileUnder.tileType == TileType.Rock)
         {
             speedValue = speedOnRocks;
         }

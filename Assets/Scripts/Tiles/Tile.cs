@@ -277,7 +277,7 @@ public class Tile : MonoBehaviour
                 case TileType.Sand: mat[1] = sandMatTop; mat[0] = sandMatBottom; break;
                 case TileType.BouncyTile: mat[1] = bounceMat; break;
                 case TileType.LevelLoader: mat[1] = sandMatTop; break;
-                default: mat[0] = plaineMat; break;
+                default: mat[1] = plaineMat; break;
             }
         }
 
