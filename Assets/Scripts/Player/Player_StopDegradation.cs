@@ -46,7 +46,8 @@ public class Player_StopDegradation : MonoBehaviour
     {
         if(player.tileUnder && player.tileUnder.tileType == TileType.LevelLoader && isGrowing)
         {
-            StartCoroutine(TileSystem.Instance.SinkWorld(player.tileUnder, player.tileUnder.levelName));
+            FindObjectOfType<CameraCtr>().tileLoadCoordinates = new Vector2Int(player.tileUnder.coordX, player.tileUnder.coordY);
+            StartCoroutine(GridUtils.SinkWorld(player.tileUnder, player.tileUnder.levelName, false)) ;
         }
         isGrowing = false;
     }

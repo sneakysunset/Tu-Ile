@@ -17,6 +17,9 @@ public class CameraCtr : MonoBehaviour
     private SplitScreenEffect sCE;
     [HideNormalInspector] public List<Transform> players;
     [HideNormalInspector] public List<ScreenData> sDatas;
+    [HideNormalInspector] public Vector2Int tileLoadCoordinates;
+    public delegate void OnStartUpDelegate();
+    public static event OnStartUpDelegate startUp;
     #endregion
 
     #region Main Variables
@@ -45,6 +48,8 @@ public class CameraCtr : MonoBehaviour
     #region System CallBacks 
     private void Start()
     {
+        if (startUp != null) startUp();
+
         transform.parent = null;
         DontDestroyOnLoad(this.gameObject);
         cam = Camera.main;
@@ -54,11 +59,12 @@ public class CameraCtr : MonoBehaviour
         StartCoroutine(changeCam());
     }
 
+
     public void OnLoad(Scene scene, LoadSceneMode mode)
     {
-
         TileSystem.Instance.StartCoroutine(OnLevelLoad());
-        dezoomCamera.LookAt = TileSystem.Instance.centerTile.transform.GetChild(0).GetChild(0) ;
+        if (tileLoadCoordinates == Vector2Int.zero) tileLoadCoordinates = new Vector2Int(TileSystem.Instance.centerTile.coordX, TileSystem.Instance.centerTile.coordY);
+        dezoomCamera.LookAt = TileSystem.Instance.tiles[tileLoadCoordinates.x, tileLoadCoordinates.y].transform.GetChild(0);
         for (int i = 0; i < sCE.Screens.Count; i++)
         {
             if (sCE.Screens[i].Target == null)
@@ -95,8 +101,10 @@ public class CameraCtr : MonoBehaviour
     #region OnLoad
     IEnumerator changeCam()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitUntil(() => Input.GetButtonDown("StartGame"));
         dezoomCamera.Priority = 2;
+        yield return new WaitForSeconds(GetComponentInChildren<CinemachineBrain>().m_DefaultBlend.m_Time);
+        TileSystem.Instance.ready = true;
     }
     public IEnumerator OnLevelLoad()
     {

@@ -12,7 +12,7 @@ public class SOM_Chantier : SO_Mission
         base.OnActivated(mUIInGame, mUIInPause, ref page);
         mUIInGame.missionChecker.sprite = ressourcesManager.mConstr;
         mUIInPause.missionChecker.sprite = ressourcesManager.mConstr;
-        List<Tile> ts = TileSystem.Instance.GetTilesAround(4, TileSystem.Instance.centerTile);
+        List<Tile> ts = GridUtils.GetTilesAround(4, TileSystem.Instance.centerTile);
         Tile tile = null;
         for (int i = ts.Count - 1; i >= 0 ; i--)
         {

@@ -28,7 +28,7 @@ public class SOM_Boussole : SO_Mission
         else
         {
             TileSystem tileSystem = TileSystem.Instance;
-            List<Tile> tiles = tileSystem.GetTilesBetweenRaws(minDistanceFromCenter, maxDistanceFromCenter, tileSystem.centerTile);
+            List<Tile> tiles = GridUtils.GetTilesBetweenRaws(minDistanceFromCenter, maxDistanceFromCenter, tileSystem.centerTile);
             if(TileSystem.Instance.ready) page.boussoleTile = tiles[Random.Range(0, tiles.Count)];
         }
         Item_Boussole[] items = FindObjectsOfType<Item_Boussole>();

@@ -34,7 +34,6 @@ public class PlayersManager : MonoBehaviour
         if (cam == null)
         {
             Instantiate(pnc);
-
             cam = FindObjectOfType<CameraCtr>();
         }
         players = FindObjectsOfType<Player>();
