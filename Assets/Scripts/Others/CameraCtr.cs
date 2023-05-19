@@ -2,46 +2,56 @@ using Cinemachine;
 using ProjectDawn.SplitScreen;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Unity.Burst.Intrinsics.X86;
 
 public class CameraCtr : MonoBehaviour
 {
-    public float smoother;
-    private Vector3 velocity;
+    #region Variables
+    #region Components and Lists
     private Camera cam;
+    private CinemachineVirtualCamera dezoomCamera;
+    private CinemachineTargetGroup targetGroup;
+    private SplitScreenEffect sCE;
     [HideNormalInspector] public List<Transform> players;
+    [HideNormalInspector] public List<ScreenData> sDatas;
+    #endregion
+
+    #region Main Variables
+    public float distanceToSplit;
+    public Color[] pCols;
+    #endregion
+
+    #region LineCast
+    [Space(5)]
+    [Header("WireFrame To Player")]
     public LayerMask lineCastLayers;
     public float sphereCastRadius;
     [Range(0,1)]public float transparencyLevel;
-    public Vector3 medianPos;
-    public CinemachineVirtualCamera dezoomCamera;
-    private Vector3 direction;
-    private float distance;
-    private SplitScreenEffect sCE;
-    public float distanceToSplit;
-    private CinemachineTargetGroup targetGroup;
-    private List<ScreenData> tempScreens;
-    public Color[] pCols;
+    #endregion
+
+    #region ScreenShakes
+    [Space(5)]
+    [Header("Camera Shakes")]
+    public float strongSS;
+    public float mediumSS;
+    public float weakSS;
+    #endregion
+    #endregion
+
+
+    #region System CallBacks 
     private void Start()
     {
         transform.parent = null;
         DontDestroyOnLoad(this.gameObject);
         cam = Camera.main;
-        direction = cam.transform.position - transform.position;
         SceneManager.sceneLoaded += OnLoad;
         sCE = GetComponentInChildren<SplitScreenEffect>();
+        dezoomCamera = transform.GetChild(2).GetComponent<CinemachineVirtualCamera>();
         StartCoroutine(changeCam());
-        tempScreens = sCE.Screens;
-        
-    }
-
-
-    IEnumerator changeCam()
-    {
-        yield return new WaitForSeconds(3);
-        dezoomCamera.Priority = 2;
     }
 
     public void OnLoad(Scene scene, LoadSceneMode mode)
@@ -59,21 +69,6 @@ public class CameraCtr : MonoBehaviour
         }
     }   
 
-    public IEnumerator OnLevelLoad()
-    {
-        yield return new WaitUntil(() => TileSystem.Instance.ready);
-        if (dezoomCamera != null)
-        {
-            dezoomCamera.Priority = 2;
-        }
-    }
-
-    public void Dezoom(Transform targetTile)
-    {
-
-        dezoomCamera.Priority = 4;
-    }
-
     private void Update()
     {
         if(!TileSystem.Instance.isHub && players.Count > 1) 
@@ -89,6 +84,35 @@ public class CameraCtr : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        LineCastToPlayer();
+       
+    }
+    #endregion
+
+
+    #region OnLoad
+    IEnumerator changeCam()
+    {
+        yield return new WaitForSeconds(3);
+        dezoomCamera.Priority = 2;
+    }
+    public IEnumerator OnLevelLoad()
+    {
+        yield return new WaitUntil(() => TileSystem.Instance.ready);
+        if (dezoomCamera != null)
+        {
+            dezoomCamera.Priority = 2;
+        }
+    }
+
+    public void Dezoom(Transform targetTile)
+    {
+
+        dezoomCamera.Priority = 4;
+    }
+
     public void DezoomCam(Transform targetTile)
     {
         if (dezoomCamera != null)
@@ -97,12 +121,10 @@ public class CameraCtr : MonoBehaviour
             dezoomCamera.Priority = 4;
         }
     }
-    private void LateUpdate()
-    {
-        LineCastToPlayer();
-       
-    }
+    #endregion
 
+
+    #region AddPlayer
     public void AddPlayer(Transform player)
     {
         if(players == null)
@@ -110,17 +132,15 @@ public class CameraCtr : MonoBehaviour
             players = new List<Transform>();
         }
         players.Add(player);
+        SetPlayerColor(player);
+        SetSplitScreens(player);
+        SetTargetGroups();
+    }
+
+    private void SetPlayerColor(Transform player)
+    {
         SkinnedMeshRenderer[] sRs = player.parent.GetComponentsInChildren<SkinnedMeshRenderer>();
 
-        if (sCE == null) sCE = GetComponentInChildren<SplitScreenEffect>();
-        foreach(ScreenData screen in sCE.Screens)
-        {
-            if(screen.Target == null)
-            {
-                screen.Target = player;
-                break;
-            }
-        }
         if (TileSystem.Instance.isHub)
         {
             switch (players.Count)
@@ -131,7 +151,41 @@ public class CameraCtr : MonoBehaviour
                 case 4: for (int j = 0; j < sRs.Length; j++) sRs[j].materials[1].color = pCols[3]; break;
             }
         }
+    }
 
+    private void SetSplitScreens(Transform player)
+    {
+        if (sCE == null) sCE = GetComponentInChildren<SplitScreenEffect>(); ;
+        if (sDatas.Count == 0)
+        {
+            sDatas = new List<ScreenData>();
+            foreach (ScreenData data in sCE.Screens)
+            {
+                sDatas.Add(data);
+            }
+        }
+
+        for (int i = 0; i < sCE.Screens.Count; i++)
+        {
+            sCE.Screens.RemoveAt(i);
+            i--;
+            if (sCE.Screens.Count == 0) break;
+        }
+
+        foreach (ScreenData screen in sDatas)
+        {
+            if (screen.Target != null) sCE.Screens.Add(screen);
+            else if (screen.Target == null)
+            {
+                screen.Target = player;
+                sCE.Screens.Add(screen);
+                break;
+            }
+        }
+    }
+
+    private void SetTargetGroups()
+    {
         List<CinemachineTargetGroup.Target> targets = new List<CinemachineTargetGroup.Target>();
         for (int i = 0; i < players.Count; i++)
         {
@@ -140,7 +194,7 @@ public class CameraCtr : MonoBehaviour
             tar.target = players[i];
             targets.Add(tar);
         }
-        if(targetGroup == null) targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
+        if (targetGroup == null) targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
         targetGroup.m_Targets = new CinemachineTargetGroup.Target[targets.Count];
 
         for (int i = 0; i < targets.Count; i++)
@@ -169,15 +223,15 @@ public class CameraCtr : MonoBehaviour
             targetGroup.m_Targets[i] = targets[i];
         }
     }
+    #endregion
 
+
+    #region Camera Effects
     public void StartScreenShake(float duration, float magnitude)
     {
         ScreenShake.ScreenShakeEffect(duration, magnitude);
     }
 
-    public float strongSS;
-    public float mediumSS;
-    public float weakSS;
     public void StartStrongScreenShake(float duration)
     {
         StartCoroutine(ScreenShake.ScreenShakeEffect(duration, strongSS));
@@ -220,4 +274,5 @@ public class CameraCtr : MonoBehaviour
             }
         }
     }
+    #endregion
 }

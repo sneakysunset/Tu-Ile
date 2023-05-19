@@ -51,7 +51,7 @@ public class TileSelector : MonoBehaviour
     {
         if(player.tileUnder) player.tileUnder.sand_WalkedOnto = false;
         player.tileUnder = TileSystem.Instance.WorldPosToTile(transform.position);
-        if(player._characterController.isGrounded && Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(player.tileUnder.transform.position.x, player.tileUnder.transform.position.z)) < 2)
+        if(player._characterController.isGrounded && Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(player.tileUnder.transform.position.x, player.tileUnder.transform.position.z)) < 2.2f)
         {
             player.tileUnder.sandFlag = true;
         }

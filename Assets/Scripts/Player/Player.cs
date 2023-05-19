@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
 
         transform.parent = null;
         dummyTarget = transform.Find("DummyTarget");
-        if (TileSystem.Instance.isHub && Time.time > 1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget);
+        if (/*TileSystem.Instance.isHub && */Time.time > 1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget);
         col = GetComponent<Collider>();
 
         pointers = new List<Transform>();
@@ -140,7 +140,7 @@ public class Player : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning", transform.position);
         dummyTarget.parent = null;
         pM.canMove = false;
-
+        transform.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
 
         pM._velocity = 0;
         pM.gravityMultiplier = .03f;

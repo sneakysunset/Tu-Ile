@@ -11,15 +11,26 @@ public class SOM_Boussole : SO_Mission
     public int minDistanceFromCenter;
     public int maxDistanceFromCenter;
 
+    [Space(5)]
+    [Header("If Ephemeral")]
+    public Vector2Int tileCoordinates;
+
     public override void OnActivated(MissionUI mUIInGame, MissionUI mUIInPause, ref missionPage page)
     {
         base.OnActivated(mUIInGame ,mUIInPause, ref page);
         mUIInPause.missionText.text = description;
         mUIInGame.missionText.text = "";
         mUIInGame.missionChecker.sprite = ressourcesManager.mCompass;
-        TileSystem tileSystem = TileSystem.Instance;
-        List<Tile> tiles = tileSystem.GetTilesBetweenRaws(minDistanceFromCenter, maxDistanceFromCenter, tileSystem.centerTile);
-        if(TileSystem.Instance.ready) page.boussoleTile = tiles[Random.Range(0, tiles.Count)];
+        if(page.isEphemeral)
+        {
+            page.boussoleTile = TileSystem.Instance.tiles[tileCoordinates.x, tileCoordinates.y];
+        }
+        else
+        {
+            TileSystem tileSystem = TileSystem.Instance;
+            List<Tile> tiles = tileSystem.GetTilesBetweenRaws(minDistanceFromCenter, maxDistanceFromCenter, tileSystem.centerTile);
+            if(TileSystem.Instance.ready) page.boussoleTile = tiles[Random.Range(0, tiles.Count)];
+        }
         Item_Boussole[] items = FindObjectsOfType<Item_Boussole>();
         foreach(Item_Boussole item in items)
         {
