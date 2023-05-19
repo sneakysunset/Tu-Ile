@@ -42,19 +42,22 @@ public class TileSelector : MonoBehaviour
         if(previousTile && previousTile.etabli != null)
         {
             previousTile.etabli.playersOn.Remove(player);
-            if(previousTile.etabli.playersOn.Count == 0) previousTile.etabli.PlayerFar();
+            previousTile.sand_WalkedOnto = false;
+            if (previousTile.etabli.playersOn.Count == 0) previousTile.etabli.PlayerFar();
         }
     }
 
     private void Update()
     {
-        if (player.tileUnder != null)
-        {
-            player.tileUnder.sand_WalkedOnto = false;
-        }
+        if(player.tileUnder) player.tileUnder.sand_WalkedOnto = false;
         player.tileUnder = TileSystem.Instance.WorldPosToTile(transform.position);
+        if(Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(player.tileUnder.transform.position.x, player.tileUnder.transform.position.z)) < 2)
+        {
+            player.tileUnder.sandFlag = true;
+        }
         player.tileUnder.sand_WalkedOnto = true;
-        
+            
+
         if (previousTile != player.tileUnder)
         {
             OnChangeTileUnder();

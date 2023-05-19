@@ -97,6 +97,10 @@ public class TileSystem : MonoBehaviour
         lerpingSpeed = .1f;
         int j = 0;
         ready = false;
+        foreach (var item in FindObjectsOfType<Player>())
+        {
+            item.respawnTile = tile;
+        }
         FindObjectOfType<CameraCtr>().DezoomCam(tile.transform.GetChild(0));
         MissionManager.Instance.CloseMissions();
         while (!isOver)
@@ -131,7 +135,9 @@ public class TileSystem : MonoBehaviour
                 }
                 else if(t == tile)
                 {
-                    tile.currentPos.y = 0; 
+                    tile.currentPos.y = 0;
+                    t.movingP = true;
+                    t.degSpeed *= 2;
                 }
                 t.tourbillon = false;
                 t.tourbillonT.gameObject.SetActive(false);
@@ -369,7 +375,6 @@ public class TileSystem : MonoBehaviour
             tile.minTimer = tileP.minTimer;
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
             tile.heightByTile = tileP.heightByTile;
-
             tile.falaiseMat = tileM.falaiseTileMat;
             tile.plaineMat = tileM.plaineTileMat;
             tile.disabledMat = tileM.disabledTileMaterial;
@@ -386,6 +391,7 @@ public class TileSystem : MonoBehaviour
             tile.woodMesh = tileM.woodTileMesh;
             tile.rockMesh = tileM.rockTileMesh;
             tile.sandMesh = tileM.sandTileMesh;
+            tile.undegradableMesh = tileM.undegradableTileMesh;
             tile.notWalkedOnColor = tileM.notWalkedOnColor;
             tile.walkedOnColor = tileM.walkedOnColor;
             tile.penguinedColor = tileM.acceleratedDegradationColor;
@@ -420,6 +426,7 @@ public class TileSystemEditor : Editor
     private void OnEnable()
     {
         tileS = (TileSystem)target;
+        tileS.UpdateGridParameters();
         foreach(var tile in tileS.tiles)
         {
             tile.UpdateObject();

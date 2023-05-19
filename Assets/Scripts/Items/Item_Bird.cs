@@ -37,7 +37,6 @@ public class Item_Bird : Item
         AIB.ClearPath();
         gameObject.layer = 13;
         featherPSYS.Play();
-
     }
 
     public override void GrabRelease(bool etablied)

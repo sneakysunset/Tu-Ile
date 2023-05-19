@@ -23,9 +23,10 @@ public class CameraCtr : MonoBehaviour
     public float distanceToSplit;
     private CinemachineTargetGroup targetGroup;
     private List<ScreenData> tempScreens;
-    Color pCol1, pCol2, pCol3, pCol4;
+    public Color[] pCols;
     private void Start()
     {
+        transform.parent = null;
         DontDestroyOnLoad(this.gameObject);
         cam = Camera.main;
         direction = cam.transform.position - transform.position;
@@ -33,6 +34,7 @@ public class CameraCtr : MonoBehaviour
         sCE = GetComponentInChildren<SplitScreenEffect>();
         StartCoroutine(changeCam());
         tempScreens = sCE.Screens;
+        
     }
 
 
@@ -110,6 +112,7 @@ public class CameraCtr : MonoBehaviour
         players.Add(player);
         SkinnedMeshRenderer[] sRs = player.parent.GetComponentsInChildren<SkinnedMeshRenderer>();
 
+        if (sCE == null) sCE = GetComponentInChildren<SplitScreenEffect>();
         foreach(ScreenData screen in sCE.Screens)
         {
             if(screen.Target == null)
@@ -118,13 +121,15 @@ public class CameraCtr : MonoBehaviour
                 break;
             }
         }
-
-        switch (players.Count)
+        if (TileSystem.Instance.isHub)
         {
-            case 1: for (int j = 0; j < sRs.Length; j++) sRs[j].material.color = pCol1; break;
-            case 2: for (int j = 0; j < sRs.Length; j++) sRs[j].material.color = pCol2; break;
-            case 3: for (int j = 0; j < sRs.Length; j++) sRs[j].material.color = pCol3; break;
-            case 4: for (int j = 0; j < sRs.Length; j++) sRs[j].material.color = pCol1; break;
+            switch (players.Count)
+            {
+                case 1: for (int j = 0; j < sRs.Length; j++) sRs[j].materials[1].color = pCols[0]; break;
+                case 2: for (int j = 0; j < sRs.Length; j++) sRs[j].materials[1].color = pCols[1]; break;
+                case 3: for (int j = 0; j < sRs.Length; j++) sRs[j].materials[1].color = pCols[2]; break;
+                case 4: for (int j = 0; j < sRs.Length; j++) sRs[j].materials[1].color = pCols[3]; break;
+            }
         }
 
         List<CinemachineTargetGroup.Target> targets = new List<CinemachineTargetGroup.Target>();

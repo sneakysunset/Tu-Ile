@@ -5448,8 +5448,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2.14, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.4027513, z: 0.99999917}
+  m_Center: {x: 0, y: 0.0044620633, z: 0}
 --- !u!1 &3638119745737497431
 GameObject:
   m_ObjectHideFlags: 0
@@ -6660,7 +6660,7 @@ MonoBehaviour:
       - m_Target: {fileID: 9137482398244349598}
         m_TargetAssemblyTypeName: Player_Pause, Assembly-CSharp
         m_MethodName: PauseGame
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7339,31 +7339,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 428999287552e2044b3e2a68187bf52a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.68
+      value: -0.73
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 428999287552e2044b3e2a68187bf52a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.83
+      value: 1.02
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 428999287552e2044b3e2a68187bf52a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.18
+      value: -0.44
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 428999287552e2044b3e2a68187bf52a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.562394
+      value: 0.6429733
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 428999287552e2044b3e2a68187bf52a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.46115297
+      value: -0.27619958
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 428999287552e2044b3e2a68187bf52a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.5815531
+      value: 0.6888947
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 428999287552e2044b3e2a68187bf52a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.3644818
+      value: -0.18900573
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 428999287552e2044b3e2a68187bf52a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7375,7 +7375,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 428999287552e2044b3e2a68187bf52a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -251.918
+      value: -218.786
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 428999287552e2044b3e2a68187bf52a, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -7549,7 +7549,7 @@ PrefabInstance:
     - target: {fileID: 8417361359673230750, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -5495902117074765545, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
+      objectReference: {fileID: 4300000, guid: 174a6c8c899ba9c4c88b24e6183fd26c, type: 2}
     - target: {fileID: 8417361359673230750, guid: 3d127db36e7dab7448eef737dfdbad7f, type: 3}
       propertyPath: m_Materials.Array.size
       value: 4

@@ -1515,7 +1515,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7644044209496618633}
-  m_LocalRotation: {x: 0, y: 0.9647943, z: -0, w: -0.26300576}
+  m_LocalRotation: {x: 0, y: 0.9659259, z: 0, w: -0.25881907}
   m_LocalPosition: {x: 60.537, y: 23.4, z: 46.434}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
@@ -1554,6 +1554,9 @@ MonoBehaviour:
       m_Calls: []
   constructed: 0
   isDestroyed: 0
+  isNear: 0
+  playersOn: []
+  restraintEditorMovement: 1
 --- !u!33 &7644044209496618636
 MeshFilter:
   m_ObjectHideFlags: 0

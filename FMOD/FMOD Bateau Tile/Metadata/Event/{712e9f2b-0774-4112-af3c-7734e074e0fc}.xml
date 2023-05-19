@@ -92,6 +92,9 @@
 		<property name="length">
 			<value>1.5318616780045353</value>
 		</property>
+		<property name="startOffset">
+			<value>6.5</value>
+		</property>
 		<property name="timelockedOffset">
 			<value>0.049000000000000002</value>
 		</property>
@@ -107,6 +110,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{8eea1e2d-92d6-4edb-8fd9-b62b80506786}">
+		<property name="volume">
+			<value>-8</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>

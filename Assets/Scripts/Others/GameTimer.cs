@@ -33,7 +33,7 @@ public class GameTimer : MonoBehaviour
     MissionManager missionManager;
     public Image secondBar;
     public Image minuteBar;
-
+    [HideNormalInspector] public string sceneLoadName = "Hub";
     [HideInInspector] public RectTransform UIPos;
     [HideInInspector] public Image timerFillImage;
     [HideInInspector] public Transform eventFolder;
@@ -127,7 +127,7 @@ public class GameTimer : MonoBehaviour
     {
         if (TileSystem.Instance.ready)
         {
-            GameTimerFunction("Hub2");
+            GameTimerFunction();
 
             TimelineEvent();
         }
@@ -135,7 +135,7 @@ public class GameTimer : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.B)) timer = 100 - 5;
     }
 
-    private void GameTimerFunction(string levelName)
+    private void GameTimerFunction()
     {
         timer += Time.deltaTime;
         if (timer >= gameTimer)
@@ -146,7 +146,7 @@ public class GameTimer : MonoBehaviour
                 p.respawnTile = players[0].tileUnder;
             }
             
-            StartCoroutine(TileSystem.Instance.SinkWorld(TileSystem.Instance.centerTile, levelName));
+            StartCoroutine(TileSystem.Instance.SinkWorld(TileSystem.Instance.centerTile, sceneLoadName));
         }
 
         timerFillImage.fillAmount = timer / gameTimer;
