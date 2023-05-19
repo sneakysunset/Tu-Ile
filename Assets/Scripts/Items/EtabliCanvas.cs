@@ -32,7 +32,7 @@ public class EtabliCanvas : MonoBehaviour
         cam = FindObjectOfType<CameraCtr>();
         backGroundFar.localScale = new Vector3(0.35f, backGroundFar.localScale.y, backGroundFar.localScale.z);
         backGroundNear.localScale = new Vector3(backGroundNear.localScale.x, 0.65f, backGroundNear.localScale.z);
-        if(Camera.main) mainCamera = Camera.main.transform;
+        if (Camera.main) mainCamera = Camera.main.transform;
         RectTransform pi = imagesFar[0].rectTransform.parent as RectTransform;
         pi.anchoredPosition = new Vector2(-22.5f, pi.anchoredPosition.y);
         for (int i = 0; i < imagesNear.Length; i++)
@@ -40,7 +40,7 @@ public class EtabliCanvas : MonoBehaviour
             imagesNear[i].transform.parent.gameObject.SetActive(false);
             //textsNear[i].gameObject.SetActive(false);
             imagesFar[i].gameObject.SetActive(false);
-            if(i - 1 >= 0) textsFar[i - 1].gameObject.SetActive(false);
+            if (i - 1 >= 0) textsFar[i - 1].gameObject.SetActive(false);
         }
 
         int f = 0;
@@ -56,19 +56,19 @@ public class EtabliCanvas : MonoBehaviour
                     imagesFar[i].gameObject.SetActive(true);
                     //textsNear[f].gameObject.SetActive(true);
                     imagesFar[i].sprite = rMC.sprite;
-                    if(i - 1 >= 0) textsFar[i - 1].gameObject.SetActive(true);
+                    if (i - 1 >= 0) textsFar[i - 1].gameObject.SetActive(true);
                     backGroundNear.localScale += .35f * Vector3.up;
                     backGroundFar.localScale += .30f * Vector3.right;
 
                     RectTransform p = imagesFar[0].rectTransform.parent as RectTransform;
-                    if(f == 0)
+                    if (f == 0)
                     {
                         p.anchoredPosition3D += 22 * Vector3.right;
                     }
                     else
                     {
                         p.anchoredPosition3D += -49 * Vector3.right;
-                    } 
+                    }
                     f++;
                 }
             }
@@ -103,30 +103,30 @@ public class EtabliCanvas : MonoBehaviour
             switch (etabli.recette.craftedItemPrefab.GetType().ToString())
             {
                 case "Item_Stack_Tile":
-                Item_Stack_Tile iS = etabli.recette.craftedItemPrefab as Item_Stack_Tile;
-                if (iS.stackType == r.tileType && r.isTile)
-                {
-                    resultImageFar.sprite = r.sprite;
-                    resultImageNear.sprite = r.sprite;
-                    yo = true;
-                }
-                break;
-            case "Item_Bird":
-                if (r.itemType == Item.ItemType.Bird && !r.isTile)
-                {
-                    resultImageFar.sprite = r.sprite;
-                    resultImageNear.sprite = r.sprite;
-                    yo = true;
-                }
-                break;
+                    Item_Stack_Tile iS = etabli.recette.craftedItemPrefab as Item_Stack_Tile;
+                    if (iS.stackType == r.tileType && r.isTile)
+                    {
+                        resultImageFar.sprite = r.sprite;
+                        resultImageNear.sprite = r.sprite;
+                        yo = true;
+                    }
+                    break;
+                case "Item_Bird":
+                    if (r.itemType == Item.ItemType.Bird && !r.isTile)
+                    {
+                        resultImageFar.sprite = r.sprite;
+                        resultImageNear.sprite = r.sprite;
+                        yo = true;
+                    }
+                    break;
                 case "Item_Boussole":
-                if (r.itemType == Item.ItemType.Boussole && !r.isTile)
-                {
-                    resultImageFar.sprite = r.sprite;
-                    resultImageNear.sprite = r.sprite;
-                    yo = true;
-                }
-                break;
+                    if (r.itemType == Item.ItemType.Boussole && !r.isTile)
+                    {
+                        resultImageFar.sprite = r.sprite;
+                        resultImageNear.sprite = r.sprite;
+                        yo = true;
+                    }
+                    break;
             }
             if (yo) break;
         }
@@ -141,7 +141,7 @@ public class EtabliCanvas : MonoBehaviour
     public void UpdateText(Item_Etabli et)
     {
         int f = 0;
-        if (etabli == null || rMan == null)
+        if (etabli == null || rMan == null || mainCamera == null)
         {
             etabli = et;
             OnActivated();
