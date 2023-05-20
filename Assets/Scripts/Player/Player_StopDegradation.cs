@@ -9,7 +9,6 @@ public class Player_StopDegradation : MonoBehaviour
     private Player player;
     bool isGrowing;
     [HideInInspector] public RessourcesManager ressourcesManager;
-
     private void Start()
     {
         player = GetComponent<Player>();
@@ -46,7 +45,8 @@ public class Player_StopDegradation : MonoBehaviour
     {
         if(player.tileUnder && player.tileUnder.tileType == TileType.LevelLoader && isGrowing)
         {
-            StartCoroutine(TileSystem.Instance.SinkWorld(player.tileUnder, player.tileUnder.levelName));
+            FindObjectOfType<CameraCtr>().tileLoadCoordinates = new Vector2Int(player.tileUnder.coordX, player.tileUnder.coordY);
+            StartCoroutine(GridUtils.SinkWorld(player.tileUnder, player.tileUnder.levelName, false)) ;
         }
         isGrowing = false;
     }
@@ -77,8 +77,9 @@ public class Player_StopDegradation : MonoBehaviour
         {
             stackItem.numberStacked -= ressourcesManager.growthCost;
             tile.currentPos.y += tile.heightByTile;
+            tile.movingP = true;
             tile.isGrowing = true;
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Cast");
+            StartCoroutine(player.Casting(Player.PlayerState.SpellUp));
         }
         isGrowing = false;
     }

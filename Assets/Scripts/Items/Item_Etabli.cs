@@ -88,7 +88,7 @@ public class Item_Etabli : Item
     {
         recette.ResetRecette();
         if(Utils.IsSameOrSubclass(recette.craftedItemPrefab.GetType(), typeof(Item_Chantier))) isChantier = true;
-        tileUnder = TileSystem.Instance.WorldPosToTile(transform.position);
+        tileUnder = GridUtils.WorldPosToTile(transform.position);
         transform.position = new Vector3(transform.position.x, tileUnder.transform.position.y + 23.4f, transform.position.z);
         transform.parent = tileUnder.transform;
         tileUnder.etabli = this;
@@ -379,7 +379,7 @@ public class EtablieSystemEditor : Editor
     {
         if (!Application.isPlaying)
         {
-            Tile tileUnder = TileSystem.Instance.WorldPosToTile(etabli.transform.position);
+            Tile tileUnder = GridUtils.WorldPosToTile(etabli.transform.position);
             if(tileUnder != null && etabli.restraintEditorMovement)
             {
                 float yAngle = etabli.transform.eulerAngles.y - (etabli.transform.eulerAngles.y - 30) % 60;

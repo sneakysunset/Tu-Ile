@@ -13,16 +13,18 @@ public class PauseMenu : MonoBehaviour
     public AnimationCurve easeOut;
     private PlayerInput[] players;
     private RectTransform tr;
-
+    private PlayerInputManager playerInputManager;
     private void Awake()
     {
         players = FindObjectsOfType<PlayerInput>();
         tr = transform.GetChild(0) as RectTransform;
+        playerInputManager = FindObjectOfType<PlayerInputManager>();
     }
 
     public void EnablePause(Player_Pause _player)
     {
         player = _player;
+        playerInputManager.enabled = false;
         Time.timeScale = 0;
         tr.DOAnchorPosX(0, 1,true).SetEase(easeOut).SetUpdate(true);
         foreach (PlayerInput p in players)
@@ -36,7 +38,7 @@ public class PauseMenu : MonoBehaviour
 
     public void DisablePause()
     {
-        player = null;
+        playerInputManager.enabled = true;
         Time.timeScale = 1;
         tr.DOAnchorPosX(465, 1, true).SetEase(easeOut).SetUpdate(false);
 
@@ -44,14 +46,14 @@ public class PauseMenu : MonoBehaviour
         {
             if (p.transform != transform)
             {
-                p.enabled = false;
+                p.enabled = true;
             }
         }
     }
 
     public void Resume()
     {
-        player.SetPause();
+        if(player) player.SetPause();
     }
 
     public void Options()
@@ -63,14 +65,16 @@ public class PauseMenu : MonoBehaviour
     {
         GameTimer gameTimer = FindObjectOfType<GameTimer>();
         gameTimer.sceneLoadName = SceneManager.GetActiveScene().name;
-        gameTimer.timer = gameTimer.gameTimer;
+        gameTimer.EndLevel(false);
 
         player.SetPause();
     }
 
     public void HUB()
     {
-        FindObjectOfType<GameTimer>().timer = FindObjectOfType<GameTimer>().gameTimer;
+        GameTimer gameTimer = FindObjectOfType<GameTimer>();
+        gameTimer.sceneLoadName = "Hub";
+        gameTimer.EndLevel(false);
         player.SetPause();
     }
 }

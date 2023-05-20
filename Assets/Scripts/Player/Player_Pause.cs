@@ -24,7 +24,7 @@ public class Player_Pause : MonoBehaviour
 
     public void PauseGame(InputAction.CallbackContext context)
     {
-        if(!TileSystem.Instance.isHub && context.started)
+        if(!TileSystem.Instance.isHub && context.started && TileSystem.Instance.ready)
         {
             SetPause();
         }

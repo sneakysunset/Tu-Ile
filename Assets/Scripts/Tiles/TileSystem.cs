@@ -50,6 +50,8 @@ public class TileSystem : MonoBehaviour
         }
 
         tileC = GetComponent<TileCounter>();
+        SceneManager.sceneLoaded += OnLoadScene;
+
         foreach(Tile tile in tiles)
         {
             tile.tileS = this;
@@ -58,9 +60,19 @@ public class TileSystem : MonoBehaviour
 
     private void Start()
     {
-        if(!isHub)
-            gT = FindObjectOfType<GameTimer>();
-        StartCoroutine(ElevateWorld());
+        if(!isHub) gT = FindObjectOfType<GameTimer>();
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnLoadScene;
+        editorFlag = true;
+    }
+
+    private void OnLoadScene(Scene scene, LoadSceneMode lSM)
+    {
+        Vector2Int vector2Int = FindObjectOfType<CameraCtr>().tileLoadCoordinates;
+        StartCoroutine(GridUtils.ElevateWorld(tiles[vector2Int.x, vector2Int.y]));
     }
 
     private void Update()
@@ -72,283 +84,13 @@ public class TileSystem : MonoBehaviour
         } 
     }
 
-    public Tile WorldPosToTile(Vector3 pos)
-    {
-        float xOffset = 0;
-        int x;
-        int z;
-
-
-        z = Mathf.RoundToInt(pos.z / (tilePrefab.transform.localScale.z * 1.48f));
-        if (z % 2 == 1) xOffset = tilePrefab.transform.localScale.x * .9f;
-        x = Mathf.RoundToInt((pos.x - xOffset) / (tilePrefab.transform.localScale.x * 1.7f));
-        
-        return tiles[x, z];
-    }
-
-    public IEnumerator SinkWorld(Tile _centerTile, string levelToLoad)
-    {
-        if (!isHub)
-            StartCoroutine(gT.LerpTimeLine(gT.UIPos.anchoredPosition, gT.UIPos.anchoredPosition + Vector2.up * -100, gT.UIPos, gT.lerpCurveEaseIn, gT.lerpSpeed));
-        Tile tile = _centerTile;
-        List<Tile> ts = new List<Tile>();
-        ts.Add(tile);
-        bool isOver = false;
-        lerpingSpeed = .1f;
-        int j = 0;
-        ready = false;
-        foreach (var item in FindObjectsOfType<Player>())
-        {
-            item.respawnTile = tile;
-        }
-        FindObjectOfType<CameraCtr>().DezoomCam(tile.transform.GetChild(0));
-        MissionManager.Instance.CloseMissions();
-        while (!isOver)
-        {
-            isOver = true;
-            int ix = ts.Count;
-            for (int i = 0; i < ix; i++)
-            {
-                if (!ts[i].isPathChecked)
-                {
-                    foreach (Vector2Int vecs in ts[i].adjTCoords)
-                    {
-                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns /*&& tiles[vecs.x, vecs.y].walkable*/ && !ts.Contains(tiles[vecs.x, vecs.y]))
-                        {
-                            ts.Add(tiles[vecs.x, vecs.y]);
-                            isOver = false;
-                        }
-                    }
-                    ts[i].isPathChecked = true;
-                }
-            }
-
-            
-            foreach (Tile t in ts)
-            {
-                if (t.walkable && t != tile)
-                {
-                    t.degradable = true;
-                    t.currentPos.y = -t.heightByTile;
-                    t.movingP = true;
-                    
-                }
-                else if(t == tile)
-                {
-                    tile.currentPos.y = 0;
-                    t.movingP = true;
-                    t.degSpeed *= 2;
-                }
-                t.tourbillon = false;
-                t.tourbillonT.gameObject.SetActive(false);
-            }
-            tile.degradable = false;
-
-            j++;
-            float timer = waitTimer / j;
-            while (timer > 0)
-            {
-                timer -= Time.deltaTime;
-                foreach(Tile t in ts)
-                {
-                    if (t.walkable && t != tile)
-                    {
-                        t.degSpeed *= 1 + Time.deltaTime * 3;
-                    }
-                }
-                yield return new WaitForEndOfFrame();
-            }
-        }
-        
-
-        yield return new WaitForSeconds(2);
-        SceneManager.LoadScene(levelToLoad, LoadSceneMode.Single);
-        //PlayersManager.playerNumber = FindObjectsOfType<Player>().Length;
-        PlayerPrefs.SetInt("PlayerNumber", FindObjectsOfType<Player>().Length);
-        ready = false;
-    }
-
-    public IEnumerator ElevateWorld()
-    {
-        Tile tile = centerTile;
-        if(!isHub)
-            gT.UIPos.anchoredPosition += Vector2.up * -100;
-        if (!isHub)
-            StartCoroutine(gT.LerpTimeLine(gT.UIPos.anchoredPosition, gT.UIPos.anchoredPosition + Vector2.up * 100, gT.UIPos, gT.lerpCurveEaseOut, gT.lerpSpeed));
-        List<Tile> ts = new List<Tile>();
-        ts.Add(tile);
-        bool isOver = false;
-        int j = 0;
-        while (!isOver)
-        {
-            isOver = true;
-            int ix = ts.Count;
-            for (int i = 0; i < ix; i++)
-            {
-                if (!ts[i].isPathChecked)
-                {
-                    foreach (Vector2Int vecs in ts[i].adjTCoords)
-                    {
-                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns /*&& tiles[vecs.x, vecs.y].walkable*/ && !ts.Contains(tiles[vecs.x, vecs.y]))
-                        {
-                            ts.Add(tiles[vecs.x, vecs.y]);
-                            isOver = false;
-                        }
-                    }
-                    ts[i].isPathChecked = true;
-                }
-            }
-
-
-            foreach (Tile t in ts)
-            {
-                if (t.walkable)
-                {
-                    t.readyToRoll = true;
-                    t.movingP = true;
-                }
-            }
-            tile.degradable = false;
-            j++;
-            float timer = waitTimer / j;
-
-            while (timer > 0)
-            {
-                timer -= Time.deltaTime;
-                foreach (Tile t in ts)
-                {
-                    TileSystem.Instance.lerpingSpeed /= 2.5f;
-                    if (t.walkable && t != tile)
-                    {
-                        
-                        //t.degSpeed *= 1 + Time.deltaTime * 3 * Random.Range(0f,1f);
-                    }
-                }
-                yield return new WaitForEndOfFrame();
-            }
-        }
-        TileSystem.Instance.lerpingSpeed = 1;
-        ready = true;
-
-        
-
-        foreach (Tile t in ts)
-        {
-            t.isPathChecked = false;
-        }
-    }
-
-    public Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
-    {
-        float xOffset = 0;
-        if (z % 2 == 1) xOffset = tiles[x, z].transform.localScale.x * .85f;
-        Vector3 pos = ogPos + new Vector3(x * tiles[x, z].transform.localScale.x * 1.7f + xOffset, 0, z * tiles[x, z].transform.localScale.z * 1.48f);
-        tiles[x, z].coordX = x;
-
-        tiles[x, z].coordY = z;
-        return pos;
-    }
-
-    public List<Tile> GetTilesAround(int numOfRows, Tile tile)
-    {
-        List<Tile> ts = new List<Tile>();
-        int rowsSeen = 0;
-        ts.Add(tile);
-        while (rowsSeen < numOfRows)
-        {
-            int ix = ts.Count;
-            for (int i = 0; i < ix; i++)
-            {
-                if (!ts[i].isPathChecked)
-                {
-                    foreach (Vector2Int vecs in ts[i].adjTCoords)
-                    {
-                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns && tiles[vecs.x, vecs.y].walkable && !ts.Contains(tiles[vecs.x, vecs.y]))
-                        {
-                            ts.Add(tiles[vecs.x, vecs.y]);
-                        }
-                    }
-                    ts[i].isPathChecked = true;
-                }
-            }
-            rowsSeen++;
-        }
-        //ts.Remove(tile);
-        foreach(Tile t in ts)
-        {
-            t.isPathChecked = false;
-        }
-        return ts;
-    }
-
-    public List<Tile> GetTilesBetweenRaws(int rowMin, int rowMax, Tile tile)
-    {
-        List<Tile> ts = new List<Tile>();
-        List<Tile> ts2 = new List<Tile>();
-        int rowsSeen = 0;
-        ts.Add(tile);
-        while (rowsSeen <= rowMax)
-        {
-            int ix = ts.Count;
-            for (int i = 0; i < ix; i++)
-            {
-                if (!ts[i].isPathChecked)
-                {
-                    foreach (Vector2Int vecs in ts[i].adjTCoords)
-                    {
-                        if (vecs.x >= 0 && vecs.x < rows && vecs.y >= 0 && vecs.y < columns  && !ts.Contains(tiles[vecs.x, vecs.y]))
-                        {
-                            ts.Add(tiles[vecs.x, vecs.y]);
-                            if(rowsSeen >= rowMin &&  rowsSeen <= rowMax)
-                            {
-                                ts2.Add(tiles[vecs.x, vecs.y]);
-                            }
-                        }
-                    }
-                    ts[i].isPathChecked = true;
-                }
-            }
-            rowsSeen++;
-        }
-
-        foreach (Tile t in ts)
-        {
-            t.isPathChecked = false;
-        }
-        return ts2;
-    }
-
-    public void Regener()
-    {
-        StartCoroutine(waiter());
-    }
-
-    private IEnumerator waiter()
-    {
-        yield return new WaitForSeconds(2);
-        RegenGrid();
-    }
-
     void RegenGrid()
     {
         Tile[] list = FindObjectsOfType<Tile>();
         if (list.Length == 0) return;
         int rowss = rows;
         int columnss = columns;
-        /*if(list.Length > rows * columns)
-        {
-            print(this.gameObject.name + " " + list.Length + " " + rowss * columnss);
 
-            rowss = 0;
-            columnss = 0;
-            TileSystem[] tileSs = FindObjectsOfType<TileSystem>();
-            foreach(TileSystem tileS in tileSs)
-            {
-                rowss += tileS.rows;
-                columns += tileS.columns;
-            }
-            print(list.Length + " " + rowss * columnss);
-        }*/
         tiles = new Tile[rowss, columnss];
         for (int i = 0; i < list.Length; i++)
         {
@@ -358,11 +100,6 @@ public class TileSystem : MonoBehaviour
             tiles[x, y].name = "tile " + x + " " + y;
         }
         UpdateGridParameters();
-    }
-
-    private void OnDisable()
-    {
-        editorFlag = true;
     }
 
     public void UpdateGridParameters()
@@ -387,11 +124,13 @@ public class TileSystem : MonoBehaviour
             tile.goldMat = tileM.goldTileMat;
             tile.diamondMat = tileM.diamondTileMat;
             tile.adamantiumMat = tileM.adamantiumTileMat;
+            tile.centerTileMat = tileM.centerTileMat;
             tile.defaultMesh = tileM.defaultTileMesh;
             tile.woodMesh = tileM.woodTileMesh;
             tile.rockMesh = tileM.rockTileMesh;
             tile.sandMesh = tileM.sandTileMesh;
             tile.undegradableMesh = tileM.undegradableTileMesh;
+            tile.centerTileMesh = tileM.centerTileMesh;
             tile.notWalkedOnColor = tileM.notWalkedOnColor;
             tile.walkedOnColor = tileM.walkedOnColor;
             tile.penguinedColor = tileM.acceleratedDegradationColor;
@@ -411,7 +150,6 @@ public class TileSystem : MonoBehaviour
 
         }
     }
-    
 }
 
 
@@ -479,7 +217,7 @@ public class TileSystemEditor : Editor
                     Tile tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as Tile;
                     tile.transform.parent = tileFolder.transform;
                     tileS.tiles[i, j] = tile;
-                    tile.transform.position = tileS.indexToWorldPos(i, j, tileS.gridOgTile);
+                    tile.transform.position = GridUtils.indexToWorldPos(i, j, tileS.gridOgTile);
                     tile.gameObject.name = i + "  " + j;
 
                 }
@@ -503,7 +241,7 @@ public class TileSystemEditor : Editor
                         Tile tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as Tile;
                         tile.transform.parent = tileS.tileFolder;
                         tempTiles[i, j] = tile;
-                        tile.transform.position = tileS.indexToWorldPos(i, j, tileS.gridOgTile);
+                        tile.transform.position = GridUtils.indexToWorldPos(i, j, tileS.gridOgTile);
                         tile.gameObject.name = i + "  " + j;
                     }
                     else if (i >= tileS.rows || j >= tileS.columns)

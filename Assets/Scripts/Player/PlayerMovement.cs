@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
         ApplyRotation();
         SpeedModifier();
         jumpValueLerp();
-        if(!canMove) _direction = new Vector3(0, _direction.y, 0);
+        //if(!canMove) _direction = new Vector3(0, _direction.y, 0);
         if (isDashing)
         {
             StartCoroutine(Dash());
@@ -114,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void jumpValueLerp()
     {
-        if (player.tileUnder.tileType == TileType.BouncyTile)
+        if (player.tileUnder && player.tileUnder.tileType == TileType.BouncyTile)
         {
             jp = Mathf.Lerp(jp, jumpStrengthOnBounce, .4f);
         }
@@ -129,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
         if (_characterController.isGrounded && jumpInput)
         {
             _velocity = jp;
+            player.pState = Player.PlayerState.Jump;
         }
 
         jumpInput = false;
@@ -138,9 +139,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_input.sqrMagnitude == 0) return;
 
-        var targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg;
-        var angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _currentVelocity, smoothTime);
-        transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+        if (canMove)
+        {
+            var targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg;
+            var angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _currentVelocity, smoothTime);
+            transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+        }
     }
 
     private void SpeedModifier()
@@ -174,8 +178,9 @@ public class PlayerMovement : MonoBehaviour
         _input = context.ReadValue<Vector2>();
         float cameraAngle = -Camera.main.transform.rotation.eulerAngles.y;
         _input = Rotate(_input, cameraAngle);
+        if(!canMove) _input = Vector2.zero;
         _direction = new Vector3(_input.x, 0.0f, _input.y);
-        player.anim.SetFloat("walkingSpeed", _input.magnitude);
+        if(player.anim) player.anim.SetFloat("walkingSpeed", _input.magnitude);
 
     }
 

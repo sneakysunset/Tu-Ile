@@ -50,7 +50,7 @@ public class TileCounter : MonoBehaviour
 
     public void Count()
     {
-        List<Tile> tiles = tileSystem.GetTilesAround(20, tileSystem.centerTile);
+        List<Tile> tiles = GridUtils.GetTilesAround(20, tileSystem.centerTile);
         int num = 0;
         int neutNum = 0;
         int woodNum = 0;

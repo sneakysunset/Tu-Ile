@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     public PlayerState pState { get { return playerState; } set { if(playerState != value) PlayerStateChange(value); } }
 
     [HideInInspector] public Animator anim;
+    private Player_Pause pPause;
     [HideInInspector] public CharacterController _characterController;
     PlayerMovement pM;
     public Tile respawnTile;
@@ -39,10 +40,10 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = Color.black;
-
+        pPause = GetComponent<Player_Pause>();
         transform.parent = null;
         dummyTarget = transform.Find("DummyTarget");
-        if (TileSystem.Instance.isHub && Time.time > 1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget);
+        if (/*TileSystem.Instance.isHub && */Time.time > 1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget);
         col = GetComponent<Collider>();
 
         pointers = new List<Transform>();
@@ -92,8 +93,10 @@ public class Player : MonoBehaviour
             pos.y = transform.position.y;
             transform.LookAt(pos);
         }
-        else if (_characterController.isGrounded && pM._input != Vector2.zero && pState != PlayerState.Drawning && pState != PlayerState.Jump) pState = PlayerState.Walk;
-        else if (_characterController.isGrounded && pState != PlayerState.Drawning && pState != PlayerState.Jump) pState = PlayerState.Idle;
+        else if (pPause.isPaused && (pState == PlayerState.Idle || pState == PlayerState.Walk))
+            pState = PlayerState.Dance;
+        else if (_characterController.isGrounded && pM._input != Vector2.zero && (pState == PlayerState.Idle || pState == PlayerState.Dance)) pState = PlayerState.Walk;
+        else if (_characterController.isGrounded && pM._input == Vector2.zero && (pState == PlayerState.Walk || pState == PlayerState.Dance)) pState = PlayerState.Idle;
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -140,7 +143,7 @@ public class Player : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning", transform.position);
         dummyTarget.parent = null;
         pM.canMove = false;
-
+        transform.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
 
         pM._velocity = 0;
         pM.gravityMultiplier = .03f;
@@ -163,6 +166,19 @@ public class Player : MonoBehaviour
     private void PlayerStateChange(PlayerState value)
     {
         playerState = value;
+        if (value == PlayerState.Dance) anim.updateMode = AnimatorUpdateMode.UnscaledTime;
+        else anim.updateMode = AnimatorUpdateMode.Normal;
         anim.Play(playerState.ToString());
+    }
+
+    public IEnumerator Casting(PlayerState _pState)
+    {
+        pM.canMove = false;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Cast", transform.position);
+        pState = _pState;
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0)[0].clip.length - .2f);
+        pM.canMove = true;
+        playerState = PlayerState.Idle;
     }
 }

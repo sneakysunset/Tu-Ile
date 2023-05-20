@@ -36,7 +36,7 @@ public class AI_Behaviour : MonoBehaviour
                 targetTile = GetClosestPlayer();
                 break;
             case AITarget.RandomTileAround:
-                List<Tile> list = tileS.GetTilesAround(numTilesAround, tileUnder);
+                List<Tile> list = GridUtils.GetTilesAround(numTilesAround, tileUnder);
                 targetTile = list[Random.Range(0, list.Count - 1)];
                 break;
         }
@@ -47,7 +47,7 @@ public class AI_Behaviour : MonoBehaviour
 
     private void Update()
     {
-        tileUnder = tileS.WorldPosToTile(transform.position);
+        tileUnder = GridUtils.WorldPosToTile(transform.position);
     }
 
     private Tile GetClosestPlayer()
@@ -63,7 +63,7 @@ public class AI_Behaviour : MonoBehaviour
                 target = p.transform.position;
             }
         }
-        Tile targetTile = tileS.WorldPosToTile(target);
+        Tile targetTile = GridUtils.WorldPosToTile(target);
         return targetTile;
     }
 

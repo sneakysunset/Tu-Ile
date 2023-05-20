@@ -135,21 +135,29 @@ public class GameTimer : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.B)) timer = 100 - 5;
     }
 
+    bool to;
     private void GameTimerFunction()
     {
         timer += Time.deltaTime;
-        if (timer >= gameTimer)
+        if (timer >= gameTimer && !to)
         {
-            LevelEnd?.Invoke();
-            foreach(Player p in players)
-            {
-                p.respawnTile = players[0].tileUnder;
-            }
-            
-            StartCoroutine(TileSystem.Instance.SinkWorld(TileSystem.Instance.centerTile, sceneLoadName));
+            to = true;
+            StartCoroutine(FindObjectOfType<EndMenu>().EnableEnd());
         }
 
         timerFillImage.fillAmount = timer / gameTimer;
+    }
+
+    public void EndLevel(bool isEnd)
+    {
+        events.Clear();
+        LevelEnd?.Invoke();
+        foreach (Player p in players)
+        {
+            p.respawnTile = players[0].tileUnder;
+        }
+
+        TileSystem.Instance.StartCoroutine(GridUtils.SinkWorld(TileSystem.Instance.centerTile, sceneLoadName, isEnd));
     }
 
     private void TimelineEvent()
