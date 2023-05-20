@@ -17,13 +17,16 @@ public class EndMenu : MonoBehaviour
     private RectTransform tr;
     public TextMeshProUGUI missionsReussies, missionsRatees, total;
     private GameTimer gameTimer;
+    private PauseMenu pauseMenu;
 
     private void Start()
     {
         players = FindObjectsOfType<PlayerInput>();
+        pauseMenu = FindObjectOfType<PauseMenu>();  
         tr = transform.GetChild(0) as RectTransform;
         playerInputManager = FindObjectOfType<PlayerInputManager>();
         gameTimer = FindObjectOfType<GameTimer>();
+
     }
 
     public IEnumerator EnableEnd()
@@ -69,7 +72,8 @@ public class EndMenu : MonoBehaviour
 
     public void Options()
     {
-
+        if (pauseMenu.optionOn) return;
+        pauseMenu.optionOn = true;
     }
 
     public void Restart()

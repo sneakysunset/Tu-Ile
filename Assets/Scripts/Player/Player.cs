@@ -6,14 +6,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.SceneManagement;
 using UnityEngine.Windows;
 
 public class Player : MonoBehaviour
 {
-    public enum PlayerState { Idle, Walk, Jump, Mine, Drawning, SpellCreate, SpellUp, Dance};
+    public enum PlayerState { Idle, Walk, Jump, Mine, Drawning, SpellCreate, SpellUp, Dance };
     [HideNormalInspector] public PlayerState playerState = PlayerState.Idle;
-    public PlayerState pState { get { return playerState; } set { if(playerState != value) PlayerStateChange(value); } }
+    public PlayerState pState { get { return playerState; } set { if (playerState != value) PlayerStateChange(value); } }
 
     [HideInInspector] public Animator anim;
     private Player_Pause pPause;
@@ -28,7 +29,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public List<Interactor> interactors;
     public ParticleSystem waterSplash;
     public float throwStrength;
-    [Range(-5, 5)]public float throwYAxisDirection;
+    [Range(-5, 5)] public float throwYAxisDirection;
     [HideInInspector] public Collider col;
     public ParticleSystem hitParticleSystem;
     [HideInInspector] public List<Transform> pointers;
@@ -36,7 +37,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public Transform dummyTarget;
     bool respawning;
     float currentGravMult;
-
+    ChainIKConstraint[] iks;
+    public Transform itemParent1, itemParent2;
     private void Awake()
     {
         GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = Color.black;
@@ -45,13 +47,13 @@ public class Player : MonoBehaviour
         dummyTarget = transform.Find("DummyTarget");
         if (/*TileSystem.Instance.isHub && */Time.time > 1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget);
         col = GetComponent<Collider>();
-
         pointers = new List<Transform>();
         Transform pointerFolder = transform.Find("PointerFolder");
         foreach (Transform go in pointerFolder)
         {
             pointers.Add(go);
         }
+        iks = GetComponentsInChildren<ChainIKConstraint>();
     }
 
     public void OnLoad(Scene scene, LoadSceneMode mode)
@@ -64,7 +66,7 @@ public class Player : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
         respawnTile = TileSystem.Instance.centerTile;
-        interactors = new List<Interactor>();   
+        interactors = new List<Interactor>();
         holdableItems = new List<Item>();
         pM = GetComponent<PlayerMovement>();
         _characterController = pM.GetComponent<CharacterController>();
@@ -78,6 +80,35 @@ public class Player : MonoBehaviour
     private void Update()
     {
         AnimationStatesHandler();
+
+        if (heldItem != null && pState != PlayerState.SpellCreate && pState != PlayerState.SpellUp && pState != PlayerState.Jump)
+        {
+            foreach (ChainIKConstraint ik in iks)
+            {
+                ik.weight = 1;
+            }
+            if(heldItem.transform.parent == itemParent2)
+            {
+                heldItem.transform.parent = itemParent1;
+                heldItem.transform.position = itemParent1.position;
+                heldItem.transform.rotation = itemParent1.rotation;
+                heldItem.transform.Rotate(0, 90, 0);
+            }
+        }
+        else
+        {
+            foreach (ChainIKConstraint ik in iks)
+            {
+                ik.weight = 0;
+            }
+            if(heldItem != null && heldItem.transform.parent == itemParent1)
+            {
+                heldItem.transform.parent = itemParent2;
+                heldItem.transform.position = itemParent2.position;
+                heldItem.transform.rotation = itemParent1.rotation;
+                heldItem.transform.Rotate(0, 90, 0);
+            }
+        }
     }
 
     private void AnimationStatesHandler()

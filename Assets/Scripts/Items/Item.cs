@@ -42,7 +42,8 @@ public class Item : MonoBehaviour
         heldPoint = holdPoint;
         Highlight.SetActive(false);
         transform.position = heldPoint.position;
-
+        transform.rotation = heldPoint.rotation;
+        transform.Rotate(0, 90, 0);
         transform.parent = heldPoint;
     }
 

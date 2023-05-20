@@ -125,7 +125,12 @@ public class Tile : MonoBehaviour
     {
         CameraCtr.startUp += OnStartUp;
         SceneManager.sceneLoaded += OnLoadScene;
-
+        if (!walkable)
+        {
+            Vector3 v = transform.position;
+            v.y = -heightByTile * 5;
+            transform.position = v;
+        }
         tileD = GetComponent<Tile_Degradation>();
         AI_Text = GetComponentInChildren<TextMeshProUGUI>();   
         minableItems = transform.Find("SpawnPositions");
@@ -163,6 +168,7 @@ public class Tile : MonoBehaviour
 
     private void OnLoadScene(Scene scene, LoadSceneMode lSM)
     {
+        
         Vector3 v = transform.position;
         v.y = -heightByTile * 5;
         Vector2Int vector2Int = FindObjectOfType<CameraCtr>().tileLoadCoordinates;
