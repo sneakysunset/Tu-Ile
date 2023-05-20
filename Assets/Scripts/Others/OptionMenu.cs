@@ -6,7 +6,15 @@ public class OptionMenu : MonoBehaviour
 {
     public bool isOn;
 
-    public void OnSliderVolumeChange(float volume)
+    public void OptionEnable()
+    {
+        if(!isOn)
+        {
+            isOn = true;
+        }
+    }
+
+    public void OnSliderMusicChange(float volume)
     {
 
     }
@@ -14,5 +22,10 @@ public class OptionMenu : MonoBehaviour
     public void OnSliderSoundChange(float sound)
     {
 
+    }
+
+    public void ExitOptions()
+    {
+        isOn = false;
     }
 }
