@@ -38,7 +38,6 @@ public class PauseMenu : MonoBehaviour
 
     public void DisablePause()
     {
-        player = null;
         playerInputManager.enabled = true;
         Time.timeScale = 1;
         tr.DOAnchorPosX(465, 1, true).SetEase(easeOut).SetUpdate(false);

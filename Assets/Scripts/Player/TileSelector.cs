@@ -91,6 +91,7 @@ public class TileSelector : MonoBehaviour
                 {
                     item.numberStacked --;
                     targettedTile.Spawn(player.tileUnder.transform.position.y, item.stackType.ToString(), item.degradingSpeed) ;
+                    StartCoroutine(player.Casting(Player.PlayerState.SpellCreate));
                     if(item.numberStacked == 0)
                     {
                         player.heldItem = null;

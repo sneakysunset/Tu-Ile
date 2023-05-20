@@ -9,7 +9,6 @@ public class Player_StopDegradation : MonoBehaviour
     private Player player;
     bool isGrowing;
     [HideInInspector] public RessourcesManager ressourcesManager;
-
     private void Start()
     {
         player = GetComponent<Player>();
@@ -78,8 +77,9 @@ public class Player_StopDegradation : MonoBehaviour
         {
             stackItem.numberStacked -= ressourcesManager.growthCost;
             tile.currentPos.y += tile.heightByTile;
+            tile.movingP = true;
             tile.isGrowing = true;
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Cast");
+            StartCoroutine(player.Casting(Player.PlayerState.SpellUp));
         }
         isGrowing = false;
     }

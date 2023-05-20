@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
         ApplyRotation();
         SpeedModifier();
         jumpValueLerp();
-        if(!canMove) _direction = new Vector3(0, _direction.y, 0);
+        //if(!canMove) _direction = new Vector3(0, _direction.y, 0);
         if (isDashing)
         {
             StartCoroutine(Dash());
@@ -178,6 +178,7 @@ public class PlayerMovement : MonoBehaviour
         _input = context.ReadValue<Vector2>();
         float cameraAngle = -Camera.main.transform.rotation.eulerAngles.y;
         _input = Rotate(_input, cameraAngle);
+        if(!canMove) _input = Vector2.zero;
         _direction = new Vector3(_input.x, 0.0f, _input.y);
         if(player.anim) player.anim.SetFloat("walkingSpeed", _input.magnitude);
 
