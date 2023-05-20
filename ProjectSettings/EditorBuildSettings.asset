@@ -14,9 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Ile 3.unity
     guid: 617b94f25516719498643d5d4e7f7909
-  - enabled: 1
-    path: Assets/Scenes/Ile et tatoin/Hub2.unity
-    guid: 7224874af7be8db468b9e51e73c7f803
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/IleEstDeRetour.unity
     guid: 623328b0660cce54d920ca9f15c93651
