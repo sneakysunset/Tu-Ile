@@ -19,7 +19,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public Animator anim;
     private Player_Pause pPause;
     [HideInInspector] public CharacterController _characterController;
-    PlayerMovement pM;
+    [HideInInspector] public PlayerMovement pM;
+    [HideInInspector] public Player_Mining pMin;
     public Tile respawnTile;
     [HideInInspector] public Tile tileUnder;
     [HideInInspector] public List<Item> holdableItems;
@@ -69,6 +70,7 @@ public class Player : MonoBehaviour
         interactors = new List<Interactor>();
         holdableItems = new List<Item>();
         pM = GetComponent<PlayerMovement>();
+        pMin = GetComponent<Player_Mining>();
         _characterController = pM.GetComponent<CharacterController>();
         _characterController.enabled = false;
         transform.position = TileSystem.Instance.centerTile.transform.GetChild(0).position + Vector3.up * 3;
