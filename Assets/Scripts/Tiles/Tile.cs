@@ -7,6 +7,7 @@ using System;
 using FMOD;
 using Unity.VisualScripting;
 using NaughtyAttributes;
+using UnityEngine.SceneManagement;
 
 [System.Flags]
 public enum SpawnPositions
@@ -27,8 +28,6 @@ public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, Bou
 
 public class Tile : MonoBehaviour
 {
-
-
     #region Variables
     #region MainVariables
     [Header("Type de Tile")]
@@ -96,8 +95,8 @@ public class Tile : MonoBehaviour
 
     #region Materials
     [HideInInspector, SerializeField] public Material disabledMat;
-    [HideNormalInspector] public Material falaiseMat, plaineMat, undegradableMat, sandMatTop, sandMatBottom, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat;
-    [HideInInspector] public Mesh defaultMesh, woodMesh, rockMesh, sandMesh, undegradableMesh;
+    [HideNormalInspector] public Material falaiseMat, plaineMat, undegradableMat, sandMatTop, sandMatBottom, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat, centerTileMat;
+    [HideInInspector] public Mesh defaultMesh, woodMesh, rockMesh, sandMesh, undegradableMesh, centerTileMesh;
     [HideInInspector] public Color walkedOnColor, notWalkedOnColor;
     [HideInInspector] public Color penguinedColor;
      public Color falaiseColor;
@@ -124,32 +123,56 @@ public class Tile : MonoBehaviour
 
     private void Awake()
     {
-        degSpeed = 1;
+        CameraCtr.startUp += OnStartUp;
+        SceneManager.sceneLoaded += OnLoadScene;
+
         tileD = GetComponent<Tile_Degradation>();
-        Vector3 v = transform.position;
-        v.y = -heightByTile * 5;
         AI_Text = GetComponentInChildren<TextMeshProUGUI>();   
         minableItems = transform.Find("SpawnPositions");
-        coordFX = coordX - coordY / 2;
-        currentPos = transform.position;
-        if(this != TileSystem.Instance.centerTile) transform.position = v;
-        else
-        {
-            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-        }
         pSys = transform.GetChild(3).GetComponent<ParticleSystem>();
         pSysCreation = transform.GetChild(7).GetComponent<ParticleSystem>();
         tourbillonT = transform.Find("Tourbillon");
 
-        timer = UnityEngine.Random.Range(minTimer, maxTimer);
-        GetAdjCoords();
+        degSpeed = 1;
+        coordFX = coordX - coordY / 2;
+        currentPos = transform.position;
 
+        timer = UnityEngine.Random.Range(minTimer, maxTimer);
+
+        GetAdjCoords();
         SetMatOnStart();
-        int rotation = UnityEngine.Random.Range(0, 6);
-        transform.Rotate(0, rotation * 60, 0);
-        transform.GetChild(0).Rotate(0, -rotation * 60, 0);
+
+        if(this != TileSystem.Instance.centerTile && tileType != TileType.LevelLoader)
+        {
+            int rotation = UnityEngine.Random.Range(0, 6);
+            transform.Rotate(0, rotation * 60, 0);
+            transform.GetChild(0).Rotate(0, -rotation * 60, 0);
+        }
     }
- 
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnLoadScene;
+        CameraCtr.startUp -= OnStartUp;
+    }
+
+    private void OnStartUp()
+    {
+        readyToRoll = true;
+    }
+
+    private void OnLoadScene(Scene scene, LoadSceneMode lSM)
+    {
+        Vector3 v = transform.position;
+        v.y = -heightByTile * 5;
+        Vector2Int vector2Int = FindObjectOfType<CameraCtr>().tileLoadCoordinates;
+        
+        if (this != TileSystem.Instance.tiles[vector2Int.x, vector2Int.y]) transform.position = v;
+        else
+        {
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
+    }
 
     private void Update()
     {
@@ -162,7 +185,7 @@ public class Tile : MonoBehaviour
 
         // StepText();
         isFaded = false;
-        if (pSysIsPlaying && walkedOnto && degradable && tileType == TileType.Neutral && !TileSystem.Instance.isHub)
+        if (pSysIsPlaying && walkedOnto && degradable && tileType != TileType.Sand && !TileSystem.Instance.isHub)
         {
             pSys.Stop();
             //myMeshR.material.color = walkedOnColor;
@@ -177,12 +200,12 @@ public class Tile : MonoBehaviour
             tourbillonT.Rotate(0, tourbillonSpeed * Time.deltaTime, 0);
         }
 
-        if(isPenguined && myMeshR.material.color != penguinedColor && tileType == TileType.Neutral)
+        if(isPenguined && myMeshR.material.color != penguinedColor && tileType != TileType.Sand)
         {
             myMeshR.material.color = penguinedColor;
 
         }
-        else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType == TileType.Neutral && !tileS.isHub)
+        else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType != TileType.Sand && !tileS.isHub)
         {
             //myMeshR.material.color = walkedOnColor;
             Material[] mats = myMeshR.materials;
@@ -245,69 +268,6 @@ public class Tile : MonoBehaviour
             tourbillonT.gameObject.SetActive(true);
         }
 
-    }
-
-
-    public Material[] getCorrespondingMat(TileType tType)
-    {
-        Material[] mat = new Material[2];
-        mat[0] = falaiseMat;
-        float f = UnityEngine.Random.Range(0f, 1f);
-        mat[0].color = Color.Lerp(falaiseColor, Color.white, f);
-        if (!walkable)
-        {
-            mat[1] = disabledMat;
-            mat[0] = disabledMat;
-        }
-        else if (!degradable)
-        {
-            mat[0] = undegradableMat;
-            mat[1] = undegradableMat;
-        }
-        else
-        {
-            switch (tType)
-            {
-                case TileType.Neutral: mat[1] = plaineMat; break;
-                case TileType.Wood: mat[1] = woodMat; break;
-                case TileType.Rock: mat[1] = mat[0]; mat[0] = rockMat; break;
-                case TileType.Gold: mat[1] = goldMat; break;
-                case TileType.Diamond: mat[1] = diamondMat; break;
-                case TileType.Adamantium: mat[1] = adamantiumMat; break;
-                case TileType.Sand: mat[1] = sandMatTop; mat[0] = sandMatBottom; break;
-                case TileType.BouncyTile: mat[1] = bounceMat; break;
-                case TileType.LevelLoader: mat[1] = sandMatTop; break;
-                default: mat[0] = plaineMat; break;
-            }
-        }
-
-        return mat;
-    }
-
-    public Mesh getCorrespondingMesh(TileType tType)
-    {
-        Mesh mesh;
-
-        if (!degradable)
-        {
-            mesh = undegradableMesh;
-        }
-        else
-        {
-            switch (tType)
-            {
-                case TileType.Neutral: mesh = defaultMesh; break;
-                case TileType.Wood: mesh = woodMesh; break;
-                case TileType.Rock: mesh = rockMesh; break;
-                case TileType.Gold: mesh = rockMesh; break;
-                case TileType.Diamond: mesh = rockMesh; break;
-                case TileType.Adamantium: mesh = rockMesh; break;
-                case TileType.Sand: mesh = sandMesh; break;
-                default: mesh = defaultMesh; break;
-            }
-        }
-
-        return mesh;
     }
 
     public void Spawn(float height, string stackType, float degradingSpeed)
@@ -398,8 +358,80 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Editor
+    public Material[] getCorrespondingMat(TileType tType)
+    {
+        Material[] mat = new Material[2];
+        mat[0] = falaiseMat;
+        float f = UnityEngine.Random.Range(0f, 1f);
+        mat[0].color = Color.Lerp(falaiseColor, Color.white, f);
+        if (!walkable)
+        {
+            mat[1] = disabledMat;
+            mat[0] = disabledMat;
+        }
+        else if (this == TileSystem.Instance.centerTile)
+        {
+            mat[1] = centerTileMat;
+        }
+        else if (!degradable)
+        {
+            mat[0] = undegradableMat;
+            mat[1] = undegradableMat;
+        }
+        else
+        {
+            switch (tType)
+            {
+                case TileType.Neutral: mat[1] = plaineMat; break;
+                case TileType.Wood: mat[1] = woodMat; mat[0] = woodMat; break;
+                case TileType.Rock: mat[1] = mat[0]; mat[0] = rockMat; break;
+                case TileType.Gold: mat[1] = goldMat; break;
+                case TileType.Diamond: mat[1] = diamondMat; break;
+                case TileType.Adamantium: mat[1] = adamantiumMat; break;
+                case TileType.Sand: mat[1] = sandMatTop; mat[0] = sandMatBottom; break;
+                case TileType.BouncyTile: mat[1] = bounceMat; break;
+                case TileType.LevelLoader: mat[1] = centerTileMat; break;
+                default: mat[1] = plaineMat; break;
+            }
+        }
+
+        return mat;
+    }
+
+    public Mesh getCorrespondingMesh(TileType tType)
+    {
+        Mesh mesh;
+
+        if (this == TileSystem.Instance.centerTile)
+        {
+            mesh = centerTileMesh;
+        }
+        else if (!degradable)
+        {
+            mesh = undegradableMesh;
+        }
+        else
+        {
+            switch (tType)
+            {
+                case TileType.Neutral: mesh = defaultMesh; break;
+                case TileType.Wood: mesh = woodMesh; break;
+                case TileType.Rock: mesh = rockMesh; break;
+                case TileType.Gold: mesh = rockMesh; break;
+                case TileType.Diamond: mesh = rockMesh; break;
+                case TileType.Adamantium: mesh = rockMesh; break;
+                case TileType.Sand: mesh = sandMesh; break;
+                case TileType.LevelLoader: mesh = centerTileMesh; break;
+                default: mesh = defaultMesh; break;
+            }
+        }
+
+        return mesh;
+    }
+
 #if UNITY_EDITOR
     void OnValidate() { UnityEditor.EditorApplication.delayCall += _OnValidate; }
+
     private void _OnValidate()
     {
         UpdateObject();

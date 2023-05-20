@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13611ddd9b085584cb37be27c3b75a01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  growthCost: 1
+  growthCost: 2
   RessourceMeshs:
   - name: Wood
     stackType: 1
@@ -112,6 +112,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 3c6c1f7c30a584c42b958af4e3f85bfd, type: 3}
     mesh: {fileID: 4300000, guid: c9a49e581aa666b4daeb7d60c95e2825, type: 3}
     mat: {fileID: 2100000, guid: 579080bda9f89ee42a5447d6d997e266, type: 2}
+  ressourceRecettesResults: []
   mSTileCreation:
   - {fileID: 21300000, guid: 735c47635f623f64598ecfc1e86a3282, type: 3}
   - {fileID: 21300000, guid: a31c360b21ac51e4b9a995104ebc333c, type: 3}

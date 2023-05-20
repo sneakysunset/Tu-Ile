@@ -5448,8 +5448,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2.14, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.4027513, z: 0.99999917}
+  m_Center: {x: 0, y: 0.0044620633, z: 0}
 --- !u!1 &3638119745737497431
 GameObject:
   m_ObjectHideFlags: 0
@@ -6660,7 +6660,7 @@ MonoBehaviour:
       - m_Target: {fileID: 9137482398244349598}
         m_TargetAssemblyTypeName: Player_Pause, Assembly-CSharp
         m_MethodName: PauseGame
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

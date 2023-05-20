@@ -81,6 +81,8 @@ public class MissionManager : MonoBehaviour
     public GameObject missionPrefab;
     public barColor[] barColors;
 
+    [HideNormalInspector] public int numberOfClearedMissions, numberOfFailedMissions;
+
     /*[HideInInspector]*/
     public int activePoolMin = 0;
     /*[HideInInspector]*/
@@ -185,6 +187,7 @@ public class MissionManager : MonoBehaviour
                         }
                         activeMissions[i].lerpCor = SetNewMission(i);
                         StartCoroutine(activeMissions[i].lerpCor);
+                        numberOfFailedMissions++;
                     }
                 }
             }
@@ -393,17 +396,18 @@ public class MissionManager : MonoBehaviour
     {
         for (int i = 0; i < activeMissions.Length; i++)
         {
-            CheckMissionCompletion(activeMissions[i], i);
+            CheckMissionCompletion(i);
         }
     }
 
-    private void CheckMissionCompletion(missionPage page, int pageNum)
+    private void CheckMissionCompletion(int pageNum)
     {
-        switch (page.m.GetType().ToString())
+        if (pageNum > activeMissions.Length - 1 || activeMissions[pageNum].m == null) return;
+        switch (activeMissions[pageNum].m.GetType().ToString())
         {
-            case "SOM_Tile": StartCoroutine(CheckTileMission(page.m as SOM_Tile, page, pageNum)); break;
-            case "SOM_Chantier": StartCoroutine(CheckChantierMission(page.m as SOM_Chantier, page, pageNum)); break;
-            case "SOM_Boussole": StartCoroutine(CheckBoussoleMission(page.m as SOM_Boussole, page, pageNum)); break;
+            case "SOM_Tile": StartCoroutine(CheckTileMission(activeMissions[pageNum].m as SOM_Tile, activeMissions[pageNum], pageNum)); break;
+            case "SOM_Chantier": StartCoroutine(CheckChantierMission(activeMissions[pageNum].m as SOM_Chantier, activeMissions[pageNum], pageNum)); break;
+            case "SOM_Boussole": StartCoroutine(CheckBoussoleMission(activeMissions[pageNum].m as SOM_Boussole, activeMissions[pageNum], pageNum)); break;
                 //case "SOM_ELim": StartCoroutine(); break;
         }
 
@@ -416,6 +420,7 @@ public class MissionManager : MonoBehaviour
             page.mUIInGame.missionText.color = Color.yellow;
             page.mUIInPause.missionText.color = Color.yellow;
             activeMissions[pageNum].completed = true;
+            numberOfClearedMissions++;
         }
         page.mUIInPause.missionText.text = mission.description + " " + (tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation).ToString() + " / " + mission.requiredNumber.ToString();
         page.mUIInGame.missionText.text = (tileCounter.GetStat(mission.requiredType) - page.numOfTileOnActivation).ToString() + " / " + mission.requiredNumber.ToString();
@@ -434,6 +439,7 @@ public class MissionManager : MonoBehaviour
             page.mUIInGame.missionText.color = Color.yellow;
             page.mUIInPause.missionText.color = Color.yellow;
             activeMissions[pageNum].completed = true;
+            numberOfClearedMissions++;
             yield return new WaitForSeconds(1);
             StartCoroutine(SetNewMission(pageNum));
         }
@@ -450,6 +456,7 @@ public class MissionManager : MonoBehaviour
             page.mUIInGame.missionText.color = Color.yellow;
             page.mUIInPause.missionText.color = Color.yellow;
             activeMissions[pageNum].completed = true;
+            numberOfClearedMissions++;
             yield return new WaitForSeconds(1);
             StartCoroutine(SetNewMission(pageNum));
         }
@@ -482,6 +489,7 @@ public class MissionManager : MonoBehaviour
                 {
                     activeMissions[pageNum].mUIInGame.missionText.color = Color.yellow;
                     activeMissions[pageNum].completed = true;
+                    numberOfClearedMissions++;
                     yield return new WaitForSeconds(1);
                     StartCoroutine(SetNewMission(pageNum));
                 }
@@ -494,7 +502,7 @@ public class MissionManager : MonoBehaviour
     {
         if (m.GetType() != typeof(SOM_Chantier)) return true;
         
-        List<Tile> ts = TileSystem.Instance.GetTilesAround(4, TileSystem.Instance.centerTile);
+        List<Tile> ts = GridUtils.GetTilesAround(4, TileSystem.Instance.centerTile);
         for (int i = ts.Count - 1; i >= 0; i--)
         {
             if (ts[i].walkable && ts[i].tileSpawnType == TileType.construction)

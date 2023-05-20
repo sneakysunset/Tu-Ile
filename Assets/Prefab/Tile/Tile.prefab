@@ -600,7 +600,7 @@ Transform:
   m_GameObject: {fileID: 5360045457859342691}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 1.6, z: 4}
+  m_LocalScale: {x: 3.9, y: 1.6, z: 3.9}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8755437412334106841}
@@ -682,11 +682,13 @@ MonoBehaviour:
   goldMat: {fileID: 0}
   diamondMat: {fileID: 0}
   adamantiumMat: {fileID: 0}
+  centerTileMat: {fileID: 0}
   defaultMesh: {fileID: 0}
   woodMesh: {fileID: 0}
   rockMesh: {fileID: 0}
   sandMesh: {fileID: 0}
   undegradableMesh: {fileID: 0}
+  centerTileMesh: {fileID: 0}
   walkedOnColor: {r: 0.8490566, g: 0.734247, b: 0.734247, a: 1}
   notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
   penguinedColor: {r: 0.8584906, g: 0.28076416, b: 0.28076416, a: 1}

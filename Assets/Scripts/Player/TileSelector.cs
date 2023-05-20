@@ -50,12 +50,12 @@ public class TileSelector : MonoBehaviour
     private void Update()
     {
         if(player.tileUnder) player.tileUnder.sand_WalkedOnto = false;
-        player.tileUnder = TileSystem.Instance.WorldPosToTile(transform.position);
-        if(Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(player.tileUnder.transform.position.x, player.tileUnder.transform.position.z)) < 2)
+        player.tileUnder = GridUtils.WorldPosToTile(transform.position);
+        if(player._characterController.isGrounded && Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(player.tileUnder.transform.position.x, player.tileUnder.transform.position.z)) < 2.2f)
         {
             player.tileUnder.sandFlag = true;
         }
-        player.tileUnder.sand_WalkedOnto = true;
+        if(player._characterController.isGrounded) player.tileUnder.sand_WalkedOnto = true;
             
 
         if (previousTile != player.tileUnder)
@@ -91,6 +91,7 @@ public class TileSelector : MonoBehaviour
                 {
                     item.numberStacked --;
                     targettedTile.Spawn(player.tileUnder.transform.position.y, item.stackType.ToString(), item.degradingSpeed) ;
+                    StartCoroutine(player.Casting(Player.PlayerState.SpellCreate));
                     if(item.numberStacked == 0)
                     {
                         player.heldItem = null;

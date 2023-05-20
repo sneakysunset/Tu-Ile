@@ -2,22 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class ItemSystem : MonoBehaviour
 {
     private Player player;
     public Transform holdPoint;
-
+    private Player_Pause pPause;
     private void Start()
     {
         player = GetComponent<Player>();
+        pPause = GetComponent<Player_Pause>();
     }
+
+
 
     //normal grab action
     public void OnItemInput1(InputAction.CallbackContext context)
     {
         bool isSameOrSubClass = player.closestItem != null && Utils.IsSameOrSubclass(player.closestItem.GetType(), typeof(Item_Etabli));
-        if (context.started && player.heldItem != null && player.holdableItems.Count == 0 && !isSameOrSubClass)
+        if (context.started && player.heldItem != null && player.holdableItems.Count == 0 && !isSameOrSubClass && !pPause.isPaused)
         {
             player.heldItem.GrabRelease(false);
             player.holdableItems.Add(player.heldItem);
@@ -27,7 +31,7 @@ public class ItemSystem : MonoBehaviour
             return;
         }
 
-        if (context.started && player.closestItem != null && player.closestItem.holdable)
+        if (context.started && player.closestItem != null && player.closestItem.holdable && !pPause.isPaused)
         {
             if(player.heldItem != null && !isSameOrSubClass)
             {
@@ -72,7 +76,7 @@ public class ItemSystem : MonoBehaviour
     //throw action
     public void OnItemInput2(InputAction.CallbackContext context)
     {
-        if (context.started && player.heldItem != null /*&& player.holdableItems.Count == 0*/)
+        if (context.started && player.heldItem != null && !pPause.isPaused)
         {
             Vector3 direction = transform.forward + Vector3.up * player.throwYAxisDirection;
             player.heldItem.ThrowAction(player, player.throwStrength, direction);

@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private float mvtStr;
     private float speedValue;
     private float dashTimer;
+    private float jp;
     #endregion
     #region Variables: Rotation
 
@@ -77,7 +78,8 @@ public class PlayerMovement : MonoBehaviour
         if (canMove) ApplyJump();
         ApplyRotation();
         SpeedModifier();
-        if(!canMove) _direction = new Vector3(0, _direction.y, 0);
+        jumpValueLerp();
+        //if(!canMove) _direction = new Vector3(0, _direction.y, 0);
         if (isDashing)
         {
             StartCoroutine(Dash());
@@ -110,18 +112,23 @@ public class PlayerMovement : MonoBehaviour
         _direction.y = _velocity;
     }
 
+    private void jumpValueLerp()
+    {
+        if (player.tileUnder && player.tileUnder.tileType == TileType.BouncyTile)
+        {
+            jp = Mathf.Lerp(jp, jumpStrengthOnBounce, .4f);
+        }
+        else
+        {
+            jp = Mathf.Lerp(jp, jumpStrength, .4f);
+        }
+    }
+
     private void ApplyJump()
     {
         if (_characterController.isGrounded && jumpInput)
         {
-            if(player.tileUnder.tileType == TileType.BouncyTile)
-            {
-                _velocity = jumpStrengthOnBounce;
-            }
-            else
-            {
-                _velocity = jumpStrength;
-            }
+            _velocity = jp;
             player.pState = Player.PlayerState.Jump;
         }
 
@@ -132,9 +139,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_input.sqrMagnitude == 0) return;
 
-        var targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg;
-        var angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _currentVelocity, smoothTime);
-        transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+        if (canMove)
+        {
+            var targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg;
+            var angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _currentVelocity, smoothTime);
+            transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+        }
     }
 
     private void SpeedModifier()
@@ -142,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
         /*        float ax = isDashing ? acceleration : -deceleration;
                 speedValue = Mathf.Lerp(speed, sprintingSpeed, ax * Time.deltaTime * 10);*/
         
-        if(player.tileUnder != null && player.tileUnder.tileType == TileType.Rock)
+        if(_characterController.isGrounded && player.tileUnder != null && player.tileUnder.tileType == TileType.Rock)
         {
             speedValue = speedOnRocks;
         }
@@ -168,8 +178,9 @@ public class PlayerMovement : MonoBehaviour
         _input = context.ReadValue<Vector2>();
         float cameraAngle = -Camera.main.transform.rotation.eulerAngles.y;
         _input = Rotate(_input, cameraAngle);
+        if(!canMove) _input = Vector2.zero;
         _direction = new Vector3(_input.x, 0.0f, _input.y);
-        player.anim.SetFloat("walkingSpeed", _input.magnitude);
+        if(player.anim) player.anim.SetFloat("walkingSpeed", _input.magnitude);
 
     }
 
