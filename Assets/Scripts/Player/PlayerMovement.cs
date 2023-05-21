@@ -33,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
     private float speedValue;
     private float dashTimer;
     private float jp;
+    private float ms;
+
     #endregion
     #region Variables: Rotation
 
@@ -116,11 +118,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (player.tileUnder && player.tileUnder.tileType == TileType.BouncyTile)
         {
-            jp = Mathf.Lerp(jp, jumpStrengthOnBounce, .4f);
+            jp = jumpStrengthOnBounce;
         }
         else
         {
-            jp = Mathf.Lerp(jp, jumpStrength, .4f);
+            jp = jumpStrength;
         }
     }
 
@@ -154,11 +156,11 @@ public class PlayerMovement : MonoBehaviour
         
         if(_characterController.isGrounded && player.tileUnder != null && player.tileUnder.tileType == TileType.Rock)
         {
-            speedValue = speedOnRocks;
+            speedValue = Mathf.Lerp(speedValue, speedOnRocks, Time.deltaTime * 3);
         }
         else
         {
-            speedValue = speed;
+            speedValue = Mathf.Lerp(speedValue, speed, Time.deltaTime * 3);
         }
     }
 

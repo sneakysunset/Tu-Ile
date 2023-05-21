@@ -1,5 +1,0 @@
-1. Copy "com.projectdawn.splitscreen" folder and paste into your "Packages" directory of your project.
-
-This asset was uploaded by https://unityassetcollection.com
-
-Enjoy!!!

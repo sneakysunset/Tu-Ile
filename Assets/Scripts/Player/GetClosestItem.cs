@@ -44,10 +44,20 @@ public class GetClosestItem : MonoBehaviour
         }
         else if (other.TryGetComponent(out Item_Stack citem) && player.holdableItems.Contains(citem))
         {
-            if(player.heldItem && player.heldItem.GetType() == typeof(Item_Stack))
+            if(player.heldItem && player.heldItem.GetType() == typeof(Item_Stack) && citem.GetType() == typeof(Item_Stack))
             {
                 Item_Stack itemSt = player.heldItem as Item_Stack;
                 if(itemSt.stackType == citem.stackType)
+                {
+                    itemSt.numberStacked += citem.numberStacked;
+                    Destroy(citem.gameObject);
+                    return;
+                }
+            }
+            else if (player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile) && citem.GetType() == typeof(Item_Stack_Tile))
+            {
+                Item_Stack_Tile itemSt = player.heldItem as Item_Stack_Tile;
+                if (itemSt.stackType == citem.stackType)
                 {
                     itemSt.numberStacked += citem.numberStacked;
                     Destroy(citem.gameObject);
@@ -80,7 +90,6 @@ public class GetClosestItem : MonoBehaviour
             Item_Stack_Tile heldItemS = player.heldItem as Item_Stack_Tile;
             if (tempItem.stackType == heldItemS.stackType)
             {
-                print(1);
                 heldItemS.numberStacked += tempItem.numberStacked;
                 Destroy(tempItem.gameObject);
                 return;

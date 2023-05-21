@@ -294,10 +294,10 @@ public class Item_Etabli : Item
             }
             if (isChantier) itemNumCh.UpdateText(this);
             else itemNum.UpdateText(this);
+        convertorFlag = false;
         }
         while (CheckStacks());
         
-        convertorFlag = false;
     }
 
     IEnumerator ChantierConvert()
@@ -331,7 +331,7 @@ public class Item_Etabli : Item
             }
         }
         bool condition1 = f == recette.requiredItemStacks.Length + recette.requiredItemUnstackable.Length;
-        bool condition2 = recette.craftedItemPrefab.GetType() == System.Type.GetType("Item_Stack");
+        bool condition2 = Utils.IsSameOrSubclass(typeof(Item_Stack), recette.craftedItemPrefab.GetType());
         bool condition3 = craftedItem == null;
 
         if (!convertorFlag && condition1 && (condition2 || condition3))
