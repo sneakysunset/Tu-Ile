@@ -8,6 +8,7 @@ using System.Numerics;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class EndMenu : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class EndMenu : MonoBehaviour
     public TextMeshProUGUI missionsReussies, missionsRatees, total;
     private GameTimer gameTimer;
     private PauseMenu pauseMenu;
-
+    private RawImage screenShot;
     private void Start()
     {
         players = FindObjectsOfType<PlayerInput>();
@@ -26,19 +27,22 @@ public class EndMenu : MonoBehaviour
         tr = transform.GetChild(0) as RectTransform;
         playerInputManager = FindObjectOfType<PlayerInputManager>();
         gameTimer = FindObjectOfType<GameTimer>();
+        screenShot = GetComponentInChildren<RawImage>();
 
     }
 
     public IEnumerator EnableEnd()
     {
         MissionManager missionManager = MissionManager.Instance;
-        
+        CameraCtr cam = FindObjectOfType<CameraCtr>();
         StartCoroutine(gameTimer.LerpTimeLine(gameTimer.UIPos.anchoredPosition, gameTimer.UIPos.anchoredPosition + UnityEngine.Vector2.up * -100, gameTimer.UIPos, gameTimer.lerpCurveEaseIn, gameTimer.lerpSpeed));
-        FindObjectOfType<CameraCtr>().DezoomCam(TileSystem.Instance.centerTile.transform.GetChild(0));
+        cam.DezoomCam(TileSystem.Instance.centerTile.transform.GetChild(0));
         missionManager.CloseMissions();
 
         yield return new WaitForSeconds(2);
 
+        cam.CamCapture();
+        cam.RenderTextureOnImage(screenShot);
         missionsReussies.text = missionManager.numberOfClearedMissions.ToString();
         missionsRatees.text = missionManager.numberOfFailedMissions.ToString();
         total.text = ScoreManager.Instance.score.ToString();

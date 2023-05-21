@@ -338,14 +338,14 @@ public class Tile : MonoBehaviour
         if (!fadeChecker)
         {
             fadeChecker = true;
-            ChangeRenderMode.ChangeRenderModer(myMeshR.materials[0], ChangeRenderMode.BlendMode.Transparent);
-            ChangeRenderMode.ChangeRenderModer(myMeshR.materials[1], ChangeRenderMode.BlendMode.Transparent);
-            Color col = myMeshR.materials[0].color;
-            Color col2 = myMeshR.materials[1].color;
-            col.a = t;
-            col2.a = t;
-            myMeshR.materials[0].color = col;
-            myMeshR.materials[1].color = col2;
+            for (int i = 0; i < myMeshR.materials.Length; i++)
+            {
+                ChangeRenderMode.ChangeRenderModer(myMeshR.materials[i], ChangeRenderMode.BlendMode.Transparent);
+                Color col = myMeshR.materials[i].color;
+                col.a = t;
+                myMeshR.materials[i].color = col;
+            }
+
         }
     }
 
@@ -354,14 +354,13 @@ public class Tile : MonoBehaviour
         if (!isFaded && fadeChecker)
         {
             fadeChecker = false;
-            ChangeRenderMode.ChangeRenderModer(myMeshR.materials[0], ChangeRenderMode.BlendMode.Opaque);
-            ChangeRenderMode.ChangeRenderModer(myMeshR.materials[1], ChangeRenderMode.BlendMode.Opaque);
-            Color col = myMeshR.materials[0].color;
-            Color col2 = myMeshR.materials[1].color;
-            col.a = .2f;
-            col2.a = .2f;
-            myMeshR.material.color = col;
-            myMeshR.materials[1].color = col2;
+            for (int i = 0; i < myMeshR.materials.Length; i++)
+            {
+                ChangeRenderMode.ChangeRenderModer(myMeshR.materials[i], ChangeRenderMode.BlendMode.Opaque);
+                Color col = myMeshR.materials[i].color;
+                col.a = .2f;
+                myMeshR.materials[i].color = col;
+            }
         }
     }
     #endregion

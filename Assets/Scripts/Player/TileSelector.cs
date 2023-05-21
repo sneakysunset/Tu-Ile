@@ -125,7 +125,7 @@ public class TileSelector : MonoBehaviour
                         CompassMissionManager.Instance.CompleteMission(tile);
                         break;
 
-                        mM.CheckMissions();
+                        //mM.CheckMissions();
                     }
                 }
             }
