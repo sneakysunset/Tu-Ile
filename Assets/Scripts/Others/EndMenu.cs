@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class EndMenu : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class EndMenu : MonoBehaviour
     private GameTimer gameTimer;
     private PauseMenu pauseMenu;
     private RawImage screenShot;
+    public Button ogButton;
+    public Button optionButton;
     private void Start()
     {
         players = FindObjectsOfType<PlayerInput>();
@@ -49,7 +52,7 @@ public class EndMenu : MonoBehaviour
         playerInputManager.enabled = false;
         Time.timeScale = 0;
         tr.DOAnchorPosY(0, 1, true).SetEase(easeOut).SetUpdate(true);
-
+        ogButton.Select();
         foreach (PlayerInput p in players)
         {
             if (p.transform != transform)
@@ -61,6 +64,8 @@ public class EndMenu : MonoBehaviour
 
     public void DisableEnd()
     {
+        EventSystem.current.SetSelectedGameObject(null);
+
         playerInputManager.enabled = true;
         Time.timeScale = 1;
         tr.DOAnchorPosY(1130, 1, true).SetEase(easeOut).SetUpdate(true);
@@ -76,6 +81,8 @@ public class EndMenu : MonoBehaviour
 
     public void Options()
     {
+        EventSystem.current.SetSelectedGameObject(null);
+
         if (pauseMenu.optionOn) return;
         pauseMenu.optionOn = true;
     }

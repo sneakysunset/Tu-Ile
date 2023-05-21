@@ -89,8 +89,8 @@ public class Item_Etabli : Item
         recette.ResetRecette();
         if(Utils.IsSameOrSubclass(recette.craftedItemPrefab.GetType(), typeof(Item_Chantier))) isChantier = true;
         tileUnder = GridUtils.WorldPosToTile(transform.position);
-        //transform.position = new Vector3(transform.position.x, tileUnder.transform.GetChild(0).position.y, transform.position.z);
         transform.parent = tileUnder.transform;
+        transform.localPosition = new Vector3(transform.localPosition.x, /*tileUnder.transform.localPosition.y +*/ 14.6f, transform.localPosition.z);
         tileUnder.etabli = this;
         createdItem = transform.Find("TileCreator/CreatedPos");
         if (isChantier)
