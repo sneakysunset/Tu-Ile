@@ -80,6 +80,7 @@ public class GetClosestItem : MonoBehaviour
             Item_Stack_Tile heldItemS = player.heldItem as Item_Stack_Tile;
             if (tempItem.stackType == heldItemS.stackType)
             {
+                print(1);
                 heldItemS.numberStacked += tempItem.numberStacked;
                 Destroy(tempItem.gameObject);
                 return;

@@ -34,6 +34,11 @@ public class Item_Crate : Item
     [Foldout("Lerp")] public float yLerpRotateAmount;
     [Foldout("Lerp")] public AnimationCurve lerpCurve;
 
+    public override void GrabStarted(Transform holdPoint, Player player)
+    {
+        base.GrabStarted(holdPoint, player);
+    }
+
     public override void GrabRelease(bool etablied)
     {
         base.GrabRelease(etablied);

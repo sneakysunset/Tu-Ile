@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,9 @@ public class TileSelector : MonoBehaviour
     private Tile previousTile;
     private Player player;
     private MissionManager mM;
+    public delegate void MissionComplete(Tile tile);
+    public static event MissionComplete missionComplete;
+
     private void Start()
     {
         tileBluePrint = Instantiate(bluePrintPrefab).transform;
@@ -34,6 +38,7 @@ public class TileSelector : MonoBehaviour
 
     private void OnChangeTileUnder()
     {
+        
         if(player.tileUnder.etabli != null)
         {
             player.tileUnder.etabli.playersOn.Add(player);
@@ -60,6 +65,7 @@ public class TileSelector : MonoBehaviour
 
         if (previousTile != player.tileUnder)
         {
+
             OnChangeTileUnder();
         }
 
@@ -112,8 +118,13 @@ public class TileSelector : MonoBehaviour
                             if (mM.activeMissions[i].boussoleTile && tile == mM.activeMissions[i].boussoleTile)
                             {
                                 mM.activeMissions[i].tresorFound = true;
+                                if(missionComplete != null) missionComplete(player.tileUnder);
                             }
                         }
+
+                        CompassMissionManager.Instance.CompleteMission(tile);
+                        break;
+
                         mM.CheckMissions();
                     }
                 }

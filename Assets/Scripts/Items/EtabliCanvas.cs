@@ -135,9 +135,6 @@ public class EtabliCanvas : MonoBehaviour
     }
 
 
-
-
-
     public void UpdateText(Item_Etabli et)
     {
         int f = 0;

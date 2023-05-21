@@ -84,6 +84,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public TileSystem tileS;
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public MeshFilter myMeshF;
+    [HideInInspector] public MeshCollider myMeshC;
 
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public Transform minableItems;
@@ -108,7 +109,7 @@ public class Tile : MonoBehaviour
     private TextMeshProUGUI AI_Text;
     [HideInInspector] public bool isPenguined;
     bool pSysIsPlaying;
-    [HideInInspector] public Item_Etabli etabli;
+    [HideNormalInspector] public Item_Etabli etabli;
     #endregion
     #endregion
 
@@ -233,6 +234,7 @@ public class Tile : MonoBehaviour
     {
         myMeshR = GetComponent<MeshRenderer>();
         myMeshF = GetComponent<MeshFilter>();
+        myMeshC = GetComponent<MeshCollider>();
 
          if (!walkable)
         {
@@ -246,7 +248,7 @@ public class Tile : MonoBehaviour
         else
         {
             myMeshF.mesh = getCorrespondingMesh(tileType);
-           
+            myMeshC.sharedMesh = myMeshF.sharedMesh;
             myMeshR.materials = getCorrespondingMat(tileType);
         }
 
@@ -289,6 +291,7 @@ public class Tile : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;
         myMeshF.mesh = getCorrespondingMesh(tileType);
+        myMeshC.sharedMesh = myMeshF.mesh;
         Material[] mats = getCorrespondingMat(tileType);
         myMeshR.materials = mats;
         typeDegradingSpeed = degradingSpeed;
@@ -450,6 +453,7 @@ public class Tile : MonoBehaviour
             if (this == null) return;
             if (!myMeshR) myMeshR = GetComponent<MeshRenderer>();
             if (!myMeshF) myMeshF = GetComponent<MeshFilter>();
+            if (!myMeshC) myMeshC = GetComponent<MeshCollider>();
             minableItems = transform.Find("SpawnPositions");
             if (getCorrespondingMat(tileType) != null)
             {
@@ -458,7 +462,11 @@ public class Tile : MonoBehaviour
                 else myMeshR.materials = mats;
             }
 
-            if (getCorrespondingMesh(tileType) != null) myMeshF.sharedMesh = getCorrespondingMesh(tileType);
+            if (getCorrespondingMesh(tileType) != null)
+            {
+                myMeshF.sharedMesh = getCorrespondingMesh(tileType);
+                myMeshC.sharedMesh = myMeshF.sharedMesh;
+            } 
             //myMeshC.sharedMesh = myMeshF.sharedMesh;
             if (!walkable)
             {
