@@ -494,8 +494,8 @@ namespace ProjectDawn.SplitScreen
 
         bool UpdateScreen(int screenIndex, ScreenRegion region, NativeSlice<float2> points, Rect rect)
         {
-            if (points.Length < 3)
-                throw new ArgumentException($"Something failed and screen region at index {screenIndex} was incorrectly generated.");
+            //if (points.Length < 3)
+                //throw new ArgumentException($"Something failed and screen region at index {screenIndex} was incorrectly generated.");
 
             var camera = GetComponent<Camera>();
             var screen = Screens[screenIndex];

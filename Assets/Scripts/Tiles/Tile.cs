@@ -197,7 +197,7 @@ public class Tile : MonoBehaviour
             pSys.Stop();
             //myMeshR.material.color = walkedOnColor;
             Material[] mats = myMeshR.materials;
-            mats[1].color = walkedOnColor;
+            mats[mats.Length - 1].color = walkedOnColor;
             myMeshR.materials = mats;
             pSysIsPlaying = false;
         }
@@ -216,7 +216,7 @@ public class Tile : MonoBehaviour
         {
             //myMeshR.material.color = walkedOnColor;
             Material[] mats = myMeshR.materials;
-            mats[1].color = walkedOnColor;
+            mats[mats.Length - 1].color = walkedOnColor;
             myMeshR.materials = mats;
         }
     }
@@ -262,7 +262,7 @@ public class Tile : MonoBehaviour
             pSys.Play();
             pSysIsPlaying = true;
             Material[] mats = myMeshR.materials;
-            mats[1].color = notWalkedOnColor;
+            mats[mats.Length - 1].color = notWalkedOnColor;
             myMeshR.materials = mats;
             //myMeshR.material.color = notWalkedOnColor;
         }
