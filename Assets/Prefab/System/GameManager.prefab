@@ -76,6 +76,7 @@ MonoBehaviour:
   eventVisualPrefab: {fileID: 2026664673166425894, guid: b8ce6079d7aa49945a1fb7cd9373b195, type: 3}
   secondBar: {fileID: 1185876906053481542, guid: 4041be0b1c80c044b87440fcc76d724f, type: 3}
   minuteBar: {fileID: 7334830493600781002, guid: 60a3955a1a4772640805888a853845b8, type: 3}
+  sceneLoadName: Hub
   UIPos: {fileID: 0}
   timerFillImage: {fileID: 0}
   eventFolder: {fileID: 0}
@@ -185,6 +186,8 @@ MonoBehaviour:
   - fillBarColor: {r: 1, g: 0, b: 0, a: 1}
     fillBarColorAmount: 1
     scoreMultiple: 0
+  numberOfClearedMissions: 0
+  numberOfFailedMissions: 0
   activePoolMin: 0
   activePoolMax: -1
   timeToComplete: 1
@@ -233,7 +236,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6354948749326121284}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
   m_Name: 

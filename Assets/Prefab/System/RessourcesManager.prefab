@@ -110,9 +110,34 @@ MonoBehaviour:
   - name: Eltender
     itemType: 0
     sprite: {fileID: 21300000, guid: 3c6c1f7c30a584c42b958af4e3f85bfd, type: 3}
-    mesh: {fileID: 4300000, guid: c9a49e581aa666b4daeb7d60c95e2825, type: 3}
-    mat: {fileID: 2100000, guid: 579080bda9f89ee42a5447d6d997e266, type: 2}
-  ressourceRecettesResults: []
+    mesh: {fileID: 3447038591770236762, guid: a34076d507e16ca499e39494a0c68c30, type: 3}
+    mat: {fileID: -6478536213147159724, guid: a34076d507e16ca499e39494a0c68c30, type: 3}
+  ressourceRecettesResults:
+  - name: Wood Tile
+    isTile: 1
+    tileType: 1
+    itemType: 0
+    sprite: {fileID: 21300000, guid: 735c47635f623f64598ecfc1e86a3282, type: 3}
+  - name: Rock Tile
+    isTile: 1
+    tileType: 2
+    itemType: 0
+    sprite: {fileID: 21300000, guid: a31c360b21ac51e4b9a995104ebc333c, type: 3}
+  - name: Diamond Tile
+    isTile: 1
+    tileType: 4
+    itemType: 0
+    sprite: {fileID: 21300000, guid: 4d5d6fa22366da3428ea7f0a76e3c2e6, type: 3}
+  - name: Bird
+    isTile: 0
+    tileType: 0
+    itemType: 0
+    sprite: {fileID: 21300000, guid: 1b949c4caff24534899e09fa5f222edf, type: 3}
+  - name: Boussole
+    isTile: 0
+    tileType: 0
+    itemType: 2
+    sprite: {fileID: 21300000, guid: 3d4e128ca7f2e8f49935a65f17906165, type: 3}
   mSTileCreation:
   - {fileID: 21300000, guid: 735c47635f623f64598ecfc1e86a3282, type: 3}
   - {fileID: 21300000, guid: a31c360b21ac51e4b9a995104ebc333c, type: 3}
