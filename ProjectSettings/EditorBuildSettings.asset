@@ -21,6 +21,6 @@ EditorBuildSettings:
     path: Assets/Scenes/IleEstDeRetour.unity
     guid: 623328b0660cce54d920ca9f15c93651
   - enabled: 1
-    path: Assets/Scenes/Lvl3.unity
+    path: Assets/Scenes/Levels/DiamondResearch_Level.unity
     guid: 29a9d6aea312b0e46a65f3bf3baeb844
   m_configObjects: {}
