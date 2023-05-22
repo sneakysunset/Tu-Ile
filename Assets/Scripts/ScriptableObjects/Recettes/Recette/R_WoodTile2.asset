@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0bd74352288d2458f97fc29f161fa8, type: 3}
+  m_Name: R_WoodTile2
+  m_EditorClassIdentifier: 
+  convertionTime: 1.4
+  requiredItemStacks:
+  - stackType: 1
+    currentNumber: 0
+    cost: 1
+  - stackType: 2
+    currentNumber: 0
+    cost: 1
+  requiredItemUnstackable: []
+  craftedItemPrefab: {fileID: 3749829321806436738, guid: 79bacb67c2f79be44932a72ded62af86, type: 3}
+  numberOfCrafted: 4

@@ -14,7 +14,8 @@ public class AI_Behaviour : MonoBehaviour
     [Range(.1f, 20)] public float refreshRateMin = 1, refreshRateMax = 2;
     [Header("numTilesAround only useful for RandomTileAround AITarget")]
     public int numTilesAround;
-    public bool stopRefreshing;
+    public enum Behavious { AI, Target, Static}
+    public Behavious currentBehavious;
     [HideInInspector] public Tile targetTile;
     private void Start()
     {
@@ -25,7 +26,7 @@ public class AI_Behaviour : MonoBehaviour
 
     IEnumerator RefreshAIPath()
     {
-        yield return new WaitUntil(()=> stopRefreshing == false);
+        yield return new WaitUntil(()=>  currentBehavious == Behavious.AI);
         yield return new WaitUntil(()=> tilePath.Count == 0);
         float refreshRate = Random.Range(refreshRateMin, refreshRateMax);
         yield return new WaitForSeconds(refreshRate);
@@ -83,9 +84,8 @@ public class AI_Behaviour : MonoBehaviour
 
     public void ClearPath()
     {
-        stopRefreshing = true;
+        currentBehavious = Behavious.Static;
         tilePath.Clear();
-        
     }
 
 }

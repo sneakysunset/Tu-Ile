@@ -2,8 +2,10 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PauseMenu : MonoBehaviour
@@ -14,6 +16,10 @@ public class PauseMenu : MonoBehaviour
     private PlayerInput[] players;
     private RectTransform tr;
     private PlayerInputManager playerInputManager;
+    public Button ogButton;
+    public Button optionButton;
+    public bool optionOn;
+
     private void Awake()
     {
         players = FindObjectsOfType<PlayerInput>();
@@ -23,6 +29,7 @@ public class PauseMenu : MonoBehaviour
 
     public void EnablePause(Player_Pause _player)
     {
+        ogButton.Select();
         player = _player;
         playerInputManager.enabled = false;
         Time.timeScale = 0;
@@ -41,6 +48,7 @@ public class PauseMenu : MonoBehaviour
         playerInputManager.enabled = true;
         Time.timeScale = 1;
         tr.DOAnchorPosX(465, 1, true).SetEase(easeOut).SetUpdate(false);
+        EventSystem.current.SetSelectedGameObject(null);
 
         foreach (PlayerInput p in players)
         {
@@ -53,16 +61,20 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        if(player) player.SetPause();
+        if (optionOn) return;
+        if (player) player.SetPause();
     }
 
     public void Options()
     {
-
+        if(optionOn) return;
+        optionOn = true;
     }
 
     public void Restart()
     {
+        if (optionOn) return;
+
         GameTimer gameTimer = FindObjectOfType<GameTimer>();
         gameTimer.sceneLoadName = SceneManager.GetActiveScene().name;
         gameTimer.EndLevel(false);
@@ -72,6 +84,8 @@ public class PauseMenu : MonoBehaviour
 
     public void HUB()
     {
+        if (optionOn) return;
+
         GameTimer gameTimer = FindObjectOfType<GameTimer>();
         gameTimer.sceneLoadName = "Hub";
         gameTimer.EndLevel(false);
