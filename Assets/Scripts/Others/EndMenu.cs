@@ -45,7 +45,7 @@ public class EndMenu : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         cam.CamCapture();
-        cam.RenderTextureOnImage(screenShot);
+        cam.RenderTextureOnImage(screenShot, SceneManager.GetActiveScene().name);
         missionsReussies.text = missionManager.numberOfClearedMissions.ToString();
         missionsRatees.text = missionManager.numberOfFailedMissions.ToString();
         total.text = ScoreManager.Instance.score.ToString();

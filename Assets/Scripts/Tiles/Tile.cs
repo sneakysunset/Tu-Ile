@@ -110,6 +110,11 @@ public class Tile : MonoBehaviour
     [HideInInspector] public bool isPenguined;
     bool pSysIsPlaying;
     [HideNormalInspector] public Item_Etabli etabli;
+    [HideNormalInspector] public LevelUI levelUI;
+    [HideInInspector] public bool isNear;
+    [HideInInspector] public bool IsNear { get { return isNear; } set { if (isNear != value) IsNearMethod(value); } }
+    [HideInInspector] public bool isDetail;
+    [HideInInspector] public bool IsDetail { get { return  isDetail; } set { if (isDetail != value) IsDetailMethod(value); } }
     #endregion
     #endregion
 
@@ -121,9 +126,31 @@ public class Tile : MonoBehaviour
         if (value) tileD.StartMoveSound();
         else tileD.EndMoveSound();
     }
+    private void IsNearMethod(bool value)
+    {
+        if(!value) levelUI.PlayerFar();
+        else levelUI.PlayerNear();
+
+        isNear = value;
+    }
+
+    private void IsDetailMethod(bool value)
+    {
+        if(!value) levelUI.NoDetail();
+        else levelUI.Detail();
+
+        isDetail = value;
+    }
 
     private void Awake()
     {
+        if(TileSystem.Instance.isHub && tileType == TileType.LevelLoader)
+        {
+            Transform tr = transform.GetChild(transform.childCount - 1);
+            tr.gameObject.SetActive(true);
+            levelUI = tr.GetComponent<LevelUI>();
+        }
+
         CameraCtr.startUp += OnStartUp;
         SceneManager.sceneLoaded += OnLoadScene;
         if (!walkable)
@@ -230,6 +257,8 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Tile Functions
+
+
     private void SetMatOnStart()
     {
         myMeshR = GetComponent<MeshRenderer>();
@@ -280,6 +309,7 @@ public class Tile : MonoBehaviour
 
     public void Spawn(float height, string stackType, float degradingSpeed)
     {
+        if (degradingSpeed == 0) degradable = false;
         TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
         float rot = UnityEngine.Random.Range(0, 360);
         readyToRoll = true;
@@ -305,7 +335,6 @@ public class Tile : MonoBehaviour
         currentPos.y = height - (height % heightByTile);
         isGrowing = true;
         tileS.tileC.Count();
-
     }
     private void GetAdjCoords()
     {
@@ -399,7 +428,7 @@ public class Tile : MonoBehaviour
                 case TileType.Adamantium: mat[1] = adamantiumMat; break;
                 case TileType.Sand: mat = new Material[1]; mat[0] = sandMatBottom; break;
                 case TileType.BouncyTile: mat[1] = bounceMat; break;
-                case TileType.LevelLoader: mat[1] = centerTileMat; break;
+                case TileType.LevelLoader: mat = new Material[1]; mat[0] = centerTileMat; break;
                 default: mat[1] = plaineMat; break;
             }
         }

@@ -8,7 +8,7 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public enum StackType { Other, Wood, Rock, Gold, Diamond, Adamantium, BouncyTile};
-    public enum ItemType { Bird, Chantier, Boussole};
+    public enum ItemType { Bird, Chantier, Boussole, Bait, Crate};
     [HideInInspector] public bool holdable;
     [HideNormalInspector] public bool isHeld;
     [HideInInspector] public Rigidbody rb;

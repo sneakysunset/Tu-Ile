@@ -63,6 +63,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3862227393772263682, guid: af6ef38888d32a347baba23a3302fbf0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
     - target: {fileID: 5081688468642532139, guid: af6ef38888d32a347baba23a3302fbf0, type: 3}
       propertyPath: m_Name
       value: DiamondTile

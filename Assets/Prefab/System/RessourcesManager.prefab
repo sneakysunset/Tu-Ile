@@ -110,8 +110,23 @@ MonoBehaviour:
   - name: Eltender
     itemType: 0
     sprite: {fileID: 21300000, guid: 3c6c1f7c30a584c42b958af4e3f85bfd, type: 3}
-    mesh: {fileID: 4300000, guid: c9a49e581aa666b4daeb7d60c95e2825, type: 3}
-    mat: {fileID: 2100000, guid: 579080bda9f89ee42a5447d6d997e266, type: 2}
+    mesh: {fileID: 3447038591770236762, guid: a34076d507e16ca499e39494a0c68c30, type: 3}
+    mat: {fileID: -6478536213147159724, guid: a34076d507e16ca499e39494a0c68c30, type: 3}
+  - name: Boussole
+    itemType: 2
+    sprite: {fileID: 21300000, guid: 3d4e128ca7f2e8f49935a65f17906165, type: 3}
+    mesh: {fileID: -1027016839294465328, guid: 77ff3ffe738e23848abe2b0f473cca14, type: 3}
+    mat: {fileID: 2100000, guid: 784bb535897775c4b980a14f97427be5, type: 2}
+  - name: Bait
+    itemType: 3
+    sprite: {fileID: 21300000, guid: b684b903aba26e14185bbba8b3903f91, type: 3}
+    mesh: {fileID: 4300000, guid: 755fec698c6100444bc2a332b153347e, type: 3}
+    mat: {fileID: 2100000, guid: f9c4a99059a34d842b70997d0245fde2, type: 2}
+  - name: Crate
+    itemType: 4
+    sprite: {fileID: 21300000, guid: a37aa9c8db4893e4d85dbce0f81971dc, type: 3}
+    mesh: {fileID: 4300000, guid: aeb38880ff6b64b92a599ddc4a422b94, type: 3}
+    mat: {fileID: 2100000, guid: 03ddc7e460b33402eb7640fab3881ac9, type: 2}
   ressourceRecettesResults: []
   mSTileCreation:
   - {fileID: 21300000, guid: 735c47635f623f64598ecfc1e86a3282, type: 3}

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0bd74352288d2458f97fc29f161fa8, type: 3}
+  m_Name: R_RockTile
+  m_EditorClassIdentifier: 
+  convertionTime: 3
+  requiredItemStacks:
+  - stackType: 1
+    currentNumber: 0
+    cost: 2
+  - stackType: 2
+    currentNumber: 0
+    cost: 4
+  requiredItemUnstackable: []
+  craftedItemPrefab: {fileID: 6912089915621339900, guid: 210b15a271081554fb901b5bf58d7553, type: 3}
+  numberOfCrafted: 1

@@ -15,7 +15,7 @@ public class CameraCtr : MonoBehaviour
     #region Components and Lists
     private Camera cam;
     private CinemachineVirtualCamera dezoomCamera;
-    private CinemachineTargetGroup targetGroup;
+    [HideInInspector] public CinemachineTargetGroup targetGroup;
     private SplitScreenEffect sCE;
     [HideNormalInspector] public List<Transform> players;
     [HideNormalInspector] public List<ScreenData> sDatas;
@@ -318,9 +318,9 @@ public class CameraCtr : MonoBehaviour
 
     }
 
-    public void RenderTextureOnImage(RawImage image)
+    public void RenderTextureOnImage(RawImage image, string sceneName)
     {
-        string filename = Application.dataPath + "/ScreenShots/" + SceneManager.GetActiveScene().name + "/SS_Game.png";
+        string filename = Application.dataPath + "/ScreenShots/" + sceneName + "/SS_Game.png";
         var rawData = System.IO.File.ReadAllBytes(filename);
         Texture2D tex = new Texture2D(2, 2);
         tex.LoadImage(rawData);

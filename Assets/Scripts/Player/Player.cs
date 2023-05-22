@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
         pPause = GetComponent<Player_Pause>();
         transform.parent = null;
         dummyTarget = transform.Find("DummyTarget");
-        if (/*TileSystem.Instance.isHub && */Time.time > 1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget);
+        if (/*TileSystem.Instance.isHub && */Time.time > .1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget);
         col = GetComponent<Collider>();
         pointers = new List<Transform>();
         Transform pointerFolder = transform.Find("PointerFolder");

@@ -36,6 +36,8 @@ public class AI_Movement : MonoBehaviour
     [HideInInspector] public float _velocity;
     public float rangeToReachDestination = 1;
     public UnityEvent<Transform, AI_Behaviour> onPlayerReached;
+    [HideNormalInspector] public Transform Target;
+    public LayerMask tileMask;
     #endregion
 
     private void Awake()
@@ -46,7 +48,7 @@ public class AI_Movement : MonoBehaviour
 
     private void OnGroundedCallBack()
     {
-        //FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Stomp");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Stomp", transform.position);
     }
 
     private void Update()
@@ -55,18 +57,29 @@ public class AI_Movement : MonoBehaviour
         {
             OnGroundedCallBack();
         }
-        if(AI_B.tilePath.Count > 0 && !AI_B.stopRefreshing) 
-        { 
-            dirInput();
-            isMoving = true;
-        }
-        else
+
+        switch (AI_B.currentBehavious)
         {
-            _direction = Vector3.zero;
-            isMoving = false;
+            case AI_Behaviour.Behavious.AI:
+                if (AI_B.tilePath.Count > 0)
+                {
+                    dirInputAI();
+                    isMoving = true;
+                }
+                else goto case AI_Behaviour.Behavious.Static;
+                break;
+            case AI_Behaviour.Behavious.Target:
+                dirInputTarget();
+                isMoving = true;
+                break;
+            case AI_Behaviour.Behavious.Static:
+                _direction = Vector3.zero;
+                isMoving = false;
+                break;  
         }
 
         groundedCallback = _characterController.isGrounded;
+        JumpRayCast();
         ApplyGravity();
         ApplyJump();
         ApplyRotation();
@@ -74,7 +87,7 @@ public class AI_Movement : MonoBehaviour
         ApplyMovement();
     }
 
-    private void dirInput()
+    private void dirInputAI()
     {
         if (Vector3.Distance(transform.position , AI_B.tilePath[0].transform.position + 23 * Vector3.up) < rangeToReachDestination)
         {
@@ -92,6 +105,12 @@ public class AI_Movement : MonoBehaviour
         _input = new Vector2((AI_B.tilePath[0].transform.position - transform.position).x, (AI_B.tilePath[0].transform.position - transform.position).z).normalized;
         _direction = new Vector3(_input.x, 0.0f, _input.y);
         
+    }
+
+    private void dirInputTarget()
+    {
+        _input = new Vector2((Target.position - transform.position).x, (Target.position - transform.position).z).normalized;
+        _direction = new Vector3(_input.x, 0.0f, _input.y);
     }
 
     private void ApplyGravity()
@@ -139,11 +158,24 @@ public class AI_Movement : MonoBehaviour
         _characterController.Move(_direction * speedValue * Time.deltaTime);
     }
 
+    private void JumpRayCast()
+    {
+        if(Physics.RaycastAll(transform.position, transform.forward + transform.localScale.y / 2 * Vector3.up, 1f, tileMask, QueryTriggerInteraction.Ignore).Length > 0 && _characterController.isGrounded)
+        {
+            jumpInput = true;
+        }
+    }
+
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.transform.TryGetComponent<Tile>(out Tile tileO) && hit.normal.y > -0.2f && hit.normal.y < 0.2f && hit.transform.position.y - AI_B.tileUnder.transform.position.y <= 3 && hit.transform.position.y - AI_B.tileUnder.transform.position.y > 1)
         {
             jumpInput = true;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(transform.position + transform.localScale.y / 2 * Vector3.up, transform.forward * 1f);
     }
 }

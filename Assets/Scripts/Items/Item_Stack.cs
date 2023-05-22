@@ -12,18 +12,22 @@ public class Item_Stack : Item
     protected RessourcesManager rMan;
     protected MeshFilter meshF;
     protected MeshFilter meshFH;
-    protected MeshCollider meshC;
     ressourceMeshsCollec rMC;
     public bool isTile;
     int prevNum;
     public bool trueHoldable = true;
     private void Start()
     {
+        holdable = true;
         meshR = GetComponent<MeshRenderer>();
+        meshF = GetComponent<MeshFilter>();
+        if(meshR == null)
+        {
+            meshR = GetComponentInChildren<MeshRenderer>();
+            meshF = GetComponentInChildren<MeshFilter>();
+        }
         col = GetComponent<Collider>();
         rMan = FindObjectOfType<RessourcesManager>();
-        meshF = GetComponent<MeshFilter>();
-        meshC = GetComponent<MeshCollider>();
         meshFH = Highlight.GetComponent<MeshFilter>();
     }
 
@@ -80,7 +84,6 @@ public class Item_Stack : Item
                 {
                     meshF.mesh = rMC.meshs[i];
                     meshFH.mesh = rMC.meshs[i];
-                    meshC.sharedMesh = rMC.meshs[i];
                     meshR.material = rMC.materials[i];
                 }
                 return;
@@ -90,7 +93,6 @@ public class Item_Stack : Item
         {
             meshF.mesh = rMC.meshs[rMC.necessaryNum.Count - 1];
             meshFH.mesh = rMC.meshs[rMC.necessaryNum.Count - 1];
-            meshC.sharedMesh = rMC.meshs[rMC.necessaryNum.Count - 1];
             meshR.material = rMC.materials[rMC.necessaryNum.Count - 1];
         }
     }
