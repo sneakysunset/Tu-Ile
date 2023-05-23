@@ -1,13 +1,14 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class TileSelector : MonoBehaviour
 {
-    TileSystem tileS;
+    #region Variables
     public GameObject bluePrintPrefab;
     Transform tileBluePrint;
     public float maxAngleToTarget = 50;
@@ -15,15 +16,19 @@ public class TileSelector : MonoBehaviour
     public float hitDistance = 4;
     private Tile targettedTile;
     private Tile previousTile;
+    private bool isOnTop;
+    private bool IsOnTop { get { return isOnTop; } set { if (isOnTop != value && !value) ExitTop(value); else if (isOnTop != value) EnterTop(value); } }
+    public float distanceToBeOnTop = 2.5f;
     private Player player;
     private MissionManager mM;
     public delegate void MissionComplete(Tile tile);
     public static event MissionComplete missionComplete;
+    #endregion
 
+    #region System CallBacks
     private void Start()
     {
         tileBluePrint = Instantiate(bluePrintPrefab).transform;
-        tileS = FindObjectOfType<TileSystem>();
         player = GetComponent<Player>();
         mM = FindObjectOfType<MissionManager>();
         SceneManager.sceneLoaded += OnLoad;
@@ -32,76 +37,114 @@ public class TileSelector : MonoBehaviour
     public void OnLoad(Scene scene, LoadSceneMode mode)
     {
         tileBluePrint = Instantiate(bluePrintPrefab).transform;
-        tileS = FindObjectOfType<TileSystem>();
         mM = FindObjectOfType<MissionManager>();
     }
 
-    private void OnChangeTileUnder()
+    private void Update()
     {
+        GetTileUnder();
+        BluePrintPlacement();
+    }
+    #endregion
 
+
+    #region TileUnderCallBacks
+    private void GetTileUnder()
+    {
+        player.tileUnder = GridUtils.WorldPosToTile(transform.position);
+        IsOnTop = player.tileUnder != null && Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(player.tileUnder.transform.position.x, player.tileUnder.transform.position.z)) < distanceToBeOnTop;
+
+        if (player.tileUnder != null) OnTileStay(player.tileUnder);
+        if (player.tileUnder != null && previousTile != null && previousTile != player.tileUnder)
+        {
+            OnTileExit(previousTile);
+            OnTileEnter(player.tileUnder);
+        }
+        previousTile = player.tileUnder;
+    }
+
+    private void OnTileEnter(Tile tile)
+    {
+        #region HUB
+        //Activate NearEtabliUI
+        #endregion
+
+        #region nonHub
+
+        #endregion
+
+    }
+
+    private void OnTileExit(Tile tile)
+    {
+        #region HUB
+        //Disable levelUI
+        if (tile.levelUI != null)
+        {
+            tile.IsNear = false;
+            tile.IsDetail = false;
+        }
+
+        #endregion
+
+        #region nonHub
+        //Disable Etablie Near
+        if (tile.etabli != null)
+        {
+            tile.etabli.playersOn.Remove(player);
+            if (tile.etabli.playersOn.Count == 0) tile.etabli.PlayerFar();
+        }
+        //Sand Tile Got Down
+        if (tile.tileType == TileType.Sand && tile.sandFlag) tile.tileD.SandDegradation();
+        tile.sandFlag = false;
+        #endregion
+    }
+
+    private void OnTileStay(Tile tile)
+    {
+        #region HUB
+        #endregion
+
+        #region nonHub
+        if (tile.tileType == TileType.Sand && !player._characterController.isGrounded && tile.sandFlag) tile.tileD.SandDegradation();
+        else if(isOnTop && player._characterController.isGrounded) tile.sandFlag = true;
+        #endregion
+
+    }
+
+    private void ExitTop(bool value)
+    {
+        isOnTop = value;
+    }
+
+    private void EnterTop(bool value)
+    {
+        if (player.tileUnder.tileType == TileType.LevelLoader) player.tileUnder.IsNear = true;
+        isOnTop = value;
+        player.tileUnder.walkedOnto = true;
         if (player.tileUnder.etabli != null)
         {
             player.tileUnder.etabli.playersOn.Add(player);
             if (player.tileUnder.etabli.playersOn.Count == 1) player.tileUnder.etabli.PlayerNear();
         }
 
-        if(previousTile)
-        {
-            if (previousTile.levelUI != null)
-            {
-                previousTile.IsNear = false;
-                previousTile.IsDetail = false;
-            }
-
-            if(previousTile.etabli != null)
-            {
-                previousTile.etabli.playersOn.Remove(player);
-                previousTile.sand_WalkedOnto = false;
-                if (previousTile.etabli.playersOn.Count == 0) previousTile.etabli.PlayerFar();
-            }
-        }
-
     }
-    private void Update()
+    #endregion
+
+
+    #region Tile Spawning
+    private void BluePrintPlacement()
     {
-        player.tileUnder = GridUtils.WorldPosToTile(transform.position);
-
-        bool cond = player.tileUnder != null && Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(player.tileUnder.transform.position.x, player.tileUnder.transform.position.z)) < 2.5f;
-        if(player.tileUnder && cond) player.tileUnder.sand_WalkedOnto = false; 
-        if (player.tileUnder && cond)
-        {
-            if(player.tileUnder.tileType == TileType.LevelLoader) player.tileUnder.IsNear = true;
-            if (player._characterController.isGrounded) player.tileUnder.sandFlag = true;
-        }
-        else if(player.tileUnder)
-        {
-            if (player.tileUnder.tileType == TileType.LevelLoader) player.tileUnder.IsNear = false;
-        } 
-        if(player.tileUnder && player._characterController.isGrounded) player.tileUnder.sand_WalkedOnto = true;
-            
-
-        if (previousTile != player.tileUnder)
-        {
-
-            OnChangeTileUnder();
-        }
-
-        previousTile = player.tileUnder;
-        if (!player.tileUnder.walkedOnto)
-        {
-            player.tileUnder.walkedOnto = true;
-        }
         if (Physics.Raycast(player.tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && !targettedTile.tourbillon && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
         {
-            tileBluePrint.position = new Vector3(targettedTile.transform.position.x, (GameConstant.tileHeight + player.tileUnder.transform.position.y), targettedTile.transform.position.z) ;
+            tileBluePrint.position = new Vector3(targettedTile.transform.position.x, (GameConstant.tileHeight + player.tileUnder.transform.position.y), targettedTile.transform.position.z);
         }
         else
         {
             tileBluePrint.position = new Vector3(0, -100, 0);
-            targettedTile = null; 
+            targettedTile = null;
         }
     }
-
 
     public void OnSpawnTile(InputAction.CallbackContext context)
     {
@@ -148,4 +191,5 @@ public class TileSelector : MonoBehaviour
             }
         }
     }
+    #endregion
 }

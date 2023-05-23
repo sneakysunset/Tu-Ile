@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Timeline;
 using UnityEngine.Windows;
 
 public class Player : MonoBehaviour
@@ -27,7 +29,7 @@ public class Player : MonoBehaviour
     [HideNormalInspector] public Item heldItem;
     [HideInInspector] public Item closestItem;
 
-    [HideInInspector] public List<Interactor> interactors;
+    [HideNormalInspector] public List<Interactor> interactors;
     public ParticleSystem waterSplash;
     public float throwStrength;
     [Range(-5, 5)] public float throwYAxisDirection;
@@ -41,6 +43,8 @@ public class Player : MonoBehaviour
     ChainIKConstraint[] iks;
     public Transform itemParent1, itemParent2;
     [HideNormalInspector] public Vector2Int previousScenePos;
+    [HideNormalInspector] public Ship_CharacterController ship;
+    [HideNormalInspector] public bool isShipped;
     private void Awake()
     {
         GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = Color.black;
@@ -113,6 +117,9 @@ public class Player : MonoBehaviour
                 heldItem.transform.Rotate(0, 90, 0);
             }
         }
+
+        if (isShipped) _characterController.enabled = false;
+
     }
 
     private void AnimationStatesHandler()
@@ -142,7 +149,7 @@ public class Player : MonoBehaviour
             pM.gravityMultiplier = currentGravMult;
             respawning = false;
         }
-        if (hit.transform.TryGetComponent<Tile>(out Tile tileO) && hit.normal.y > -0.2f && hit.normal.y < 0.2f && hit.transform.position.y - tileUnder.transform.position.y <= 3 && hit.transform.position.y - tileUnder.transform.position.y > 1)
+        if (pM.autoJump && hit.transform.TryGetComponent<Tile>(out Tile tileO) && hit.normal.y > -0.2f && hit.normal.y < 0.2f && hit.transform.position.y - tileUnder.transform.position.y <= 3 && hit.transform.position.y - tileUnder.transform.position.y > 1)
         {
             pM.jumpInput = true;
             pState = PlayerState.Jump;
@@ -215,5 +222,47 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0)[0].clip.length - .2f);
         pM.canMove = true;
         playerState = PlayerState.Idle;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("ShipTrigger") && other.transform.parent.TryGetComponent<Ship_CharacterController>(out ship))
+        {
+
+        }   
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("ShipTrigger") && ship != null && !isShipped )
+        {
+            ship = null;
+        }
+
+    }
+
+    public void OnInteractionInput(InputAction.CallbackContext context)
+    {
+        if (context.started && ship != null && !isShipped)
+        {
+            isShipped = true;
+            pM.canMove = false;
+            Physics.IgnoreCollision(col, ship.col, true);
+            _characterController.enabled = false;
+            transform.position = ship.holdPoint.position;
+            transform.rotation = ship.holdPoint.rotation;
+            transform.parent = ship.holdPoint;
+            ship.isUsed = true;
+            pState = PlayerState.Drawning;
+        }
+        else if (context.started && isShipped)
+        {
+            Physics.IgnoreCollision(col, ship.col, false);
+            _characterController.enabled = true;
+            pM.canMove = true;
+            isShipped = false;
+            ship.isUsed = false;
+            transform.parent = null;
+        }
     }
 }

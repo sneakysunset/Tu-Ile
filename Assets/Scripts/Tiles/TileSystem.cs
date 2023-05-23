@@ -108,8 +108,7 @@ public class TileSystem : MonoBehaviour
         tileP = GetComponent<TileParameters>();
         foreach (var tile in tiles)
         {
-            tile.maxTimer = tileP.maxTimer;
-            tile.minTimer = tileP.minTimer;
+            tile.degradationTimer = tileP.degradationTileTimer;
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
             tile.heightByTile = tileP.heightByTile;
             tile.falaiseMat = tileM.falaiseTileMat;

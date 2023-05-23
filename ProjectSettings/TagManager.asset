@@ -14,6 +14,7 @@ TagManager:
   - TileFolder
   - InteractorOff
   - Pause
+  - ShipTrigger
   layers:
   - Default
   - TransparentFX
@@ -30,7 +31,7 @@ TagManager:
   - Player_Collect
   - Collectable
   - Spacial UI
-  - 
+  - Ship
   - 
   - 
   - 

@@ -17,7 +17,8 @@ public static class GridUtils
         if (z % 2 == 1) xOffset = TileSystem.Instance.tilePrefab.transform.localScale.x * .9f;
         x = Mathf.RoundToInt((pos.x - xOffset) / (TileSystem.Instance.tilePrefab.transform.localScale.x * 1.7f));
 
-        return TileSystem.Instance.tiles[x, z];
+        if(TileSystem.Instance.tiles.Length > x && TileSystem.Instance.tiles.LongLength > z) return TileSystem.Instance.tiles[x, z];
+        else return null;
     }
     public static Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
     {
@@ -79,13 +80,10 @@ public static class GridUtils
                 {
                     t.degradable = true;
                     t.currentPos.y = -t.heightByTile;
-                    t.movingP = true;
-
                 }
                 else if (t == tile)
                 {
                     tile.currentPos.y = 0;
-                    t.movingP = true;
                     t.degSpeed *= 2;
                 }
                 t.tourbillon = false;
@@ -156,7 +154,6 @@ public static class GridUtils
                 if (t.walkable)
                 {
                     t.readyToRoll = true;
-                    t.movingP = true;
                 }
             }
             tile.degradable = false;

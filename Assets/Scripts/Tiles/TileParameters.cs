@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class TileParameters : MonoBehaviour
 {
-    public float minTimer;
-    public float maxTimer;
+    public float degradationTileTimer;
     public AnimationCurve degradationTimerAnimCurve;
     public float heightByTile;
 

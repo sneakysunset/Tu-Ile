@@ -34,7 +34,7 @@ public class Tile : MonoBehaviour
     [Space(10)]
     [SerializeField] public bool walkable = true;
     private bool isMoving;
-    public bool movingP { get { return isMoving; } set { if (isMoving != value) IsMoving(value); } }
+    public bool IsMoving { get { return isMoving; } set { if (isMoving != value) IsMovingCallBack(value); } }
     public bool degradable = true;
     [SerializeField] public TileType tileType = TileType.Neutral;
 
@@ -56,7 +56,6 @@ public class Tile : MonoBehaviour
     [Space(10)]
     public bool tourbillon;
     public float tourbillonSpeed;
-    [HideNormalInspector] public bool sand_WalkedOnto;
      public string levelName;
     #endregion
 
@@ -64,7 +63,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public bool isDegrading;
     [HideNormalInspector] public float timer;
     [HideNormalInspector] public float terraFormingSpeed;
-    [HideNormalInspector] public float minTimer, maxTimer;
+    [HideNormalInspector] public float degradationTimer;
     [HideNormalInspector] public AnimationCurve degradationTimerAnimCurve;
     [HideInInspector] public float degradingSpeed;
     [HideInInspector] public float typeDegradingSpeed = 1;
@@ -72,6 +71,9 @@ public class Tile : MonoBehaviour
     [HideInInspector] public float degSpeed = 1;
     [HideNormalInspector] public float timeToGetToMaxDegradationSpeed;
     [HideNormalInspector] public bool sandFlag;
+    public float shakeMagnitude = .1f;
+    public AnimationCurve shakeCurve;
+    public float shakeActivationTime;
     #endregion
 
     #region Interactor Spawning
@@ -81,7 +83,7 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Components
-    [HideInInspector] private Transform visualRoot;
+    [HideInInspector] public Transform visualRoot;
     [HideInInspector] public TileSystem tileS;
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public MeshFilter myMeshF;
@@ -92,7 +94,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public Transform tourbillonT;
     [HideInInspector] private ParticleSystem pSys;
     [HideInInspector] ParticleSystem pSysCreation;
-    [HideInInspector] Tile_Degradation tileD;
+    [HideInInspector] public Tile_Degradation tileD;
     #endregion
 
     #region Materials
@@ -121,12 +123,13 @@ public class Tile : MonoBehaviour
 
     #region Call Methods
 
-    private void IsMoving(bool value)
+    private void IsMovingCallBack(bool value)
     {
         isMoving = value;
-        if (value) tileD.StartMoveSound();
-        else tileD.EndMoveSound();
+        if (value) tileD.StartTileMovement();
+        else tileD.EndTileMovement();
     }
+
     private void IsNearMethod(bool value)
     {
         if(!value) levelUI.PlayerFar();
@@ -170,12 +173,15 @@ public class Tile : MonoBehaviour
         pSys = transform.GetChild(3).GetComponent<ParticleSystem>();
         pSysCreation = transform.GetChild(7).GetComponent<ParticleSystem>();
         tourbillonT = transform.Find("Tourbillon");
+        tourbillonT.Rotate(0, UnityEngine.Random.Range(0f, 360f), 0);
+        tourbillonT.Translate(0, UnityEngine.Random.Range(0f, 1f), 0);
+        if(tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Play();
 
         degSpeed = 1;
         coordFX = coordX - coordY / 2;
         currentPos = transform.position;
 
-        timer = UnityEngine.Random.Range(minTimer, maxTimer);
+        timer = degradationTimer;
 
         GetAdjCoords();
         SetMatOnStart();
@@ -229,19 +235,19 @@ public class Tile : MonoBehaviour
             pSys.Stop();
             //myMeshR.material.color = walkedOnColor;
             Material[] mats = myMeshR.materials;
-            mats[mats.Length - 1].color = walkedOnColor;
+            //mats[mats.Length - 1].color = walkedOnColor;
             myMeshR.materials = mats;
             pSysIsPlaying = false;
         }
-
+/*
         if(!walkable && tourbillon)
         {
             tourbillonT.Rotate(0, tourbillonSpeed * Time.deltaTime, 0);
-        }
+        }*/
 
         if(isPenguined && myMeshR.material.color != penguinedColor && tileType != TileType.Sand)
         {
-            myMeshR.material.color = penguinedColor;
+            //myMeshR.material.color = penguinedColor;
 
         }
         else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType != TileType.Sand && !tileS.isHub)
@@ -249,7 +255,7 @@ public class Tile : MonoBehaviour
             //myMeshR.material.color = walkedOnColor;
             Material[] mats = myMeshR.materials;
             mats[mats.Length - 1].color = walkedOnColor;
-            myMeshR.materials = mats;
+            //myMeshR.materials = mats;
         }
     }
 
@@ -297,7 +303,7 @@ public class Tile : MonoBehaviour
             pSys.Play();
             pSysIsPlaying = true;
             Material[] mats = myMeshR.materials;
-            mats[mats.Length - 1].color = notWalkedOnColor;
+            //mats[mats.Length - 1].color = notWalkedOnColor;
             myMeshR.materials = mats;
             //myMeshR.material.color = notWalkedOnColor;
         }
@@ -315,6 +321,7 @@ public class Tile : MonoBehaviour
 
     public void Spawn(float height, string stackType, float degradingSpeed)
     {
+        
         if (degradingSpeed == 0) degradable = false;
         TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
         float rot = UnityEngine.Random.Range(0, 360);
@@ -323,7 +330,6 @@ public class Tile : MonoBehaviour
         tileType = tType;
         spawning = true;
         walkable = true;
-        movingP = true;
         gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;
         myMeshF.mesh = getCorrespondingMesh(tileType);
@@ -334,13 +340,14 @@ public class Tile : MonoBehaviour
         //myMeshR.material.color = walkedOnColor;
         transform.Find("Additional Visuals").gameObject.SetActive(true);
         minableItems.gameObject.SetActive(true);
-        timer = UnityEngine.Random.Range(minTimer, maxTimer);
+        timer = degradationTimer;
         isDegrading = false;
-        transform.position = new Vector3(transform.position.x, -1.9f, transform.position.z) ;
+        transform.position = new Vector3(transform.position.x, -7f, transform.position.z) ;
         transform.tag = "Tile";
         currentPos.y = height - (height % heightByTile);
         isGrowing = true;
         tileS.tileC.Count();
+        if (tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Play();
     }
     private void GetAdjCoords()
     {
@@ -406,7 +413,7 @@ public class Tile : MonoBehaviour
         Material[] mat = new Material[2];
         mat[0] = falaiseMat;
         float f = UnityEngine.Random.Range(0f, 1f);
-        mat[0].color = Color.Lerp(falaiseColor, Color.white, f);
+        //mat[0].color = Color.Lerp(falaiseColor, Color.white, f);
         if (!walkable)
         {
             mat[1] = disabledMat;
@@ -428,7 +435,7 @@ public class Tile : MonoBehaviour
             {
                 case TileType.Neutral: mat[1] = plaineMatTop; mat[0] = plaineMatBottom; break;
                 case TileType.Wood: mat = new Material[1]; mat[0] = woodMat; break;
-                case TileType.Rock: mat[1] = mat[0]; mat[0] = rockMat; break;
+                case TileType.Rock: mat = new Material[1]; mat[0] = rockMat; break;
                 case TileType.Gold: mat[1] = goldMat; break;
                 case TileType.Diamond: mat[1] = diamondMat; break;
                 case TileType.Adamantium: mat[1] = adamantiumMat; break;
