@@ -254,4 +254,4 @@ MonoBehaviour:
   numberStacked: 0
   isTile: 1
   trueHoldable: 1
-  degradingSpeed: 1
+  degradingSpeed: 0.8

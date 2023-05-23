@@ -81,6 +81,7 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Components
+    [HideInInspector] private Transform visualRoot;
     [HideInInspector] public TileSystem tileS;
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public MeshFilter myMeshF;
@@ -96,8 +97,8 @@ public class Tile : MonoBehaviour
 
     #region Materials
     [HideInInspector, SerializeField] public Material disabledMat;
-    [HideNormalInspector] public Material falaiseMat, plaineMat, undegradableMat, sandMatTop, sandMatBottom, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat, centerTileMat;
-    [HideNormalInspector] public Mesh defaultMesh, woodMesh, rockMesh, sandMesh, undegradableMesh, centerTileMesh;
+    [HideNormalInspector] public Material falaiseMat, plaineMatTop, plaineMatBottom, undegradableMat, sandMatTop, sandMatBottom, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat, centerTileMat;
+    [HideNormalInspector] public Mesh defaultMesh, woodMesh, rockMesh, sandMesh, undegradableMesh, centerTileMesh, colliderMesh;
     [HideInInspector] public Color walkedOnColor, notWalkedOnColor;
     [HideInInspector] public Color penguinedColor;
      public Color falaiseColor;
@@ -265,8 +266,9 @@ public class Tile : MonoBehaviour
 
     private void SetMatOnStart()
     {
-        myMeshR = GetComponent<MeshRenderer>();
-        myMeshF = GetComponent<MeshFilter>();
+        visualRoot = transform.Find("TileVisuals");
+        myMeshR = visualRoot.GetComponent<MeshRenderer>();
+        myMeshF = visualRoot.GetComponent<MeshFilter>();
         myMeshC = GetComponent<MeshCollider>();
 
          if (!walkable)
@@ -281,7 +283,7 @@ public class Tile : MonoBehaviour
         else
         {
             myMeshF.mesh = getCorrespondingMesh(tileType);
-            myMeshC.sharedMesh = myMeshF.sharedMesh;
+            myMeshC.sharedMesh = colliderMesh;
             myMeshR.materials = getCorrespondingMat(tileType);
         }
 
@@ -325,7 +327,7 @@ public class Tile : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;
         myMeshF.mesh = getCorrespondingMesh(tileType);
-        myMeshC.sharedMesh = myMeshF.mesh;
+        myMeshC.sharedMesh = colliderMesh;
         Material[] mats = getCorrespondingMat(tileType);
         myMeshR.materials = mats;
         typeDegradingSpeed = degradingSpeed;
@@ -424,7 +426,7 @@ public class Tile : MonoBehaviour
         {
             switch (tType)
             {
-                case TileType.Neutral: mat[1] = plaineMat; break;
+                case TileType.Neutral: mat[1] = plaineMatTop; mat[0] = plaineMatBottom; break;
                 case TileType.Wood: mat = new Material[1]; mat[0] = woodMat; break;
                 case TileType.Rock: mat[1] = mat[0]; mat[0] = rockMat; break;
                 case TileType.Gold: mat[1] = goldMat; break;
@@ -433,7 +435,7 @@ public class Tile : MonoBehaviour
                 case TileType.Sand: mat = new Material[1]; mat[0] = sandMatBottom; break;
                 case TileType.BouncyTile: mat[1] = bounceMat; break;
                 case TileType.LevelLoader: mat = new Material[1]; mat[0] = centerTileMat; break;
-                default: mat[1] = plaineMat; break;
+                default: mat[1] = plaineMatTop; mat[0] = plaineMatBottom; break;
             }
         }
 
@@ -484,8 +486,9 @@ public class Tile : MonoBehaviour
         if (!Application.isPlaying)
         {
             if (this == null) return;
-            if (!myMeshR) myMeshR = GetComponent<MeshRenderer>();
-            if (!myMeshF) myMeshF = GetComponent<MeshFilter>();
+            if (visualRoot == null) visualRoot = transform.Find("TileVisuals");
+            if (!myMeshR) myMeshR = visualRoot.GetComponent<MeshRenderer>();
+            if (!myMeshF) myMeshF = visualRoot.GetComponent<MeshFilter>();
             if (!myMeshC) myMeshC = GetComponent<MeshCollider>();
             minableItems = transform.Find("SpawnPositions");
             if (getCorrespondingMat(tileType) != null)
@@ -498,7 +501,7 @@ public class Tile : MonoBehaviour
             if (getCorrespondingMesh(tileType) != null)
             {
                 myMeshF.sharedMesh = getCorrespondingMesh(tileType);
-                myMeshC.sharedMesh = myMeshF.sharedMesh;
+                myMeshC.sharedMesh = colliderMesh;
             } 
             //myMeshC.sharedMesh = myMeshF.sharedMesh;
             if (!walkable)
@@ -547,6 +550,7 @@ public class Tile : MonoBehaviour
 public class TileEditor : Editor
 {
     public Tile tile;
+    Transform t;
     private void OnEnable()
     {
         tile = (Tile)target;
@@ -567,7 +571,7 @@ public class TileEditor : Editor
     
     private void Draw()
     {
-        Transform t = tile.transform.Find("SpawnPositions");
+        if(t == null) t = tile.transform.GetChild(0);
         int myInt = Convert.ToInt32(tile.spawnPositions);
         bool[] bools = Utils.GetSpawnPositions(myInt);
         GUIStyle gUIStyle = new GUIStyle();
@@ -588,11 +592,12 @@ public class TileEditor : Editor
 
     private void SpawnOnTile()
     {
-        TileMats tileM = FindObjectOfType<TileMats>();
 
 
         if (tile.spawnSpawners && tile.tileSpawnType != TileType.Neutral)
         {
+            TileMats tileM = FindObjectOfType<TileMats>();
+
             Transform t = tile.transform.Find("SpawnPositions");
             foreach (Transform tr in t)
             {
