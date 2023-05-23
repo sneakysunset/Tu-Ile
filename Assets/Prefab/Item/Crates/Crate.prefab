@@ -142,7 +142,9 @@ MonoBehaviour:
   itemReward: 1
   isRandom: 0
   scoreReward: 10
-  playerStateReward: []
+  playerStateReward:
+  - rewardAdd: 0
+    pReward: 0
   itemRewards:
   - number: 3
     rewardItem: {fileID: 3749829321806436738, guid: 79bacb67c2f79be44932a72ded62af86, type: 3}
