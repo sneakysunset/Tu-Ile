@@ -90,7 +90,11 @@ public class Item_Etabli : Item
         if(Utils.IsSameOrSubclass(recette.craftedItemPrefab.GetType(), typeof(Item_Chantier))) isChantier = true;
         tileUnder = GridUtils.WorldPosToTile(transform.position);
         transform.parent = tileUnder.transform;
-        transform.localPosition = new Vector3(transform.localPosition.x, /*tileUnder.transform.localPosition.y +*/ 14.6f, transform.localPosition.z);
+        //transform.localPosition = new Vector3(transform.localPosition.x, /*tileUnder.transform.localPosition.y +*/ 14.6f, transform.localPosition.z);
+        if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 10, LayerMask.GetMask("Tile")))
+        {
+            transform.position = hit.point + transform.localScale.y * Vector3.up;
+        }
         tileUnder.etabli = this;
         createdItem = transform.Find("TileCreator/CreatedPos");
         if (isChantier)
@@ -341,7 +345,7 @@ public class Item_Etabli : Item
         else return false;
     }
 
-
+#if UNITY_EDITOR
     void OnValidate() { UnityEditor.EditorApplication.delayCall += _OnValidate; }
     private void _OnValidate()
     {
@@ -366,5 +370,6 @@ public class Item_Etabli : Item
             }
         }
     }
-    #endregion
+#endif
+#endregion
 }

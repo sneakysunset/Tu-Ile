@@ -1456,7 +1456,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4418244738559316407}
   m_LocalRotation: {x: -0, y: 0.70710564, z: -0, w: 0.707108}
-  m_LocalPosition: {x: 0.09000767, y: -0.22354017, z: 0.3717979}
+  m_LocalPosition: {x: 0.09000767, y: -0.2, z: 0.3717979}
   m_LocalScale: {x: 0.84, y: 0.84, z: 0.84}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1711,7 +1711,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 7.12}
+  m_AnchoredPosition: {x: 0, y: 7.14}
   m_SizeDelta: {x: 782, y: 439.99997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5449279442627818379
@@ -2048,7 +2048,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6122129860995627372}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.11, y: -1.084, z: -0.17}
+  m_LocalPosition: {x: 3.11, y: -1.06, z: -0.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2146,7 +2146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6122129861966295829}
   m_LocalRotation: {x: -0, y: 0.70710564, z: -0, w: 0.707108}
-  m_LocalPosition: {x: 0.09000767, y: -0.22354017, z: 0.3717979}
+  m_LocalPosition: {x: 0.09000767, y: -0.2, z: 0.3717979}
   m_LocalScale: {x: 0.84, y: 0.84, z: 0.84}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2243,7 +2243,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6122129862211978330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.62, z: 0.173}
+  m_LocalPosition: {x: 0, y: 1.64, z: 0.173}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2311,12 +2311,8 @@ MonoBehaviour:
   _player: {fileID: 0}
   physic: 1
   col: {fileID: 0}
-  limitItemsReceived: 0
   recette: {fileID: 11400000, guid: 3f73750fb5480c64d849678d2297043a, type: 2}
   isChantier: 0
-  EventOnCreation:
-    m_PersistentCalls:
-      m_Calls: []
   constructed: 0
   isDestroyed: 0
   isNear: 0
@@ -2803,7 +2799,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: x 3
+  m_text: x 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ba249fa5de328df41b919c035fc1a83a, type: 2}
   m_sharedMaterial: {fileID: 7370405658089020839, guid: ba249fa5de328df41b919c035fc1a83a, type: 2}

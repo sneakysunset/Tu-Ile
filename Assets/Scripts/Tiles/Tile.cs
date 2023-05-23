@@ -146,9 +146,13 @@ public class Tile : MonoBehaviour
     {
         if(TileSystem.Instance.isHub && tileType == TileType.LevelLoader)
         {
-            Transform tr = transform.GetChild(transform.childCount - 1);
+            Transform tr = transform.GetChild(8);
             tr.gameObject.SetActive(true);
             levelUI = tr.GetComponent<LevelUI>();
+        }
+        else if(!TileSystem.Instance.isHub && TileSystem.Instance.centerTile == this)
+        {
+            transform.GetChild(9).gameObject.SetActive(true);   
         }
 
         CameraCtr.startUp += OnStartUp;
