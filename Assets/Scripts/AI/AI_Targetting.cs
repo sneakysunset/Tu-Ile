@@ -53,6 +53,7 @@ public class AI_Targetting : MonoBehaviour
         }*/
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if(Selection.objects.Contains(this.gameObject as Object))
@@ -60,4 +61,5 @@ public class AI_Targetting : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, distanceToBait);
         }
     }
+#endif
 }

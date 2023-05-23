@@ -76,7 +76,7 @@ public class TileSelector : MonoBehaviour
         {
             if (player.tileUnder.tileType == TileType.LevelLoader) player.tileUnder.IsNear = false;
         } 
-        if(player._characterController.isGrounded) player.tileUnder.sand_WalkedOnto = true;
+        if(player.tileUnder && player._characterController.isGrounded) player.tileUnder.sand_WalkedOnto = true;
             
 
         if (previousTile != player.tileUnder)
