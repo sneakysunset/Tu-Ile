@@ -14,10 +14,20 @@ public static class GridUtils
 
 
         z = Mathf.RoundToInt(pos.z / (TileSystem.Instance.tilePrefab.transform.localScale.z * 1.48f));
-        if (z % 2 == 1) xOffset = TileSystem.Instance.tilePrefab.transform.localScale.x * .9f;
+        if (z % 2 == 1) xOffset = TileSystem.Instance.tilePrefab.transform.localScale.x * .85f;
         x = Mathf.RoundToInt((pos.x - xOffset) / (TileSystem.Instance.tilePrefab.transform.localScale.x * 1.7f));
 
         return TileSystem.Instance.tiles[x, z];
+    }
+    public static Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
+    {
+        float xOffset = 0;
+        if (z % 2 == 1) xOffset = TileSystem.Instance.tiles[x, z].transform.localScale.x * .85f;
+        Vector3 pos = ogPos + new Vector3(x * TileSystem.Instance.tiles[x, z].transform.localScale.x * 1.7f + xOffset, 0, z * TileSystem.Instance.tiles[x, z].transform.localScale.z * 1.48f);
+        TileSystem.Instance.tiles[x, z].coordX = x;
+
+        TileSystem.Instance.tiles[x, z].coordY = z;
+        return pos;
     }
 
     public static IEnumerator SinkWorld(Tile _centerTile, string levelToLoad, bool isEnd)
@@ -179,16 +189,6 @@ public static class GridUtils
         }
     }
 
-    public static Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
-    {
-        float xOffset = 0;
-        if (z % 2 == 1) xOffset = TileSystem.Instance.tiles[x, z].transform.localScale.x * .85f;
-        Vector3 pos = ogPos + new Vector3(x * TileSystem.Instance.tiles[x, z].transform.localScale.x * 1.7f + xOffset, 0, z * TileSystem.Instance.tiles[x, z].transform.localScale.z * 1.48f);
-        TileSystem.Instance.tiles[x, z].coordX = x;
-
-        TileSystem.Instance.tiles[x, z].coordY = z;
-        return pos;
-    }
 
 
     public static List<Tile> GetTilesAround(int numOfRows, Tile tile)

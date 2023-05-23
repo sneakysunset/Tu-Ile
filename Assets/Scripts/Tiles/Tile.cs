@@ -96,8 +96,8 @@ public class Tile : MonoBehaviour
 
     #region Materials
     [HideInInspector, SerializeField] public Material disabledMat;
-    [HideNormalInspector] public Material falaiseMat, plaineMat, undegradableMat, sandMatTop, sandMatBottom, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat, centerTileMat;
-    [HideNormalInspector] public Mesh defaultMesh, woodMesh, rockMesh, sandMesh, undegradableMesh, centerTileMesh;
+    [HideNormalInspector] public Material falaiseMat, plaineMatTop, plaineMatBottom, undegradableMat, sandMatTop, sandMatBottom, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat, centerTileMat;
+    [HideNormalInspector] public Mesh defaultMesh, woodMesh, rockMesh, sandMesh, undegradableMesh, centerTileMesh, colliderMesh;
     [HideInInspector] public Color walkedOnColor, notWalkedOnColor;
     [HideInInspector] public Color penguinedColor;
      public Color falaiseColor;
@@ -281,7 +281,7 @@ public class Tile : MonoBehaviour
         else
         {
             myMeshF.mesh = getCorrespondingMesh(tileType);
-            myMeshC.sharedMesh = myMeshF.sharedMesh;
+            myMeshC.sharedMesh = colliderMesh;
             myMeshR.materials = getCorrespondingMat(tileType);
         }
 
@@ -325,7 +325,7 @@ public class Tile : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;
         myMeshF.mesh = getCorrespondingMesh(tileType);
-        myMeshC.sharedMesh = myMeshF.mesh;
+        myMeshC.sharedMesh = colliderMesh;
         Material[] mats = getCorrespondingMat(tileType);
         myMeshR.materials = mats;
         typeDegradingSpeed = degradingSpeed;
@@ -424,7 +424,7 @@ public class Tile : MonoBehaviour
         {
             switch (tType)
             {
-                case TileType.Neutral: mat[1] = plaineMat; break;
+                case TileType.Neutral: mat[1] = plaineMatTop; mat[0] = plaineMatBottom; break;
                 case TileType.Wood: mat = new Material[1]; mat[0] = woodMat; break;
                 case TileType.Rock: mat[1] = mat[0]; mat[0] = rockMat; break;
                 case TileType.Gold: mat[1] = goldMat; break;
@@ -433,7 +433,7 @@ public class Tile : MonoBehaviour
                 case TileType.Sand: mat = new Material[1]; mat[0] = sandMatBottom; break;
                 case TileType.BouncyTile: mat[1] = bounceMat; break;
                 case TileType.LevelLoader: mat = new Material[1]; mat[0] = centerTileMat; break;
-                default: mat[1] = plaineMat; break;
+                default: mat[1] = plaineMatTop; mat[0] = plaineMatBottom; break;
             }
         }
 
@@ -498,7 +498,7 @@ public class Tile : MonoBehaviour
             if (getCorrespondingMesh(tileType) != null)
             {
                 myMeshF.sharedMesh = getCorrespondingMesh(tileType);
-                myMeshC.sharedMesh = myMeshF.sharedMesh;
+                myMeshC.sharedMesh = colliderMesh;
             } 
             //myMeshC.sharedMesh = myMeshF.sharedMesh;
             if (!walkable)

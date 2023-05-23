@@ -113,7 +113,8 @@ public class TileSystem : MonoBehaviour
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
             tile.heightByTile = tileP.heightByTile;
             tile.falaiseMat = tileM.falaiseTileMat;
-            tile.plaineMat = tileM.plaineTileMat;
+            tile.plaineMatBottom = tileM.plaineTileMatBottom;
+            tile.plaineMatTop = tileM.plaineTileMatTop;
             tile.disabledMat = tileM.disabledTileMaterial;
             tile.sandMatTop = tileM.desertTileMatTop;
             tile.sandMatBottom = tileM.desertTileMatBottom;
@@ -126,6 +127,7 @@ public class TileSystem : MonoBehaviour
             tile.adamantiumMat = tileM.adamantiumTileMat;
             tile.centerTileMat = tileM.centerTileMat;
             tile.defaultMesh = tileM.defaultTileMesh;
+            tile.colliderMesh = tileM.meshCollider;
             tile.woodMesh = tileM.woodTileMesh;
             tile.rockMesh = tileM.rockTileMesh;
             tile.sandMesh = tileM.sandTileMesh;

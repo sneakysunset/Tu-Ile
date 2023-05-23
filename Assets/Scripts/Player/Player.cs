@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
     float currentGravMult;
     ChainIKConstraint[] iks;
     public Transform itemParent1, itemParent2;
+    [HideNormalInspector] public Vector2Int previousScenePos;
     private void Awake()
     {
         GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = Color.black;
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour
     public void OnLoad(Scene scene, LoadSceneMode mode)
     {
         respawnTile = TileSystem.Instance.centerTile;
+        //transform.position = transform.position + new Vector3()
     }
 
     private void Start()
