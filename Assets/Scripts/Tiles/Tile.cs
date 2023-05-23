@@ -81,6 +81,7 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Components
+    [HideInInspector] private Transform visualRoot;
     [HideInInspector] public TileSystem tileS;
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public MeshFilter myMeshF;
@@ -265,8 +266,9 @@ public class Tile : MonoBehaviour
 
     private void SetMatOnStart()
     {
-        myMeshR = GetComponent<MeshRenderer>();
-        myMeshF = GetComponent<MeshFilter>();
+        visualRoot = transform.Find("TileVisuals");
+        myMeshR = visualRoot.GetComponent<MeshRenderer>();
+        myMeshF = visualRoot.GetComponent<MeshFilter>();
         myMeshC = GetComponent<MeshCollider>();
 
          if (!walkable)
@@ -484,8 +486,9 @@ public class Tile : MonoBehaviour
         if (!Application.isPlaying)
         {
             if (this == null) return;
-            if (!myMeshR) myMeshR = GetComponent<MeshRenderer>();
-            if (!myMeshF) myMeshF = GetComponent<MeshFilter>();
+            if (visualRoot == null) visualRoot = transform.Find("TileVisuals");
+            if (!myMeshR) myMeshR = visualRoot.GetComponent<MeshRenderer>();
+            if (!myMeshF) myMeshF = visualRoot.GetComponent<MeshFilter>();
             if (!myMeshC) myMeshC = GetComponent<MeshCollider>();
             minableItems = transform.Find("SpawnPositions");
             if (getCorrespondingMat(tileType) != null)
@@ -547,6 +550,7 @@ public class Tile : MonoBehaviour
 public class TileEditor : Editor
 {
     public Tile tile;
+    Transform t;
     private void OnEnable()
     {
         tile = (Tile)target;
@@ -567,7 +571,7 @@ public class TileEditor : Editor
     
     private void Draw()
     {
-        Transform t = tile.transform.Find("SpawnPositions");
+        if(t == null) t = tile.transform.GetChild(0);
         int myInt = Convert.ToInt32(tile.spawnPositions);
         bool[] bools = Utils.GetSpawnPositions(myInt);
         GUIStyle gUIStyle = new GUIStyle();
@@ -588,11 +592,12 @@ public class TileEditor : Editor
 
     private void SpawnOnTile()
     {
-        TileMats tileM = FindObjectOfType<TileMats>();
 
 
         if (tile.spawnSpawners && tile.tileSpawnType != TileType.Neutral)
         {
+            TileMats tileM = FindObjectOfType<TileMats>();
+
             Transform t = tile.transform.Find("SpawnPositions");
             foreach (Transform tr in t)
             {

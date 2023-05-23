@@ -65,6 +65,7 @@ public class TileSelector : MonoBehaviour
     private void Update()
     {
         player.tileUnder = GridUtils.WorldPosToTile(transform.position);
+
         bool cond = player.tileUnder != null && Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(player.tileUnder.transform.position.x, player.tileUnder.transform.position.z)) < 2.5f;
         if(player.tileUnder && cond) player.tileUnder.sand_WalkedOnto = false; 
         if (player.tileUnder && cond)

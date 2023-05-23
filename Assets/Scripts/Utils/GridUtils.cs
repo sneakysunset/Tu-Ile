@@ -14,7 +14,7 @@ public static class GridUtils
 
 
         z = Mathf.RoundToInt(pos.z / (TileSystem.Instance.tilePrefab.transform.localScale.z * 1.48f));
-        if (z % 2 == 1) xOffset = TileSystem.Instance.tilePrefab.transform.localScale.x * .85f;
+        if (z % 2 == 1) xOffset = TileSystem.Instance.tilePrefab.transform.localScale.x * .9f;
         x = Mathf.RoundToInt((pos.x - xOffset) / (TileSystem.Instance.tilePrefab.transform.localScale.x * 1.7f));
 
         return TileSystem.Instance.tiles[x, z];
