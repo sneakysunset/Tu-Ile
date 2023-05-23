@@ -21,7 +21,13 @@ public class ItemSystem : MonoBehaviour
     public void OnItemInput1(InputAction.CallbackContext context)
     {
         bool isSameOrSubClass = player.closestItem != null && Utils.IsSameOrSubclass(player.closestItem.GetType(), typeof(Item_Etabli));
-        if (context.started && player.heldItem != null && player.holdableItems.Count == 0 && !isSameOrSubClass && !pPause.isPaused)
+        if (context.started && TileSystem.Instance.isHub && player.tileUnder.tileType == TileType.LevelLoader)
+        {
+            if (player.tileUnder.isDetail) player.tileUnder.IsDetail = false;
+            else player.tileUnder.IsDetail = true;
+            return;
+        }
+        else if (context.started && player.heldItem != null && player.holdableItems.Count == 0 && !isSameOrSubClass && !pPause.isPaused)
         {
             player.heldItem.GrabRelease(false);
             player.holdableItems.Add(player.heldItem);

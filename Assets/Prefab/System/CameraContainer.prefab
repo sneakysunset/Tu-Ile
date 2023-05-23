@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 145633837491850246}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: -57.779976, y: 25.7, z: 48.142075}
+  m_LocalPosition: {x: -57.780403, y: 25.7, z: 48.142483}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -298,10 +298,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: 0.5, y: -0.4, z: 0}
+  Damping: {x: 0, y: 0, z: 0}
+  ShoulderOffset: {x: 0, y: 0, z: 0}
   VerticalArmLength: 0.4
-  CameraSide: 1
+  CameraSide: 0.5
   CameraDistance: 2
   CameraCollisionFilter:
     serializedVersion: 2
@@ -410,8 +410,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2518524962447889848}
-  m_LocalRotation: {x: 0.13641267, y: -0.8551175, z: 0.2827192, w: 0.41259617}
-  m_LocalPosition: {x: -27.13756, y: 21.895002, z: 53.747135}
+  m_LocalRotation: {x: 0.22648136, y: -0.74872917, z: 0.31575736, w: 0.5370364}
+  m_LocalPosition: {x: -57.78041, y: 26.1, z: 50.142483}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -702,22 +702,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 251dfe663949ddd4eb791bfdc64d40a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoother: 0.1
+  targetGroup: {fileID: 0}
+  players: []
+  sDatas: []
+  tileLoadCoordinates: {x: 0, y: 0}
+  distanceToSplit: 35
+  pCols: []
   lineCastLayers:
     serializedVersion: 2
     m_Bits: 1088
   sphereCastRadius: 0.3
   transparencyLevel: 0.8
-  medianPos: {x: 0, y: 0, z: 0}
-  dezoomCamera: {fileID: 4190664559342532176}
-  distanceToSplit: 35
-  player1Mat: {fileID: 2100000, guid: 055fe735eddbdd441930e33a087b71df, type: 2}
-  player2Mat: {fileID: 2100000, guid: f3b0f822856f82146992a8c6710058da, type: 2}
-  player3Mat: {fileID: 2100000, guid: a2bef3be2cdee4943b576a4e070257c6, type: 2}
-  player4Mat: {fileID: 2100000, guid: fba6bc4c9412d8844b6d51a4a6cee66f, type: 2}
   strongSS: 0.15
   mediumSS: 0.3
   weakSS: 0.6
+  rtTarget: {fileID: 8400000, guid: 4195d9220a8815c4fbc305ea6fb29f0d, type: 2}
 --- !u!1 &6667387659626017476
 GameObject:
   m_ObjectHideFlags: 0
@@ -749,7 +748,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6667387659626017476}
-  m_LocalRotation: {x: 0.43095046, y: -0.428214, z: 0.24414836, w: 0.7558478}
+  m_LocalRotation: {x: 0.43095046, y: -0.428214, z: 0.24414833, w: 0.7558478}
   m_LocalPosition: {x: -24.300007, y: 103.5, z: 19.800001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

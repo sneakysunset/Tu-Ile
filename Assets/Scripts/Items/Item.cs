@@ -8,8 +8,8 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public enum StackType { Other, Wood, Rock, Gold, Diamond, Adamantium, BouncyTile};
-    public enum ItemType { Bird, Chantier, Boussole};
-    public bool holdable;
+    public enum ItemType { Bird, Chantier, Boussole, Bait, Crate};
+    [HideInInspector] public bool holdable;
     [HideNormalInspector] public bool isHeld;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public GameObject Highlight;
@@ -42,7 +42,8 @@ public class Item : MonoBehaviour
         heldPoint = holdPoint;
         Highlight.SetActive(false);
         transform.position = heldPoint.position;
-
+        transform.rotation = heldPoint.rotation;
+        transform.Rotate(0, 90, 0);
         transform.parent = heldPoint;
     }
 
@@ -51,7 +52,8 @@ public class Item : MonoBehaviour
         isHeld = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.isKinematic = false;
-        rb.velocity = Vector2.zero;
+        rb.velocity = Vector3.zero;
+        Physics.IgnoreCollision(col, _player.col);
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Release");
         _player.holdableItems.Add(this);
         if (!etablied)
@@ -62,6 +64,7 @@ public class Item : MonoBehaviour
             Highlight.SetActive(true);            
         }
     }
+
 
     public virtual void ThrowAction(Player player, float throwStrength, Vector3 direction)
     {
@@ -82,6 +85,10 @@ public class Item : MonoBehaviour
         if (other.collider.CompareTag("Water"))
         {
             StartCoroutine(KillItem(other.collider));
+        }
+        if(_player != null && Physics.GetIgnoreCollision(col, _player.col))
+        {
+            Physics.IgnoreCollision(col, _player.col, false);
         }
     }
 

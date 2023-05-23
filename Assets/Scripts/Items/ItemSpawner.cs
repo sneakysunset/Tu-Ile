@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
 {
-    Item spawnedItem;
-    public Item itemToSpawn;
+    GameObject spawnedItem;
+    public GameObject itemToSpawn;
     private Transform spawnPoint;
     public float spawnTimer = 3f;
     private float baseTimerValue;
+    public bool loop;
+    bool continueLooping = true;
     Tile tile;
     private void Start()
     {
@@ -19,12 +21,13 @@ public class ItemSpawner : MonoBehaviour
 
     private void SpawnItem()
     {
-        spawnedItem = Instantiate(itemToSpawn, spawnPoint.position, Quaternion.identity).GetComponent<Item>();
+        spawnedItem = Instantiate(itemToSpawn, spawnPoint.position, Quaternion.identity);
+        if(!loop) { continueLooping = false; }
     }
 
     private void Update()
     {
-        if(TileSystem.Instance.ready && spawnedItem == null && tile.walkable)
+        if(TileSystem.Instance.ready && spawnedItem == null && tile.walkable && continueLooping)
         {
             spawnTimer -= Time.deltaTime;
             if(spawnTimer < 0)

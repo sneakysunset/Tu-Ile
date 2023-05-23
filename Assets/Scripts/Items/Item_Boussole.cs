@@ -1,15 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Item_Boussole : Item
 {
     /*[HideInInspector] */public List<Tile> targettedTiles;
     private List<Transform> pointers;
+    
     private void Start()
     {
         MissionManager mM = FindObjectOfType<MissionManager>();
         pointers = new List<Transform>();
+
+        foreach(BoussoleMission bM in CompassMissionManager.Instance.activeM)
+        {
+            if (!targettedTiles.Contains(bM.targettedTile))
+            {
+                targettedTiles.Add(bM.targettedTile);
+            }
+        }
+
         foreach(missionPage page in mM.activeMissions) 
         { 
             if(page.boussoleTile != null && !targettedTiles.Contains(page.boussoleTile))

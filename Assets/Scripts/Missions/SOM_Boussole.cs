@@ -2,6 +2,7 @@ using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ public class SOM_Boussole : SO_Mission
 {
     public int minDistanceFromCenter;
     public int maxDistanceFromCenter;
+
+    public Item_Crate reward;
 
     [Space(5)]
     [Header("If Ephemeral")]
@@ -56,4 +59,6 @@ public class SOM_Boussole : SO_Mission
         page.boussoleTile = null;
 
     }
+
+   
 }

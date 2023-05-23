@@ -63,7 +63,7 @@ public class ChantierCanvas : MonoBehaviour
     public void UpdateText(Item_Etabli et)
     {
         int f = 0;
-        if (etabli == null || rMan == null)
+        if (etabli == null || rMan == null || mainCamera == null)
         {
             etabli = et;
             OnActivated();

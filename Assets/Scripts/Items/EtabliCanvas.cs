@@ -127,15 +127,26 @@ public class EtabliCanvas : MonoBehaviour
                         yo = true;
                     }
                     break;
+                case "Item_Bait":
+                    if(r.itemType == Item.ItemType.Bait && !r.isTile)
+                    {
+                        resultImageFar.sprite = r.sprite;
+                        resultImageNear.sprite = r.sprite;
+                    }
+                    break;
+                case "Item_Crate":
+                    if (r.itemType == Item.ItemType.Crate && !r.isTile)
+                    {
+                        resultImageFar.sprite = r.sprite;
+                        resultImageNear.sprite = r.sprite;
+                    }
+                    break;
             }
             if (yo) break;
         }
 
         resultTextNear.text = "x " + etabli.recette.numberOfCrafted;
     }
-
-
-
 
 
     public void UpdateText(Item_Etabli et)

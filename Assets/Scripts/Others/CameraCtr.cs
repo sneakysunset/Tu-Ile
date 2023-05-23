@@ -6,6 +6,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Unity.Burst.Intrinsics.X86;
+using System.IO;
+using UnityEngine.UI;
 
 public class CameraCtr : MonoBehaviour
 {
@@ -13,7 +15,7 @@ public class CameraCtr : MonoBehaviour
     #region Components and Lists
     private Camera cam;
     private CinemachineVirtualCamera dezoomCamera;
-    private CinemachineTargetGroup targetGroup;
+    [HideInInspector] public CinemachineTargetGroup targetGroup;
     private SplitScreenEffect sCE;
     [HideNormalInspector] public List<Transform> players;
     [HideNormalInspector] public List<ScreenData> sDatas;
@@ -41,6 +43,11 @@ public class CameraCtr : MonoBehaviour
     public float strongSS;
     public float mediumSS;
     public float weakSS;
+    #endregion
+
+    #region ScreenShot
+    public RenderTexture rtTarget;
+
     #endregion
     #endregion
 
@@ -93,7 +100,10 @@ public class CameraCtr : MonoBehaviour
     private void LateUpdate()
     {
         LineCastToPlayer();
-       
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            //CamCapture();
+        }
     }
     #endregion
 
@@ -281,6 +291,40 @@ public class CameraCtr : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    public void CamCapture()
+    {
+        Camera Cam = GetComponentInChildren<Camera>() ;
+        Cam.targetTexture = rtTarget;
+
+        RenderTexture currentRT = RenderTexture.active;
+        RenderTexture.active = Cam.targetTexture;
+
+        Cam.Render();
+
+        Texture2D Image = new Texture2D(Cam.targetTexture.width, Cam.targetTexture.height);
+        Image.ReadPixels(new Rect(0, 0, Cam.targetTexture.width, Cam.targetTexture.height), 0, 0);
+        Image.Apply();
+        RenderTexture.active = currentRT;
+
+        var Bytes = Image.EncodeToPNG();
+        Destroy(Image);
+        string filePath = Application.dataPath + "/ScreenShots/" + SceneManager.GetActiveScene().name;
+        if (!Directory.Exists(filePath)) Directory.CreateDirectory(filePath); ;
+        File.WriteAllBytes(Application.dataPath + "/ScreenShots/" + SceneManager.GetActiveScene().name + "/SS_Game.png", Bytes);
+        Cam.targetTexture = null;
+
+    }
+
+    public void RenderTextureOnImage(RawImage image, string sceneName)
+    {
+        string filename = Application.dataPath + "/ScreenShots/" + sceneName + "/SS_Game.png";
+        var rawData = System.IO.File.ReadAllBytes(filename);
+        Texture2D tex = new Texture2D(2, 2);
+        tex.LoadImage(rawData);
+        image.texture = tex;
     }
     #endregion
 }

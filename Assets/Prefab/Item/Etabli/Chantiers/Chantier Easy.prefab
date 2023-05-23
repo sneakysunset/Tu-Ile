@@ -1241,6 +1241,37 @@ Transform:
   m_Father: {fileID: 7644044207746140647}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6729000303002630705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1319677652054654310}
+  m_Layer: 0
+  m_Name: SpawnPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1319677652054654310
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6729000303002630705}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 1.56}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7644044209496618637}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7644044207746140646
 GameObject:
   m_ObjectHideFlags: 0
@@ -1274,7 +1305,7 @@ Transform:
   m_Children:
   - {fileID: 2598696886242937386}
   m_Father: {fileID: 7644044209496618637}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7644044207746140666
 MeshFilter:
@@ -1371,7 +1402,7 @@ Transform:
   - {fileID: 4990207993479100894}
   - {fileID: 6030887942690037309}
   m_Father: {fileID: 7644044209496618637}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7644044209190339487
 GameObject:
@@ -1406,7 +1437,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7644044209496618637}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7644044209190339475
 MeshFilter:
@@ -1520,6 +1551,7 @@ Transform:
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 1319677652054654310}
   - {fileID: 7644044207746140647}
   - {fileID: 7644044208962483409}
   - {fileID: 7644044209190339472}
@@ -1546,12 +1578,8 @@ MonoBehaviour:
   _player: {fileID: 0}
   physic: 1
   col: {fileID: 0}
-  limitItemsReceived: 1
-  recette: {fileID: 11400000, guid: b2eba017ae60a474b9fb6d58f0718ec6, type: 2}
-  isChantier: 0
-  EventOnCreation:
-    m_PersistentCalls:
-      m_Calls: []
+  recette: {fileID: 11400000, guid: 63950be6c7fcbd843a0a261c7c3961a0, type: 2}
+  isChantier: 1
   constructed: 0
   isDestroyed: 0
   isNear: 0
@@ -1811,7 +1839,7 @@ RectTransform:
   - {fileID: 4025481221591546835}
   - {fileID: 2059494930777914861}
   m_Father: {fileID: 7644044209496618637}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

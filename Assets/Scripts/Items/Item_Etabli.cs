@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.Rendering.DebugUI;
 
 #region structs
 [System.Serializable]
@@ -25,7 +24,6 @@ public struct item
 public class Item_Etabli : Item
 {
     #region variables
-    public bool limitItemsReceived;
     public SO_Recette recette;
     Item craftedItem;
     private UnityEngine.Transform stackT;
@@ -39,18 +37,19 @@ public class Item_Etabli : Item
     EtabliCanvas itemNum;
     ChantierCanvas itemNumCh;
     public bool isChantier;
-    public UnityEvent EventOnCreation;
     [HideInInspector] public bool constructed = false;
     [HideInInspector] public bool isDestroyed = false;
     [HideNormalInspector] public bool isNear;
-    [HideNormalInspector] public List<Player> playersOn;
+    [HideInInspector] public List<Player> playersOn;
     public bool restraintEditorMovement = true;
+    Transform spawnPos;
     #endregion
 
     #region SystemCallbacks
     public override void Awake()
     {
         base.Awake();
+        if(isChantier) spawnPos = transform.GetChild(0);
         playersOn = new List<Player>();
         meshs = GetComponentsInChildren<MeshRenderer>();
         waiter = new WaitForSeconds(recette.convertionTime);
@@ -70,6 +69,7 @@ public class Item_Etabli : Item
                 }
             }
         }
+       
         for (int i = 0; i < recette.requiredItemStacks.Length; i++)
         {
             foreach (ressourceMeshsCollec r in rMan.RessourceMeshs)
@@ -89,8 +89,8 @@ public class Item_Etabli : Item
         recette.ResetRecette();
         if(Utils.IsSameOrSubclass(recette.craftedItemPrefab.GetType(), typeof(Item_Chantier))) isChantier = true;
         tileUnder = GridUtils.WorldPosToTile(transform.position);
-        transform.position = new Vector3(transform.position.x, tileUnder.transform.position.y + 23.4f, transform.position.z);
         transform.parent = tileUnder.transform;
+        transform.localPosition = new Vector3(transform.localPosition.x, /*tileUnder.transform.localPosition.y +*/ 14.6f, transform.localPosition.z);
         tileUnder.etabli = this;
         createdItem = transform.Find("TileCreator/CreatedPos");
         if (isChantier)
@@ -119,14 +119,8 @@ public class Item_Etabli : Item
                 SetActiveMesh(true);
             }
 
-            if(craftedItem != null && craftedItem.isHeld) 
-            {
-                craftedItem = null;
-                if (CheckStacks())
-                {
-                    StartCoroutine(Convert());
-                }
-            }
+
+            
 
 
     }
@@ -211,7 +205,7 @@ public class Item_Etabli : Item
                 stack iS = recette.requiredItemStacks[i];
                 if (iS.stackType == itemS.stackType)
                 {
-                    if (!limitItemsReceived)
+                    if (!isChantier)
                     {
                         recette.requiredItemStacks[i].currentNumber += itemS.numberStacked;
                         player.heldItem = null;
@@ -265,39 +259,45 @@ public class Item_Etabli : Item
 
     IEnumerator Convert()
     {
-        convertorFlag = true;
-        FMODUtils.SetFMODEvent(ref creationInst, "event:/Tuile/Tile/TileCreation", transform);
-        yield return waiter;
-        FMODUtils.StopFMODEvent(ref creationInst, true);
-        for (int i = 0; i < recette.requiredItemStacks.Length; i++)
-        {
-            recette.requiredItemStacks[i].currentNumber -= recette.requiredItemStacks[i].cost;
-            if (recette.requiredItemStacks[i].currentNumber == 0)
-            {
-                stackT.GetChild(i + recette.requiredItemUnstackable.Length).gameObject.SetActive(false);
-            }
-        }
-        int f = 0;
-        for (int i = 0; i < recette.requiredItemUnstackable.Length; i++)
-        {
-            recette.requiredItemUnstackable[i].isFilled = false;
-            stackT.GetChild(i).gameObject.SetActive(false);
-            f++;
-        }
-        if(craftedItem == null)
-        {
-            craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, Quaternion.identity, createdItem);
-        }
-        if(Utils.IsSameOrSubclass(System.Type.GetType("Item_Stack"), craftedItem.GetType()))
-        {
-            Item_Stack craIt = craftedItem as Item_Stack;
-            craIt.numberStacked += recette.numberOfCrafted;
-        }
-        if(isChantier) itemNumCh.UpdateText(this);
-        else itemNum.UpdateText(this);
-        convertorFlag = false;
-        EventOnCreation?.Invoke();
+        if (craftedItem != null && !Utils.IsSameOrSubclass(typeof(Item_Stack), craftedItem.GetType())) yield break ;
 
+        do
+        {
+            convertorFlag = true;
+            FMODUtils.SetFMODEvent(ref creationInst, "event:/Tuile/Tile/TileCreation", transform);
+            yield return waiter;
+            FMODUtils.StopFMODEvent(ref creationInst, true);
+            for (int i = 0; i < recette.requiredItemStacks.Length; i++)
+            {
+                recette.requiredItemStacks[i].currentNumber -= recette.requiredItemStacks[i].cost;
+                if (recette.requiredItemStacks[i].currentNumber == 0)
+                {
+                    stackT.GetChild(i + recette.requiredItemUnstackable.Length).gameObject.SetActive(false);
+                }
+            }
+            int f = 0;
+            for (int i = 0; i < recette.requiredItemUnstackable.Length; i++)
+            {
+                recette.requiredItemUnstackable[i].isFilled = false;
+                stackT.GetChild(i).gameObject.SetActive(false);
+                f++;
+            }
+            if (craftedItem == null)
+            {
+                craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, Quaternion.identity, createdItem);
+            }
+
+            if (Utils.IsSameOrSubclass(System.Type.GetType("Item_Stack"), craftedItem.GetType()))
+            {
+                Item_Stack craIt = craftedItem as Item_Stack;
+                craIt.numberStacked += recette.numberOfCrafted;
+            }
+            if (isChantier) itemNumCh.UpdateText(this);
+            else itemNum.UpdateText(this);
+        convertorFlag = false;
+        }
+        while (CheckStacks());
+        
     }
 
     IEnumerator ChantierConvert()
@@ -307,8 +307,10 @@ public class Item_Etabli : Item
         chantier.transform.parent = tileUnder.transform;
         constructed = true;
         FindObjectOfType<MissionManager>().CheckMissions();
-        EventOnCreation?.Invoke();
-        gameObject.SetActive(false);
+        SO_Recette_Chantier re = recette as SO_Recette_Chantier;
+        Instantiate(re.loot, spawnPos.position, Quaternion.identity);
+        gameObject.SetActive(false); 
+        
     }
 
     bool CheckStacks()
@@ -329,7 +331,7 @@ public class Item_Etabli : Item
             }
         }
         bool condition1 = f == recette.requiredItemStacks.Length + recette.requiredItemUnstackable.Length;
-        bool condition2 = recette.craftedItemPrefab.GetType() == System.Type.GetType("Item_Stack");
+        bool condition2 = Utils.IsSameOrSubclass(typeof(Item_Stack), recette.craftedItemPrefab.GetType());
         bool condition3 = craftedItem == null;
 
         if (!convertorFlag && condition1 && (condition2 || condition3))
@@ -343,52 +345,26 @@ public class Item_Etabli : Item
     void OnValidate() { UnityEditor.EditorApplication.delayCall += _OnValidate; }
     private void _OnValidate()
     {
-        if (!Application.isPlaying)
+        if (!Application.isPlaying && !isChantier)
         {
             itemNum = GetComponentInChildren<EtabliCanvas>();
             itemNum.OnActivated();
         }
     }
-    #endregion
-}
 
-#region Editor
-#if UNITY_EDITOR
-[CustomEditor(typeof(Item_Etabli))]
-[System.Serializable]
-public class EtablieSystemEditor : Editor
-{
-    Item_Etabli etabli;
-
-    private void OnEnable()
-    {
-        etabli = (Item_Etabli)target;
-    }
-
-
-    private void OnSceneGUI()
+    private void OnDrawGizmos()
     {
         if (!Application.isPlaying)
         {
-            Draw();
-            EditorUtility.SetDirty(etabli);
-        }
-    }
-
-    void Draw()
-    {
-        if (!Application.isPlaying)
-        {
-            Tile tileUnder = GridUtils.WorldPosToTile(etabli.transform.position);
-            if(tileUnder != null && etabli.restraintEditorMovement)
+            Tile tileUnder = GridUtils.WorldPosToTile(transform.position);
+            if (tileUnder != null && restraintEditorMovement)
             {
-                float yAngle = etabli.transform.eulerAngles.y - (etabli.transform.eulerAngles.y - 30) % 60;
+                float yAngle = transform.eulerAngles.y - (transform.eulerAngles.y - 30) % 60;
                 Quaternion quat = Quaternion.Euler(0, yAngle, 0);
-                etabli.transform.rotation = quat;
-                etabli.transform.position = new Vector3(etabli.transform.position.x, tileUnder.transform.position.y + GameConstant.tileHeight + .4f, etabli.transform.position.z);
+                transform.rotation = quat;
+                transform.position = new Vector3(transform.position.x, tileUnder.transform.position.y + GameConstant.tileHeight + .4f, transform.position.z);
             }
         }
     }
+    #endregion
 }
-#endif
-#endregion

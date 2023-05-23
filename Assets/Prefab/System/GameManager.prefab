@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 6354948749326121285}
   - component: {fileID: 6354948749326121287}
   - component: {fileID: 5061697531550802697}
+  - component: {fileID: 7337067159720949784}
+  - component: {fileID: 7946246336042065406}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -76,6 +78,7 @@ MonoBehaviour:
   eventVisualPrefab: {fileID: 2026664673166425894, guid: b8ce6079d7aa49945a1fb7cd9373b195, type: 3}
   secondBar: {fileID: 1185876906053481542, guid: 4041be0b1c80c044b87440fcc76d724f, type: 3}
   minuteBar: {fileID: 7334830493600781002, guid: 60a3955a1a4772640805888a853845b8, type: 3}
+  sceneLoadName: Hub
   UIPos: {fileID: 0}
   timerFillImage: {fileID: 0}
   eventFolder: {fileID: 0}
@@ -185,6 +188,8 @@ MonoBehaviour:
   - fillBarColor: {r: 1, g: 0, b: 0, a: 1}
     fillBarColorAmount: 1
     scoreMultiple: 0
+  numberOfClearedMissions: 0
+  numberOfFailedMissions: 0
   activePoolMin: 0
   activePoolMax: -1
   timeToComplete: 1
@@ -313,3 +318,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 0}
+--- !u!114 &7337067159720949784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe4bad037d7c606408655b7775b26b09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  compassMissions:
+  - {fileID: 11400000, guid: 316e16ae3e49b5b44a82c452635e199f, type: 2}
+  - {fileID: 11400000, guid: 316e16ae3e49b5b44a82c452635e199f, type: 2}
+  minCompassM: 0
+  maxCompassM: 1
+  compassMissionSlots: 1
+--- !u!114 &7946246336042065406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -431386005
+      Data2: 1135596140
+      Data3: -2070349429
+      Data4: 1996713905
+    Path: event:/Music/Niveau 1
+  Event: 
+  PlayEvent: 1
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
