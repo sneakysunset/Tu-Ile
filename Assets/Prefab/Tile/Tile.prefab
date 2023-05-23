@@ -1990,7 +1990,8 @@ MonoBehaviour:
   tourbillonT: {fileID: 0}
   disabledMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
   falaiseMat: {fileID: 0}
-  plaineMat: {fileID: 0}
+  plaineMatTop: {fileID: 0}
+  plaineMatBottom: {fileID: 0}
   undegradableMat: {fileID: 0}
   sandMatTop: {fileID: 0}
   sandMatBottom: {fileID: 0}
@@ -2007,6 +2008,7 @@ MonoBehaviour:
   sandMesh: {fileID: 0}
   undegradableMesh: {fileID: 0}
   centerTileMesh: {fileID: 0}
+  colliderMesh: {fileID: 0}
   walkedOnColor: {r: 0.8490566, g: 0.734247, b: 0.734247, a: 1}
   notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
   penguinedColor: {r: 0.8584906, g: 0.28076416, b: 0.28076416, a: 1}

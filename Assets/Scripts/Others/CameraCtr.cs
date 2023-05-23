@@ -63,6 +63,8 @@ public class CameraCtr : MonoBehaviour
         SceneManager.sceneLoaded += OnLoad;
         sCE = GetComponentInChildren<SplitScreenEffect>();
         dezoomCamera = transform.GetChild(2).GetComponent<CinemachineVirtualCamera>();
+        dezoomCamera.LookAt = TileSystem.Instance.centerTile.transform.GetChild(0);
+        dezoomCamera.Follow = TileSystem.Instance.centerTile.transform.GetChild(0);
         StartCoroutine(changeCam());
     }
 
