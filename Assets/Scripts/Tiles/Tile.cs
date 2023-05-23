@@ -564,10 +564,10 @@ public class TileEditor : Editor
 
         EditorUtility.SetDirty(tile);
     }
-    
+        
     private void Draw()
     {
-        Transform t = tile.transform.Find("SpawnPositions");
+        Transform t = tile.transform.GetChild(0);
         int myInt = Convert.ToInt32(tile.spawnPositions);
         bool[] bools = Utils.GetSpawnPositions(myInt);
         GUIStyle gUIStyle = new GUIStyle();
@@ -588,11 +588,11 @@ public class TileEditor : Editor
 
     private void SpawnOnTile()
     {
-        TileMats tileM = FindObjectOfType<TileMats>();
 
 
         if (tile.spawnSpawners && tile.tileSpawnType != TileType.Neutral)
         {
+            TileMats tileM = FindObjectOfType<TileMats>();
             Transform t = tile.transform.Find("SpawnPositions");
             foreach (Transform tr in t)
             {
@@ -615,6 +615,8 @@ public class TileEditor : Editor
         }
         else if (tile.spawnSpawners && tile.tileSpawnType == TileType.Neutral)
         {
+            TileMats tileM = FindObjectOfType<TileMats>();
+
             tile.spawnSpawners = false;
 
             foreach (Transform t in tile.transform.Find("SpawnPositions"))
