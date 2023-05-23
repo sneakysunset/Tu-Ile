@@ -92,6 +92,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7236340373415710136, guid: c4722584de298b6449b81d405df55f16, type: 3}
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
+      propertyPath: regrowthTimer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: comp.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -149,7 +153,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: d53adf57e4972f8448d1b690e02582ec, type: 2}
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: numberOfRessourceGenerated
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7374582616296487918, guid: adb9793d20bc7ff449072668d0209fd3, type: 3}
       propertyPath: comp.Array.data[1].material
