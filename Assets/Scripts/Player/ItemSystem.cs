@@ -33,7 +33,7 @@ public class ItemSystem : MonoBehaviour
             player.holdableItems.Add(player.heldItem);
             if (player.closestItem == null) player.closestItem = player.heldItem;
             player.heldItem = null;
-            player.interactors.Clear();
+
             return;
         }
 
@@ -56,6 +56,7 @@ public class ItemSystem : MonoBehaviour
                 player.heldItem = player.closestItem;
                 player.holdableItems.Remove(player.heldItem);
                 player.heldItem.GrabStarted(holdPoint, player);
+
             }
             else
             {
@@ -64,16 +65,10 @@ public class ItemSystem : MonoBehaviour
                 player.holdableItems.Remove(player.closestItem);
             }
 
-            for (int i = 0; i < player.interactors.Count; i++)
-            {
-                player.interactors.RemoveAt(i);
-                i--;
-                if (player.interactors.Count == 0) break;
-            }
 
-            foreach(Interactor inte in player.interactors)
+            while(player.interactors.Count > 0)
             {
-                inte.OnInteractionExit(player);
+                player.interactors[0].OnInteractionExit(player);
             }
         }
 

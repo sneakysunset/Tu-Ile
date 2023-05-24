@@ -16,10 +16,6 @@ public class Player_Mining : MonoBehaviour
 
     private void Update()
     {
-        if(player.interactors.Count == 0 && player.interactors.Count != numInt)
-        {
-            axe.SetActive(false);
-        }
         numInt = player.interactors.Count;
 
         if(player.interactors.Count > 0)player.anim.SetFloat("MiningSpeed", hitRate * player.interactors[0].hitRateSpeedModifier);
@@ -30,12 +26,8 @@ public class Player_Mining : MonoBehaviour
     {
         if (other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out Interactor tempInteractor))
         {
-            if (tempInteractor.interactable && !player.interactors.Contains(tempInteractor) && !player.heldItem)
+            if (tempInteractor.interactable && !player.interactors.Contains(tempInteractor) && !player.heldItem && player.pState != Player.PlayerState.SpellUp && player.pState != Player.PlayerState.SpellCreate)
             {
-                if(player.interactors.Count == 0)
-                {
-                    axe.SetActive(true);
-                }
                 tempInteractor.OnInteractionEnter(player);
                 player.interactors.Add(tempInteractor);
             }
@@ -49,7 +41,6 @@ public class Player_Mining : MonoBehaviour
             if (player.interactors.Contains(tempInt))
             {
                 tempInt.OnInteractionExit(player);
-                if(player.interactors.Count == 0) { axe.SetActive(false); }
             }
         }
     }

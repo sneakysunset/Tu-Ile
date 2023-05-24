@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 #region structs
 [System.Serializable]
 public struct stack
 {
     public Item_Stack.StackType stackType;
-    [HideInInspector] public int currentNumber;
     public int cost;
 }
 
@@ -17,7 +17,6 @@ public struct stack
 public struct item
 {
     public Item.ItemType itemType;
-    [HideInInspector] public bool isFilled;
 }
 #endregion
 
@@ -43,6 +42,8 @@ public class Item_Etabli : Item
     [HideInInspector] public List<Player> playersOn;
     public bool restraintEditorMovement = true;
     Transform spawnPos;
+    [HideNormalInspector] public int[] currentStackRessources;
+    [HideNormalInspector] public bool[] itemsFilled;
     #endregion
 
     #region SystemCallbacks
@@ -84,17 +85,13 @@ public class Item_Etabli : Item
         }
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
-        recette.ResetRecette();
+        itemsFilled = new bool[recette.requiredItemUnstackable.Length];
+        currentStackRessources = new int[recette.requiredItemStacks.Length];
         if(Utils.IsSameOrSubclass(recette.craftedItemPrefab.GetType(), typeof(Item_Chantier))) isChantier = true;
         tileUnder = GridUtils.WorldPosToTile(transform.position);
-        transform.parent = tileUnder.transform;
-        //transform.localPosition = new Vector3(transform.localPosition.x, /*tileUnder.transform.localPosition.y +*/ 14.6f, transform.localPosition.z);
-        if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 10, LayerMask.GetMask("Tile")))
-        {
-            transform.position = hit.point + transform.localScale.y * Vector3.up;
-        }
+
         tileUnder.etabli = this;
         createdItem = transform.Find("TileCreator/CreatedPos");
         if (isChantier)
@@ -107,26 +104,36 @@ public class Item_Etabli : Item
             itemNum = GetComponentInChildren<EtabliCanvas>();
             itemNum.UpdateText(this);
         }
+        yield return new WaitForSeconds(.01f);
+        transform.parent = tileUnder.transform;
+        //transform.localPosition = new Vector3(transform.localPosition.x, /*tileUnder.transform.localPosition.y +*/ 14.6f, transform.localPosition.z);
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 100, LayerMask.GetMask("Tile")))
+        {
+            transform.position = hit.point + transform.localScale.y * Vector3.up;
+        }
     }
 
-   
+
+
+    private void OnDisable()
+    {
+        if(FMODUtils.IsPlaying(creationInst)) FMODUtils.StopFMODEvent(ref creationInst, true);
+    }
     public override void Update()
     {
-            base.Update();
+        base.Update();
 
-            if (isActive && !tileUnder.walkable)
-            {
-                SetActiveMesh(false);
-            }
-            else if(!isActive && tileUnder.walkable)
-            {
-                SetActiveMesh(true);
-            }
+        if (Time.timeScale == 0 && FMODUtils.IsPlaying(creationInst)) creationInst.setPaused(true);
+        else if (Time.timeScale == 1 && FMODUtils.IsPlaying(creationInst)) creationInst.setPaused(false);
 
-
-            
-
-
+        if (isActive && !tileUnder.walkable)
+        {
+            SetActiveMesh(false);
+        }
+        else if(!isActive && tileUnder.walkable)
+        {
+            SetActiveMesh(true);
+        }
     }
     
     public void PlayerNear()
@@ -154,7 +161,7 @@ public class Item_Etabli : Item
             if(isChantier) StartCoroutine(ChantierConvert());
             else StartCoroutine(Convert());
         }
-
+        
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Hit");
     }
     #endregion
@@ -211,23 +218,23 @@ public class Item_Etabli : Item
                 {
                     if (!isChantier)
                     {
-                        recette.requiredItemStacks[i].currentNumber += itemS.numberStacked;
+                        currentStackRessources[i] += itemS.numberStacked;
                         player.heldItem = null;
                         Destroy(itemS.gameObject);
                     }
                     else
                     {
-                        int numToTransfer = Mathf.Clamp(itemS.numberStacked, 0, iS.cost - iS.currentNumber);
-                        recette.requiredItemStacks[i].currentNumber += numToTransfer;
+                        int numToTransfer = Mathf.Clamp(itemS.numberStacked, 0, iS.cost - currentStackRessources[i]);
+                        currentStackRessources[i] += numToTransfer;
                         itemS.numberStacked -= numToTransfer;
                         if(itemS.numberStacked <= 0)
                         {
-                            recette.requiredItemStacks[i].currentNumber += itemS.numberStacked;
+                            currentStackRessources[i] += itemS.numberStacked;
                             player.heldItem = null;
                             Destroy(itemS.gameObject);
                         }
                     }
-                    if (recette.requiredItemStacks[i].currentNumber > 0)
+                    if (currentStackRessources[i] > 0)
                     {
                         stackT.GetChild(i + recette.requiredItemUnstackable.Length).gameObject.SetActive(true);
                     }
@@ -248,7 +255,7 @@ public class Item_Etabli : Item
                 item iT = recette.requiredItemUnstackable[i];
                 if (Utils.GetTypeItem(iT.itemType, player.heldItem.GetType(), out System.Type type))
                 {
-                    recette.requiredItemUnstackable[i].isFilled = true;
+                    itemsFilled[i] = true;
                     Item tempItem = player.heldItem;
                     player.heldItem = null;
                     Destroy(tempItem.gameObject);
@@ -273,8 +280,8 @@ public class Item_Etabli : Item
             FMODUtils.StopFMODEvent(ref creationInst, true);
             for (int i = 0; i < recette.requiredItemStacks.Length; i++)
             {
-                recette.requiredItemStacks[i].currentNumber -= recette.requiredItemStacks[i].cost;
-                if (recette.requiredItemStacks[i].currentNumber == 0)
+                currentStackRessources[i] -= recette.requiredItemStacks[i].cost;
+                if (currentStackRessources[i] == 0)
                 {
                     stackT.GetChild(i + recette.requiredItemUnstackable.Length).gameObject.SetActive(false);
                 }
@@ -282,7 +289,7 @@ public class Item_Etabli : Item
             int f = 0;
             for (int i = 0; i < recette.requiredItemUnstackable.Length; i++)
             {
-                recette.requiredItemUnstackable[i].isFilled = false;
+                itemsFilled[i] = false;
                 stackT.GetChild(i).gameObject.SetActive(false);
                 f++;
             }
@@ -306,7 +313,9 @@ public class Item_Etabli : Item
 
     IEnumerator ChantierConvert()
     {
+        FMODUtils.SetFMODEvent(ref creationInst, "event:/Tuile/Tile/TileCreation", transform);
         yield return waiter;
+        FMODUtils.StopFMODEvent(ref creationInst, true);
         GameObject chantier = Instantiate(recette.craftedItemPrefab, tileUnder.transform.position + recette.craftedItemPrefab.transform.position + Vector3.up * GameConstant.tileHeight, recette.craftedItemPrefab.transform.rotation).gameObject;
         chantier.transform.parent = tileUnder.transform;
         constructed = true;
@@ -320,19 +329,13 @@ public class Item_Etabli : Item
     bool CheckStacks()
     {
         int f = 0;
-        foreach (var i in recette.requiredItemStacks)
+        for (int i = 0; i < recette.requiredItemStacks.Length; i++)
         {
-            if (i.cost <= i.currentNumber)
-            {
-                f++;
-            }
+            if (recette.requiredItemStacks[i].cost <= currentStackRessources[i]) f++;
         }
-        foreach(var i in recette.requiredItemUnstackable)
+        for (int i = 0; i < recette.requiredItemUnstackable.Length; i++)
         {
-            if(i.isFilled)
-            {
-                f++;
-            }
+            if (itemsFilled[i]) f++;
         }
         bool condition1 = f == recette.requiredItemStacks.Length + recette.requiredItemUnstackable.Length;
         bool condition2 = Utils.IsSameOrSubclass(typeof(Item_Stack), recette.craftedItemPrefab.GetType());

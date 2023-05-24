@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 public class ChantierCanvas : MonoBehaviour
@@ -13,12 +14,14 @@ public class ChantierCanvas : MonoBehaviour
     private RessourcesManager rMan;
 
 
+    
+
     private void OnActivated()
     {
         rMan = FindObjectOfType<RessourcesManager>();
         cam = FindObjectOfType<CameraCtr>();
         texts = GetComponentsInChildren<TextMeshProUGUI>();
-        if (Camera.main) mainCamera = Camera.main.transform;
+
         images = GetComponentsInChildren<Image>();
         images[0].rectTransform.localScale = new Vector3(images[0].rectTransform.localScale.x, 0, images[0].rectTransform.localScale.z);
         for (int i = 0; i < images.Length - 1; i++)
@@ -74,8 +77,8 @@ public class ChantierCanvas : MonoBehaviour
             {
                 if (rMC.stackType == etabli.recette.requiredItemStacks[i].stackType)
                 {
-                    texts[i].text = "x " + etabli.recette.requiredItemStacks[i].currentNumber + " / " + etabli.recette.requiredItemStacks[i].cost.ToString();
-                    if (etabli.recette.requiredItemStacks[i].currentNumber >= etabli.recette.requiredItemStacks[i].cost)
+                    texts[i].text = "x " + etabli.currentStackRessources[i] + " / " + etabli.recette.requiredItemStacks[i].cost.ToString();
+                    if (etabli.currentStackRessources[i] >= etabli.recette.requiredItemStacks[i].cost)
                     {
                         texts[i].color = Color.green;
                     }
@@ -95,7 +98,7 @@ public class ChantierCanvas : MonoBehaviour
             {
                 if (rMC.itemType == etabli.recette.requiredItemUnstackable[i].itemType)
                 {
-                    if (etabli.recette.requiredItemUnstackable[i].isFilled)
+                    if (etabli.itemsFilled[i])
                     {
                         texts[f].text = " V";
                         texts[f].color = Color.green;
@@ -114,6 +117,7 @@ public class ChantierCanvas : MonoBehaviour
 
     void Update()
     {
+        if(mainCamera == null && Camera.main) mainCamera = Camera.main.transform;
         if(mainCamera) transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
 }

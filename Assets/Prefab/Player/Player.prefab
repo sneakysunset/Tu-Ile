@@ -6489,6 +6489,8 @@ MonoBehaviour:
   itemParent1: {fileID: 7645626118983673044}
   itemParent2: {fileID: 83618933762917008}
   previousScenePos: {x: 0, y: 0}
+  ship: {fileID: 0}
+  isShipped: 0
 --- !u!114 &5703151869213025868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6509,8 +6511,9 @@ MonoBehaviour:
   moveFlag: 0
   speed: 10
   speedOnRocks: 15
-  jumpStrength: 2.2
+  jumpStrength: 2
   jumpStrengthOnBounce: 3
+  autoJump: 1
   pushStrength: 30
   dashCooldown: 0.5
   smoothTime: 0.05
@@ -6534,7 +6537,8 @@ MonoBehaviour:
   tileLayer:
     serializedVersion: 2
     m_Bits: 128
-  hitDistance: 4
+  hitDistance: 2
+  distanceToBeOnTop: 3
 --- !u!114 &8619637260931592777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6633,6 +6637,18 @@ MonoBehaviour:
       - m_Target: {fileID: 3126723650179831868}
         m_TargetAssemblyTypeName: Player_StopDegradation, Assembly-CSharp
         m_MethodName: OnStopDegrading
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7452521308795437498}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: OnInteractionInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

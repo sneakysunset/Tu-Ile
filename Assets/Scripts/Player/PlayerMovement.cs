@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public float speedOnRocks;
     [SerializeField] public float jumpStrength = 10;
     [SerializeField] public float jumpStrengthOnBounce = 20;
+    public bool autoJump = true;
     [HideInInspector] private float dashStrength;
     [HideInInspector] public float pushStrength;
     [HideInInspector] private float dashDuration;
@@ -166,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyMovement()
     {
-        _characterController.Move(_direction * speedValue * Time.deltaTime);
+        if(!player.isShipped) _characterController.Move(_direction * speedValue * Time.deltaTime);
     }
 
     private void ApplyDash()
@@ -177,10 +178,16 @@ public class PlayerMovement : MonoBehaviour
         
     private void Move(InputAction.CallbackContext context)
     {
+
+
         _input = context.ReadValue<Vector2>();
+        if (player.isShipped)
+        {
+            player.ship._input = _input;
+        }
         float cameraAngle = -Camera.main.transform.rotation.eulerAngles.y;
         _input = Rotate(_input, cameraAngle);
-        if(!canMove) _input = Vector2.zero;
+        if (!canMove) _input = Vector2.zero;
         _direction = new Vector3(_input.x, 0.0f, _input.y);
         if(player.anim) player.anim.SetFloat("walkingSpeed", _input.magnitude);
 

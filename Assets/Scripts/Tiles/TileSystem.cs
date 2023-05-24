@@ -108,11 +108,11 @@ public class TileSystem : MonoBehaviour
         tileP = GetComponent<TileParameters>();
         foreach (var tile in tiles)
         {
-            tile.maxTimer = tileP.maxTimer;
-            tile.minTimer = tileP.minTimer;
+            tile.degradationTimerMin = tileP.degradationTileTimerMin;
+            tile.degradationTimerMax = tileP.degradationTileTimerMax;
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
             tile.heightByTile = tileP.heightByTile;
-            tile.falaiseMat = tileM.falaiseTileMat;
+            //tile.falaiseMat = tileM.falaiseTileMat;
             tile.plaineMatBottom = tileM.plaineTileMatBottom;
             tile.plaineMatTop = tileM.plaineTileMatTop;
             tile.disabledMat = tileM.disabledTileMaterial;
@@ -120,12 +120,14 @@ public class TileSystem : MonoBehaviour
             tile.sandMatBottom = tileM.desertTileMatBottom;
             tile.bounceMat = tileM.bounceTileMat;
             tile.undegradableMat = tileM.undegradableTileMat;
+            tile.undegradableMatBottom = tileM.undegradableTileMatBottom;
             tile.woodMat = tileM.woodTileMat;
             tile.rockMat = tileM.rockTileMat;
             tile.goldMat = tileM.goldTileMat;
             tile.diamondMat = tileM.diamondTileMat;
             tile.adamantiumMat = tileM.adamantiumTileMat;
             tile.centerTileMat = tileM.centerTileMat;
+            tile.centerTileMatBottom = tileM.centerTileMatBottom;
             tile.defaultMesh = tileM.defaultTileMesh;
             tile.colliderMesh = tileM.meshCollider;
             tile.woodMesh = tileM.woodTileMesh;
