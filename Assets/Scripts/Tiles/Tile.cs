@@ -8,6 +8,7 @@ using FMOD;
 using Unity.VisualScripting;
 using NaughtyAttributes;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 [System.Flags]
 public enum SpawnPositions
@@ -25,6 +26,7 @@ public enum SpawnPositions
 
 public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, BouncyTile, LevelLoader, construction };
 
+[SelectionBase]
 
 public class Tile : MonoBehaviour
 {
@@ -164,7 +166,7 @@ public class Tile : MonoBehaviour
         if (!walkable)
         {
             Vector3 v = transform.position;
-            v.y = -heightByTile * 5;
+            v.y = -heightByTile * 20;
             transform.position = v;
         }
         tileD = GetComponent<Tile_Degradation>();
@@ -172,9 +174,15 @@ public class Tile : MonoBehaviour
         minableItems = transform.Find("SpawnPositions");
         pSys = transform.GetChild(3).GetComponent<ParticleSystem>();
         pSysCreation = transform.GetChild(7).GetComponent<ParticleSystem>();
-        tourbillonT = transform.Find("Tourbillon");
-        tourbillonT.Rotate(0, UnityEngine.Random.Range(0f, 360f), 0);
-        tourbillonT.Translate(0, UnityEngine.Random.Range(0f, 1f), 0);
+        if (tourbillon)
+        {
+            tourbillonT = transform.Find("Tourbillon");
+            tourbillonT.Rotate(0, UnityEngine.Random.Range(0f, 360f), 0);
+            tourbillonT.Translate(0, UnityEngine.Random.Range(0f, 1f), 0);
+            float targetPosY = tourbillonT.position.y;
+            tourbillonT.position -= Vector3.up * 20;
+            tourbillonT.DOMoveY(targetPosY, 5);
+        }
         if(tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Play();
 
         degSpeed = 1;
@@ -209,7 +217,7 @@ public class Tile : MonoBehaviour
     {
         
         Vector3 v = transform.position;
-        v.y = -heightByTile * 5;
+        v.y = -heightByTile * 20;
         Vector2Int vector2Int = FindObjectOfType<CameraCtr>().tileLoadCoordinates;
         
         if (this != TileSystem.Instance.tiles[vector2Int.x, vector2Int.y]) transform.position = v;

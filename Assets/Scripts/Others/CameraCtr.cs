@@ -57,6 +57,10 @@ public class CameraCtr : MonoBehaviour
     {
         if (startUp != null) startUp();
 
+        GameObject water = GameObject.FindGameObjectWithTag("Water");
+        water.transform.parent = null;
+        DontDestroyOnLoad(water);
+
         transform.parent = null;
         DontDestroyOnLoad(this.gameObject);
         cam = Camera.main;

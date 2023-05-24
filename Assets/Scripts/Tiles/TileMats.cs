@@ -34,6 +34,7 @@ public class TileMats : MonoBehaviour
     [Foldout("Colors")] public Color notWalkedOnColor, walkedOnColor, acceleratedDegradationColor;
     private void OnValidate()
     {
+        if(!Application.isPlaying)
         TileSystem.Instance.UpdateParameters = true;
     }
 }

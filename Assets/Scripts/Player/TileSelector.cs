@@ -129,21 +129,39 @@ public class TileSelector : MonoBehaviour
         }
 
     }
+
+    private void OnDrawGizmos()
+    {
+#if UNITY_EDITOR
+        if(player.tileUnder)
+        {
+            UnityEditor.Handles.color = Color.green;
+            UnityEditor.Handles.DrawWireDisc(player.tileUnder.transform.GetChild(0).position, Vector3.up, distanceToBeOnTop);
+        }
+#endif
+
+        if(player.tileUnder) Gizmos.DrawRay(new Vector3(transform.position.x, player.tileUnder.transform.GetChild(0).position.y + 1, transform.position.z), transform.forward * hitDistance);
+    }
     #endregion
 
 
     #region Tile Spawning
     private void BluePrintPlacement()
     {
-        if (Physics.Raycast(player.tileUnder.transform.position, transform.forward, out RaycastHit hit, hitDistance, tileLayer) && hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && !targettedTile.tourbillon && player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile))
+        bool c1 = Physics.Raycast(new Vector3(transform.position.x, player.tileUnder.transform.position.y, transform.position.z), transform.forward, out RaycastHit hit, hitDistance, tileLayer);
+        if (!c1) goto NotHit;
+        bool c2 = hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && !targettedTile.tourbillon;
+        bool c3 = player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile);
+        if (c1 && c2  && c3)
         {
             tileBluePrint.position = new Vector3(targettedTile.transform.position.x, (GameConstant.tileHeight + player.tileUnder.transform.position.y), targettedTile.transform.position.z);
+            return;
         }
-        else
-        {
-            tileBluePrint.position = new Vector3(0, -100, 0);
-            targettedTile = null;
-        }
+        else goto NotHit;
+
+        NotHit:
+        tileBluePrint.position = new Vector3(0, -100, 0);
+        targettedTile = null;
     }
 
     public void OnSpawnTile(InputAction.CallbackContext context)

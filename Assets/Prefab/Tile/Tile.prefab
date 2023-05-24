@@ -3884,6 +3884,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 4695394438935391193}
     m_Modifications:
     - target: {fileID: 1294748587300408373, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1294748587300408373, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
       propertyPath: InitialModule.startSize.scalar
       value: 0.8
       objectReference: {fileID: 0}

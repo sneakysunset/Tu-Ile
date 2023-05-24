@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public float speedOnRocks;
     [SerializeField] public float jumpStrength = 10;
     [SerializeField] public float jumpStrengthOnBounce = 20;
-    public bool autoJump;
+    public bool autoJump = true;
     [HideInInspector] private float dashStrength;
     [HideInInspector] public float pushStrength;
     [HideInInspector] private float dashDuration;

@@ -25,9 +25,9 @@ public class Player : MonoBehaviour
     [HideInInspector] public Player_Mining pMin;
     public Tile respawnTile;
     [HideInInspector] public Tile tileUnder;
-    [HideInInspector] public List<Item> holdableItems;
+    [HideNormalInspector] public List<Item> holdableItems;
     [HideNormalInspector] public Item heldItem;
-    [HideInInspector] public Item closestItem;
+    [HideNormalInspector] public Item closestItem;
 
     [HideNormalInspector] public List<Interactor> interactors;
     public ParticleSystem waterSplash;
@@ -65,6 +65,12 @@ public class Player : MonoBehaviour
     public void OnLoad(Scene scene, LoadSceneMode mode)
     {
         respawnTile = TileSystem.Instance.centerTile;
+        pState = PlayerState.Idle;
+        if(heldItem != null )
+        {
+            Destroy(heldItem.gameObject);
+            heldItem = null;
+        }
         //transform.position = transform.position + new Vector3()
     }
 
@@ -207,7 +213,9 @@ public class Player : MonoBehaviour
 
     private void PlayerStateChange(PlayerState value)
     {
+        if (playerState == PlayerState.Mine) pMin.axe.SetActive(false);
         playerState = value;
+        if (playerState == PlayerState.Mine) pMin.axe.SetActive(true);
         if (value == PlayerState.Dance) anim.updateMode = AnimatorUpdateMode.UnscaledTime;
         else anim.updateMode = AnimatorUpdateMode.Normal;
         anim.Play(playerState.ToString());

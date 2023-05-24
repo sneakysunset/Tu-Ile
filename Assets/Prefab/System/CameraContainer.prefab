@@ -706,7 +706,7 @@ MonoBehaviour:
   players: []
   sDatas: []
   tileLoadCoordinates: {x: 0, y: 0}
-  distanceToSplit: 35
+  distanceToSplit: 0
   pCols: []
   lineCastLayers:
     serializedVersion: 2

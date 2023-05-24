@@ -72,7 +72,7 @@ public class Tile_Degradation : MonoBehaviour
     void SinkTile()
     {
         tile.walkable = false;
-        tile.currentPos.y = -5f;
+        tile.currentPos.y = -20f;
         gameObject.layer = LayerMask.NameToLayer("DisabledTile");
         //tile.myMeshR.enabled = false;
         //transform.Find("Additional Visuals").gameObject.SetActive(false);
@@ -95,7 +95,7 @@ public class Tile_Degradation : MonoBehaviour
         tile.timer = tile.degradationTimer;
         if(tile.currentPos.y == GameConstant.maxTileHeight && CompareTag("DegradingTile")) tag = "Tile";
         started = true;
-        if (started && tile.walkable && tile.currentPos.y <= -tile.heightByTile + .3f) SinkTile();
+        if (started && tile.walkable && tile.currentPos.y < 0) SinkTile();
         tile.sandFlag = false;
     }
 

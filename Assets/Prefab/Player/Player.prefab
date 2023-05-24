@@ -6490,6 +6490,7 @@ MonoBehaviour:
   itemParent2: {fileID: 83618933762917008}
   previousScenePos: {x: 0, y: 0}
   ship: {fileID: 0}
+  isShipped: 0
 --- !u!114 &5703151869213025868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6512,6 +6513,7 @@ MonoBehaviour:
   speedOnRocks: 15
   jumpStrength: 2
   jumpStrengthOnBounce: 3
+  autoJump: 1
   pushStrength: 30
   dashCooldown: 0.5
   smoothTime: 0.05
@@ -6535,8 +6537,8 @@ MonoBehaviour:
   tileLayer:
     serializedVersion: 2
     m_Bits: 128
-  hitDistance: 4
-  distanceToBeOnTop: 2.5
+  hitDistance: 2
+  distanceToBeOnTop: 3
 --- !u!114 &8619637260931592777
 MonoBehaviour:
   m_ObjectHideFlags: 0

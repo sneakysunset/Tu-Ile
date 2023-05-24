@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public static class GridUtils
 {
@@ -86,8 +87,7 @@ public static class GridUtils
                     tile.currentPos.y = 0;
                     t.degSpeed *= 2;
                 }
-                t.tourbillon = false;
-                t.tourbillonT.gameObject.SetActive(false);
+                if(!t.walkable && t.tourbillon) t.tourbillonT.DOMoveY(t.tourbillonT.position.y - 10, 2);
             }
             tile.degradable = false;
 
