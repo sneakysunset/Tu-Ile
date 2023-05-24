@@ -32,7 +32,6 @@ public class EtabliCanvas : MonoBehaviour
         cam = FindObjectOfType<CameraCtr>();
         backGroundFar.localScale = new Vector3(0.35f, backGroundFar.localScale.y, backGroundFar.localScale.z);
         backGroundNear.localScale = new Vector3(backGroundNear.localScale.x, 0.65f, backGroundNear.localScale.z);
-        if (Camera.main) mainCamera = Camera.main.transform;
         RectTransform pi = imagesFar[0].rectTransform.parent as RectTransform;
         pi.anchoredPosition = new Vector2(-22.5f, pi.anchoredPosition.y);
         for (int i = 0; i < imagesNear.Length; i++)
@@ -164,8 +163,8 @@ public class EtabliCanvas : MonoBehaviour
             {
                 if (rMC.stackType == etabli.recette.requiredItemStacks[i].stackType)
                 {
-                    textsNear[i].text = "x " + etabli.recette.requiredItemStacks[i].currentNumber + " / " + etabli.recette.requiredItemStacks[i].cost.ToString();
-                    if (etabli.recette.requiredItemStacks[i].currentNumber >= etabli.recette.requiredItemStacks[i].cost)
+                    textsNear[i].text = "x " + etabli.currentStackRessources[i] + " / " + etabli.recette.requiredItemStacks[i].cost.ToString();
+                    if (etabli.currentStackRessources[i] >= etabli.recette.requiredItemStacks[i].cost)
                     {
                         textsNear[i].color = Color.green;
                     }
@@ -185,7 +184,7 @@ public class EtabliCanvas : MonoBehaviour
             {
                 if (rMC.itemType == etabli.recette.requiredItemUnstackable[i].itemType)
                 {
-                    if (etabli.recette.requiredItemUnstackable[i].isFilled)
+                    if (etabli.itemsFilled[i])
                     {
                         textsNear[f].text = " V";
                         textsNear[f].color = Color.green;
@@ -204,6 +203,7 @@ public class EtabliCanvas : MonoBehaviour
 
     void Update()
     {
+        if(mainCamera == null && Camera.main) mainCamera = Camera.main.transform;
         if (mainCamera) transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
 

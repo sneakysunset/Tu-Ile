@@ -77,7 +77,6 @@ public class Player_StopDegradation : MonoBehaviour
         {
             stackItem.numberStacked -= ressourcesManager.growthCost;
             tile.currentPos.y += tile.heightByTile;
-            tile.movingP = true;
             tile.isGrowing = true;
             StartCoroutine(player.Casting(Player.PlayerState.SpellUp));
         }
