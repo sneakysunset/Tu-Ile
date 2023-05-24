@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -140,7 +141,11 @@ public class TileSelector : MonoBehaviour
         }
 #endif
 
-        if(player.tileUnder) Gizmos.DrawRay(new Vector3(transform.position.x, player.tileUnder.transform.GetChild(0).position.y + 1, transform.position.z), transform.forward * hitDistance);
+        if(player.tileUnder)
+        {
+            Gizmos.DrawRay(new Vector3(transform.position.x, player.tileUnder.transform.position.y, transform.position.z), transform.forward * hitDistance);
+            Gizmos.DrawSphere(player.tileUnder.transform.position, 1);
+        }
     }
     #endregion
 

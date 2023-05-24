@@ -166,7 +166,7 @@ public class Tile : MonoBehaviour
         if (!walkable)
         {
             Vector3 v = transform.position;
-            v.y = -heightByTile * 20;
+            v.y = -heightByTile * 5;
             transform.position = v;
         }
         tileD = GetComponent<Tile_Degradation>();
@@ -329,6 +329,7 @@ public class Tile : MonoBehaviour
 
     public void Spawn(float height, string stackType, float degradingSpeed)
     {
+        transform.position = new Vector3(transform.position.x, -10, transform.position.z);
         
         if (degradingSpeed == 0) degradable = false;
         TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
