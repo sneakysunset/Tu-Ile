@@ -56,10 +56,11 @@ public class Item : MonoBehaviour
         Physics.IgnoreCollision(col, _player.col);
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Release");
         _player.holdableItems.Add(this);
+        _player.closestItem = this;
         if (!etablied)
         {
             transform.parent = null;
-            transform.rotation = Quaternion.identity;
+            //transform.rotation = Quaternion.identity;
             physic = true;
             Highlight.SetActive(true);            
         }
@@ -109,4 +110,6 @@ public class Item : MonoBehaviour
         yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }
+
+
 }

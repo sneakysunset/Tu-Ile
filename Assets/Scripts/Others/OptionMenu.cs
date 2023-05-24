@@ -58,4 +58,12 @@ public class OptionMenu : MonoBehaviour
             mEndMenu.optionButton.Select();
         }
     }
+
+    public void AutoJump(bool jump)
+    {
+        foreach(PlayerMovement p in FindObjectsOfType<PlayerMovement>())
+        {
+            p.autoJump = jump;
+        }
+    }
 }

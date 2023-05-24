@@ -21,5 +21,5 @@ MonoBehaviour:
     currentNumber: 0
     cost: 1
   requiredItemUnstackable: []
-  craftedItemPrefab: {fileID: 3749829321806436738, guid: 79bacb67c2f79be44932a72ded62af86, type: 3}
+  craftedItemPrefab: {fileID: 6912089915621339900, guid: 210b15a271081554fb901b5bf58d7553, type: 3}
   numberOfCrafted: 4

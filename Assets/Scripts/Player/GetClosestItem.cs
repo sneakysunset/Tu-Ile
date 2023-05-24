@@ -130,12 +130,15 @@ public class GetClosestItem : MonoBehaviour
             }
         }
 
+
         if (TileSystem.Instance.ready && player.closestItem != null && cItem != player.closestItem)
         {
             player.closestItem.Highlight.SetActive(false);
             cItem.Highlight.SetActive(true);
         }
         else if (TileSystem.Instance.ready && player.closestItem == null) cItem.Highlight.SetActive(true);
+
+        if (cItem && !cItem.Highlight.activeInHierarchy) cItem.Highlight.SetActive(true);
 
         return cItem;
     }
