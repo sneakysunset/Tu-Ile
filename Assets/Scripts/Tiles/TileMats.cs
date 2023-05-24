@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -5,27 +6,34 @@ using UnityEngine;
 
 public class TileMats : MonoBehaviour
 {
-    [Space(10)]
-    [Header ("Editor Mats")]
-    public Material disabledTileMaterial;
-    public Material undegradableTileMat, bounceTileMat;
+    public Mesh meshCollider;
 
-    [Space(10)]
-    [Header("Game Mats")]
-    public Material plaineTileMatBottom; 
-    public Material plaineTileMatTop, falaiseTileMat, woodTileMat, rockTileMat, goldTileMat, diamondTileMat, adamantiumTileMat, desertTileMatTop, desertTileMatBottom, centerTileMat;
-    public Mesh defaultTileMesh, woodTileMesh, rockTileMesh, sandTileMesh, undegradableTileMesh, centerTileMesh, meshCollider;
-    public GameObject treePrefab, rockPrefab, goldPrefab, diamondPrefab, adamantiumPrefab;
-    private TileSystem tileSystem;
+    [Foldout("Center Tile")] public Mesh centerTileMesh;
+    [Foldout("Center Tile")] public Material centerTileMat, centerTileMatBottom;
+    [Foldout("Undegradable Tile")] public Mesh undegradableTileMesh;
+    [Foldout("Undegradable Tile")] public Material undegradableTileMat, undegradableTileMatBottom;
+    [Foldout("Plaine Tile")] public Mesh defaultTileMesh;
+    [Foldout("Plaine Tile")] public Material plaineTileMatTop, plaineTileMatBottom;
+    [Foldout("Wood Tile")] public Mesh woodTileMesh;
+    [Foldout("Wood Tile")] public Material woodTileMat;
+    [Foldout("Rock Tile")] public Mesh rockTileMesh;
+    [Foldout("Rock Tile")] public Material rockTileMat;
+    //[Foldout("Gold Tile")] 
+    [Foldout("Gold Tile")] public Material goldTileMat;
+    //[Foldout("Diamond Tile")]
+    [Foldout("Diamond Tile")] public Material diamondTileMat;
+    //[Foldout("Adamantium Tile")] public Mesh;
+    [Foldout("Adamantium Tile")] public Material adamantiumTileMat;
+    [Foldout("Sand Tile")] public Mesh sandTileMesh;
+    [Foldout("Sand Tile")] public Material desertTileMatTop, desertTileMatBottom;
+    //[Foldout("Bouncy Tile")]
+    [Foldout("Bouncy Tile")] public Material bounceTileMat;
+    [Foldout("Disabled Tile")] public Material disabledTileMaterial;
+    [Foldout("Filons Prefabs")] public GameObject treePrefab, rockPrefab, goldPrefab, diamondPrefab, adamantiumPrefab;
 
-    [Space(10)]
-    [Header("Colors")]
-    public Color notWalkedOnColor;
-    public Color walkedOnColor;
-    public Color acceleratedDegradationColor;
+    [Foldout("Colors")] public Color notWalkedOnColor, walkedOnColor, acceleratedDegradationColor;
     private void OnValidate()
     {
-        tileSystem = GetComponent<TileSystem>();
-        tileSystem.UpdateParameters = true;
+        TileSystem.Instance.UpdateParameters = true;
     }
 }

@@ -99,7 +99,7 @@ public class Tile : MonoBehaviour
 
     #region Materials
     [HideInInspector, SerializeField] public Material disabledMat;
-    [HideNormalInspector] public Material falaiseMat, plaineMatTop, plaineMatBottom, undegradableMat, sandMatTop, sandMatBottom, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat, centerTileMat;
+    [HideNormalInspector] public Material undegradableMatBottom, falaiseMat, plaineMatTop, plaineMatBottom, undegradableMat, sandMatTop, sandMatBottom, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat, centerTileMat, centerTileMatBottom;
     [HideNormalInspector] public Mesh defaultMesh, woodMesh, rockMesh, sandMesh, undegradableMesh, centerTileMesh, colliderMesh;
     [HideInInspector] public Color walkedOnColor, notWalkedOnColor;
     [HideInInspector] public Color penguinedColor;
@@ -421,13 +421,13 @@ public class Tile : MonoBehaviour
         }
         else if (this == TileSystem.Instance.centerTile)
         {
-            mat = new Material[1];
-            mat[0] = centerTileMat;
+            mat[1] = centerTileMat;
+            mat[0] = centerTileMatBottom;
         }
         else if (!degradable)
         {
-            mat = new Material[1];
-            mat[0] = undegradableMat;
+            mat[1] = undegradableMat;
+            mat[0] = undegradableMatBottom;
         }
         else
         {
