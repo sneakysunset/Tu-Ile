@@ -146,9 +146,9 @@ MonoBehaviour:
   goldTileMat: {fileID: 2100000, guid: 326db776b16202c4bb20fb62a2ed0f9a, type: 2}
   diamondTileMat: {fileID: 2100000, guid: 056df16b00997df49b3b50dcdbefd92d, type: 2}
   adamantiumTileMat: {fileID: 2100000, guid: 056df16b00997df49b3b50dcdbefd92d, type: 2}
-  sandTileMesh: {fileID: 1706830743570398555, guid: 5c98ceb106b26504fa78dc8bfa72a590, type: 3}
-  desertTileMatTop: {fileID: 2100000, guid: b6ad9415c2ec3cc429501d6f429f11c1, type: 2}
-  desertTileMatBottom: {fileID: 2100000, guid: b6ad9415c2ec3cc429501d6f429f11c1, type: 2}
+  sandTileMesh: {fileID: 8252082891154211873, guid: 99b2c15f11e995b47b345eef885c68c8, type: 3}
+  desertTileMatTop: {fileID: 2100000, guid: 465af65fb8ee02041b1ed20ef7f24ed9, type: 2}
+  desertTileMatBottom: {fileID: 2100000, guid: 465af65fb8ee02041b1ed20ef7f24ed9, type: 2}
   bounceTileMat: {fileID: 2100000, guid: 3193cf6cf65b8a748b1a843c78e6c26d, type: 2}
   disabledTileMaterial: {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
   treePrefab: {fileID: 8818747911436434145, guid: 79b9421b777be9b48964ef34298b9825, type: 3}
