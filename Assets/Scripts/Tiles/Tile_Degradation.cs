@@ -92,7 +92,7 @@ public class Tile_Degradation : MonoBehaviour
         shakeCor = null;
         if (tile.isGrowing) tile.isGrowing = false;
         else if (tile.isDegrading) tile.isDegrading = false;
-        tile.timer = tile.degradationTimer;
+        tile.timer = UnityEngine.Random.Range(tile.degradationTimerMin, tile.degradationTimerMax);
         if(tile.currentPos.y == GameConstant.maxTileHeight && CompareTag("DegradingTile")) tag = "Tile";
         started = true;
         if (started && tile.walkable && tile.currentPos.y < 0) SinkTile();

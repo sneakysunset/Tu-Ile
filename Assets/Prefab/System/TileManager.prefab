@@ -91,7 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8760f18c4ccdd8645b0033d1a28259ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  degradationTileTimer: 70
+  degradationTileTimerMax: 60
+  degradationTileTimerMin: 80
   degradationTimerAnimCurve:
     serializedVersion: 2
     m_Curve:
