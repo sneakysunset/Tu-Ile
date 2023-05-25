@@ -2160,7 +2160,8 @@ MonoBehaviour:
   isDegrading: 0
   timer: 0
   terraFormingSpeed: 0
-  degradationTimer: 0
+  degradationTimerMin: 0
+  degradationTimerMax: 0
   degradationTimerAnimCurve:
     serializedVersion: 2
     m_Curve: []

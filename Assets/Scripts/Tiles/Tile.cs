@@ -65,7 +65,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public bool isDegrading;
     [HideNormalInspector] public float timer;
     [HideNormalInspector] public float terraFormingSpeed;
-    [HideNormalInspector] public float degradationTimer;
+    [HideNormalInspector] public float degradationTimerMin, degradationTimerMax;
     [HideNormalInspector] public AnimationCurve degradationTimerAnimCurve;
     [HideInInspector] public float degradingSpeed;
     [HideInInspector] public float typeDegradingSpeed = 1;
@@ -166,7 +166,7 @@ public class Tile : MonoBehaviour
         if (!walkable)
         {
             Vector3 v = transform.position;
-            v.y = -heightByTile * 20;
+            v.y = -heightByTile * 5;
             transform.position = v;
         }
         tileD = GetComponent<Tile_Degradation>();
@@ -189,7 +189,7 @@ public class Tile : MonoBehaviour
         coordFX = coordX - coordY / 2;
         currentPos = transform.position;
 
-        timer = degradationTimer;
+        timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
 
         GetAdjCoords();
         SetMatOnStart();
@@ -329,6 +329,7 @@ public class Tile : MonoBehaviour
 
     public void Spawn(float height, string stackType, float degradingSpeed)
     {
+        transform.position = new Vector3(transform.position.x, -10, transform.position.z);
         
         if (degradingSpeed == 0) degradable = false;
         TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
@@ -348,7 +349,7 @@ public class Tile : MonoBehaviour
         //myMeshR.material.color = walkedOnColor;
         transform.Find("Additional Visuals").gameObject.SetActive(true);
         minableItems.gameObject.SetActive(true);
-        timer = degradationTimer;
+        timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
         isDegrading = false;
         transform.position = new Vector3(transform.position.x, -7f, transform.position.z) ;
         transform.tag = "Tile";

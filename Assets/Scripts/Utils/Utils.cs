@@ -89,5 +89,5 @@ public class Utils
 public static class GameConstant
 {
     public const float tileHeight = 23f;
-    public const int maxTileHeight = 20;
+    public const int maxTileHeight = 8;
 }

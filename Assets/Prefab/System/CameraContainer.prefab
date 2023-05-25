@@ -814,14 +814,14 @@ MonoBehaviour:
   ssccShader: {fileID: 4800000, guid: 89ec5ce1bd95ed946a65b649164a9c1d, type: 3}
   effectIntensity: 1
   distanceFade: 0
-  curvaturePixelRadius: 2
-  curvatureBrights: 0
+  curvaturePixelRadius: 3
+  curvatureBrights: 1.33
   curvatureDarks: 5
   cavitySamples: 0
   saturateCavity: 1
   cavityRadius: 0.25
   cavityBrights: 3
-  cavityDarks: 2
+  cavityDarks: 4.23
   normalsSource: 1
   debugMode: 0
   output: 0
