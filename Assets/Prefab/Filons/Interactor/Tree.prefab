@@ -52,7 +52,7 @@ MonoBehaviour:
   type: 1
   _player: []
   hitRateSpeedModifier: 1
-  regrowthTimer: 3
+  regrowthTimer: 10
   comp:
   - mesh: {fileID: 6577239707841081451, guid: 9b0070d059e4a6c4bbd9b6d4bc42ffe4, type: 3}
     material: {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
