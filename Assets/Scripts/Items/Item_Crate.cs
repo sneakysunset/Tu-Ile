@@ -25,6 +25,7 @@ public class Item_Crate : Item
     public bool itemReward;
     public bool isRandom;
     public int scoreReward;
+    public ParticleSystem OnActivation;
     [HideIf("itemReward")]public rewardPStateStruct[] playerStateReward;
     [ShowIf("itemReward")] public List<rewardStruct> itemRewards;
 
@@ -52,6 +53,7 @@ public class Item_Crate : Item
     public IEnumerator OnCenterReached(Transform pos)
     {
         transform.position = pos.position;
+        var part = Instantiate(OnActivation, transform.position, Quaternion.identity);
         rb.isKinematic = true;
         transform.DOMoveY(transform.position.y + yLerpPositionAmount, lerpDuration).SetEase(lerpCurve);
         transform.DORotate(new Vector3(0, yLerpRotateAmount, 0), lerpDuration, RotateMode.FastBeyond360);
@@ -59,6 +61,7 @@ public class Item_Crate : Item
         transform.DOScale(transform.localScale * 2f, 1);
         yield return new WaitForSeconds(1);
         GiveRewards();
+        Destroy(part);
         Destroy(gameObject);
     }
     

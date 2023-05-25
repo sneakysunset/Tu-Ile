@@ -142,6 +142,7 @@ MonoBehaviour:
   itemReward: 1
   isRandom: 0
   scoreReward: 10
+  OnActivation: {fileID: 3772199385149421331, guid: b282197236a667d4094a5d8a54d97d1c, type: 3}
   playerStateReward:
   - rewardAdd: 0
     pReward: 0

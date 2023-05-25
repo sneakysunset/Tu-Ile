@@ -3884,6 +3884,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4695394438935391193}
     m_Modifications:
+    - target: {fileID: 603188128821950565, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 736209211627823959, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
+      propertyPath: m_Name
+      value: Faisceau1
+      objectReference: {fileID: 0}
     - target: {fileID: 1294748587300408373, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
       propertyPath: moveWithTransform
       value: 0
@@ -3899,6 +3907,18 @@ PrefabInstance:
     - target: {fileID: 1294748587300408373, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.947061
+      objectReference: {fileID: 0}
+    - target: {fileID: 2298699911954170054, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2814595946260481632, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2829885187045859463, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
+      propertyPath: playOnAwake
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3460423296941677642, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
@@ -3991,6 +4011,22 @@ PrefabInstance:
     - target: {fileID: 3734105806736972191, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6068832726165256766, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7065968335790440425, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564617922470617490, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 7564617922470617490, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.62
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
