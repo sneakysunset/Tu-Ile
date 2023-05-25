@@ -16,8 +16,14 @@ public class SO_CompassM : ScriptableObject
         if (!isEphemeral)
         {
             TileSystem tileSystem = TileSystem.Instance;
+            Tile tile;
             List<Tile> tiles = GridUtils.GetTilesBetweenRaws(minDistanceFromCenter, maxDistanceFromCenter, tileSystem.centerTile);
-            targetTile = tiles[Random.Range(0, tiles.Count)];
+            do
+            {
+                tile = tiles[Random.Range(0, tiles.Count)];
+            }
+            while (tile.etabli);
+            targetTile = tile;
         }
 
         Item_Boussole[] items = FindObjectsOfType<Item_Boussole>();

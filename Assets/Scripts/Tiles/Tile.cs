@@ -65,7 +65,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public bool isDegrading;
     [HideNormalInspector] public float timer;
     [HideNormalInspector] public float terraFormingSpeed;
-    [HideNormalInspector] public float degradationTimer;
+    [HideNormalInspector] public float degradationTimerMin, degradationTimerMax;
     [HideNormalInspector] public AnimationCurve degradationTimerAnimCurve;
     [HideInInspector] public float degradingSpeed;
     [HideInInspector] public float typeDegradingSpeed = 1;
@@ -189,7 +189,7 @@ public class Tile : MonoBehaviour
         coordFX = coordX - coordY / 2;
         currentPos = transform.position;
 
-        timer = degradationTimer;
+        timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
 
         GetAdjCoords();
         SetMatOnStart();
@@ -349,7 +349,7 @@ public class Tile : MonoBehaviour
         //myMeshR.material.color = walkedOnColor;
         transform.Find("Additional Visuals").gameObject.SetActive(true);
         minableItems.gameObject.SetActive(true);
-        timer = degradationTimer;
+        timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
         isDegrading = false;
         transform.position = new Vector3(transform.position.x, -7f, transform.position.z) ;
         transform.tag = "Tile";

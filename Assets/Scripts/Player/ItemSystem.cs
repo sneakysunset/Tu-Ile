@@ -68,7 +68,6 @@ public class ItemSystem : MonoBehaviour
 
             while(player.interactors.Count > 0)
             {
-                print(2);
                 player.interactors[0].OnInteractionExit(player);
             }
         }
