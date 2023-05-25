@@ -90,8 +90,8 @@ public class Tile : MonoBehaviour
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public MeshFilter myMeshF;
     [HideInInspector] public MeshCollider myMeshC;
-
     [HideInInspector] public Rigidbody rb;
+
     [HideInInspector] public Transform minableItems;
     [HideInInspector] public Transform tourbillonT;
     [HideInInspector] private ParticleSystem pSys;
@@ -161,6 +161,8 @@ public class Tile : MonoBehaviour
             transform.GetChild(9).gameObject.SetActive(true);   
         }
 
+        rb = GetComponent<Rigidbody>();
+
         CameraCtr.startUp += OnStartUp;
         SceneManager.sceneLoaded += OnLoadScene;
         if (!walkable)
@@ -200,6 +202,8 @@ public class Tile : MonoBehaviour
             transform.Rotate(0, rotation * 60, 0);
             transform.GetChild(0).Rotate(0, -rotation * 60, 0);
         }
+
+        if (tileType == TileType.BouncyTile) rb.isKinematic = false;
     }
 
     private void OnDisable()
@@ -357,6 +361,7 @@ public class Tile : MonoBehaviour
         isGrowing = true;
         tileS.tileC.Count();
         if (tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Play();
+        if (tileType == TileType.BouncyTile) rb.isKinematic = false;
     }
     private void GetAdjCoords()
     {

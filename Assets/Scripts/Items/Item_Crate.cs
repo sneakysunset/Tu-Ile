@@ -30,6 +30,7 @@ public class Item_Crate : Item
 
 
     [Foldout("Lerp")] public float yLerpPositionAmount;
+    [Foldout("Lerp")] public float ScaleAmount = 2;
     [Foldout("Lerp")] public float lerpDuration;
     [Foldout("Lerp")] public float yLerpRotateAmount;
     [Foldout("Lerp")] public AnimationCurve lerpCurve;
@@ -51,12 +52,13 @@ public class Item_Crate : Item
 
     public IEnumerator OnCenterReached(Transform pos)
     {
+        holdable = false;
         transform.position = pos.position;
         rb.isKinematic = true;
-        transform.DOMoveY(transform.position.y + yLerpPositionAmount, lerpDuration).SetEase(lerpCurve);
+        transform.DOMoveY(transform.position.y + yLerpPositionAmount + transform.localScale.y, lerpDuration).SetEase(lerpCurve);
         transform.DORotate(new Vector3(0, yLerpRotateAmount, 0), lerpDuration, RotateMode.FastBeyond360);
         yield return new WaitForSeconds(lerpDuration);
-        transform.DOScale(transform.localScale * 2f, 1);
+        transform.DOScale(transform.localScale * ScaleAmount, 1);
         yield return new WaitForSeconds(1);
         GiveRewards();
         Destroy(gameObject);

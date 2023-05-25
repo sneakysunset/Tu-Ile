@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   degradationLerpSpeed: 2
-  tileGrowthLerpSpeed: 0.5
+  tileGrowthLerpSpeed: 0.6
 --- !u!114 &3120364899379129663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,14 +142,14 @@ MonoBehaviour:
   plaineTileMatBottom: {fileID: 2100000, guid: e5f8f155cb83b8249979eb63e0ede8ce, type: 2}
   woodTileMesh: {fileID: 6239881831769578202, guid: fd987fb914f92b54481249887cee245b, type: 3}
   woodTileMat: {fileID: 2100000, guid: afcb50dbf7bf08246bbe7bc99e74680b, type: 2}
-  rockTileMesh: {fileID: 4151752225258868062, guid: 14ef60f0b73c3df40b5cd94b3bd0a61f, type: 3}
-  rockTileMat: {fileID: 2100000, guid: b63ddfdb0c5e93b49b0b4fe85bfddee9, type: 2}
+  rockTileMesh: {fileID: 1151850364201779074, guid: caff68d3bfbfa30459765972d5377dd8, type: 3}
+  rockTileMat: {fileID: 2100000, guid: e62d1a6150c1fa04ab863071f4519599, type: 2}
   goldTileMat: {fileID: 2100000, guid: 326db776b16202c4bb20fb62a2ed0f9a, type: 2}
   diamondTileMat: {fileID: 2100000, guid: 056df16b00997df49b3b50dcdbefd92d, type: 2}
   adamantiumTileMat: {fileID: 2100000, guid: 056df16b00997df49b3b50dcdbefd92d, type: 2}
-  sandTileMesh: {fileID: 8252082891154211873, guid: 99b2c15f11e995b47b345eef885c68c8, type: 3}
-  desertTileMatTop: {fileID: 2100000, guid: 465af65fb8ee02041b1ed20ef7f24ed9, type: 2}
-  desertTileMatBottom: {fileID: 2100000, guid: 465af65fb8ee02041b1ed20ef7f24ed9, type: 2}
+  sandTileMesh: {fileID: 8252082891154211873, guid: e692a67560af377479c2dbbd2b7149fe, type: 3}
+  desertTileMatTop: {fileID: 2100000, guid: fceb072b17286fd41b41fc251b41458c, type: 2}
+  desertTileMatBottom: {fileID: 2100000, guid: fceb072b17286fd41b41fc251b41458c, type: 2}
   bounceTileMat: {fileID: 2100000, guid: 3193cf6cf65b8a748b1a843c78e6c26d, type: 2}
   disabledTileMaterial: {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
   treePrefab: {fileID: 8818747911436434145, guid: 79b9421b777be9b48964ef34298b9825, type: 3}

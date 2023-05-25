@@ -582,7 +582,7 @@ MonoBehaviour:
   refreshRateMin: 2
   refreshRateMax: 6
   numTilesAround: 2
-  stopRefreshing: 0
+  currentBehavious: 0
   targetTile: {fileID: 0}
 --- !u!114 &3388698492052617939
 MonoBehaviour:
@@ -610,6 +610,10 @@ MonoBehaviour:
   onPlayerReached:
     m_PersistentCalls:
       m_Calls: []
+  Target: {fileID: 0}
+  tileMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &3388698492052617966
 MonoBehaviour:
   m_ObjectHideFlags: 0

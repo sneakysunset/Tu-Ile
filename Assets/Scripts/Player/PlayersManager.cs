@@ -12,6 +12,7 @@ public class PlayersManager : MonoBehaviour
 {
     [HideInInspector] public Player[] players;
     public static PlayersManager Instance;
+    private PlayerInputManager playerInputManager;
     CameraCtr cam;
     public GameObject pnc;
 
@@ -28,7 +29,7 @@ public class PlayersManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
         cam = FindObjectOfType<CameraCtr>();
         if (cam == null)
@@ -37,6 +38,8 @@ public class PlayersManager : MonoBehaviour
             cam = FindObjectOfType<CameraCtr>();
         }
         players = FindObjectsOfType<Player>();
+        playerInputManager = GetComponent<PlayerInputManager>();
+        playerInputManager.DisableJoining();
         PauseMenu pM = FindObjectOfType<PauseMenu>();
         //pM.transform.GetChild(0).gameObject.SetActive(true);
         //pM.gameObject.SetActive(false);
@@ -50,6 +53,9 @@ public class PlayersManager : MonoBehaviour
             if ((TileSystem.Instance.isHub) && !cam.players.Contains(players[i].dummyTarget)) cam.AddPlayer(players[i].dummyTarget);
             players[i].GetComponent<Player_Pause>().pauseMenu = pM;
         }
+        yield return new WaitUntil(() => TileSystem.Instance.ready);
+
+        if(!cam.GetComponentInChildren<CinemachineBrain>().IsBlending) playerInputManager.EnableJoining();
     }
 
     private void OnEnable()
