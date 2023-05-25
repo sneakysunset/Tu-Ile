@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class PlayVFXOnAnimation : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public ParticleSystem spellUp;
+    public void OnSpellUp()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        spellUp.Play();
     }
 }
