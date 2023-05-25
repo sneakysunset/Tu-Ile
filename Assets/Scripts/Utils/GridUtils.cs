@@ -4,9 +4,97 @@ using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-
+using System.IO;
+using UnityEngine.Events;
 public static class GridUtils
 {
+    public delegate void LevelMapLoad();
+    public static event LevelMapLoad onLevelMapLoad;
+
+    public static void LoadLevelMap(bool toHub)
+    {
+        TileSystem tileS = TileSystem.Instance;
+        string n;
+        if (toHub) n = "TM_Hub";
+        else n = "TM_" + tileS.fileName;
+        string tileMapInfo = File.ReadAllText(Application.dataPath + "/LevelMaps/" + n + ".txt");
+        string[] tiLine = tileMapInfo.Split('|');
+        Debug.Log(tiLine.Length);
+        for (int k = 0; k < tiLine.Length - 1; k++)
+        {
+
+            string[] tiRow = tiLine[k].Split('-');
+            for (int i = 0; i < tiRow.Length - 1; i++)
+            {
+                string[] tiParam = tiRow[i].Split('+');
+
+                if (tiParam[0] == "1") tileS.tiles[i, k].walkable = true;
+                else tileS.tiles[i, k].walkable = false;
+
+                if (tileS.tiles[i, k].walkable)
+                {
+                    if (tiParam[1] == "1") tileS.tiles[i, k].degradable = true;
+                    else tileS.tiles[i, k].degradable = false;
+
+                    if (tiParam[2] == "1") tileS.tiles[i, k].tourbillon = true;
+                    else tileS.tiles[i, k].tourbillon = false;
+
+                    switch (tiParam[3])
+                    {
+                        case "0": tileS.tiles[i, k].tileType = TileType.Neutral; break;
+                        case "1": tileS.tiles[i, k].tileType = TileType.Wood; break;
+                        case "2": tileS.tiles[i, k].tileType = TileType.Rock; break;
+                        case "3": tileS.tiles[i, k].tileType = TileType.Gold; break;
+                        case "4": tileS.tiles[i, k].tileType = TileType.Diamond; break;
+                        case "5": tileS.tiles[i, k].tileType = TileType.Adamantium; break;
+                        case "6": tileS.tiles[i, k].tileType = TileType.Sand; break;
+                        case "7": tileS.tiles[i, k].tileType = TileType.BouncyTile; break;
+                        case "8": tileS.tiles[i, k].tileType = TileType.LevelLoader; break;
+                        case "9": tileS.tiles[i, k].tileType = TileType.construction; break;
+                    }
+
+                    /*string[] tisPos = tiRow[5].Split(';');
+
+                    int num = 0;
+                    int mult = 1;
+                    for (int v = 0; v < tisPos.Length; v++)
+                    {
+                        if (tisPos[v] == "1") num += mult;
+                        mult *= 2;
+                    }
+                    tileS.tiles[i, k].spawnPositions.;*/
+
+                    //Debug.Log(int.Parse(tiRow[7][0]));
+                    tileS.tiles[i, k].transform.position = new Vector3(tileS.tiles[i, k].transform.position.x, int.Parse(tiParam[7]), tileS.tiles[i, k].transform.position.z);
+                }
+                switch (tiParam[4])
+                {
+                    case "0": tileS.tiles[i, k].tileSpawnType = TileType.Neutral; break;
+                    case "1": tileS.tiles[i, k].tileSpawnType = TileType.Wood; break;
+                    case "2": tileS.tiles[i, k].tileSpawnType = TileType.Rock; break;
+                    case "3": tileS.tiles[i, k].tileSpawnType = TileType.Gold; break;
+                    case "4": tileS.tiles[i, k].tileSpawnType = TileType.Diamond; break;
+                    case "5": tileS.tiles[i, k].tileSpawnType = TileType.Adamantium; break;
+                    case "6": tileS.tiles[i, k].tileSpawnType = TileType.Sand; break;
+                    case "7": tileS.tiles[i, k].tileSpawnType = TileType.BouncyTile; break;
+                    case "8": tileS.tiles[i, k].tileSpawnType = TileType.LevelLoader; break;
+                    case "9": tileS.tiles[i, k].tileSpawnType = TileType.construction; break;
+                }
+
+                tileS.tiles[i, k].levelName = tiRow[6];
+
+            }
+        }
+        string[] strings = tileMapInfo.Split('(');
+        char c = strings[1][0];
+        char c2 = strings[1][1];
+        char d = strings[1][2];
+        char d2 = strings[1][3];
+        int x = (int)char.GetNumericValue(c) * 10 + (int)char.GetNumericValue(c2);
+        int y = (int)char.GetNumericValue(d) * 10 + (int)char.GetNumericValue(d2);
+        tileS.centerTile = tileS.tiles[x, y];
+    }
+
     public static Tile WorldPosToTile(Vector3 pos)
     {
         float xOffset = 0;
@@ -21,18 +109,16 @@ public static class GridUtils
         if(TileSystem.Instance.tiles.Length > x && TileSystem.Instance.tiles.LongLength > z) return TileSystem.Instance.tiles[x, z];
         else return null;
     }
-    public static Vector3 indexToWorldPos(int x, int z, Vector3 ogPos)
+    public static Vector3 indexToWorldPos(int x, int z, Vector3 ogPos, Transform tT)
     {
         float xOffset = 0;
-        if (z % 2 == 1) xOffset = TileSystem.Instance.tiles[x, z].transform.localScale.x * .85f;
-        Vector3 pos = ogPos + new Vector3(x * TileSystem.Instance.tiles[x, z].transform.localScale.x * 1.7f + xOffset, 0, z * TileSystem.Instance.tiles[x, z].transform.localScale.z * 1.48f);
-        TileSystem.Instance.tiles[x, z].coordX = x;
+        if (z % 2 == 1) xOffset = tT.localScale.x * .85f;
+        Vector3 pos = ogPos + new Vector3(x * tT.localScale.x * 1.7f + xOffset, 0, z * tT.localScale.z * 1.48f);
 
-        TileSystem.Instance.tiles[x, z].coordY = z;
         return pos;
     }
 
-    public static IEnumerator SinkWorld(Tile _centerTile, string levelToLoad, bool isEnd)
+    public static IEnumerator SinkWorld(Tile _centerTile, bool isEnd, bool toHub)
     {
         TileSystem tis = TileSystem.Instance;
         GameTimer gT = GameObject.FindObjectOfType<GameTimer>();
@@ -109,7 +195,12 @@ public static class GridUtils
 
 
         yield return new WaitForSeconds(2);
-        SceneManager.LoadScene(levelToLoad, LoadSceneMode.Single);
+        //SceneManager.LoadScene(levelToLoad, LoadSceneMode.Single);
+        LoadLevelMap(toHub);
+        if (onLevelMapLoad != null) onLevelMapLoad();
+        //GameObject.Destroy(PlayersManager.Instance.gameObject);
+        //GameObject obj = Resources.Load("") as GameObject;
+        //GameObject.Instantiate(obj);
         tis.ready = false;
     }
 

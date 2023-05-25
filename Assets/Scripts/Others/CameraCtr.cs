@@ -64,7 +64,7 @@ public class CameraCtr : MonoBehaviour
         transform.parent = null;
         DontDestroyOnLoad(this.gameObject);
         cam = Camera.main;
-        SceneManager.sceneLoaded += OnLoad;
+        GridUtils.onLevelMapLoad += OnLoad;
         sCE = GetComponentInChildren<SplitScreenEffect>();
         dezoomCamera = transform.GetChild(2).GetComponent<CinemachineVirtualCamera>();
         dezoomCamera.LookAt = TileSystem.Instance.centerTile.transform.GetChild(0);
@@ -73,7 +73,7 @@ public class CameraCtr : MonoBehaviour
     }
 
 
-    public void OnLoad(Scene scene, LoadSceneMode mode)
+    public void OnLoad()
     {
         TileSystem.Instance.StartCoroutine(OnLevelLoad());
         if (tileLoadCoordinates == Vector2Int.zero) tileLoadCoordinates = new Vector2Int(TileSystem.Instance.centerTile.coordX, TileSystem.Instance.centerTile.coordY);

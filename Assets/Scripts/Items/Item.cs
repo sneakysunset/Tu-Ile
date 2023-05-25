@@ -77,7 +77,7 @@ public class Item : MonoBehaviour
         player.holdableItems.Add(this);
         transform.parent = null;
         transform.rotation = Quaternion.identity;
-        rb.AddForce(throwStrength * direction, ForceMode.Impulse);
+        rb.AddForce(throwStrength * direction, ForceMode.VelocityChange);
         physic = true;
     }
 

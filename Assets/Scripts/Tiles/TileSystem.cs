@@ -5,6 +5,9 @@ using UnityEditor;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System.IO;
+using System;
+using Unity.VisualScripting.FullSerializer;
 #if UNITY_EDITOR
 using AmplifyShaderEditor;
 #endif
@@ -13,7 +16,9 @@ public class TileSystem : MonoBehaviour
     public bool InstantiateGrid;
     public bool DestroyGrid;
     public bool UpdateParameters;
+    public bool GenerateMap;
     public int columns, rows;
+    public string fileName;
     [HideInInspector, SerializeField] public Tile[,] tiles;
     public Tile tilePrefab;
     [HideInInspector] public TileParameters tileP;
@@ -50,8 +55,7 @@ public class TileSystem : MonoBehaviour
         }
 
         tileC = GetComponent<TileCounter>();
-        SceneManager.sceneLoaded += OnLoadScene;
-
+        GridUtils.onLevelMapLoad += OnLoadScene;
         foreach(Tile tile in tiles)
         {
             tile.tileS = this;
@@ -65,11 +69,10 @@ public class TileSystem : MonoBehaviour
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnLoadScene;
         editorFlag = true;
     }
 
-    private void OnLoadScene(Scene scene, LoadSceneMode lSM)
+    private void OnLoadScene()
     {
         Vector2Int vector2Int = FindObjectOfType<CameraCtr>().tileLoadCoordinates;
         StartCoroutine(GridUtils.ElevateWorld(tiles[vector2Int.x, vector2Int.y]));
@@ -164,7 +167,7 @@ public class TileSystem : MonoBehaviour
 public class TileSystemEditor : Editor
 {
     public TileSystem tileS;
-
+    private string _content;
     private void OnEnable()
     {
         tileS = (TileSystem)target;
@@ -189,11 +192,17 @@ public class TileSystemEditor : Editor
     {
         base.OnInspectorGUI();
 
+        if (tileS.GenerateMap)
+        {
+            tileS.GenerateMap = false;
+            GenerateMapContent(tileS.tiles);
+            GenerateMap(_content);
+        }
 
         if (tileS.InstantiateGrid)
         {
             InstantiateGrid();
-            UpdateGridParameters();
+            //UpdateGridParameters();
         }
         if (tileS.DestroyGrid)
         {
@@ -204,6 +213,98 @@ public class TileSystemEditor : Editor
             UpdateGridParameters();
         }
     }
+
+    void GenerateMapContent(Tile[,] t)
+    {
+        for (int x = 0; x < t.GetLength(0); x++)
+        {
+            for (int y = 0; y < t.GetLength(1); y++)
+            {
+                //0
+                if (t[x, y].walkable) _content += 1.ToString();
+                else _content += 0.ToString();
+                _content += "+";
+                
+                //1
+                if (t[x, y].degradable) _content += 1.ToString();
+                else _content += 0.ToString();
+                _content += "+";                
+                
+                //2
+                if (t[x, y].tourbillon) _content += 1.ToString();
+                else _content += 0.ToString();
+                _content += "+";
+
+                //3
+                switch(t[x, y].tileType)
+                {
+                    case TileType.Neutral: _content += 0.ToString(); break;
+                    case TileType.Wood: _content += 1.ToString(); break;
+                    case TileType.Rock: _content += 2.ToString(); break;
+                    case TileType.Gold: _content += 3.ToString(); break;
+                    case TileType.Diamond: _content += 4.ToString(); break;
+                    case TileType.Adamantium: _content += 5.ToString(); break;
+                    case TileType.Sand: _content += 6.ToString(); break;
+                    case TileType.BouncyTile: _content += 7.ToString(); break;
+                    case TileType.LevelLoader: _content += 8.ToString(); break;
+                    case TileType.construction: _content += 9.ToString(); break;
+                }
+                _content += "+";
+
+                //4
+                switch (t[x, y].tileSpawnType)
+                {
+                    case TileType.Neutral: _content += 0.ToString(); break;
+                    case TileType.Wood: _content += 1.ToString(); break;
+                    case TileType.Rock: _content += 2.ToString(); break;
+                    case TileType.Gold: _content += 3.ToString(); break;
+                    case TileType.Diamond: _content += 4.ToString(); break;
+                    case TileType.Adamantium: _content += 5.ToString(); break;
+                    case TileType.Sand: _content += 6.ToString(); break;
+                    case TileType.BouncyTile: _content += 7.ToString(); break;
+                    case TileType.LevelLoader: _content += 8.ToString(); break;
+                    case TileType.construction: _content += 9.ToString(); break;
+                }
+                _content += "+";
+
+                //5
+                int myInt = Convert.ToInt32(t[x, y].spawnPositions);
+                bool[] bools = Utils.GetSpawnPositions(myInt);
+                for (int i = 0; i < bools.Length; i++)
+                {
+                    if (bools[i]) _content += 1;
+                    else _content += 0;
+                    if(i < bools.Length - 1)_content += ";";
+                }
+                _content += "+";
+
+                //6
+                _content += t[x, y].levelName;
+                if (t[x, y].levelName.Length == 0) _content += "NIVEAU VIDE";
+                _content += "+";
+
+                //7
+                _content += t[x, y].transform.position.y;
+
+                _content += "-";
+            }
+            _content += "|";
+        }
+        _content += '(';
+        if (tileS.centerTile.coordX < 10) _content += 0 + "" + tileS.centerTile.coordX;
+        else _content += tileS.centerTile.coordX;
+        if (tileS.centerTile.coordY < 10) _content += 0 + "" + tileS.centerTile.coordY;
+        else _content += tileS.centerTile.coordY;
+
+    }
+
+    void GenerateMap(string content)
+    {
+        string path = Application.dataPath + "/LevelMaps/" + "TM_" + SceneManager.GetActiveScene().name + ".txt";
+        File.WriteAllText(path, content);
+    }
+
+
 
     void InstantiateGrid()
     {
@@ -221,7 +322,7 @@ public class TileSystemEditor : Editor
                     Tile tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as Tile;
                     tile.transform.parent = tileFolder.transform;
                     tileS.tiles[i, j] = tile;
-                    tile.transform.position = GridUtils.indexToWorldPos(i, j, tileS.gridOgTile);
+                    tile.transform.position = GridUtils.indexToWorldPos(i, j, tileS.gridOgTile, tileS.tilePrefab.transform);
                     tile.gameObject.name = i + "  " + j;
 
                 }
@@ -235,17 +336,20 @@ public class TileSystemEditor : Editor
             int maxY = tileS.tiles.GetLength(1);
             if (tileS.rows > tileS.tiles.GetLength(0)) maxX = tileS.rows;
             if (tileS.columns > tileS.tiles.GetLength(1)) maxY = tileS.columns;
-
+            Debug.Log(maxX + " " + maxY);
+            Debug.Log(tileS.tiles.GetLength(0) + " " + tileS.tiles.GetLength(1));
             for (int i = 0; i < maxX; i++)
             {
                 for (int j = 0; j < maxY; j++)
                 {
                     if (i >= tileS.tiles.GetLength(0) || j >= tileS.tiles.GetLength(1) )
                     {
+                        Debug.Log(tileFolder.name);
                         Tile tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as Tile;
+                        Debug.Log(1);
                         tile.transform.parent = tileS.tileFolder;
                         tempTiles[i, j] = tile;
-                        tile.transform.position = GridUtils.indexToWorldPos(i, j, tileS.gridOgTile);
+                        tile.transform.position = GridUtils.indexToWorldPos(i, j, tileS.gridOgTile, tileS.tilePrefab.transform);
                         tile.gameObject.name = i + "  " + j;
                     }
                     else if (i >= tileS.rows || j >= tileS.columns)
@@ -260,8 +364,12 @@ public class TileSystemEditor : Editor
 
 
             }
-            tileS.tiles = new Tile[tileS.rows, tileS.columns];
+            //tileS.tiles = new Tile[tileS.rows, tileS.columns];
             tileS.tiles = tempTiles;
+/*            foreach (Tile tile in tempTiles)
+            {
+                Debug.Log(tile.name);
+            }*/
         }
     }
 

@@ -164,7 +164,6 @@ public class Tile : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         CameraCtr.startUp += OnStartUp;
-        SceneManager.sceneLoaded += OnLoadScene;
         if (!walkable)
         {
             Vector3 v = transform.position;
@@ -208,27 +207,12 @@ public class Tile : MonoBehaviour
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnLoadScene;
         CameraCtr.startUp -= OnStartUp;
     }
 
     private void OnStartUp()
     {
         readyToRoll = true;
-    }
-
-    private void OnLoadScene(Scene scene, LoadSceneMode lSM)
-    {
-        
-        Vector3 v = transform.position;
-        v.y = -heightByTile * 20;
-        Vector2Int vector2Int = FindObjectOfType<CameraCtr>().tileLoadCoordinates;
-        
-        if (this != TileSystem.Instance.tiles[vector2Int.x, vector2Int.y]) transform.position = v;
-        else
-        {
-            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-        }
     }
 
     private void Update()

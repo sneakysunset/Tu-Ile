@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
         iks = GetComponentsInChildren<ChainIKConstraint>();
     }
 
-    public void OnLoad(Scene scene, LoadSceneMode mode)
+    public void OnLoad()
     {
         respawnTile = TileSystem.Instance.centerTile;
         pState = PlayerState.Idle;
@@ -71,7 +71,6 @@ public class Player : MonoBehaviour
             Destroy(heldItem.gameObject);
             heldItem = null;
         }
-        //transform.position = transform.position + new Vector3()
     }
 
     private void Start()
@@ -88,7 +87,7 @@ public class Player : MonoBehaviour
         transform.position = TileSystem.Instance.centerTile.transform.GetChild(0).position + Vector3.up * 3;
         _characterController.enabled = true;
         anim = GetComponentInChildren<Animator>();
-        SceneManager.sceneLoaded += OnLoad;
+        GridUtils.onLevelMapLoad += OnLoad;
     }
 
     private void Update()

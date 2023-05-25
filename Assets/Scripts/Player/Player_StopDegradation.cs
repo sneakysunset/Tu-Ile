@@ -13,12 +13,6 @@ public class Player_StopDegradation : MonoBehaviour
     {
         player = GetComponent<Player>();
         ressourcesManager = FindObjectOfType<RessourcesManager>();
-        SceneManager.sceneLoaded += OnLoad;
-    }
-
-    public void OnLoad(Scene scene, LoadSceneMode mode)
-    {
-        ressourcesManager = FindObjectOfType<RessourcesManager>();
     }
 
     public void OnStopDegrading(InputAction.CallbackContext context)
@@ -46,7 +40,8 @@ public class Player_StopDegradation : MonoBehaviour
         if(player.tileUnder && player.tileUnder.tileType == TileType.LevelLoader && isGrowing)
         {
             FindObjectOfType<CameraCtr>().tileLoadCoordinates = new Vector2Int(player.tileUnder.coordX, player.tileUnder.coordY);
-            StartCoroutine(GridUtils.SinkWorld(player.tileUnder, player.tileUnder.levelName, false)) ;
+            TileSystem.Instance.fileName = player.tileUnder.levelName;
+            StartCoroutine(GridUtils.SinkWorld(player.tileUnder, false, false)) ;
         }
         isGrowing = false;
     }

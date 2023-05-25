@@ -32,14 +32,8 @@ public class TileSelector : MonoBehaviour
         tileBluePrint = Instantiate(bluePrintPrefab).transform;
         player = GetComponent<Player>();
         mM = FindObjectOfType<MissionManager>();
-        SceneManager.sceneLoaded += OnLoad;
     }
 
-    public void OnLoad(Scene scene, LoadSceneMode mode)
-    {
-        tileBluePrint = Instantiate(bluePrintPrefab).transform;
-        mM = FindObjectOfType<MissionManager>();
-    }
 
     private void Update()
     {
@@ -134,14 +128,14 @@ public class TileSelector : MonoBehaviour
     private void OnDrawGizmos()
     {
 #if UNITY_EDITOR
-        if(player.tileUnder)
+        if(Application.isPlaying && player.tileUnder)
         {
             UnityEditor.Handles.color = Color.green;
             UnityEditor.Handles.DrawWireDisc(player.tileUnder.transform.GetChild(0).position, Vector3.up, distanceToBeOnTop);
         }
 #endif
 
-        if(player.tileUnder)
+        if(Application.isPlaying && player.tileUnder)
         {
             Gizmos.DrawRay(new Vector3(transform.position.x, player.tileUnder.transform.position.y, transform.position.z), transform.forward * hitDistance);
             Gizmos.DrawSphere(player.tileUnder.transform.position, 1);

@@ -90,13 +90,13 @@ public class EndMenu : MonoBehaviour
     {
         DisableEnd();
         gameTimer.sceneLoadName = SceneManager.GetActiveScene().name;
-        gameTimer.EndLevel(true);
+        gameTimer.EndLevel(true, false);
     }
 
     public void HUB()
     {
         DisableEnd();
         gameTimer.sceneLoadName = "Hub";
-        gameTimer.EndLevel(true);
+        gameTimer.EndLevel(true, true);
     }
 }

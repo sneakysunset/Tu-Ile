@@ -15,15 +15,8 @@ public class Player_Pause : MonoBehaviour
     public static event PauseMenuDesDelegate pauseMenuDesactivation;
     private void Start()
     {
-        SceneManager.sceneLoaded += OnLoaded;
         pauseMenu = FindObjectOfType<PauseMenu>();
         optionMenu = FindObjectOfType<OptionMenu>();
-    }
-
-    private void OnLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (pauseMenu == null) pauseMenu = FindObjectOfType<PauseMenu>();
-        if(optionMenu == null) optionMenu = FindObjectOfType<OptionMenu>();
     }
 
     public void PauseGame(InputAction.CallbackContext context)

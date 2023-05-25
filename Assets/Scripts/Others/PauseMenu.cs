@@ -75,8 +75,7 @@ public class PauseMenu : MonoBehaviour
         if (optionOn) return;
 
         GameTimer gameTimer = FindObjectOfType<GameTimer>();
-        gameTimer.sceneLoadName = SceneManager.GetActiveScene().name;
-        gameTimer.EndLevel(false);
+        gameTimer.EndLevel(false, false);
 
         player.SetPause();
     }
@@ -86,8 +85,7 @@ public class PauseMenu : MonoBehaviour
         if (optionOn) return;
 
         GameTimer gameTimer = FindObjectOfType<GameTimer>();
-        gameTimer.sceneLoadName = "Hub";
-        gameTimer.EndLevel(false);
+        gameTimer.EndLevel(false, true);
         player.SetPause();
     }
 }
