@@ -8,7 +8,6 @@ public class BoussoleMission
     public SO_CompassM compassMission;
     public Tile targettedTile;
     public bool isEphemeral;
-
     public BoussoleMission(SO_CompassM compassMission, Tile targettedTile , bool isEphemeral)
     {
         this.compassMission = compassMission;
@@ -20,6 +19,7 @@ public class BoussoleMission
 
 public class CompassMissionManager : MonoBehaviour
 {
+
     public List<SO_CompassM> compassMissions;
     public List<BoussoleMission> activeM;
     public int minCompassM, maxCompassM;

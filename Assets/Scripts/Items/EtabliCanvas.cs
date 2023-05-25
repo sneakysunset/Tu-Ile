@@ -30,8 +30,8 @@ public class EtabliCanvas : MonoBehaviour
         if (!Application.isPlaying) etabli = GetComponentInParent<Item_Etabli>();
         rMan = FindObjectOfType<RessourcesManager>();
         cam = FindObjectOfType<CameraCtr>();
-        backGroundFar.localScale = new Vector3(0.35f, backGroundFar.localScale.y, backGroundFar.localScale.z);
-        backGroundNear.localScale = new Vector3(backGroundNear.localScale.x, 0.65f, backGroundNear.localScale.z);
+        backGroundFar.sizeDelta = new Vector2(250, backGroundFar.sizeDelta.y);
+        backGroundNear.sizeDelta = new Vector2(backGroundNear.sizeDelta.x, 180);
         RectTransform pi = imagesFar[0].rectTransform.parent as RectTransform;
         pi.anchoredPosition = new Vector2(-22.5f, pi.anchoredPosition.y);
         for (int i = 0; i < imagesNear.Length; i++)
@@ -56,8 +56,11 @@ public class EtabliCanvas : MonoBehaviour
                     //textsNear[f].gameObject.SetActive(true);
                     imagesFar[i].sprite = rMC.sprite;
                     if (i - 1 >= 0) textsFar[i - 1].gameObject.SetActive(true);
-                    backGroundNear.localScale += .35f * Vector3.up;
-                    backGroundFar.localScale += .30f * Vector3.right;
+                    if(f > 0)
+                    {
+                        backGroundNear.sizeDelta += 45 * Vector2.up;
+                        backGroundFar.sizeDelta += 90 * Vector2.right;
+                    }
 
                     RectTransform p = imagesFar[0].rectTransform.parent as RectTransform;
                     if (f == 0)
@@ -85,8 +88,11 @@ public class EtabliCanvas : MonoBehaviour
                     imagesFar[f].sprite = rMC.sprite;
                     if (f - 1 >= 0) textsFar[f - 1].gameObject.SetActive(true);
                     textsNear[f].gameObject.SetActive(true);
-                    backGroundNear.localScale += .35f * Vector3.up;
-                    backGroundFar.localScale += .30f * Vector3.right;
+                    if(f > 0)
+                    {
+                        backGroundNear.sizeDelta += 45 * Vector2.up;
+                        backGroundFar.sizeDelta += 90 * Vector2.right;
+                    }
 
                     RectTransform p = imagesFar[0].rectTransform.parent as RectTransform;
                     if (f == 0) p.anchoredPosition3D += 22 * Vector3.right;

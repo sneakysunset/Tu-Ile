@@ -72,7 +72,7 @@ public class Tile_Degradation : MonoBehaviour
     void SinkTile()
     {
         tile.walkable = false;
-        tile.currentPos.y = -20f;
+        tile.currentPos.y = -10f;
         gameObject.layer = LayerMask.NameToLayer("DisabledTile");
         //tile.myMeshR.enabled = false;
         //transform.Find("Additional Visuals").gameObject.SetActive(false);
