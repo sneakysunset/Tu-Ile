@@ -36,11 +36,11 @@ public class AI_Targetting : MonoBehaviour
             }
         }
 
-        if(AIM.Target != null && AIB.currentBehavious != AI_Behaviour.Behavious.Target) 
+        if(AIM.Target != null && AIB.currentBehavious != AI_Behaviour.Behavious.Target && AIB.currentBehavious != AI_Behaviour.Behavious.Disable) 
         {
             AIB.currentBehavious = AI_Behaviour.Behavious.Target;
         }
-        else if(AIM.Target == null)
+        else if(AIM.Target == null && AIB.currentBehavious != AI_Behaviour.Behavious.Disable)
         {
             AIB.currentBehavious = AI_Behaviour.Behavious.AI;
         }

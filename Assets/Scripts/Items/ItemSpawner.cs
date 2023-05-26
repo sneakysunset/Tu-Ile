@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class ItemSpawner : MonoBehaviour
     public bool loop;
     bool continueLooping = true;
     Tile tile;
+    [Foldout("Gizmo")] public float gizmoScale = 1;
+    [Foldout("Gizmo")] public float gizmoHeightOffset = 0;
     private void Start()
     {
         tile = GetComponent<Tile>();
@@ -46,6 +49,6 @@ public class ItemSpawner : MonoBehaviour
             meshGizmo = itemToSpawn.transform.Find("Highlight").GetComponent<MeshFilter>().sharedMesh;
             spawnPoint = transform.Find("SpawnPositions");
         }
-        Gizmos.DrawMesh(meshGizmo, spawnPoint.position, Quaternion.identity, Vector3.one);
+        Gizmos.DrawMesh(meshGizmo, spawnPoint.position + gizmoHeightOffset * Vector3.up, Quaternion.identity, Vector3.one * gizmoScale);
     }
 }

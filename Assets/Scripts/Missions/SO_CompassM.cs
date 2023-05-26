@@ -22,7 +22,7 @@ public class SO_CompassM : ScriptableObject
             {
                 tile = tiles[Random.Range(0, tiles.Count)];
             }
-            while (tile.etabli);
+            while (tile.etabli || tile.tourbillon);
             targetTile = tile;
         }
 

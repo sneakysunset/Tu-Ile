@@ -21,7 +21,7 @@ public class Item : MonoBehaviour
     {
         Highlight = transform.Find("Highlight").gameObject;
         col = GetComponent<Collider>();
-        if (TryGetComponent<Rigidbody>(out rb)) { }
+        if (TryGetComponent<Rigidbody>(out rb)) { rb.mass = 0; }
     }
 
     public virtual void Update()

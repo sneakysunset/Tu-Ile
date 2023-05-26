@@ -227,7 +227,7 @@ public class Player : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Cast", transform.position);
         pState = _pState;
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0)[0].clip.length - .2f);
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0)[0].clip.length - 1);
         pM.canMove = true;
         playerState = PlayerState.Idle;
     }

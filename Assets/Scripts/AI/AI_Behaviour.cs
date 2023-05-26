@@ -9,12 +9,12 @@ public class AI_Behaviour : MonoBehaviour
     public AITarget target;
     TileSystem tileS;
     Player[] players;
-    [HideInInspector] public List<Tile> tilePath;
+    [HideNormalInspector] public List<Tile> tilePath;
     [HideInInspector] public Tile tileUnder;
     [Range(.1f, 20)] public float refreshRateMin = 1, refreshRateMax = 2;
     [Header("numTilesAround only useful for RandomTileAround AITarget")]
     public int numTilesAround;
-    public enum Behavious { AI, Target, Static}
+    public enum Behavious { AI, Target, Static, Disable}
     public Behavious currentBehavious;
     [HideInInspector] public Tile targetTile;
     private void Start()
@@ -85,6 +85,12 @@ public class AI_Behaviour : MonoBehaviour
     public void ClearPath()
     {
         currentBehavious = Behavious.Static;
+        tilePath.Clear();
+    }
+
+    public void Disable()
+    {
+        currentBehavious = Behavious.Disable;
         tilePath.Clear();
     }
 
