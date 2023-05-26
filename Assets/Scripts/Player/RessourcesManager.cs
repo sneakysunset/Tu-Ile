@@ -47,4 +47,18 @@ public class RessourcesManager : MonoBehaviour
     public Sprite mChickenElim;
     public Sprite mCompass;
     public Sprite mConstr;
+    public List<GameObject> spawnableItems;
+    public static RessourcesManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 }

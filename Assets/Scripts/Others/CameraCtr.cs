@@ -57,12 +57,6 @@ public class CameraCtr : MonoBehaviour
     {
         if (startUp != null) startUp();
 
-        GameObject water = GameObject.FindGameObjectWithTag("Water");
-        water.transform.parent = null;
-        DontDestroyOnLoad(water);
-
-        transform.parent = null;
-        DontDestroyOnLoad(this.gameObject);
         cam = Camera.main;
         GridUtils.onLevelMapLoad += OnLoad;
         sCE = GetComponentInChildren<SplitScreenEffect>();
@@ -75,7 +69,7 @@ public class CameraCtr : MonoBehaviour
 
     public void OnLoad()
     {
-        TileSystem.Instance.StartCoroutine(OnLevelLoad());
+        StartCoroutine(OnLevelLoad());
         if (tileLoadCoordinates == Vector2Int.zero) tileLoadCoordinates = new Vector2Int(TileSystem.Instance.centerTile.coordX, TileSystem.Instance.centerTile.coordY);
         dezoomCamera.LookAt = TileSystem.Instance.tiles[tileLoadCoordinates.x, tileLoadCoordinates.y].transform.GetChild(0);
         for (int i = 0; i < sCE.Screens.Count; i++)
@@ -103,6 +97,10 @@ public class CameraCtr : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        GridUtils.onLevelMapLoad -= OnLoad;
+    }
     private void LateUpdate()
     {
         LineCastToPlayer();
@@ -124,7 +122,9 @@ public class CameraCtr : MonoBehaviour
     }
     public IEnumerator OnLevelLoad()
     {
-        yield return new WaitUntil(() => TileSystem.Instance.ready);
+        TileSystem.Instance.ready = true;
+        yield return new WaitForSeconds(2);
+        //yield return new WaitUntil(() => TileSystem.Instance.ready);
         if (dezoomCamera != null)
         {
             dezoomCamera.Priority = 2;

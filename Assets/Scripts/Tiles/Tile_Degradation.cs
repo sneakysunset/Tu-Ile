@@ -77,6 +77,8 @@ public class Tile_Degradation : MonoBehaviour
         //tile.myMeshR.enabled = false;
         //transform.Find("Additional Visuals").gameObject.SetActive(false);
         //tile.minableItems.gameObject.SetActive(false);
+        if (tile.tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Stop();
+        if (tile.tileType == TileType.BouncyTile) tile.rb.isKinematic = true;
         TileSystem.Instance.tileC.Count();
     }
 

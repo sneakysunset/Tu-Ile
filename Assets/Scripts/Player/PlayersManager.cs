@@ -27,7 +27,16 @@ public class PlayersManager : MonoBehaviour
         {
             Instance = this;
         }
+
+        GridUtils.onLevelMapLoad += OnLevelLoad;
     }
+
+    void OnLevelLoad()
+    {
+        GetComponent<GameTimer>().enabled = true;
+        GetComponent<CompassMissionManager>().enabled = true;
+    }
+
 
     private IEnumerator Start()
     {
@@ -66,6 +75,7 @@ public class PlayersManager : MonoBehaviour
     private void OnDisable()
     {
         // Unsubscribe from the onDeviceChange event
+        GridUtils.onLevelMapLoad -= OnLevelLoad;
         InputSystem.onDeviceChange -= PlayerDisconnect;
     }
 

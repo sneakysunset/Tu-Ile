@@ -41,6 +41,7 @@ public class Player_StopDegradation : MonoBehaviour
         {
             FindObjectOfType<CameraCtr>().tileLoadCoordinates = new Vector2Int(player.tileUnder.coordX, player.tileUnder.coordY);
             TileSystem.Instance.fileName = player.tileUnder.levelName;
+            TileSystem.Instance.previousCenterTile = player.tileUnder;
             StartCoroutine(GridUtils.SinkWorld(player.tileUnder, false, false)) ;
         }
         isGrowing = false;

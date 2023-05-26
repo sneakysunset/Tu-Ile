@@ -8,6 +8,7 @@ using System.Linq;
 using System.IO;
 using System;
 using Unity.VisualScripting.FullSerializer;
+using static UnityEngine.Rendering.DebugUI.Table;
 #if UNITY_EDITOR
 using AmplifyShaderEditor;
 #endif
@@ -33,9 +34,10 @@ public class TileSystem : MonoBehaviour
     public static TileSystem Instance { get; private set; }
     [HideNormalInspector] public float degradationTimerModifier;
     float timerInterpolateValue;
-    [HideInInspector] public bool ready;
+    [HideInInspector] public bool ready = true;
     [HideNormalInspector] public float lerpingSpeed = 1;
     [HideInInspector] public float waitTimer = .3f;
+    [HideNormalInspector] public Tile previousCenterTile;
     private void Awake()
     {
 
@@ -56,26 +58,42 @@ public class TileSystem : MonoBehaviour
 
         tileC = GetComponent<TileCounter>();
         GridUtils.onLevelMapLoad += OnLoadScene;
-        foreach(Tile tile in tiles)
-        {
-            tile.tileS = this;
-        }
     }
 
     private void Start()
     {
-        if(!isHub) gT = FindObjectOfType<GameTimer>();
+        if (!isHub)
+        {
+            GameTimer gt = FindObjectOfType<GameTimer>();
+        }
     }
 
     private void OnDisable()
     {
+        GridUtils.onLevelMapLoad -= OnLoadScene;
         editorFlag = true;
     }
 
     private void OnLoadScene()
     {
+        if(gT == null) gT = FindObjectOfType<GameTimer>();
+        if (fileName != "Hub") isHub = false;
+        else isHub = true;
+
+        //StartCoroutine(ElevateWorld());
         Vector2Int vector2Int = FindObjectOfType<CameraCtr>().tileLoadCoordinates;
-        StartCoroutine(GridUtils.ElevateWorld(tiles[vector2Int.x, vector2Int.y]));
+        if (!isHub)
+        {
+            previousCenterTile.transform.GetChild(9).gameObject.SetActive(false);
+            centerTile.transform.GetChild(9).gameObject.SetActive(true);
+        }
+        //StartCoroutine(GridUtils.ElevateWorld(tiles[vector2Int.x, vector2Int.y]));
+    }
+
+
+    IEnumerator ElevateWorld()
+    {
+        yield return new WaitForEndOfFrame();
     }
 
     private void Update()
@@ -91,10 +109,9 @@ public class TileSystem : MonoBehaviour
     {
         Tile[] list = FindObjectsOfType<Tile>();
         if (list.Length == 0) return;
-        int rowss = rows;
-        int columnss = columns;
 
-        tiles = new Tile[rowss, columnss];
+
+        tiles = new Tile[rows, columns];
         for (int i = 0; i < list.Length; i++)
         {
             int x = list[i].coordX;
@@ -109,6 +126,7 @@ public class TileSystem : MonoBehaviour
     {
         tileM = GetComponent<TileMats>();
         tileP = GetComponent<TileParameters>();
+
         foreach (var tile in tiles)
         {
             tile.degradationTimerMin = tileP.degradationTileTimerMin;
@@ -146,15 +164,10 @@ public class TileSystem : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (TileSystem.Instance == null && !Application.isPlaying)
-        {
-            TileSystem.Instance = this;
-        }
         if((editorFlag || tiles == null) && !Application.isPlaying)
         {
             editorFlag = false;
             RegenGrid();
-
         }
     }
 }
@@ -172,7 +185,7 @@ public class TileSystemEditor : Editor
     {
         tileS = (TileSystem)target;
         tileS.UpdateGridParameters();
-        foreach(var tile in tileS.tiles)
+        foreach (var tile in tileS.tiles)
         {
             tile.UpdateObject();
         }
@@ -204,10 +217,12 @@ public class TileSystemEditor : Editor
             InstantiateGrid();
             //UpdateGridParameters();
         }
+
         if (tileS.DestroyGrid)
         {
             DestroyGrid();
         }
+
         if (tileS.UpdateParameters)
         {
             UpdateGridParameters();
@@ -216,6 +231,7 @@ public class TileSystemEditor : Editor
 
     void GenerateMapContent(Tile[,] t)
     {
+        _content = string.Empty;
         for (int x = 0; x < t.GetLength(0); x++)
         {
             for (int y = 0; y < t.GetLength(1); y++)
@@ -236,7 +252,8 @@ public class TileSystemEditor : Editor
                 _content += "+";
 
                 //3
-                switch(t[x, y].tileType)
+                _content += Convert.ToInt32(t[x, y].tileType);
+                /*switch(t[x, y].tileType)
                 {
                     case TileType.Neutral: _content += 0.ToString(); break;
                     case TileType.Wood: _content += 1.ToString(); break;
@@ -248,11 +265,12 @@ public class TileSystemEditor : Editor
                     case TileType.BouncyTile: _content += 7.ToString(); break;
                     case TileType.LevelLoader: _content += 8.ToString(); break;
                     case TileType.construction: _content += 9.ToString(); break;
-                }
+                }*/
                 _content += "+";
 
                 //4
-                switch (t[x, y].tileSpawnType)
+                _content += Convert.ToInt32(t[x, y].tileSpawnType);
+                /*switch (t[x, y].tileSpawnType)
                 {
                     case TileType.Neutral: _content += 0.ToString(); break;
                     case TileType.Wood: _content += 1.ToString(); break;
@@ -264,19 +282,22 @@ public class TileSystemEditor : Editor
                     case TileType.BouncyTile: _content += 7.ToString(); break;
                     case TileType.LevelLoader: _content += 8.ToString(); break;
                     case TileType.construction: _content += 9.ToString(); break;
-                }
+                }*/
                 _content += "+";
 
                 //5
-                int myInt = Convert.ToInt32(t[x, y].spawnPositions);
-                bool[] bools = Utils.GetSpawnPositions(myInt);
+                _content += Convert.ToString((int)t[x, y].spawnPositions);
+                _content += "+";
+/*                int myInt = Convert.ToInt32(t[x, y].spawnPositions);
+*//*                bool[] bools = Utils.GetSpawnPositions(myInt);
                 for (int i = 0; i < bools.Length; i++)
                 {
                     if (bools[i]) _content += 1;
                     else _content += 0;
                     if(i < bools.Length - 1)_content += ";";
-                }
-                _content += "+";
+                }*//*
+                string flag = ; ;*/
+
 
                 //6
                 _content += t[x, y].levelName;
@@ -285,6 +306,23 @@ public class TileSystemEditor : Editor
 
                 //7
                 _content += t[x, y].transform.position.y;
+                _content += "+";
+
+                if (t[x,y].TryGetComponent<ItemSpawner>(out ItemSpawner itemSpawner))
+                {
+                    string itemType = itemSpawner.itemToSpawn.ToString();
+                    _content += itemType;
+                    _content += ";";
+                    _content += itemSpawner.spawnTimer.ToString();
+                    _content += ";";
+                    _content += Convert.ToInt32(itemSpawner.loop);                    
+                    _content += ";";
+                    _content += Convert.ToInt32(itemSpawner.spawnPosition);
+                }
+                else
+                {
+                    _content += "No Spawner";
+                }
 
                 _content += "-";
             }
@@ -301,7 +339,10 @@ public class TileSystemEditor : Editor
     void GenerateMap(string content)
     {
         string path = Application.dataPath + "/LevelMaps/" + "TM_" + SceneManager.GetActiveScene().name + ".txt";
+        
+        File.Delete(path);
         File.WriteAllText(path, content);
+        AssetDatabase.Refresh();
     }
 
 
@@ -310,6 +351,20 @@ public class TileSystemEditor : Editor
     {
         tileS.InstantiateGrid = false;
         Transform tileFolder = GameObject.FindGameObjectWithTag("TileFolder").transform;
+
+        Tile[] list = FindObjectsOfType<Tile>();
+        if (list.Length == 0) return;
+
+        int o = (int)Mathf.Sqrt(list.Length);
+        tileS.tiles = new Tile[o, o];
+        for (int i = 0; i < list.Length; i++)
+        {
+            int x = list[i].coordX;
+            int y = list[i].coordY;
+            tileS.tiles[x, y] = list[i];
+            tileS.tiles[x, y].name = "tile " + x + " " + y;
+        }
+
         if (tileS.tiles == null) tileS.tiles = new Tile[tileS.rows, tileS.columns]; ;
         if (tileS.tiles[0, 0] == null)
         {
@@ -336,24 +391,24 @@ public class TileSystemEditor : Editor
             int maxY = tileS.tiles.GetLength(1);
             if (tileS.rows > tileS.tiles.GetLength(0)) maxX = tileS.rows;
             if (tileS.columns > tileS.tiles.GetLength(1)) maxY = tileS.columns;
-            Debug.Log(maxX + " " + maxY);
-            Debug.Log(tileS.tiles.GetLength(0) + " " + tileS.tiles.GetLength(1));
             for (int i = 0; i < maxX; i++)
             {
                 for (int j = 0; j < maxY; j++)
                 {
                     if (i >= tileS.tiles.GetLength(0) || j >= tileS.tiles.GetLength(1) )
                     {
-                        Debug.Log(tileFolder.name);
                         Tile tile = PrefabUtility.InstantiatePrefab(tileS.tilePrefab) as Tile;
-                        Debug.Log(1);
                         tile.transform.parent = tileS.tileFolder;
                         tempTiles[i, j] = tile;
                         tile.transform.position = GridUtils.indexToWorldPos(i, j, tileS.gridOgTile, tileS.tilePrefab.transform);
                         tile.gameObject.name = i + "  " + j;
+                        tile.coordX = i;
+                        tile.coordY = j;
+                        tile.walkable = false;
                     }
                     else if (i >= tileS.rows || j >= tileS.columns)
                     {
+                        Debug.Log(i+ " " +  j);
                         DestroyImmediate(tileS.tiles[i, j].gameObject);
                     }
                     else if(i < tileS.tiles.GetLength(0) && j < tileS.tiles.GetLength(1) && i < tileS.rows && j < tileS.columns && tileS.tiles[i, j] != null)

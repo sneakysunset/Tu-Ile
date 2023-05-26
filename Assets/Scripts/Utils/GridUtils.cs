@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.IO;
 using UnityEngine.Events;
+using System;
+using Unity.VisualScripting;
+
 public static class GridUtils
 {
     public delegate void LevelMapLoad();
@@ -19,70 +22,44 @@ public static class GridUtils
         else n = "TM_" + tileS.fileName;
         string tileMapInfo = File.ReadAllText(Application.dataPath + "/LevelMaps/" + n + ".txt");
         string[] tiLine = tileMapInfo.Split('|');
-        Debug.Log(tiLine.Length);
-        for (int k = 0; k < tiLine.Length - 1; k++)
+        for (int i = 0; i < tiLine.Length - 1; i++)
         {
 
-            string[] tiRow = tiLine[k].Split('-');
-            for (int i = 0; i < tiRow.Length - 1; i++)
+            string[] tiRow = tiLine[i].Split('-');
+            for (int k = 0; k < tiRow.Length - 1; k++)
             {
-                string[] tiParam = tiRow[i].Split('+');
-
-                if (tiParam[0] == "1") tileS.tiles[i, k].walkable = true;
-                else tileS.tiles[i, k].walkable = false;
-
-                if (tileS.tiles[i, k].walkable)
+                string[] tiParam = tiRow[k].Split('+');
+                Tile tile = tileS.tiles[i, k];
+                
+                tile.walkable = Convert.ToBoolean(int.Parse(tiParam[0]));
+                tile.tourbillon = Convert.ToBoolean(int.Parse(tiParam[2]));
+                tile.tileSpawnType = (TileType)Convert.ToInt32(int.Parse(tiParam[4]));
+                if(tile.walkable )
                 {
-                    if (tiParam[1] == "1") tileS.tiles[i, k].degradable = true;
-                    else tileS.tiles[i, k].degradable = false;
-
-                    if (tiParam[2] == "1") tileS.tiles[i, k].tourbillon = true;
-                    else tileS.tiles[i, k].tourbillon = false;
-
-                    switch (tiParam[3])
-                    {
-                        case "0": tileS.tiles[i, k].tileType = TileType.Neutral; break;
-                        case "1": tileS.tiles[i, k].tileType = TileType.Wood; break;
-                        case "2": tileS.tiles[i, k].tileType = TileType.Rock; break;
-                        case "3": tileS.tiles[i, k].tileType = TileType.Gold; break;
-                        case "4": tileS.tiles[i, k].tileType = TileType.Diamond; break;
-                        case "5": tileS.tiles[i, k].tileType = TileType.Adamantium; break;
-                        case "6": tileS.tiles[i, k].tileType = TileType.Sand; break;
-                        case "7": tileS.tiles[i, k].tileType = TileType.BouncyTile; break;
-                        case "8": tileS.tiles[i, k].tileType = TileType.LevelLoader; break;
-                        case "9": tileS.tiles[i, k].tileType = TileType.construction; break;
+                    tile.degradable = Convert.ToBoolean(int.Parse(tiParam[1]));
+                    tile.tileType = (TileType)Convert.ToInt32(int.Parse(tiParam[3]));
+                    tile.spawnPositions = (SpawnPositions)int.Parse(tiParam[5]);
+                    tile.levelName = tiParam[6];
+                    tile.currentPos.y = int.Parse(tiParam[7]);
+                    string[] tiSpawner = tiParam[8].Split(";");
+                    if(tiSpawner.Length > 1) 
+                    { 
+                        ItemSpawner it = tile.AddComponent<ItemSpawner>();
+                        foreach(GameObject obj in RessourcesManager.Instance.spawnableItems)
+                        {
+                            if(obj.name == tiSpawner[0])
+                            {
+                                it.chosenItemToSpawn = obj;
+                                goto Skip;
+                            }
+                        }
+                        it.enabled = false;
+                        Skip:
+                        it.spawnTimer = Convert.ToInt32(tiSpawner[1]);
+                        it.loop = Convert.ToBoolean(int.Parse(tiSpawner[2]));
+                        it.spawnPosition = (SpawnPosition)int.Parse(tiSpawner[3]);
                     }
-
-                    /*string[] tisPos = tiRow[5].Split(';');
-
-                    int num = 0;
-                    int mult = 1;
-                    for (int v = 0; v < tisPos.Length; v++)
-                    {
-                        if (tisPos[v] == "1") num += mult;
-                        mult *= 2;
-                    }
-                    tileS.tiles[i, k].spawnPositions.;*/
-
-                    //Debug.Log(int.Parse(tiRow[7][0]));
-                    tileS.tiles[i, k].transform.position = new Vector3(tileS.tiles[i, k].transform.position.x, int.Parse(tiParam[7]), tileS.tiles[i, k].transform.position.z);
                 }
-                switch (tiParam[4])
-                {
-                    case "0": tileS.tiles[i, k].tileSpawnType = TileType.Neutral; break;
-                    case "1": tileS.tiles[i, k].tileSpawnType = TileType.Wood; break;
-                    case "2": tileS.tiles[i, k].tileSpawnType = TileType.Rock; break;
-                    case "3": tileS.tiles[i, k].tileSpawnType = TileType.Gold; break;
-                    case "4": tileS.tiles[i, k].tileSpawnType = TileType.Diamond; break;
-                    case "5": tileS.tiles[i, k].tileSpawnType = TileType.Adamantium; break;
-                    case "6": tileS.tiles[i, k].tileSpawnType = TileType.Sand; break;
-                    case "7": tileS.tiles[i, k].tileSpawnType = TileType.BouncyTile; break;
-                    case "8": tileS.tiles[i, k].tileSpawnType = TileType.LevelLoader; break;
-                    case "9": tileS.tiles[i, k].tileSpawnType = TileType.construction; break;
-                }
-
-                tileS.tiles[i, k].levelName = tiRow[6];
-
             }
         }
         string[] strings = tileMapInfo.Split('(');
@@ -97,18 +74,22 @@ public static class GridUtils
 
     public static Tile WorldPosToTile(Vector3 pos)
     {
+        TileSystem ts;
+        if(TileSystem.Instance != null)ts = TileSystem.Instance;
+        else ts = GameObject.FindObjectOfType<TileSystem>();
         float xOffset = 0;
         int x;
         int z;
 
 
-        z = Mathf.RoundToInt(pos.z / (TileSystem.Instance.tilePrefab.transform.localScale.z * 1.48f));
-        if (z % 2 == 1) xOffset = TileSystem.Instance.tilePrefab.transform.localScale.x * .9f;
-        x = Mathf.RoundToInt((pos.x - xOffset) / (TileSystem.Instance.tilePrefab.transform.localScale.x * 1.7f));
-
-        if(TileSystem.Instance.tiles.Length > x && TileSystem.Instance.tiles.LongLength > z) return TileSystem.Instance.tiles[x, z];
+        z = Mathf.RoundToInt(pos.z / (ts.tilePrefab.transform.localScale.z * 1.48f));
+        if (z % 2 == 1) xOffset = ts.tilePrefab.transform.localScale.x * .9f;
+        x = Mathf.RoundToInt((pos.x - xOffset) / (ts.tilePrefab.transform.localScale.x * 1.7f));
+        
+        if(ts.tiles.Length > x && ts.tiles.LongLength > z) return ts.tiles[x, z];
         else return null;
     }
+
     public static Vector3 indexToWorldPos(int x, int z, Vector3 ogPos, Transform tT)
     {
         float xOffset = 0;
@@ -128,7 +109,6 @@ public static class GridUtils
         bool isOver = false;
         tis.lerpingSpeed = .1f;
         int j = 0;
-        tis.ready = false;
         foreach (var item in GameObject.FindObjectsOfType<Player>())
         {
             item.respawnTile = tile;
@@ -195,13 +175,16 @@ public static class GridUtils
 
 
         yield return new WaitForSeconds(2);
-        //SceneManager.LoadScene(levelToLoad, LoadSceneMode.Single);
+        foreach(Interactor inte in GameObject.FindObjectsOfType<Interactor>())
+        {
+            GameObject.Destroy(inte.gameObject);
+        }
         LoadLevelMap(toHub);
         if (onLevelMapLoad != null) onLevelMapLoad();
         //GameObject.Destroy(PlayersManager.Instance.gameObject);
         //GameObject obj = Resources.Load("") as GameObject;
         //GameObject.Instantiate(obj);
-        tis.ready = false;
+        //tis.ready = false;
     }
 
     public static IEnumerator ElevateWorld(Tile _centerTile)

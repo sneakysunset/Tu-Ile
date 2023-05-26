@@ -98,7 +98,7 @@ public class Item : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning", transform.position);
         Physics.IgnoreCollision(other, col, true);
         System.Type type = this.GetType();
-        StartCoroutine(MissionManager.Instance.CheckElimMission(type));
+        //StartCoroutine(MissionManager.Instance.CheckElimMission(type));
         if (_player)
         {
             _player.heldItem = null;

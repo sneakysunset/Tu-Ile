@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class TileMovements : MonoBehaviour
 {
-    TileSystem tileS;
     [Range(0,10)]public float degradationLerpSpeed;
     [Range(0,10)]public float tileGrowthLerpSpeed;
-    
-    private void Start()
-    {
-        tileS = GetComponent<TileSystem>();
-    }
+   
 
     private void TileMovement()
     {
-        foreach (Tile tile in tileS.tiles)
+        foreach (Tile tile in TileSystem.Instance.tiles)
         {
             Vector3 localPos = tile.transform.localPosition;
             float distance = 1;
@@ -31,7 +26,7 @@ public class TileMovements : MonoBehaviour
                 }
                 else
                 {
-                    tile.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), degradationLerpSpeed * Time.deltaTime * tile.degSpeed * tileS.lerpingSpeed * distance));
+                    tile.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), degradationLerpSpeed * Time.deltaTime * tile.degSpeed * TileSystem.Instance.lerpingSpeed * distance));
                 }   
             }
         }
@@ -39,6 +34,6 @@ public class TileMovements : MonoBehaviour
 
     private void FixedUpdate()
     {
-        TileMovement();
+        if(TileSystem.Instance.ready) TileMovement();
     }
 }

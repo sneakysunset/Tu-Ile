@@ -109,7 +109,8 @@ public class Item_Etabli : Item
         //transform.localPosition = new Vector3(transform.localPosition.x, /*tileUnder.transform.localPosition.y +*/ 14.6f, transform.localPosition.z);
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 100, LayerMask.GetMask("Tile")))
         {
-            transform.position = hit.point + transform.localScale.y * Vector3.up;
+            transform.position = hit.point + transform.localScale.y * 2 * Vector3.up;
+            transform.LookAt(new Vector3(tileUnder.transform.position.x, transform.position.y, tileUnder.transform.position.z));
         }
     }
 
@@ -364,7 +365,7 @@ public class Item_Etabli : Item
         if (!Application.isPlaying)
         {
             Tile tileUnder = GridUtils.WorldPosToTile(transform.position);
-            if (tileUnder != null && restraintEditorMovement)
+            if (tileUnder != null && restraintEditorMovement && (transform.rotation.eulerAngles.y % 60 != 0 || transform.position.y != tileUnder.transform.position.y + GameConstant.tileHeight + .4f))
             {
                 float yAngle = transform.eulerAngles.y - (transform.eulerAngles.y - 30) % 60;
                 Quaternion quat = Quaternion.Euler(0, yAngle, 0);

@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using NaughtyAttributes;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System.Linq.Expressions;
 
 [System.Flags]
 public enum SpawnPositions
@@ -24,7 +25,18 @@ public enum SpawnPositions
     Everything = 0b1111
 }
 
-public enum TileType { Neutral, Wood, Rock, Gold, Diamond, Adamantium, Sand, BouncyTile, LevelLoader, construction };
+public enum SpawnPosition
+{
+    Pos1 = 1,
+    Pos2 = 2,
+    Pos3 = 3,
+    Pos4 = 4,
+    Pos5 = 5,
+    Pos6 = 6,
+    Pos7 = 7
+}
+
+public enum TileType { Neutral = 0, Wood = 1, Rock = 2, Gold = 3, Diamond = 4, Adamantium = 5, Sand = 6, BouncyTile = 7, LevelLoader = 8, construction = 9 };
 
 [SelectionBase]
 
@@ -86,7 +98,6 @@ public class Tile : MonoBehaviour
 
     #region Components
     [HideInInspector] public Transform visualRoot;
-    [HideInInspector] public TileSystem tileS;
     [HideInInspector] public MeshRenderer myMeshR;
     [HideInInspector] public MeshFilter myMeshF;
     [HideInInspector] public MeshCollider myMeshC;
@@ -125,6 +136,8 @@ public class Tile : MonoBehaviour
 
     #region Call Methods
 
+    public bool EditPos;
+
     private void IsMovingCallBack(bool value)
     {
         isMoving = value;
@@ -150,6 +163,9 @@ public class Tile : MonoBehaviour
 
     private void Awake()
     {
+        GridUtils.onLevelMapLoad += OnMapLoad;
+        CameraCtr.startUp += OnStartUp;
+
         if(TileSystem.Instance.isHub && tileType == TileType.LevelLoader)
         {
             Transform tr = transform.GetChild(8);
@@ -161,13 +177,13 @@ public class Tile : MonoBehaviour
             transform.GetChild(9).gameObject.SetActive(true);   
         }
 
+
         rb = GetComponent<Rigidbody>();
 
-        CameraCtr.startUp += OnStartUp;
         if (!walkable)
         {
             Vector3 v = transform.position;
-            v.y = -heightByTile * 5;
+            v.y = -heightByTile * 10;
             transform.position = v;
         }
         tileD = GetComponent<Tile_Degradation>();
@@ -208,11 +224,58 @@ public class Tile : MonoBehaviour
     private void OnDisable()
     {
         CameraCtr.startUp -= OnStartUp;
+        GridUtils.onLevelMapLoad -= OnMapLoad;
     }
 
     private void OnStartUp()
     {
         readyToRoll = true;
+    }
+
+    private void OnMapLoad()
+    {
+        if (walkable)
+        {
+            if(!myMeshR.enabled) myMeshR.enabled = true;
+            walkedOnto = false;
+            if ((!degradable || tileType == TileType.Sand || tileType == TileType.BouncyTile) && !TileSystem.Instance.isHub)
+            {
+                pSysIsPlaying = false;
+                walkedOnto = true;
+            }
+            else if (!walkedOnto && degradable && !TileSystem.Instance.isHub)
+            {
+                pSys.Play();
+                pSysIsPlaying = true;
+            }
+
+            int myInt = Convert.ToInt32(spawnPositions);
+            bool[] bools = Utils.GetSpawnPositions(myInt);
+            for (int i = 0; i < bools.Length; i++)
+            {
+                if (bools[i])
+                {
+                    Transform tr = transform.GetChild(0).GetChild(i);
+                    if(!tr.gameObject.activeInHierarchy)tr.gameObject.SetActive(true);
+                    SpawnItem(tr);
+                }
+            }
+            myMeshR.materials = getCorrespondingMat(tileType);
+            myMeshF.mesh = getCorrespondingMesh(tileType);
+            gameObject.layer = LayerMask.NameToLayer("Tile");
+            transform.tag = "Tile";
+            timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
+            TileSystem.Instance.tileC.Count();
+            if (tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Play();
+            if (tileType == TileType.BouncyTile) rb.isKinematic = false;
+            isGrowing = true;
+            if (TileSystem.Instance.isHub && tileType == TileType.LevelLoader)
+            {
+                Transform tr = transform.GetChild(8);
+                tr.gameObject.SetActive(true);
+                levelUI = tr.GetComponent<LevelUI>();
+            }
+        }
     }
 
     private void Update()
@@ -246,7 +309,7 @@ public class Tile : MonoBehaviour
             //myMeshR.material.color = penguinedColor;
 
         }
-        else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType != TileType.Sand && !tileS.isHub)
+        else if(!isPenguined && myMeshR.material.color == penguinedColor && tileType != TileType.Sand && !TileSystem.Instance.isHub)
         {
             //myMeshR.material.color = walkedOnColor;
             Material[] mats = myMeshR.materials;
@@ -254,7 +317,6 @@ public class Tile : MonoBehaviour
             //myMeshR.materials = mats;
         }
     }
-
 
     private void LateUpdate()
     {
@@ -289,12 +351,12 @@ public class Tile : MonoBehaviour
             myMeshR.materials = getCorrespondingMat(tileType);
         }
 
-        if (walkable && (!degradable || tileType == TileType.Sand || tileType == TileType.BouncyTile) && !tileS.isHub)
+        if (walkable && (!degradable || tileType == TileType.Sand || tileType == TileType.BouncyTile) && !TileSystem.Instance.isHub)
         {
             pSysIsPlaying = false;
             walkedOnto = true;
         }
-        else if (walkable && !walkedOnto && degradable && !tileS.isHub)
+        else if (walkable && !walkedOnto && degradable && !TileSystem.Instance.isHub)
         {
             pSys.Play();
             pSysIsPlaying = true;
@@ -327,25 +389,24 @@ public class Tile : MonoBehaviour
         tileType = tType;
         spawning = true;
         walkable = true;
-        gameObject.layer = LayerMask.NameToLayer("Tile");
         myMeshR.enabled = true;
+        gameObject.layer = LayerMask.NameToLayer("Tile");
+        transform.tag = "Tile";
+        timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
         myMeshF.mesh = getCorrespondingMesh(tileType);
-        myMeshC.sharedMesh = colliderMesh;
         Material[] mats = getCorrespondingMat(tileType);
+        TileSystem.Instance.tileC.Count();
+        if (tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Play();
+        if (tileType == TileType.BouncyTile) rb.isKinematic = false;
+        isGrowing = true;
         myMeshR.materials = mats;
         typeDegradingSpeed = degradingSpeed;
         //myMeshR.material.color = walkedOnColor;
-        transform.Find("Additional Visuals").gameObject.SetActive(true);
-        minableItems.gameObject.SetActive(true);
-        timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
+        //transform.Find("Additional Visuals").gameObject.SetActive(true);
+        //minableItems.gameObject.SetActive(true);
         isDegrading = false;
         transform.position = new Vector3(transform.position.x, -7f, transform.position.z) ;
-        transform.tag = "Tile";
         currentPos.y = height - (height % heightByTile);
-        isGrowing = true;
-        tileS.tileC.Count();
-        if (tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Play();
-        if (tileType == TileType.BouncyTile) rb.isKinematic = false;
     }
     private void GetAdjCoords()
     {
@@ -403,6 +464,34 @@ public class Tile : MonoBehaviour
             }
         }
     }
+
+    public void SpawnItem(Transform t)
+    {
+        Interactor prefab = null;
+        switch (tileSpawnType)
+        {
+            case TileType.Wood:
+                prefab = TileSystem.Instance.tileM.treePrefab;
+                break;
+            case TileType.Rock:
+                prefab = TileSystem.Instance.tileM.rockPrefab;
+                break;
+            case TileType.Gold:
+                prefab = TileSystem.Instance.tileM.goldPrefab;
+                break;
+            case TileType.Diamond:
+                prefab = TileSystem.Instance.tileM.diamondPrefab;
+                break;
+            case TileType.Adamantium:
+                prefab = TileSystem.Instance.tileM.adamantiumPrefab;
+                break;
+        }
+        Interactor obj = Instantiate(prefab, null);
+        obj.type = tileSpawnType;
+        obj.transform.parent = t;
+        obj.transform.position = t.position;
+        obj.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
+    }
     #endregion
 
     #region Editor
@@ -414,15 +503,18 @@ public class Tile : MonoBehaviour
         //mat[0].color = Color.Lerp(falaiseColor, Color.white, f);
         if (!walkable)
         {
+            myMeshR.enabled = false;
+            myMeshC.enabled = false;
+            
             mat[1] = disabledMat;
             mat[0] = disabledMat;
         }
-        else if (this == TileSystem.Instance.centerTile)
+        else if (TileSystem.Instance && ( this == TileSystem.Instance.centerTile || tileType == TileType.LevelLoader))
         {
             mat[1] = centerTileMat;
             mat[0] = centerTileMatBottom;
         }
-        else if (!degradable)
+        else if (!degradable && tileType != TileType.LevelLoader)
         {
             mat[1] = undegradableMat;
             mat[0] = undegradableMatBottom;
@@ -443,6 +535,11 @@ public class Tile : MonoBehaviour
                 default: mat[1] = plaineMatTop; mat[0] = plaineMatBottom; break;
             }
         }
+        if(walkable && !myMeshR.enabled)
+        {
+            myMeshR.enabled = true;
+            myMeshC.enabled = true;
+        }
 
         return mat;
     }
@@ -451,11 +548,11 @@ public class Tile : MonoBehaviour
     {
         Mesh mesh;
 
-        if (this == TileSystem.Instance.centerTile)
+        if (TileSystem.Instance && this == TileSystem.Instance.centerTile)
         {
             mesh = centerTileMesh;
         }
-        else if (!degradable)
+        else if (!degradable && tileType != TileType.LevelLoader)
         {
             mesh = undegradableMesh;
         }
@@ -527,7 +624,7 @@ public class Tile : MonoBehaviour
     public Mesh constructionMesh;
     private void OnDrawGizmos()
     {
-        if(heightByTile != 0 && !Application.isPlaying)
+        if(heightByTile != 0 && !Application.isPlaying && transform.position.y % heightByTile != 0)
         {
             float r = transform.position.y % heightByTile;
             transform.position = new Vector3(transform.position.x, transform.position.y - r, transform.position.z);
@@ -567,11 +664,10 @@ public class TileEditor : Editor
 
     private void OnSceneGUI()
     {
-        Draw();
+        if(tile.EditPos) Draw();
 
-        SpawnOnTile();
+        if(tile.spawnSpawners) SpawnOnTile();
 
-        EditorUtility.SetDirty(tile);
     }
     
     private void Draw()
@@ -593,13 +689,13 @@ public class TileEditor : Editor
             }
             Handles.Label(t.GetChild(i).position + Vector3.up * 1, (i + 1).ToString(), gUIStyle) ;
         }
+
+        EditorUtility.SetDirty(tile);
     }
 
     private void SpawnOnTile()
     {
-
-
-        if (tile.spawnSpawners && tile.tileSpawnType != TileType.Neutral)
+        if (tile.tileSpawnType != TileType.Neutral)
         {
             TileMats tileM = FindObjectOfType<TileMats>();
 
@@ -618,12 +714,13 @@ public class TileEditor : Editor
             {
                 if (bools[i])
                 {
-                    SpawnItem(t.GetChild(i), tileM);
+                    TileSystem.Instance.tileM = TileSystem.Instance.GetComponent<TileMats>();
+                    SpawnItem(t.GetChild(i));
                 }
             }
             tile.spawnSpawners = false;
         }
-        else if (tile.spawnSpawners && tile.tileSpawnType == TileType.Neutral)
+        else if (tile.tileSpawnType == TileType.Neutral)
         {
             tile.spawnSpawners = false;
 
@@ -635,37 +732,40 @@ public class TileEditor : Editor
                 }
             }
         }
+
+        EditorUtility.SetDirty(tile);
     }
 
-    private GameObject SpawnItem(Transform t, TileMats tileM)
+
+
+    public GameObject SpawnItem(Transform t)
     {
-        GameObject prefab = null;
+        Interactor prefab = null;
         switch (tile.tileSpawnType)
         {
             case TileType.Wood:
-                prefab = tileM.treePrefab;
+                prefab = TileSystem.Instance.tileM.treePrefab;
                 break;
             case TileType.Rock:
-                prefab = tileM.rockPrefab;
+                prefab = TileSystem.Instance.tileM.rockPrefab;
                 break;
             case TileType.Gold:
-                prefab = tileM.goldPrefab;
+                prefab = TileSystem.Instance.tileM.goldPrefab;
                 break;
             case TileType.Diamond:
-                prefab = tileM.diamondPrefab;
+                prefab = TileSystem.Instance.tileM.diamondPrefab;
                 break;
             case TileType.Adamantium:
-                prefab = tileM.adamantiumPrefab;
+                prefab = TileSystem.Instance.tileM.adamantiumPrefab;
                 break;
         }
-        GameObject obj = PrefabUtility.InstantiatePrefab(prefab, null) as GameObject;
-        Interactor inter = obj.GetComponent<Interactor>();
-        inter.type = tile.tileSpawnType;
+        Interactor obj = PrefabUtility.InstantiatePrefab(prefab, null) as Interactor;
+        obj.type = tile.tileSpawnType;
         obj.transform.parent = t;
         obj.transform.position = t.position;
         //obj.transform.LookAt(new Vector3(tile.transform.position.x, obj.transform.position.y, tile.transform.position.z));
         obj.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
-        return obj;
+        return obj.gameObject;
     }
 }
 #endif

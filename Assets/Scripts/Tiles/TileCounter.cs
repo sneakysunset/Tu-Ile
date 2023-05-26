@@ -84,6 +84,6 @@ public class TileCounter : MonoBehaviour
         goldCount = goldNum;
         diamondCount = diaNum;
         adamantiumCount = adamNum;
-        missionManager.CheckMissions();
+        //missionManager.CheckMissions();
     }
 }

@@ -66,6 +66,10 @@ public class Player : MonoBehaviour
     {
         respawnTile = TileSystem.Instance.centerTile;
         pState = PlayerState.Idle;
+        float x = Mathf.Abs(TileSystem.Instance.centerTile.transform.position.x - TileSystem.Instance.previousCenterTile.transform.position.x);
+        float z = Mathf.Abs(TileSystem.Instance.centerTile.transform.position.z - TileSystem.Instance.previousCenterTile.transform.position.z);
+        Vector3 diff = new Vector3(x, 0, z);
+        transform.Translate(diff);
         if(heldItem != null )
         {
             Destroy(heldItem.gameObject);
@@ -76,7 +80,6 @@ public class Player : MonoBehaviour
     private void Start()
     {
 
-        DontDestroyOnLoad(this.gameObject);
         respawnTile = TileSystem.Instance.centerTile;
         interactors = new List<Interactor>();
         holdableItems = new List<Item>();
@@ -125,6 +128,11 @@ public class Player : MonoBehaviour
 
         if (isShipped) _characterController.enabled = false;
 
+    }
+
+    private void OnDisable()
+    {
+        GridUtils.onLevelMapLoad -= OnLoad;
     }
 
     private void AnimationStatesHandler()

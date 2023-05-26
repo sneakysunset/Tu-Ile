@@ -170,3 +170,10 @@ MonoBehaviour:
   mChickenElim: {fileID: 21300000, guid: b684b903aba26e14185bbba8b3903f91, type: 3}
   mCompass: {fileID: 21300000, guid: 3d4e128ca7f2e8f49935a65f17906165, type: 3}
   mConstr: {fileID: 21300000, guid: 606673800bf48d74396797ec07b7fa7b, type: 3}
+  spawnableItems:
+  - {fileID: 8888129459989820106, guid: b2c9ab1516a45874b9446697f1dfc0b8, type: 3}
+  - {fileID: 1993684740632381338, guid: e8d87e7fb08b7c641a4addb585c727e3, type: 3}
+  - {fileID: 3388698492052617944, guid: fce0e83e28c991d42a35cd94a6409487, type: 3}
+  - {fileID: 4377360843773846542, guid: 55c071a6a35b3d444a3bd6d264d74561, type: 3}
+  - {fileID: 6122129862733760003, guid: d7407368c4cdd8f46b94b8effe3ae987, type: 3}
+  - {fileID: 7644044209496618633, guid: bf93c3324d307044f873e1db14dc7521, type: 3}
