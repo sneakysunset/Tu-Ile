@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2198949688653012757}
   - component: {fileID: 3120364899379129663}
   - component: {fileID: 4173279834238775216}
-  - component: {fileID: 9222783304278118907}
   m_Layer: 0
   m_Name: TileManager
   m_TagString: Untagged
@@ -243,22 +242,3 @@ MonoBehaviour:
   notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
   walkedOnColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
   acceleratedDegradationColor: {r: 0.9528302, g: 0, b: 0, a: 1}
---- !u!114 &9222783304278118907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5154630093807575301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 512e11ac91ed554419124c19536e55c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numberOfTilesLinked: 0
-  neutralCount: 0
-  woodCount: 0
-  rockCount: 0
-  goldCount: 0
-  diamondCount: 0
-  adamantiumCount: 0

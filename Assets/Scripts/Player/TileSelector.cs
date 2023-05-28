@@ -137,8 +137,8 @@ public class TileSelector : MonoBehaviour
 
         if(Application.isPlaying && player.tileUnder)
         {
-            Gizmos.DrawRay(new Vector3(transform.position.x, player.tileUnder.transform.position.y, transform.position.z), transform.forward * hitDistance);
-            Gizmos.DrawSphere(player.tileUnder.transform.position, 1);
+            Gizmos.DrawRay(transform.position + hitDistance * transform.forward, -Vector3.up * 2000);
+            Gizmos.DrawSphere(transform.position + transform.forward * hitDistance, .1f);
         }
     }
     #endregion
@@ -147,10 +147,12 @@ public class TileSelector : MonoBehaviour
     #region Tile Spawning
     private void BluePrintPlacement()
     {
-        bool c1 = Physics.Raycast(new Vector3(transform.position.x, player.tileUnder.transform.position.y, transform.position.z), transform.forward, out RaycastHit hit, hitDistance, tileLayer);
+        bool c3 = player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile);
+        if (!c3) goto NotHit;
+        Vector3 originCast = transform.position + transform.forward * hitDistance;
+        bool c1 = Physics.Raycast(originCast, -Vector3.up, out RaycastHit hit, 2000, tileLayer);
         if (!c1) goto NotHit;
         bool c2 = hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && !targettedTile.tourbillon;
-        bool c3 = player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile);
         if (c1 && c2  && c3)
         {
             tileBluePrint.position = new Vector3(targettedTile.transform.position.x, (GameConstant.tileHeight + player.tileUnder.transform.position.y), targettedTile.transform.position.z);
@@ -159,7 +161,7 @@ public class TileSelector : MonoBehaviour
         else goto NotHit;
 
         NotHit:
-        tileBluePrint.position = new Vector3(0, -100, 0);
+        if(tileBluePrint.position.y != -100) tileBluePrint.position = new Vector3(0, -100, 0);
         targettedTile = null;
     }
 

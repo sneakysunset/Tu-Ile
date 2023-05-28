@@ -11,6 +11,6 @@ public class ScoreManager : MonoBehaviour
     {
         score += _score;
         score = Mathf.Clamp(score, 0, 9999);
-        scoreText.text = score.ToString();
+       // scoreText.text = score.ToString();
     }
 }

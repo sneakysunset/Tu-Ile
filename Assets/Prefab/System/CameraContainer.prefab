@@ -482,12 +482,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 251dfe663949ddd4eb791bfdc64d40a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dezoomCamera: {fileID: 0}
   cam2: {fileID: 6707003948044665404}
   players: []
   SplitBar: {fileID: 0}
   soloCam: {fileID: 6667387659626017478}
   duoCam2: {fileID: 6962383284795803418}
-  distanceToSplit: 0
   pCols:
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0.74509805, g: 0.41960785, b: 0.101960786, a: 1}
@@ -596,7 +596,7 @@ MonoBehaviour:
   effectIntensity: 1
   distanceFade: 0
   curvaturePixelRadius: 3
-  curvatureBrights: 1.33
+  curvatureBrights: 0
   curvatureDarks: 5
   cavitySamples: 0
   saturateCavity: 1
@@ -882,7 +882,7 @@ MonoBehaviour:
   effectIntensity: 1
   distanceFade: 0
   curvaturePixelRadius: 3
-  curvatureBrights: 1.33
+  curvatureBrights: 0
   curvatureDarks: 5
   cavitySamples: 0
   saturateCavity: 1

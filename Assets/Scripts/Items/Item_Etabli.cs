@@ -140,6 +140,11 @@ public class Item_Etabli : Item
         {
             SetActiveMesh(true);
         }
+        
+        if(craftedItem != null && craftedItem.isHeld)
+        {
+            craftedItem = null;
+        }
     }
     
     public void PlayerNear()
@@ -322,12 +327,12 @@ public class Item_Etabli : Item
         FMODUtils.SetFMODEvent(ref creationInst, "event:/Tuile/Tile/TileCreation", transform);
         yield return waiter;
         FMODUtils.StopFMODEvent(ref creationInst, true);
-        GameObject chantier = Instantiate(recette.craftedItemPrefab, tileUnder.transform.position + recette.craftedItemPrefab.transform.position + Vector3.up * GameConstant.tileHeight, recette.craftedItemPrefab.transform.rotation).gameObject;
-        chantier.transform.parent = tileUnder.transform;
+        //GameObject chantier = Instantiate(recette.craftedItemPrefab, tileUnder.transform.position + recette.craftedItemPrefab.transform.position + Vector3.up * GameConstant.tileHeight, recette.craftedItemPrefab.transform.rotation).gameObject;
+        //chantier.transform.parent = tileUnder.transform;
         constructed = true;
         //FindObjectOfType<MissionManager>().CheckMissions();
         SO_Recette_Chantier re = recette as SO_Recette_Chantier;
-        /*Transform house = */Instantiate(re.loot, spawnPos.position, Quaternion.identity)/*.transform*/;
+        /*Transform house = */Instantiate(re.loot, transform.parent.GetChild(0).GetChild(4).position + .5f * Vector3.up, Quaternion.identity)/*.transform*/;
         //float targetY = house.position.y;
         //house.position -= 5f * Vector3.up;
         //house.DOMoveY(targetY, 2).SetEase(TileSystem.Instance.easeOut);

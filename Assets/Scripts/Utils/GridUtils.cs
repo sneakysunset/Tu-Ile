@@ -21,8 +21,13 @@ public static class GridUtils
         TileSystem tileS = TileSystem.Instance;
         RessourcesManager reMan = RessourcesManager.Instance;
         string n;
-        if (toHub) n = "TM_Hub";
+        if (toHub)
+        {
+            n = "TM_Hub";
+            tileS.fileName = "Hub";
+        }
         else n = "TM_" + tileS.fileName;
+        
         string tileMapInfo = File.ReadAllText(Application.streamingAssetsPath + "/LevelMaps/" + n + ".txt");
         string[] tiLine = tileMapInfo.Split('|');
         for (int i = 0; i < tiLine.Length - 1; i++)
@@ -63,6 +68,7 @@ public static class GridUtils
                 }
             }
         }
+        if (toHub) return;
         string[] strings = tileMapInfo.Split('£');
         char c = strings[1][0];
         char c2 = strings[1][1];
@@ -130,7 +136,7 @@ public static class GridUtils
                             if (ts[i].walkable && ts[i] != tile)
                             {
                                 ts[i].degradable = true;
-                                ts[i].currentPos.y = -10;
+                                ts[i].currentPos.y = -16;
                             }
                             else if (ts[i] == tile)
                             {

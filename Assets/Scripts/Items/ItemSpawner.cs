@@ -15,6 +15,8 @@ public enum SpawnableItems
     Boussole = 7
 }
 
+
+
 public class ItemSpawner : MonoBehaviour
 {
     GameObject spawnedItem;
@@ -56,7 +58,8 @@ public class ItemSpawner : MonoBehaviour
     {
 
         spawnedItem = Instantiate(chosenItemToSpawn, spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up, Quaternion.identity);
-
+        if (itemToSpawn == SpawnableItems.Etabli) spawnedItem.GetComponent<Item_Etabli>().recette = recette;
+        else if (itemToSpawn == SpawnableItems.Chantier) spawnedItem.GetComponent<Item_Etabli>().recette = otherRecette;
         if (!loop) { continueLooping = false; }
     }
 

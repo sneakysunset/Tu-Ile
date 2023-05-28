@@ -34,6 +34,8 @@ public class Tile_Degradation : MonoBehaviour
         if (transform.position.y == tile.currentPos.y) tile.IsMoving = false;
         else tile.IsMoving = true;
 
+
+        if (FMODUtils.IsPlaying(tfFI)) tfFI.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.GetChild(0)));
         //if (tile.walkable && tile.degradable && tile.walkedOnto && tile.tileType != TileType.Sand) Degrading();
 
 /*        if(tile.timer < tile.shakeActivationTime && shakeCor == null)
@@ -121,7 +123,7 @@ public class Tile_Degradation : MonoBehaviour
     void SinkTile()
     {
         tile.walkable = false;
-        tile.currentPos.y = -10f;
+        tile.currentPos.y = -16f;
         gameObject.layer = LayerMask.NameToLayer("DisabledTile");
         //tile.myMeshR.enabled = false;
         //transform.Find("Additional Visuals").gameObject.SetActive(false);

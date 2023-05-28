@@ -56,8 +56,8 @@ public class Item : MonoBehaviour
         rb.velocity = Vector3.zero;
         Physics.IgnoreCollision(col, _player.col);
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Release");
-        _player.holdableItems.Add(this);
-        _player.closestItem = this;
+        //_player.holdableItems.Add(this);
+        //_player.closestItem = this;
         if (!etablied)
         {
             transform.parent = null;
@@ -65,6 +65,7 @@ public class Item : MonoBehaviour
             physic = true;
             Highlight.SetActive(true);            
         }
+        StartCoroutine(MakeClosest());
     }
 
 
@@ -112,5 +113,10 @@ public class Item : MonoBehaviour
         Destroy(gameObject);
     }
 
-
+    public virtual IEnumerator MakeClosest()
+    {
+        yield return new WaitForEndOfFrame();
+        _player.holdableItems.Add(this);
+        _player.closestItem = this;
+    }
 }

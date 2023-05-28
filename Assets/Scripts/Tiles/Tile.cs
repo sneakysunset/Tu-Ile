@@ -90,6 +90,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public bool sandFlag;
     public float shakeMagnitude = .1f;
     public AnimationCurve shakeCurve;
+    private float tourbillonOgY;
     #endregion
 
     #region Interactor Spawning
@@ -203,7 +204,7 @@ public class Tile : MonoBehaviour
     {
         GridUtils.onLevelMapLoad += OnMapLoad;
         CameraCtr.startUp += OnStartUp;
-
+       
         if(TileSystem.Instance.isHub && tileType == TileType.LevelLoader)
         {
             Transform tr = transform.GetChild(8);
@@ -223,7 +224,7 @@ public class Tile : MonoBehaviour
         if (!walkable)
         {
             Vector3 v = transform.position;
-            v.y = -heightByTile * 10;
+            v.y = -heightByTile * 8f;
             transform.position = v;
         }
         tileD = GetComponent<Tile_Degradation>();
@@ -231,9 +232,10 @@ public class Tile : MonoBehaviour
         minableItems = transform.Find("SpawnPositions");
         pSys = transform.GetChild(3).GetComponent<ParticleSystem>();
         pSysCreation = transform.GetChild(7).GetComponent<ParticleSystem>();
+        tourbillonT = transform.Find("Tourbillon");
+        tourbillonOgY = tourbillonT.localPosition.y;
         if (tourbillon)
         {
-            tourbillonT = transform.Find("Tourbillon");
             tourbillonT.Rotate(0, UnityEngine.Random.Range(0f, 360f), 0);
             tourbillonT.Translate(0, UnityEngine.Random.Range(0f, 1f), 0);
             float targetPosY = tourbillonT.position.y;
@@ -291,7 +293,6 @@ public class Tile : MonoBehaviour
                 pSys.Play();
                 pSysIsPlaying = true;
             }
-
             int myInt = Convert.ToInt32(spawnPositions);
             bool[] bools = Utils.GetSpawnPositions(myInt);
             for (int i = 0; i < bools.Length; i++)
@@ -318,16 +319,20 @@ public class Tile : MonoBehaviour
                 tr.gameObject.SetActive(true);
                 levelUI = tr.GetComponent<LevelUI>();
             }
+            tourbillonT.gameObject.SetActive(false);
         }
         else if (tourbillon)
-            {
-                tourbillonT = transform.Find("Tourbillon");
-                tourbillonT.Rotate(0, UnityEngine.Random.Range(0f, 360f), 0);
-                tourbillonT.Translate(0, UnityEngine.Random.Range(0f, 1f), 0);
-                float targetPosY = tourbillonT.position.y;
-                tourbillonT.position -= Vector3.up * 20;
-                tourbillonT.DOMoveY(targetPosY, 5);
-            }
+        {
+            tourbillonT = transform.Find("Tourbillon");
+            tourbillonT.gameObject.SetActive(true);
+            tourbillonT.localPosition = Vector3.up * tourbillonOgY;
+            tourbillonT.Rotate(0, UnityEngine.Random.Range(0f, 360f), 0);
+            tourbillonT.Translate(0, UnityEngine.Random.Range(0f, 1f), 0);
+            float targetPosY = tourbillonT.position.y;
+            tourbillonT.position -= Vector3.up * 20;
+            tourbillonT.DOMoveY(targetPosY, 5);
+        }
+        else tourbillonT.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -362,8 +367,8 @@ public class Tile : MonoBehaviour
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
             myMeshR.enabled = false;
             //GetComponent<Collider>().enabled = false;
-            transform.Find("Additional Visuals").gameObject.SetActive(false);
-            minableItems.gameObject.SetActive(false);
+            //transform.Find("Additional Visuals").gameObject.SetActive(false);
+            //minableItems.gameObject.SetActive(false);
         }
         else
         {
@@ -498,6 +503,9 @@ public class Tile : MonoBehaviour
             case TileType.Adamantium:
                 prefab = TileSystem.Instance.tileM.adamantiumPrefab;
                 break;
+            default:
+                prefab = TileSystem.Instance.tileM.treePrefab;
+                break;
         }
         Interactor obj = Instantiate(prefab, null);
         obj.type = tileSpawnType;
@@ -515,7 +523,6 @@ public class Tile : MonoBehaviour
         if (!walkable)
         {
             myMeshR.enabled = false;
-            myMeshC.enabled = false;
             return null;
             //mat[1] = disabledMat;
             //mat[0] = disabledMat;
@@ -546,10 +553,9 @@ public class Tile : MonoBehaviour
                 default: mat[1] = plaineMatTop; mat[0] = plaineMatBottom; break;
             }
         }
-        if(walkable && (!myMeshR.enabled || !myMeshC.enabled))
+        if(walkable && !myMeshR.enabled)
         {
             myMeshR.enabled = true;
-            myMeshC.enabled = true;
         }
 
         return mat;
@@ -699,7 +705,7 @@ public class TileEditor : Editor
         if(tile.EditPos) Draw();
 
         if(tile.spawnSpawners) SpawnOnTile();
-
+       
 
         HandleMovement();
     }

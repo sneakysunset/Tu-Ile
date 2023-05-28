@@ -60,7 +60,6 @@ public class ItemSystem : MonoBehaviour
             }
             else
             {
-
                 player.closestItem.GrabStarted(holdPoint, player);
                 player.holdableItems.Remove(player.closestItem);
             }

@@ -117,7 +117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: lerpCurve.m_Curve.Array.size
