@@ -147,6 +147,7 @@ public class PlayerMovement : MonoBehaviour
             var targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg;
             var angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _currentVelocity, smoothTime);
             transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+            player.dummyTarget.rotation = Quaternion.Euler(0, -angle, 0);
         }
     }
 

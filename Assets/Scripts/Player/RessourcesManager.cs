@@ -40,14 +40,16 @@ public struct recetteResultCollec
 public class RessourcesManager : MonoBehaviour
 {
     public int growthCost;
-    public List<ressourceMeshsCollec> RessourceMeshs;
-    public List<ressourceMeshCollecUnstackable> RessourceMeshsUnstackable;
-    public List<recetteResultCollec> ressourceRecettesResults;
-    public List<Sprite> mSTileCreation;
-    public Sprite mChickenElim;
+    public ressourceMeshsCollec[] RessourceMeshs;
+    public ressourceMeshCollecUnstackable[] RessourceMeshsUnstackable;
+    public recetteResultCollec[] ressourceRecettesResults;
+    //public Sprite[] mSTileCreation;
+/*    public Sprite mChickenElim;
     public Sprite mCompass;
-    public Sprite mConstr;
-    public List<GameObject> spawnableItems;
+    public Sprite mConstr;*/
+    public GameObject[] spawnableItems;
+    public List<GameTimer> gameManagers;
+    public SO_Recette[] recettes;
     public static RessourcesManager Instance { get; private set; }
 
     private void Awake()
@@ -60,5 +62,23 @@ public class RessourcesManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    public GameObject getSpawnableFromList(string spawnableName)
+    {
+        foreach(var item in spawnableItems)
+        {
+            if(item.name == spawnableName) return item;
+        }
+        return null;
+    }
+
+    public SO_Recette getRecetteFromList(string recetteName)
+    {
+        foreach(var recette in recettes)
+        {
+            if (recetteName == recette.ToString()) return recette;
+        }
+        return null;
     }
 }

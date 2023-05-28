@@ -78,7 +78,7 @@ public class Interactor : MonoBehaviour
 
     private void Update()
     {
-        isFaded = false;
+        //isFaded = false;
     }
 
     public virtual void OnInteractionEnter(Player player)
@@ -184,7 +184,7 @@ public class Interactor : MonoBehaviour
     #region FadeTile
     private void LateUpdate()
     {
-        UnFadeTile();
+        //UnFadeTile();
     }
 
     public void FadeTile(float t)

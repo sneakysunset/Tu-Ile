@@ -67,7 +67,7 @@ public class Item_Crate : Item
     private void GiveRewards()
     {
         int i = 0;
-        ScoreManager.Instance.ChangeScore(scoreReward);
+        TileSystem.Instance.scoreManager.ChangeScore(scoreReward);
         if (itemReward)
         {
             if (isRandom)

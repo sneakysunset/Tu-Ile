@@ -1,0 +1,165 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6354948749326121284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6354948749326121286}
+  - component: {fileID: 7337067159720949784}
+  - component: {fileID: 6472450743787329740}
+  - component: {fileID: 5061697531550802697}
+  - component: {fileID: 3788939789299586273}
+  m_Layer: 0
+  m_Name: Ile 3_GM
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6354948749326121286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 63, y: 27.347, z: 40.554}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7337067159720949784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe4bad037d7c606408655b7775b26b09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  compassMissions:
+  - {fileID: 11400000, guid: 316e16ae3e49b5b44a82c452635e199f, type: 2}
+  - {fileID: 11400000, guid: 316e16ae3e49b5b44a82c452635e199f, type: 2}
+  minCompassM: 0
+  maxCompassM: 1
+  compassMissionSlots: 1
+--- !u!114 &6472450743787329740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da51dc8b74db77d4f8aba95ec59398a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events: []
+  gameTimer: 300
+  timer: 0
+  LevelEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  apocalypseImage: {fileID: 21300000, guid: a7c6f9ade6c4b504385395ac8af38f7b, type: 3}
+  newPageImage: {fileID: 21300000, guid: 639445af5561eaa438655cabe913244c, type: 3}
+  ephemeralMissionImage: {fileID: 21300000, guid: 3c6c1f7c30a584c42b958af4e3f85bfd, type: 3}
+  eventVisualPrefab: {fileID: 2026664673166425894, guid: b8ce6079d7aa49945a1fb7cd9373b195, type: 3}
+  secondBar: {fileID: 1185876906053481542, guid: 4041be0b1c80c044b87440fcc76d724f, type: 3}
+  minuteBar: {fileID: 7334830493600781002, guid: 60a3955a1a4772640805888a853845b8, type: 3}
+  sceneLoadName: Hub
+  UIPos: {fileID: 0}
+  timerFillImage: {fileID: 0}
+  eventFolder: {fileID: 0}
+  minuteFolder: {fileID: 0}
+  lerpCurveEaseIn:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  lerpCurveEaseOut:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  lerpSpeed: 3
+--- !u!114 &5061697531550802697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ed516d516837f94d875d1341e876652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 0}
+--- !u!114 &3788939789299586273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354948749326121284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 512e11ac91ed554419124c19536e55c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberOfTilesLinked: 0
+  neutralCount: 0
+  woodCount: 0
+  rockCount: 0
+  goldCount: 0
+  diamondCount: 0
+  adamantiumCount: 0

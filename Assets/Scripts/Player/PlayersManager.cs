@@ -28,14 +28,8 @@ public class PlayersManager : MonoBehaviour
             Instance = this;
         }
 
-        GridUtils.onLevelMapLoad += OnLevelLoad;
     }
 
-    void OnLevelLoad()
-    {
-        GetComponent<GameTimer>().enabled = true;
-        GetComponent<CompassMissionManager>().enabled = true;
-    }
 
 
     private IEnumerator Start()
@@ -52,7 +46,7 @@ public class PlayersManager : MonoBehaviour
         PauseMenu pM = FindObjectOfType<PauseMenu>();
         //pM.transform.GetChild(0).gameObject.SetActive(true);
         //pM.gameObject.SetActive(false);
-        SplitScreenEffect sse = FindObjectOfType<SplitScreenEffect>();
+        //SplitScreenEffect sse = FindObjectOfType<SplitScreenEffect>();
         for (int i = 0; i < players.Length; i++)
         {
             if(cam.players == null || cam.players.Count == 0)
@@ -74,8 +68,6 @@ public class PlayersManager : MonoBehaviour
 
     private void OnDisable()
     {
-        // Unsubscribe from the onDeviceChange event
-        GridUtils.onLevelMapLoad -= OnLevelLoad;
         InputSystem.onDeviceChange -= PlayerDisconnect;
     }
 

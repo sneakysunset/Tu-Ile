@@ -2314,7 +2314,6 @@ MonoBehaviour:
   coordX: 0
   coordFX: 0
   coordY: 0
-  walkedOnto: 0
   currentPos: {x: 0, y: 0, z: 0}
   adjTCoords: []
   heightByTile: 0
@@ -2363,7 +2362,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shakeActivationTime: 30
   spawnPoints:
   - {fileID: 1949783130783487149}
   - {fileID: 4691495834763128532}
@@ -2403,6 +2401,9 @@ MonoBehaviour:
   notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
   penguinedColor: {r: 0.8584906, g: 0.28076416, b: 0.28076416, a: 1}
   falaiseColor: {r: 0.7921569, g: 0.64705884, b: 0.64705884, a: 1}
+  gizmoOffset: 22.6
+  destination: {x: 0, y: 0, z: 0}
+  faded: 0
   isPathChecked: 0
   step: 0
   isPenguined: 0
@@ -3582,7 +3583,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.15}
+  m_AnchoredPosition: {x: 0, y: 1.42}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7954093372290865264
@@ -4076,7 +4077,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9096294599413045969}
   m_LocalRotation: {x: -0, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 19.6, z: 0}
+  m_LocalPosition: {x: 0, y: 25, z: 0}
   m_LocalScale: {x: 0.08197775, y: 0.20494436, z: 0.08197775}
   m_ConstrainProportionsScale: 1
   m_Children:

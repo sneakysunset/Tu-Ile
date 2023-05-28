@@ -20,27 +20,35 @@ public class TileSystem : MonoBehaviour
     public bool GenerateMap;
     public int columns, rows;
     public string fileName;
-    [HideInInspector, SerializeField] public Tile[,] tiles;
+    [HideInInspector] public Tile[,] tiles;
     public Tile tilePrefab;
     [HideInInspector] public TileParameters tileP;
     [HideInInspector] public TileMats tileM;
-    private GameTimer gT;
+    [HideInInspector] public TileMovements tileMov;
     [HideInInspector] public Vector3 gridOgTile;
     static bool editorFlag = false;
     public Tile centerTile;
     [HideInInspector] public Transform tileFolder;
-    [HideInInspector] public TileCounter tileC;
     public bool isHub;
-    public static TileSystem Instance { get; private set; }
+    public static TileSystem Instance { get;  set; }
     [HideNormalInspector] public float degradationTimerModifier;
     float timerInterpolateValue;
     [HideInInspector] public bool ready = true;
     [HideNormalInspector] public float lerpingSpeed = 1;
-    [HideInInspector] public float waitTimer = .3f;
     [HideNormalInspector] public Tile previousCenterTile;
+    [HideInInspector] public WaitForSeconds shakeWaiter;
+    [HideInInspector] public WaitForSeconds shakeLongWaiter;
+
+    [HideInInspector] public CameraCtr cam;
+    [HideInInspector] public PlayersManager playersMan;
+    [HideInInspector] public TileCounter tileCounter;
+    [HideInInspector] public GameTimer gameTimer;
+    [HideInInspector] public ScoreManager scoreManager;
+    [HideInInspector] public CompassMissionManager compassManager;
+    public AnimationCurve easeIn, easeOut, easeInOut;
+    public RessourcesManager ressourcesManagerPrefab;
     private void Awake()
     {
-
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -50,22 +58,23 @@ public class TileSystem : MonoBehaviour
             Instance = this;
         }
 
-
+        cam = FindObjectOfType<CameraCtr>();
+        playersMan = FindObjectOfType<PlayersManager>();
+        if (!isHub)
+        {
+            gameTimer = FindObjectOfType<GameTimer>();
+            compassManager = gameTimer.GetComponent<CompassMissionManager>();
+            tileCounter = gameTimer.GetComponent<TileCounter>();
+            scoreManager = gameTimer.GetComponent<ScoreManager>();
+        }
+        shakeLongWaiter = new WaitForSeconds(tileP.shakeActivationTime);
+        shakeWaiter = new WaitForSeconds(tileP.shakeFrequency);
         if (this.enabled)
         {
             RegenGrid();
         }
-
-        tileC = GetComponent<TileCounter>();
+        tileMov = GetComponent<TileMovements>();
         GridUtils.onLevelMapLoad += OnLoadScene;
-    }
-
-    private void Start()
-    {
-        if (!isHub)
-        {
-            GameTimer gt = FindObjectOfType<GameTimer>();
-        }
     }
 
     private void OnDisable()
@@ -76,31 +85,39 @@ public class TileSystem : MonoBehaviour
 
     private void OnLoadScene()
     {
-        if(gT == null) gT = FindObjectOfType<GameTimer>();
-        if (fileName != "Hub") isHub = false;
-        else isHub = true;
-
-        //StartCoroutine(ElevateWorld());
-        Vector2Int vector2Int = FindObjectOfType<CameraCtr>().tileLoadCoordinates;
-        if (!isHub)
+        if(gameTimer != null) Destroy(gameTimer.gameObject);
+        if (fileName != "Hub")
         {
+            isHub = false;
             previousCenterTile.transform.GetChild(9).gameObject.SetActive(false);
             centerTile.transform.GetChild(9).gameObject.SetActive(true);
+
+            foreach (GameTimer gt in RessourcesManager.Instance.gameManagers)
+            {
+                if (gt.gameObject.name.Split('_')[0] == fileName)
+                {
+                    gameTimer = Instantiate(gt);
+                    break;
+                }
+            }
+            compassManager = gameTimer.GetComponent<CompassMissionManager>();
+            tileCounter = gameTimer.GetComponent<TileCounter>();
+            scoreManager = gameTimer.GetComponent<ScoreManager>();
         }
-        //StartCoroutine(GridUtils.ElevateWorld(tiles[vector2Int.x, vector2Int.y]));
-    }
+        else isHub = true;
 
-
-    IEnumerator ElevateWorld()
-    {
-        yield return new WaitForEndOfFrame();
+        Item[] items = FindObjectsOfType<Item>();
+        for (int i = 0; i < items.Length; i++)
+        {
+            Destroy(items[i].gameObject);
+        }
     }
 
     private void Update()
     {
         if (!isHub)
         {
-            timerInterpolateValue += Time.deltaTime * (1 / gT.gameTimer);
+            timerInterpolateValue += Time.deltaTime * (1 / gameTimer.gameTimer);
             degradationTimerModifier = tileP.degradationTimerAnimCurve.Evaluate(timerInterpolateValue); 
         } 
     }
@@ -126,14 +143,14 @@ public class TileSystem : MonoBehaviour
     {
         tileM = GetComponent<TileMats>();
         tileP = GetComponent<TileParameters>();
-
+        if (tiles == null || tiles.Length == 0) return;
         foreach (var tile in tiles)
         {
+            if (tile == null) continue;
             tile.degradationTimerMin = tileP.degradationTileTimerMin;
             tile.degradationTimerMax = tileP.degradationTileTimerMax;
             tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
             tile.heightByTile = tileP.heightByTile;
-            //tile.falaiseMat = tileM.falaiseTileMat;
             tile.plaineMatBottom = tileM.plaineTileMatBottom;
             tile.plaineMatTop = tileM.plaineTileMatTop;
             tile.disabledMat = tileM.disabledTileMaterial;
@@ -184,6 +201,8 @@ public class TileSystemEditor : Editor
     private void OnEnable()
     {
         tileS = (TileSystem)target;
+        if (TileSystem.Instance == null) TileSystem.Instance = tileS.transform.GetComponent<TileSystem>();
+        if (tileS.tiles == null) return;
         tileS.UpdateGridParameters();
         foreach (var tile in tileS.tiles)
         {
@@ -196,8 +215,10 @@ public class TileSystemEditor : Editor
     {
         if (!Application.isPlaying)
         {
+            if (TileSystem.Instance == null) TileSystem.Instance = tileS.transform.GetComponent<TileSystem>();
             Draw();
             EditorUtility.SetDirty(tileS);
+
         }
     }
 
@@ -215,7 +236,7 @@ public class TileSystemEditor : Editor
         if (tileS.InstantiateGrid)
         {
             InstantiateGrid();
-            //UpdateGridParameters();
+            UpdateGridParameters();
         }
 
         if (tileS.DestroyGrid)
@@ -318,17 +339,20 @@ public class TileSystemEditor : Editor
                     _content += Convert.ToInt32(itemSpawner.loop);                    
                     _content += ";";
                     _content += Convert.ToInt32(itemSpawner.spawnPosition);
+                    _content += ";";
+                    if (itemSpawner.itemToSpawn == SpawnableItems.Chantier) _content += itemSpawner.otherRecette;
+                    else if(itemSpawner.itemToSpawn == SpawnableItems.Etabli) _content += itemSpawner.recette.ToString();
                 }
                 else
                 {
                     _content += "No Spawner";
                 }
 
-                _content += "-";
+                _content += "%";
             }
             _content += "|";
         }
-        _content += '(';
+        _content += '£';
         if (tileS.centerTile.coordX < 10) _content += 0 + "" + tileS.centerTile.coordX;
         else _content += tileS.centerTile.coordX;
         if (tileS.centerTile.coordY < 10) _content += 0 + "" + tileS.centerTile.coordY;
@@ -338,12 +362,22 @@ public class TileSystemEditor : Editor
 
     void GenerateMap(string content)
     {
-        string path = Application.dataPath + "/LevelMaps/" + "TM_" + SceneManager.GetActiveScene().name + ".txt";
-        
-        File.Delete(path);
+        string path = Application.streamingAssetsPath + "/LevelMaps/" + "TM_" + SceneManager.GetActiveScene().name + ".txt";
+        if (File.Exists(path)) File.Delete(path);
         File.WriteAllText(path, content);
+        if (!tileS.isHub)
+        {
+            string gameManPath = Application.dataPath + "/Prefab/GameManagers/" + SceneManager.GetActiveScene().name + "_GM.prefab";
+            GameObject gameManager = FindObjectOfType<GameTimer>().gameObject;
+            GameTimer manag = PrefabUtility.SaveAsPrefabAssetAndConnect(gameManager, gameManPath, UnityEditor.InteractionMode.UserAction).GetComponent<GameTimer>();
+            RessourcesManager rMan = tileS.ressourcesManagerPrefab;
+            if (!rMan.gameManagers.Contains(manag))
+            {
+                rMan.gameManagers.Add(manag);
+            }
+        }
         AssetDatabase.Refresh();
-    }
+    }   
 
 
 
@@ -408,7 +442,6 @@ public class TileSystemEditor : Editor
                     }
                     else if (i >= tileS.rows || j >= tileS.columns)
                     {
-                        Debug.Log(i+ " " +  j);
                         DestroyImmediate(tileS.tiles[i, j].gameObject);
                     }
                     else if(i < tileS.tiles.GetLength(0) && j < tileS.tiles.GetLength(1) && i < tileS.rows && j < tileS.columns && tileS.tiles[i, j] != null)

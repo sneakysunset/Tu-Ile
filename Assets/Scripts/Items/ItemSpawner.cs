@@ -11,7 +11,8 @@ public enum SpawnableItems
     Chantier = 3,
     Etabli = 4,
     Crate = 5,
-    Bait = 6
+    Bait = 6,
+    Boussole = 7
 }
 
 public class ItemSpawner : MonoBehaviour
@@ -36,12 +37,25 @@ public class ItemSpawner : MonoBehaviour
         tile = GetComponent<Tile>();
         spawnPoint = transform.Find("SpawnPositions2");
         baseTimerValue = spawnTimer;
+        if(chosenItemToSpawn == null)
+        {
+            foreach( var item in RessourcesManager.Instance.spawnableItems)
+            {
+                if(item.name == itemToSpawn.ToString())
+                {
+                    chosenItemToSpawn = item;
+                    return;
+                }
+
+            }
+            Debug.Log(gameObject.name);
+        }
     }
 
     private void SpawnItem()
     {
 
-        spawnedItem = Instantiate(chosenItemToSpawn, spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 10 * Vector3.up, Quaternion.identity);
+        spawnedItem = Instantiate(chosenItemToSpawn, spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up, Quaternion.identity);
 
         if (!loop) { continueLooping = false; }
     }
@@ -62,17 +76,16 @@ public class ItemSpawner : MonoBehaviour
     Mesh meshGizmo;
     private void OnDrawGizmos()
     {
-        if (chosenItemToSpawn == null)
-        {
+
             if(spawnPoint == null) spawnPoint = transform.GetChild(0);
             Gizmos.DrawCube(spawnPoint.position + gizmoHeightOffset * Vector3.up, Vector3.one * gizmoScale);
             return;
-        }
+/*
         if(meshGizmo == null || spawnPoint == null)
         {
             meshGizmo = chosenItemToSpawn.transform.Find("Highlight").GetComponent<MeshFilter>().sharedMesh;
             spawnPoint = transform.Find("SpawnPositions");
         }
-        Gizmos.DrawMesh(meshGizmo, spawnPoint.position + gizmoHeightOffset * Vector3.up, Quaternion.identity, Vector3.one * gizmoScale);
+        Gizmos.DrawMesh(meshGizmo, spawnPoint.position + gizmoHeightOffset * Vector3.up, Quaternion.identity, Vector3.one * gizmoScale);*/
     }
 }

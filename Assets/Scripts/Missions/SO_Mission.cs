@@ -25,7 +25,7 @@ public class SO_Mission : ScriptableObject
     public virtual void OnCompleted(ref missionPage page, float scoreMult)
     {
         page.activated = false;
-        if(page.completed) ScoreManager.Instance.ChangeScore((int)(scoreValue * scoreMult));
-        else ScoreManager.Instance.ChangeScore(malusValue);
+        if(page.completed) TileSystem.Instance.scoreManager.ChangeScore((int)(scoreValue * scoreMult));
+        else TileSystem.Instance.scoreManager.ChangeScore(malusValue);
     }
 }

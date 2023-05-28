@@ -163,13 +163,6 @@ MonoBehaviour:
     tileType: 0
     itemType: 3
     sprite: {fileID: 21300000, guid: b684b903aba26e14185bbba8b3903f91, type: 3}
-  mSTileCreation:
-  - {fileID: 21300000, guid: 735c47635f623f64598ecfc1e86a3282, type: 3}
-  - {fileID: 21300000, guid: a31c360b21ac51e4b9a995104ebc333c, type: 3}
-  - {fileID: 21300000, guid: 4d5d6fa22366da3428ea7f0a76e3c2e6, type: 3}
-  mChickenElim: {fileID: 21300000, guid: b684b903aba26e14185bbba8b3903f91, type: 3}
-  mCompass: {fileID: 21300000, guid: 3d4e128ca7f2e8f49935a65f17906165, type: 3}
-  mConstr: {fileID: 21300000, guid: 606673800bf48d74396797ec07b7fa7b, type: 3}
   spawnableItems:
   - {fileID: 8888129459989820106, guid: b2c9ab1516a45874b9446697f1dfc0b8, type: 3}
   - {fileID: 1993684740632381338, guid: e8d87e7fb08b7c641a4addb585c727e3, type: 3}
@@ -177,3 +170,14 @@ MonoBehaviour:
   - {fileID: 4377360843773846542, guid: 55c071a6a35b3d444a3bd6d264d74561, type: 3}
   - {fileID: 6122129862733760003, guid: d7407368c4cdd8f46b94b8effe3ae987, type: 3}
   - {fileID: 7644044209496618633, guid: bf93c3324d307044f873e1db14dc7521, type: 3}
+  - {fileID: 3982822828458313300, guid: 71185b92ee0534b43bea6e105743a8d2, type: 3}
+  gameManagers: []
+  recettes:
+  - {fileID: 11400000, guid: 63950be6c7fcbd843a0a261c7c3961a0, type: 2}
+  - {fileID: 11400000, guid: c1a9504e4018eb940a5486c4a8b6693a, type: 2}
+  - {fileID: 11400000, guid: 10476c94db32eb0499e2cacd8a43cfe6, type: 2}
+  - {fileID: 11400000, guid: 52fb041b46afc8a4686b2cfe30b7f70b, type: 2}
+  - {fileID: 11400000, guid: e446475b6f3d40949a435af39b2f6412, type: 2}
+  - {fileID: 11400000, guid: 8d2189b6e56deb74cbefd43a539c277b, type: 2}
+  - {fileID: 11400000, guid: 3f73750fb5480c64d849678d2297043a, type: 2}
+  - {fileID: 11400000, guid: 79a0ddb0119b79d49a44a73c0e33091b, type: 2}

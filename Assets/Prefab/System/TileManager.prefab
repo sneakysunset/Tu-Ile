@@ -58,16 +58,94 @@ MonoBehaviour:
   tilePrefab: {fileID: 6595983220944661741, guid: 4b77018d1ea53484e93b04c2c0fba8da, type: 3}
   tileP: {fileID: 3120364899379129663}
   tileM: {fileID: 4173279834238775216}
+  tileMov: {fileID: 0}
   gridOgTile: {x: 0, y: 0, z: 0}
   centerTile: {fileID: 0}
   tileFolder: {fileID: 0}
-  tileC: {fileID: 0}
   isHub: 0
   degradationTimerModifier: 0
   ready: 0
   lerpingSpeed: 1
-  waitTimer: 0.3
   previousCenterTile: {fileID: 0}
+  cam: {fileID: 0}
+  playersMan: {fileID: 0}
+  tileCounter: {fileID: 0}
+  gameTimer: {fileID: 0}
+  scoreManager: {fileID: 0}
+  compassManager: {fileID: 0}
+  easeIn:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  easeOut:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  easeInOut:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ressourcesManagerPrefab: {fileID: 4804251724381437494, guid: beefcd9e2aed17f4381e6f754aec7a53, type: 3}
 --- !u!114 &2198949688653012757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +199,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   heightByTile: 2
+  shakeActivationTime: 30
+  shakeFrequency: 0.03
 --- !u!114 &4173279834238775216
 MonoBehaviour:
   m_ObjectHideFlags: 0

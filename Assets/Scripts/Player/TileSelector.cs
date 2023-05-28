@@ -186,7 +186,7 @@ public class TileSelector : MonoBehaviour
             else if (player.heldItem && player.heldItem.GetType() == typeof(Item_Boussole))
             {
                 Item_Boussole _item = player.heldItem as Item_Boussole;
-                CompassMissionManager cmm = CompassMissionManager.Instance;
+                CompassMissionManager cmm = TileSystem.Instance.compassManager;
                 foreach (Tile tile in _item.targettedTiles)
                 {
                     if (tile == player.tileUnder)
@@ -207,7 +207,7 @@ public class TileSelector : MonoBehaviour
                             }
                         }
 
-                        CompassMissionManager.Instance.CompleteMission(tile);
+                        TileSystem.Instance.compassManager.CompleteMission(tile);
                         break;
 
                         //mM.CheckMissions();

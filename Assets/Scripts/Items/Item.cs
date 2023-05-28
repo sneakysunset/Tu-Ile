@@ -20,7 +20,8 @@ public class Item : MonoBehaviour
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;
-        col = GetComponent<Collider>();
+     
+        if (!TryGetComponent(out col)) col = GetComponentInChildren<Collider>();
         if (TryGetComponent<Rigidbody>(out rb)) { rb.mass = 0; }
     }
 

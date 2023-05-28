@@ -91,7 +91,10 @@ public class Player : MonoBehaviour
         _characterController.enabled = true;
         anim = GetComponentInChildren<Animator>();
         GridUtils.onLevelMapLoad += OnLoad;
+        GridUtils.onEndLevel += OnEndLevel;
     }
+
+    void OnEndLevel(Tile tile) => respawnTile = tile;
 
     private void Update()
     {
@@ -133,6 +136,7 @@ public class Player : MonoBehaviour
     private void OnDisable()
     {
         GridUtils.onLevelMapLoad -= OnLoad;
+        GridUtils.onEndLevel -= OnEndLevel;
     }
 
     private void AnimationStatesHandler()
