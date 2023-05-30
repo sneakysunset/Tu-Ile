@@ -3,13 +3,16 @@ fetchPreview = true
 defaultFlags = 0
 keepOpen = false
 queryFolder = "Assets"
-onBoardingDoNotAskAgain = false
+onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
 	"last_search.2138236A" = "ScreenSpaceAmbientObscurance.shader"
 	"OpenInspectorPreview.2138236A" = "0"
 	"currentGroup.2138236A" = "asset"
+	"last_search.F8949528" = "player.prefa"
+	"OpenInspectorPreview.F8949528" = "0"
+	"currentGroup.F8949528" = "all"
 }
 providers = {
 	adb = {

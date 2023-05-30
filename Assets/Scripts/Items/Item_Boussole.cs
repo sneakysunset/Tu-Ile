@@ -13,7 +13,7 @@ public class Item_Boussole : Item
         MissionManager mM = FindObjectOfType<MissionManager>();
         pointers = new List<Transform>();
 
-        foreach(BoussoleMission bM in CompassMissionManager.Instance.activeM)
+        foreach(BoussoleMission bM in TileSystem.Instance.compassManager.activeM)
         {
             if (!targettedTiles.Contains(bM.targettedTile))
             {
@@ -21,13 +21,13 @@ public class Item_Boussole : Item
             }
         }
 
-        foreach(missionPage page in mM.activeMissions) 
+/*        foreach(missionPage page in mM.activeMissions) 
         { 
             if(page.boussoleTile != null && !targettedTiles.Contains(page.boussoleTile))
             {
                 targettedTiles.Add(page.boussoleTile);
             }
-        }
+        }*/
     }
 
     public override void GrabStarted(Transform holdPoint, Player player)

@@ -29,12 +29,12 @@ public class TileMats : MonoBehaviour
     //[Foldout("Bouncy Tile")]
     [Foldout("Bouncy Tile")] public Material bounceTileMat;
     [Foldout("Disabled Tile")] public Material disabledTileMaterial;
-    [Foldout("Filons Prefabs")] public GameObject treePrefab, rockPrefab, goldPrefab, diamondPrefab, adamantiumPrefab;
+    [Foldout("Filons Prefabs")] public Interactor treePrefab, rockPrefab, goldPrefab, diamondPrefab, adamantiumPrefab;
 
     [Foldout("Colors")] public Color notWalkedOnColor, walkedOnColor, acceleratedDegradationColor;
     private void OnValidate()
     {
-        if(!Application.isPlaying)
+        if(!Application.isPlaying && TileSystem.Instance)
         TileSystem.Instance.UpdateParameters = true;
     }
 }

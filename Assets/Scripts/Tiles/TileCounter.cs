@@ -12,14 +12,6 @@ public class TileCounter : MonoBehaviour
     [HideNormalInspector] public int diamondCount;
     [HideNormalInspector] public int adamantiumCount;
 
-    private TileSystem tileSystem;
-    private MissionManager missionManager;
-    private void Start()
-    {
-        missionManager = FindObjectOfType<MissionManager>();
-        tileSystem = GetComponent<TileSystem>();
-    }
-
     public int GetStat(TileType tType)
     {
         int returnValue = 0;
@@ -50,7 +42,8 @@ public class TileCounter : MonoBehaviour
 
     public void Count()
     {
-        List<Tile> tiles = GridUtils.GetTilesAround(20, tileSystem.centerTile);
+        //Debug.Log(TileSystem.Instance.centerTile);
+        List<Tile> tiles = GridUtils.GetTilesAround(20, TileSystem.Instance.centerTile);
         int num = 0;
         int neutNum = 0;
         int woodNum = 0;
@@ -84,6 +77,6 @@ public class TileCounter : MonoBehaviour
         goldCount = goldNum;
         diamondCount = diaNum;
         adamantiumCount = adamNum;
-        missionManager.CheckMissions();
+        //missionManager.CheckMissions();
     }
 }

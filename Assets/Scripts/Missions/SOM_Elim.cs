@@ -19,8 +19,8 @@ public class SOM_Elim : SO_Mission
     {
         base.OnActivated(mUIInGame, mUIInPause, ref page);
         page.numOfKilledItem = 0;
-        mUIInGame.missionChecker.sprite = ressourcesManager.mChickenElim;
-        mUIInPause.missionChecker.sprite = ressourcesManager.mChickenElim;
+        //mUIInGame.missionChecker.sprite = ressourcesManager.mChickenElim;
+        //mUIInPause.missionChecker.sprite = ressourcesManager.mChickenElim;
         TimeLineEvents.InstantiateItems(itemToKill.gameObject, numToSpawn, radiusWidth, spawnHeight);
         mUIInGame.missionText.text = page.numOfKilledItem.ToString() + " / " + requiredNum.ToString();
         mUIInPause.missionText.text = description + " " + page.numOfKilledItem.ToString() + " / " + requiredNum.ToString();

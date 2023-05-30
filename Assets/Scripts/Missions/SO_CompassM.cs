@@ -22,7 +22,7 @@ public class SO_CompassM : ScriptableObject
             {
                 tile = tiles[Random.Range(0, tiles.Count)];
             }
-            while (tile.etabli);
+            while (tile.etabli || tile.tourbillon);
             targetTile = tile;
         }
 
@@ -45,6 +45,6 @@ public class SO_CompassM : ScriptableObject
             item.targettedTiles.Remove(targettedTile);
             item.UpdateTargettedList();
         }
-        Instantiate(reward, targettedTile.transform.GetChild(0).position, Quaternion.identity);
+        Instantiate(reward, targettedTile.minableItems.position, Quaternion.identity);
     }
 }

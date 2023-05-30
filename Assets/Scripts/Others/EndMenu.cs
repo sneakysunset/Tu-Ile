@@ -12,12 +12,10 @@ using UnityEngine.EventSystems;
 
 public class EndMenu : MonoBehaviour
 {
-    PlayerInputManager playerInputManager;
     public AnimationCurve easeIn, easeOut;
     private PlayerInput[] players;
     private RectTransform tr;
     public TextMeshProUGUI missionsReussies, missionsRatees, total;
-    private GameTimer gameTimer;
     private PauseMenu pauseMenu;
     private RawImage screenShot;
     public Button ogButton;
@@ -27,28 +25,27 @@ public class EndMenu : MonoBehaviour
         players = FindObjectsOfType<PlayerInput>();
         pauseMenu = FindObjectOfType<PauseMenu>();  
         tr = transform.GetChild(0) as RectTransform;
-        playerInputManager = FindObjectOfType<PlayerInputManager>();
-        gameTimer = FindObjectOfType<GameTimer>();
         screenShot = GetComponentInChildren<RawImage>();
 
     }
 
     public IEnumerator EnableEnd()
     {
-        MissionManager missionManager = MissionManager.Instance;
-        CameraCtr cam = FindObjectOfType<CameraCtr>();
+        GameTimer gameTimer = TileSystem.Instance.gameTimer;
+        //MissionManager missionManager = MissionManager.Instance;
+        CameraCtr cam = TileSystem.Instance.cam;
         StartCoroutine(gameTimer.LerpTimeLine(gameTimer.UIPos.anchoredPosition, gameTimer.UIPos.anchoredPosition + UnityEngine.Vector2.up * -100, gameTimer.UIPos, gameTimer.lerpCurveEaseIn, gameTimer.lerpSpeed));
-        cam.DezoomCam(TileSystem.Instance.centerTile.transform.GetChild(0));
-        missionManager.CloseMissions();
+        cam.DezoomCam(TileSystem.Instance.centerTile.minableItems);
+        //missionManager.CloseMissions();
 
         yield return new WaitForSeconds(2);
 
         cam.CamCapture();
         cam.RenderTextureOnImage(screenShot, SceneManager.GetActiveScene().name);
-        missionsReussies.text = missionManager.numberOfClearedMissions.ToString();
-        missionsRatees.text = missionManager.numberOfFailedMissions.ToString();
-        total.text = ScoreManager.Instance.score.ToString();
-        playerInputManager.enabled = false;
+        //missionsReussies.text = missionManager.numberOfClearedMissions.ToString();
+        //missionsRatees.text = missionManager.numberOfFailedMissions.ToString();
+        total.text = TileSystem.Instance.scoreManager.score.ToString();
+        TileSystem.Instance.playersMan.enabled = false;
         Time.timeScale = 0;
         tr.DOAnchorPosY(0, 1, true).SetEase(easeOut).SetUpdate(true);
         ogButton.Select();
@@ -65,7 +62,7 @@ public class EndMenu : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(null);
 
-        playerInputManager.enabled = true;
+        TileSystem.Instance.playersMan.enabled = true;
         Time.timeScale = 1;
         tr.DOAnchorPosY(1130, 1, true).SetEase(easeOut).SetUpdate(true);
 
@@ -89,14 +86,14 @@ public class EndMenu : MonoBehaviour
     public void Restart()
     {
         DisableEnd();
-        gameTimer.sceneLoadName = SceneManager.GetActiveScene().name;
-        gameTimer.EndLevel(true);
+        TileSystem.Instance.gameTimer.sceneLoadName = SceneManager.GetActiveScene().name;
+        TileSystem.Instance.gameTimer.EndLevel(true, false);
     }
 
     public void HUB()
     {
         DisableEnd();
-        gameTimer.sceneLoadName = "Hub";
-        gameTimer.EndLevel(true);
+        TileSystem.Instance.gameTimer.sceneLoadName = "Hub";
+        TileSystem.Instance.gameTimer.EndLevel(true, true);
     }
 }

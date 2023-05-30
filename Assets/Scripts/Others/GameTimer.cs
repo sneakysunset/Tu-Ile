@@ -148,7 +148,7 @@ public class GameTimer : MonoBehaviour
         timerFillImage.fillAmount = timer / gameTimer;
     }
 
-    public void EndLevel(bool isEnd)
+    public void EndLevel(bool isEnd, bool toHub)
     {
         events.Clear();
         LevelEnd?.Invoke();
@@ -157,7 +157,7 @@ public class GameTimer : MonoBehaviour
             p.respawnTile = players[0].tileUnder;
         }
 
-        TileSystem.Instance.StartCoroutine(GridUtils.SinkWorld(TileSystem.Instance.centerTile, sceneLoadName, isEnd));
+        TileSystem.Instance.StartCoroutine(GridUtils.SinkWorld(TileSystem.Instance.centerTile, isEnd, toHub));
     }
 
     private void TimelineEvent()

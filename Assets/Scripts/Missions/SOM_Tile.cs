@@ -15,7 +15,7 @@ public class SOM_Tile : SO_Mission
     {
         
         base.OnActivated(mUIInGame, mUIInPause, ref page);
-        switch (requiredType)
+/*        switch (requiredType)
         {
             case TileType.Wood: 
                 mUIInGame.missionChecker.sprite = ressourcesManager.mSTileCreation[0];
@@ -30,7 +30,7 @@ public class SOM_Tile : SO_Mission
                 mUIInPause.missionChecker.sprite = ressourcesManager.mSTileCreation[2]; 
                 break;
             default: Debug.LogError("TYPE MISSMATCH"); break;
-        }
+        }*/
         TileCounter tileCounter = FindObjectOfType<TileCounter>();
         page.numOfTileOnActivation = tileCounter.GetStat(requiredType);
         mUIInGame.missionText.text = (tileCounter.GetStat(requiredType) - page.numOfTileOnActivation).ToString() + " / " + requiredNumber.ToString();

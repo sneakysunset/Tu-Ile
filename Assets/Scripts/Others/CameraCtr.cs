@@ -8,45 +8,47 @@ using UnityEngine.SceneManagement;
 using static Unity.Burst.Intrinsics.X86;
 using System.IO;
 using UnityEngine.UI;
+using DG.Tweening;
+using NaughtyAttributes;
 
 public class CameraCtr : MonoBehaviour
 {
     #region Variables
     #region Components and Lists
     private Camera cam;
-    private CinemachineVirtualCamera dezoomCamera;
-    [HideInInspector] public CinemachineTargetGroup targetGroup;
-    private SplitScreenEffect sCE;
-    [HideNormalInspector] public List<Transform> players;
-    [HideNormalInspector] public List<ScreenData> sDatas;
-    [HideNormalInspector] public Vector2Int tileLoadCoordinates;
+    [Foldout("Camera References")] public CinemachineVirtualCamera dezoomCamera;
+    [Foldout("Camera References")] public CinemachineVirtualCamera cam1, cam2;
+    [HideInInspector] public List<Transform> players;
     public delegate void OnStartUpDelegate();
     public static event OnStartUpDelegate startUp;
+    [Foldout("Camera References")] public RectTransform SplitBar;
+    float splitBarPosX;
+    [Foldout("Camera References")] public Camera soloCam, duoCam2;
     #endregion
 
     #region Main Variables
-    public float distanceToSplit;
+    //public float distanceToSplit;
     public Color[] pCols;
     #endregion
 
     #region LineCast
-    [Space(5)]
-    [Header("WireFrame To Player")]
-    public LayerMask lineCastLayers;
-    public float sphereCastRadius;
-    [Range(0,1)]public float transparencyLevel;
+    [Foldout("LineCast")] public LayerMask lineCastLayers;
+    [Foldout("LineCast")] public float sphereCastRadius;
+    [Foldout("LineCast")] [Range(0,1)] public float transparencyLevel;
+    Tile[] fadeTile;
+    Tile[] FadeTile {  get { return fadeTile; } set { if (fadeTile != value) OnFadeTileChange(value); } }
     #endregion
 
     #region ScreenShakes
     [Space(5)]
     [Header("Camera Shakes")]
-    public float strongSS;
-    public float mediumSS;
-    public float weakSS;
+    [Foldout("ScreenShakes")] public float strongSS;
+    [Foldout("ScreenShakes")] public float mediumSS;
+    [Foldout("ScreenShakes")] public float weakSS;
     #endregion
 
     #region ScreenShot
-    public RenderTexture rtTarget;
+    [Foldout("ScreenShot")] public RenderTexture rtTarget;
 
     #endregion
     #endregion
@@ -56,39 +58,35 @@ public class CameraCtr : MonoBehaviour
     private void Start()
     {
         if (startUp != null) startUp();
-
-        GameObject water = GameObject.FindGameObjectWithTag("Water");
-        water.transform.parent = null;
-        DontDestroyOnLoad(water);
-
-        transform.parent = null;
-        DontDestroyOnLoad(this.gameObject);
+        splitBarPosX = SplitBar.anchoredPosition.x;
         cam = Camera.main;
-        SceneManager.sceneLoaded += OnLoad;
-        sCE = GetComponentInChildren<SplitScreenEffect>();
-        dezoomCamera = transform.GetChild(2).GetComponent<CinemachineVirtualCamera>();
-        dezoomCamera.LookAt = TileSystem.Instance.centerTile.transform.GetChild(0);
-        dezoomCamera.Follow = TileSystem.Instance.centerTile.transform.GetChild(0);
+        GridUtils.onLevelMapLoad += OnLoad;
+        GridUtils.onEndLevel += OnEndLevel;
+        //sCE = GetComponentInChildren<SplitScreenEffect>();
+        dezoomCamera.LookAt = TileSystem.Instance.centerTile.minableItems;
+        dezoomCamera.Follow = TileSystem.Instance.centerTile.minableItems;
         StartCoroutine(changeCam());
     }
 
 
-    public void OnLoad(Scene scene, LoadSceneMode mode)
+    public void OnLoad()
     {
-        TileSystem.Instance.StartCoroutine(OnLevelLoad());
-        if (tileLoadCoordinates == Vector2Int.zero) tileLoadCoordinates = new Vector2Int(TileSystem.Instance.centerTile.coordX, TileSystem.Instance.centerTile.coordY);
-        dezoomCamera.LookAt = TileSystem.Instance.tiles[tileLoadCoordinates.x, tileLoadCoordinates.y].transform.GetChild(0);
-        for (int i = 0; i < sCE.Screens.Count; i++)
+        StartCoroutine(OnLevelLoad());
+        dezoomCamera.LookAt = TileSystem.Instance.centerTile.minableItems;
+        dezoomCamera.Follow = TileSystem.Instance.centerTile.minableItems;
+/*        for (int i = 0; i < sCE.Screens.Count; i++)
         {
             if (sCE.Screens[i].Target == null)
             {
                 sCE.Screens.RemoveAt(i);
                 i--;
             } 
-        }
-    }   
+        }*/
+    }
 
-    private void Update()
+    public void OnEndLevel(Tile tile) => DezoomCam(tile.minableItems);
+
+/*    private void Update()
     {
         if(!TileSystem.Instance.isHub && players.Count > 1) 
         { 
@@ -101,15 +99,16 @@ public class CameraCtr : MonoBehaviour
                 sCE.enabled = false;   
             }        
         }
+    }*/
+
+    private void OnDisable()
+    {
+        GridUtils.onLevelMapLoad -= OnLoad;
     }
 
     private void LateUpdate()
     {
         LineCastToPlayer();
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            //CamCapture();
-        }
     }
     #endregion
 
@@ -124,7 +123,9 @@ public class CameraCtr : MonoBehaviour
     }
     public IEnumerator OnLevelLoad()
     {
-        yield return new WaitUntil(() => TileSystem.Instance.ready);
+        TileSystem.Instance.ready = true;
+        yield return new WaitForSeconds(2);
+        //yield return new WaitUntil(() => TileSystem.Instance.ready);
         if (dezoomCamera != null)
         {
             dezoomCamera.Priority = 2;
@@ -149,16 +150,33 @@ public class CameraCtr : MonoBehaviour
 
 
     #region AddPlayer
-    public void AddPlayer(Transform player)
+    public void AddPlayer(Transform player, Player playerP)
     {
         if(players == null)
         {
             players = new List<Transform>();
         }
         players.Add(player);
+        playerP.playerIndex = players.Count - 1;
+        if (players.Count > 1)
+        {
+            cam2.Follow = player ;
+            cam2.LookAt = player;
+        }
+        else
+        {
+            cam1.Follow = player ;
+            cam1.LookAt = player;
+        }
+        if(players.Count > 1) 
+        { 
+            Rect rect  = new Rect(0, 0, .5f, 1);
+            soloCam.DORect(rect, 2).SetEase(TileSystem.Instance.easeInOut);
+            duoCam2.gameObject.SetActive(true);
+            SplitBar.transform.DOScaleX(1, 2).SetEase(TileSystem.Instance.easeInOut);
+            SplitBar.DOAnchorPosX(0, 2).SetEase(TileSystem.Instance.easeInOut);
+        }
         SetPlayerColor(player);
-        SetSplitScreens(player);
-        SetTargetGroups();
     }
 
     private void SetPlayerColor(Transform player)
@@ -177,74 +195,16 @@ public class CameraCtr : MonoBehaviour
         }
     }
 
-    private void SetSplitScreens(Transform player)
-    {
-        if (sCE == null) sCE = GetComponentInChildren<SplitScreenEffect>(); ;
-        if (sDatas.Count == 0)
-        {
-            sDatas = new List<ScreenData>();
-            foreach (ScreenData data in sCE.Screens)
-            {
-                sDatas.Add(data);
-            }
-        }
-
-        for (int i = 0; i < sCE.Screens.Count; i++)
-        {
-            sCE.Screens.RemoveAt(i);
-            i--;
-            if (sCE.Screens.Count == 0) break;
-        }
-
-        foreach (ScreenData screen in sDatas)
-        {
-            if (screen.Target != null) sCE.Screens.Add(screen);
-            else if (screen.Target == null)
-            {
-                screen.Target = player;
-                sCE.Screens.Add(screen);
-                break;
-            }
-        }
-    }
-
-    private void SetTargetGroups()
-    {
-        List<CinemachineTargetGroup.Target> targets = new List<CinemachineTargetGroup.Target>();
-        for (int i = 0; i < players.Count; i++)
-        {
-            CinemachineTargetGroup.Target tar = new CinemachineTargetGroup.Target();
-            tar.weight = 1;
-            tar.target = players[i];
-            targets.Add(tar);
-        }
-        if (targetGroup == null) targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
-        targetGroup.m_Targets = new CinemachineTargetGroup.Target[targets.Count];
-
-        for (int i = 0; i < targets.Count; i++)
-        {
-            targetGroup.m_Targets[i] = targets[i];
-        }
-    }
-
     public void RemovePlayer(Transform player)
     {
         players.Remove(player);
-
-        List<CinemachineTargetGroup.Target> targets = new List<CinemachineTargetGroup.Target>();
-        for (int i = 0; i < players.Count; i++)
+        if (players.Count == 1)
         {
-            CinemachineTargetGroup.Target tar = new CinemachineTargetGroup.Target();
-            tar.weight = 1;
-            tar.target = players[i];
-            targets.Add(tar);
-        }
-        if (targetGroup == null) targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
-        targetGroup.m_Targets = new CinemachineTargetGroup.Target[targets.Count];
-
-        for (int i = 0; i < targets.Count; i++)
-        {
-            targetGroup.m_Targets[i] = targets[i];
+            Rect rect = new Rect(0, 0, 1, 1);
+            soloCam.DORect(rect , 2).SetEase(TileSystem.Instance.easeInOut);
+            duoCam2.gameObject.SetActive(false);
+            SplitBar.transform.DOScaleX(0, 2).SetEase(TileSystem.Instance.easeInOut);
+            SplitBar.DOAnchorPosX(splitBarPosX, 2).SetEase(TileSystem.Instance.easeInOut);
         }
     }
     #endregion
@@ -276,29 +236,39 @@ public class CameraCtr : MonoBehaviour
         Vector3 camPos = cam.transform.position;
         if (TileSystem.Instance.ready)
         {
+            List<Tile> tempList = new List<Tile>();
             foreach(Transform player in  players)
             {
                 Vector3 direction = (player.position - camPos).normalized;
                 float distance = Vector3.Distance(player.position, cam.transform.position) - sphereCastRadius;
                 RaycastHit[] hits = Physics.SphereCastAll(camPos, sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
-                if (hits.Length > 0)
-                {
+                if (hits.Length > 0) foreach (RaycastHit hit in hits) if (hit.transform.TryGetComponent<Tile>(out Tile tile) && !tempList.Contains(tile)) tempList.Add(tile);
+/*                {
                     foreach (RaycastHit hit in hits)
                     {
-                        if (hit.transform.TryGetComponent<Tile>(out Tile tile))
+                        if (hit.transform.TryGetComponent<Tile>(out Tile tile) && !tempList.Contains(tile))
                         {
-                                tile.FadeTile(transparencyLevel);
-                        }
-                        else if (hit.transform.TryGetComponent<Interactor>(out Interactor inter))
-                        {
-                                inter.FadeTile(transparencyLevel);
+                            tempList.Add(tile);
                         }
                     }
-                }
+                }*/
             }
+            FadeTile = tempList.ToArray();
+/*            fadeTile = new Tile[tempList.Count];
+            for (int i = 0; i < fadeTile.Length; i++)
+            {
+                fadeTile[i] = tempList[i];
+            }*/
         }
     }
 
+    private void OnFadeTileChange(Tile[] value)
+    {
+        foreach(Tile tile in fadeTile) if(tile.faded) tile.UnFadeTile();
+        foreach(Tile tile in value) if(!tile.faded) tile.FadeTile(transparencyLevel);
+
+        fadeTile = value;
+    }
 
     public void CamCapture()
     {
@@ -317,16 +287,17 @@ public class CameraCtr : MonoBehaviour
 
         var Bytes = Image.EncodeToPNG();
         Destroy(Image);
-        string filePath = Application.dataPath + "/ScreenShots/" + SceneManager.GetActiveScene().name;
+        string filePath = Application.streamingAssetsPath + "/ScreenShots/" + SceneManager.GetActiveScene().name;
         if (!Directory.Exists(filePath)) Directory.CreateDirectory(filePath); ;
-        File.WriteAllBytes(Application.dataPath + "/ScreenShots/" + SceneManager.GetActiveScene().name + "/SS_Game.png", Bytes);
+        File.WriteAllBytes(Application.streamingAssetsPath + "/ScreenShots/" + SceneManager.GetActiveScene().name + "/SS_Game.png", Bytes);
         Cam.targetTexture = null;
 
     }
 
     public void RenderTextureOnImage(RawImage image, string sceneName)
     {
-        string filename = Application.dataPath + "/ScreenShots/" + sceneName + "/SS_Game.png";
+        string filename = Application.streamingAssetsPath + "/ScreenShots/" + sceneName + "/SS_Game.png";
+        if (!File.Exists(filename)) return;
         var rawData = System.IO.File.ReadAllBytes(filename);
         Texture2D tex = new Texture2D(2, 2);
         tex.LoadImage(rawData);

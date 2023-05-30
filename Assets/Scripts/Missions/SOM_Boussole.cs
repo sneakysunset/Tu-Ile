@@ -23,7 +23,7 @@ public class SOM_Boussole : SO_Mission
         base.OnActivated(mUIInGame ,mUIInPause, ref page);
         mUIInPause.missionText.text = description;
         mUIInGame.missionText.text = "";
-        mUIInGame.missionChecker.sprite = ressourcesManager.mCompass;
+        //mUIInGame.missionChecker.sprite = ressourcesManager.mCompass;
         if(page.isEphemeral)
         {
             page.boussoleTile = TileSystem.Instance.tiles[tileCoordinates.x, tileCoordinates.y];
