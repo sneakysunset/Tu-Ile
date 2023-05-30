@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Progress;
 
 #region structs
 [System.Serializable]
@@ -193,8 +194,8 @@ public class Item_Etabli : Item
             {
                 if(isChantier)
                 {
-                    OnDestroyMethod();
-                    Destroy(gameObject);
+                    //OnDestroyMethod();
+                    //Destroy(gameObject);
                 }
                 m.enabled = false;
                 isActive = false;
@@ -210,7 +211,7 @@ public class Item_Etabli : Item
         if (isChantier && tileUnder.tileSpawnType != TileType.construction) tileUnder.tileSpawnType = TileType.construction;
         if (isChantier && !constructed)
         {
-            FindObjectOfType<MissionManager>().CheckMissions();
+            //FindObjectOfType<MissionManager>().CheckMissions();
         }
     }
 
@@ -231,7 +232,8 @@ public class Item_Etabli : Item
                     {
                         currentStackRessources[i] += itemS.numberStacked;
                         player.heldItem = null;
-                        Destroy(itemS.gameObject);
+                        ObjectPooling.SharedInstance.RemovePoolItem(0, itemS.gameObject, itemS.GetType().ToString());
+                        //Destroy(itemS.gameObject);
                     }
                     else
                     {
@@ -242,7 +244,8 @@ public class Item_Etabli : Item
                         {
                             currentStackRessources[i] += itemS.numberStacked;
                             player.heldItem = null;
-                            Destroy(itemS.gameObject);
+                            //Destroy(itemS.gameObject);
+                            ObjectPooling.SharedInstance.RemovePoolItem(0, itemS.gameObject, itemS.GetType().ToString());
                         }
                     }
                     if (currentStackRessources[i] > 0)
@@ -269,7 +272,8 @@ public class Item_Etabli : Item
                     itemsFilled[i] = true;
                     Item tempItem = player.heldItem;
                     player.heldItem = null;
-                    Destroy(tempItem.gameObject);
+                    //Destroy(tempItem.gameObject);
+                    ObjectPooling.SharedInstance.RemovePoolItem(0, tempItem.gameObject, tempItem.GetType().ToString());
                     stackT.GetChild(i).gameObject.SetActive(true);
 
                     Highlight.SetActive(false);
@@ -306,12 +310,16 @@ public class Item_Etabli : Item
             }
             if (craftedItem == null)
             {
-                craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, Quaternion.identity, createdItem);
+                //craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, Quaternion.identity, createdItem);
+                craftedItem = ObjectPooling.SharedInstance.GetPoolItem(0, recette.craftedItemPrefab.GetType().ToString()).GetComponent<Item>();
+                craftedItem.transform.position = createdItem.position;
+                craftedItem.transform.parent = createdItem;
             }
 
             if (Utils.IsSameOrSubclass(System.Type.GetType("Item_Stack"), craftedItem.GetType()))
             {
                 Item_Stack craIt = craftedItem as Item_Stack;
+                craIt.stackType = recette.craftedItemPrefab.GetComponent<Item_Stack>().stackType;
                 craIt.numberStacked += recette.numberOfCrafted;
             }
             if (isChantier) itemNumCh.UpdateText(this);
@@ -333,6 +341,7 @@ public class Item_Etabli : Item
         //FindObjectOfType<MissionManager>().CheckMissions();
         SO_Recette_Chantier re = recette as SO_Recette_Chantier;
         /*Transform house = */Instantiate(re.loot, transform.parent.GetChild(0).GetChild(4).position + .5f * Vector3.up, Quaternion.identity)/*.transform*/;
+
         //float targetY = house.position.y;
         //house.position -= 5f * Vector3.up;
         //house.DOMoveY(targetY, 2).SetEase(TileSystem.Instance.easeOut);

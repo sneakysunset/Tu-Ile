@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.Linq.Expressions;
 using System.Linq;
+using static UnityEditor.Progress;
 //sing static UnityEngine.RuleTile.TilingRuleOutput;
 
 [System.Flags]
@@ -485,31 +486,32 @@ public class Tile : MonoBehaviour
 
     public void SpawnItem(Transform t)
     {
-        Interactor prefab = null;
+        //Interactor prefab = null;
+        int interactorPoolIndex = 0;
         switch (tileSpawnType)
         {
             case TileType.Wood:
-                prefab = TileSystem.Instance.tileM.treePrefab;
                 break;
             case TileType.Rock:
-                prefab = TileSystem.Instance.tileM.rockPrefab;
+                interactorPoolIndex = 1;
                 break;
             case TileType.Gold:
-                prefab = TileSystem.Instance.tileM.goldPrefab;
+                interactorPoolIndex = 2;
                 break;
             case TileType.Diamond:
-                prefab = TileSystem.Instance.tileM.diamondPrefab;
+                interactorPoolIndex = 3;
                 break;
             case TileType.Adamantium:
-                prefab = TileSystem.Instance.tileM.adamantiumPrefab;
+                interactorPoolIndex = 4;
                 break;
             default:
-                tileSpawnType = TileType.Wood;
-                prefab = TileSystem.Instance.tileM.treePrefab;
+                interactorPoolIndex = 0;
                 break;
         }
-        Interactor obj = Instantiate(prefab, null);
-        obj.type = tileSpawnType;
+
+        //Interactor obj = Instantiate(prefab, null);
+        //obj.type = tileSpawnType;
+        GameObject obj = ObjectPooling.SharedInstance.GetPoolItem(interactorPoolIndex);
         obj.transform.parent = t;
         obj.transform.position = t.position;
         obj.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);

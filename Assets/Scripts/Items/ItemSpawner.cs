@@ -28,6 +28,7 @@ public class ItemSpawner : MonoBehaviour
     private float baseTimerValue;
     public bool loop;
     bool continueLooping = true;
+    int poolIndex;
     Tile tile;
     [Foldout("Gizmo")] public float gizmoScale = 1;
     [Foldout("Gizmo")] public float gizmoHeightOffset = 0;
@@ -41,23 +42,26 @@ public class ItemSpawner : MonoBehaviour
         baseTimerValue = spawnTimer;
         if(chosenItemToSpawn == null)
         {
-            foreach( var item in RessourcesManager.Instance.spawnableItems)
+            foreach( var item in RessourcesManager.Instance.itemsToSpawn)
             {
-                if(item.name == itemToSpawn.ToString())
+                if(item.item.name == itemToSpawn.ToString())
                 {
-                    chosenItemToSpawn = item;
+                    poolIndex = item.index;
+                    chosenItemToSpawn = item.item;
                     return;
                 }
 
             }
-            Debug.Log(gameObject.name);
+            //Debug.Log(gameObject.name);
         }
     }
 
     private void SpawnItem()
     {
 
-        spawnedItem = Instantiate(chosenItemToSpawn, spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up, Quaternion.identity);
+        //spawnedItem = Instantiate(chosenItemToSpawn, spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up, Quaternion.identity);
+        spawnedItem = ObjectPooling.SharedInstance.GetPoolItem(poolIndex);
+        spawnedItem.transform.position = spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up;
         if (itemToSpawn == SpawnableItems.Etabli) spawnedItem.GetComponent<Item_Etabli>().recette = recette;
         else if (itemToSpawn == SpawnableItems.Chantier) spawnedItem.GetComponent<Item_Etabli>().recette = otherRecette;
         if (!loop) { continueLooping = false; }
@@ -81,7 +85,7 @@ public class ItemSpawner : MonoBehaviour
     {
 
             if(spawnPoint == null) spawnPoint = transform.GetChild(0);
-            Gizmos.DrawCube(spawnPoint.position + gizmoHeightOffset * Vector3.up, Vector3.one * gizmoScale);
+            /*if(itemToSpawn == SpawnableItems.)*/Gizmos.DrawCube(spawnPoint.position + gizmoHeightOffset * Vector3.up, Vector3.one * gizmoScale);
             return;
 /*
         if(meshGizmo == null || spawnPoint == null)

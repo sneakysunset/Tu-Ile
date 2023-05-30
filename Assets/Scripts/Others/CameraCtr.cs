@@ -233,7 +233,7 @@ public class CameraCtr : MonoBehaviour
 
     private void LineCastToPlayer()
     {
-        Vector3 camPos = cam.transform.position;
+        Vector3 camPos = cam1.transform.position;
         if (TileSystem.Instance.ready)
         {
             List<Tile> tempList = new List<Tile>();
@@ -254,6 +254,11 @@ public class CameraCtr : MonoBehaviour
                 }*/
             }
             FadeTile = tempList.ToArray();
+
+            if(players.Count > 1)
+            {
+
+            }
 /*            fadeTile = new Tile[tempList.Count];
             for (int i = 0; i < fadeTile.Length; i++)
             {
@@ -264,7 +269,18 @@ public class CameraCtr : MonoBehaviour
 
     private void OnFadeTileChange(Tile[] value)
     {
-        foreach(Tile tile in fadeTile) if(tile.faded) tile.UnFadeTile();
+        if (fadeTile == null)
+        {
+            fadeTile = value;
+            foreach (Tile tile in value) if (!tile.faded) tile.FadeTile(transparencyLevel);
+            return;
+        }
+            
+        foreach(Tile tile in fadeTile)
+        {
+            Debug.Log(tile.name);
+            if(tile.faded) tile.UnFadeTile();
+        } 
         foreach(Tile tile in value) if(!tile.faded) tile.FadeTile(transparencyLevel);
 
         fadeTile = value;

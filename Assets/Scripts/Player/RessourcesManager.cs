@@ -36,6 +36,13 @@ public struct recetteResultCollec
     public Sprite sprite;
 }
 
+[System.Serializable]
+public struct ItemToSpawn
+{
+    public GameObject item;
+    public int index;
+}
+
 
 public class RessourcesManager : MonoBehaviour
 {
@@ -47,7 +54,7 @@ public class RessourcesManager : MonoBehaviour
 /*    public Sprite mChickenElim;
     public Sprite mCompass;
     public Sprite mConstr;*/
-    public GameObject[] spawnableItems;
+    public ItemToSpawn[] itemsToSpawn;
     public List<GameTimer> gameManagers;
     public SO_Recette[] recettes;
     public static RessourcesManager Instance { get; private set; }
@@ -66,9 +73,9 @@ public class RessourcesManager : MonoBehaviour
 
     public GameObject getSpawnableFromList(string spawnableName)
     {
-        foreach(var item in spawnableItems)
+        foreach(var item in itemsToSpawn)
         {
-            if(item.name == spawnableName) return item;
+            if(item.item.name == spawnableName) return item.item;
         }
         return null;
     }

@@ -8,6 +8,7 @@ using System.IO;
 using UnityEngine.Events;
 using System;
 using Unity.VisualScripting;
+using static UnityEditor.Progress;
 
 public static class GridUtils
 {
@@ -163,7 +164,9 @@ public static class GridUtils
 
         foreach (Interactor inte in GameObject.FindObjectsOfType<Interactor>())
         {
-            GameObject.Destroy(inte.gameObject);
+            //GameObject.Destroy(inte.gameObject);
+            ObjectPooling.SharedInstance.RemovePoolItem(0, inte.gameObject, inte.GetType().ToString() + ":" + inte.type.ToString());
+
         }
         LoadLevelMap(toHub);
         if (onLevelMapLoad != null) onLevelMapLoad();

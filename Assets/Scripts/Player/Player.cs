@@ -12,6 +12,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
 using UnityEngine.Windows;
+using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -74,7 +75,9 @@ public class Player : MonoBehaviour
         transform.Translate(diff);
         if(heldItem != null )
         {
-            Destroy(heldItem.gameObject);
+            ObjectPooling.SharedInstance.RemovePoolItem(0, heldItem.gameObject, heldItem.GetType().ToString());
+
+            //Destroy(heldItem.gameObject);
             heldItem = null;
         }
     }
@@ -187,8 +190,11 @@ public class Player : MonoBehaviour
     {
         if (heldItem != null)
         {
+            Item tempItem = heldItem;
             heldItem.GrabRelease(true);
-            Destroy(heldItem.gameObject);
+            //Destroy(heldItem.gameObject);
+            ObjectPooling.SharedInstance.RemovePoolItem(0, tempItem.gameObject, tempItem.GetType().ToString());
+
         }
         WaterHit(hit);
         currentGravMult = pM.gravityMultiplier;

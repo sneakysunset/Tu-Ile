@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using static UnityEditor.Progress;
 
 [System.Serializable]
 public struct visualComp
@@ -113,8 +114,19 @@ public class Interactor : MonoBehaviour
     {
         if (stackPosT.childCount == 0)
         {
-            Item_Stack obj = Instantiate(stackPrefab, stackPosT.position, Quaternion.identity, null);
+            Item_Stack obj = ObjectPooling.SharedInstance.GetPoolItem(5).GetComponent<Item_Stack>();
+
+            //Item_Stack obj = Instantiate(stackPrefab, stackPosT.position, Quaternion.identity, null);
             obj.transform.parent = stackPosT;
+            obj.numberStacked = 0;
+            switch (type)
+            {
+                case TileType.Wood: obj.stackType = Item.StackType.Wood; break;
+                case TileType.Rock: obj.stackType = Item.StackType.Rock; break;
+                case TileType.Gold: obj.stackType = Item.StackType.Gold; break;
+                case TileType.Diamond: obj.stackType = Item.StackType.Diamond; break;
+                case TileType.Adamantium: obj.stackType = Item.StackType.Adamantium; break;
+            }
             stackItem = obj;
             foreach(Player player in _player)
             {
