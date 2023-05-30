@@ -25,20 +25,6 @@ public class CompassMissionManager : MonoBehaviour
     public int minCompassM, maxCompassM;
     public int compassMissionSlots;
 
-    public static CompassMissionManager Instance;
-
-    private void Awake()
-    {
-        if(Instance != null && Instance != this)
-        {
-            Destroy(this);
-
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
 
     private IEnumerator Start()
     {

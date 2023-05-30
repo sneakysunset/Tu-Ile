@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class LevelUI : MonoBehaviour
 {
-    CameraCtr cam;
     [HideNormalInspector] public Transform mainCamera;
     public GameObject NearUI;
     public GameObject DetailUI;
@@ -18,10 +17,10 @@ public class LevelUI : MonoBehaviour
     public void OnActivated()
     {
         tile = GetComponentInParent<Tile>();
-        rMan = FindObjectOfType<RessourcesManager>();
-        cam = FindObjectOfType<CameraCtr>();
+        rMan = RessourcesManager.Instance;
         if (Camera.main) mainCamera = Camera.main.transform;
-        FindObjectOfType<CameraCtr>().RenderTextureOnImage(levelIcon, tile.levelName);
+       
+        TileSystem.Instance.cam.RenderTextureOnImage(levelIcon, tile.levelName);
     }
 
     void Update()

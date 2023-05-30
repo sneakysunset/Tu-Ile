@@ -74,9 +74,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (optionOn) return;
 
-        GameTimer gameTimer = FindObjectOfType<GameTimer>();
-        gameTimer.sceneLoadName = SceneManager.GetActiveScene().name;
-        gameTimer.EndLevel(false);
+        TileSystem.Instance.gameTimer.EndLevel(false, false);
 
         player.SetPause();
     }
@@ -84,10 +82,7 @@ public class PauseMenu : MonoBehaviour
     public void HUB()
     {
         if (optionOn) return;
-
-        GameTimer gameTimer = FindObjectOfType<GameTimer>();
-        gameTimer.sceneLoadName = "Hub";
-        gameTimer.EndLevel(false);
+        TileSystem.Instance.gameTimer.EndLevel(false, true);
         player.SetPause();
     }
 }

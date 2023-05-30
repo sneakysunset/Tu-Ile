@@ -176,7 +176,7 @@ public class EtabliCanvas : MonoBehaviour
                     }
                     else
                     {
-                        textsNear[i].color = Color.white;
+                        textsNear[i].color = Color.black;
                     }
                     f++;
                     break;
@@ -198,7 +198,7 @@ public class EtabliCanvas : MonoBehaviour
                     else
                     {
                         textsNear[f].text = "X";
-                        textsNear[f].color = Color.white;
+                        textsNear[f].color = Color.black;
                     }
                     f++;
                     break;

@@ -20,8 +20,9 @@ public class Item : MonoBehaviour
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;
-        col = GetComponent<Collider>();
-        if (TryGetComponent<Rigidbody>(out rb)) { }
+     
+        if (!TryGetComponent(out col)) col = GetComponentInChildren<Collider>();
+        if (TryGetComponent<Rigidbody>(out rb)) { rb.mass = 0; }
     }
 
     public virtual void Update()
@@ -55,8 +56,8 @@ public class Item : MonoBehaviour
         rb.velocity = Vector3.zero;
         Physics.IgnoreCollision(col, _player.col);
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Release");
-        _player.holdableItems.Add(this);
-        _player.closestItem = this;
+        //_player.holdableItems.Add(this);
+        //_player.closestItem = this;
         if (!etablied)
         {
             transform.parent = null;
@@ -64,6 +65,7 @@ public class Item : MonoBehaviour
             physic = true;
             Highlight.SetActive(true);            
         }
+        StartCoroutine(MakeClosest());
     }
 
 
@@ -77,7 +79,7 @@ public class Item : MonoBehaviour
         player.holdableItems.Add(this);
         transform.parent = null;
         transform.rotation = Quaternion.identity;
-        rb.AddForce(throwStrength * direction, ForceMode.Impulse);
+        rb.AddForce(throwStrength * direction, ForceMode.VelocityChange);
         physic = true;
     }
 
@@ -98,7 +100,7 @@ public class Item : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning", transform.position);
         Physics.IgnoreCollision(other, col, true);
         System.Type type = this.GetType();
-        StartCoroutine(MissionManager.Instance.CheckElimMission(type));
+        //StartCoroutine(MissionManager.Instance.CheckElimMission(type));
         if (_player)
         {
             _player.heldItem = null;
@@ -111,5 +113,10 @@ public class Item : MonoBehaviour
         Destroy(gameObject);
     }
 
-
+    public virtual IEnumerator MakeClosest()
+    {
+        yield return new WaitForEndOfFrame();
+        _player.holdableItems.Add(this);
+        _player.closestItem = this;
+    }
 }

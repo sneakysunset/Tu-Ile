@@ -32,10 +32,10 @@ TagManager:
   - Collectable
   - Spacial UI
   - Ship
-  - 
-  - 
-  - 
-  - 
+  - P1Cam
+  - P2Cam
+  - PSolo
+  - Player_Hit
   - 
   - 
   - 

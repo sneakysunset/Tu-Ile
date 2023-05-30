@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class AI_Movement : MonoBehaviour
 {
     private AI_Behaviour AI_B;
-    private CharacterController _characterController;
+    [HideInInspector] public CharacterController _characterController;
     #region Variables: Movement
 
     [HideInInspector] public Vector2 _input;
@@ -75,7 +75,10 @@ public class AI_Movement : MonoBehaviour
             case AI_Behaviour.Behavious.Static:
                 _direction = Vector3.zero;
                 isMoving = false;
-                break;  
+                break;
+            case AI_Behaviour.Behavious.Disable:
+                goto case AI_Behaviour.Behavious.Static;
+                
         }
 
         groundedCallback = _characterController.isGrounded;
@@ -89,7 +92,9 @@ public class AI_Movement : MonoBehaviour
 
     private void dirInputAI()
     {
-        if (Vector3.Distance(transform.position , AI_B.tilePath[0].transform.position + 23 * Vector3.up) < rangeToReachDestination)
+        Vector2 p = new Vector2(transform.position.x, transform.position.z);
+        Vector2 target = new Vector2(AI_B.tilePath[0].transform.position.x, AI_B.tilePath[0].transform.position.z);
+        if (Vector2.Distance(p , target) < rangeToReachDestination)
         {
             AI_B.tilePath.RemoveAt(0);
             if (AI_B.tilePath.Count == 0)

@@ -7,23 +7,10 @@ public class ScoreManager : MonoBehaviour
 {
     public int score { get; private set; }
     public TextMeshProUGUI scoreText;
-    public static ScoreManager Instance;
-    private void Awake()
-    {
-
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
         public void ChangeScore(int _score)
     {
         score += _score;
         score = Mathf.Clamp(score, 0, 9999);
-        scoreText.text = score.ToString();
+       // scoreText.text = score.ToString();
     }
 }
