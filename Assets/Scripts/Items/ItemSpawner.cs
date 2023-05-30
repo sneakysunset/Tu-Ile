@@ -40,12 +40,14 @@ public class ItemSpawner : MonoBehaviour
         tile = GetComponent<Tile>();
         spawnPoint = transform.Find("SpawnPositions2");
         baseTimerValue = spawnTimer;
-        if(chosenItemToSpawn == null)
-        {
+/*        if(chosenItemToSpawn == null)
+        {*/
             foreach( var item in RessourcesManager.Instance.itemsToSpawn)
             {
                 if(item.item.name == itemToSpawn.ToString())
                 {
+
+                    //Debug.Log(itemToSpawn.ToString() + " " + poolIndex);
                     poolIndex = item.index;
                     chosenItemToSpawn = item.item;
                     return;
@@ -53,21 +55,44 @@ public class ItemSpawner : MonoBehaviour
 
             }
             //Debug.Log(gameObject.name);
-        }
+        //}
+/*        else if (chosenItemToSpawn != null)
+        {
+            foreach (var item in RessourcesManager.Instance.itemsToSpawn)
+            {
+                if (item.item.name == chosenItemToSpawn.GetComponent<Item>().getType.ToString())
+                {
+
+                    Debug.Log(itemToSpawn.ToString() + " " + poolIndex);
+                    poolIndex = item.index;
+                    chosenItemToSpawn = item.item;
+                    return;
+                }
+
+            }
+            //Debug.Log(gameObject.name);
+        }*/
     }
 
     private void SpawnItem()
     {
-
+        
         //spawnedItem = Instantiate(chosenItemToSpawn, spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up, Quaternion.identity);
-        spawnedItem = ObjectPooling.SharedInstance.GetPoolItem(poolIndex);
-        spawnedItem.transform.position = spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up;
-        if (itemToSpawn == SpawnableItems.Etabli) spawnedItem.GetComponent<Item_Etabli>().recette = recette;
-        else if (itemToSpawn == SpawnableItems.Chantier) spawnedItem.GetComponent<Item_Etabli>().recette = otherRecette;
+        spawnedItem = ObjectPooling.SharedInstance.GetPoolItem(poolIndex, Vector3.zero, null);
+        
+        spawnedItem.transform.position =  spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up;
+        if (itemToSpawn == SpawnableItems.Etabli)
+        {
+            StartCoroutine(spawnedItem.GetComponent<Item_Etabli>().OnPooled(recette));
+        }
+        else if (itemToSpawn == SpawnableItems.Chantier)
+        {
+            StartCoroutine(spawnedItem.GetComponent<Item_Etabli>().OnPooled(otherRecette));    
+        }
         if (!loop) { continueLooping = false; }
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if(TileSystem.Instance.ready && spawnedItem == null && tile.walkable && continueLooping)
         {
@@ -80,19 +105,11 @@ public class ItemSpawner : MonoBehaviour
         }
     }
 
-    Mesh meshGizmo;
     private void OnDrawGizmos()
     {
 
             if(spawnPoint == null) spawnPoint = transform.GetChild(0);
-            /*if(itemToSpawn == SpawnableItems.)*/Gizmos.DrawCube(spawnPoint.position + gizmoHeightOffset * Vector3.up, Vector3.one * gizmoScale);
+            Gizmos.DrawCube(spawnPoint.position + gizmoHeightOffset * Vector3.up, Vector3.one * gizmoScale);
             return;
-/*
-        if(meshGizmo == null || spawnPoint == null)
-        {
-            meshGizmo = chosenItemToSpawn.transform.Find("Highlight").GetComponent<MeshFilter>().sharedMesh;
-            spawnPoint = transform.Find("SpawnPositions");
-        }
-        Gizmos.DrawMesh(meshGizmo, spawnPoint.position + gizmoHeightOffset * Vector3.up, Quaternion.identity, Vector3.one * gizmoScale);*/
     }
 }

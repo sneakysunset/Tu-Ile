@@ -505,7 +505,7 @@ tile 10 3+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+S
 tile 10 4+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 10 5+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :10+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 10 6+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :Bait;3;1;0;%
-tile 10 7+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :76+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
+tile 10 7+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 10 8+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :Etabli;0;0;1;R_WoodTile2 (SO_Recette)%
 tile 10 9+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 10 10+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -605,7 +605,7 @@ tile 12 3+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+S
 tile 12 4+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 12 5+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 12 6+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
-tile 12 7+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :Chantier;0;0;0;Chantier - Simple House (SO_Recette_Chantier)%
+tile 12 7+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :Chantier;0;0;0;Chantier-SimpleHouse (SO_Recette_Chantier)%
 tile 12 8+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 12 9+Walkable :1+Degradable :1+Tourbillon :0+TileType :6+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 12 10+Walkable :1+Degradable :1+Tourbillon :0+TileType :6+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
@@ -656,7 +656,7 @@ tile 13 4+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+S
 tile 13 5+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 13 6+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :9+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 13 7+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :9+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 13 8+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :Chantier;0;0;0;Chantier - Simple House (SO_Recette_Chantier)%
+tile 13 8+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :Chantier;0;0;0;Chantier-SimpleHouse (SO_Recette_Chantier)%
 tile 13 9+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 13 10+Walkable :1+Degradable :1+Tourbillon :0+TileType :6+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 13 11+Walkable :1+Degradable :1+Tourbillon :0+TileType :2+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%

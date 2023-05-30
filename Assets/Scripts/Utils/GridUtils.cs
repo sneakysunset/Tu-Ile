@@ -60,6 +60,7 @@ public static class GridUtils
                     if (tiSpawner.Length > 1)
                     {
                         ItemSpawner it = tile.AddComponent<ItemSpawner>();
+                        it.itemToSpawn = (SpawnableItems)System.Enum.Parse(typeof(SpawnableItems), tiSpawner[0]);
                         it.chosenItemToSpawn = reMan.getSpawnableFromList(tiSpawner[0]);
                         if(it.chosenItemToSpawn == null) it.enabled = false;
                         it.spawnTimer = Convert.ToInt32(tiSpawner[1]);
@@ -158,7 +159,7 @@ public static class GridUtils
 
             yield return new WaitForSeconds(UnityEngine.Random.Range(0f, .2f));
         }
-        yield return new WaitForSeconds(2);
+        //yield return new WaitForSeconds(2);
         
         tis.lerpingSpeed *= 6f;
 

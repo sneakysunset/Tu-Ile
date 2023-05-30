@@ -34,7 +34,7 @@ public class ObjectPooling : MonoBehaviour
             
             int size = 0;
             string strType = pool.itemType.Split(':')[0];
-            Debug.Log(pool.itemType);
+            
             if (strType == "Interactor")
             {
                 foreach (Interactor inte in FindObjectsOfType<Interactor>()) if (inte.type.ToString() == pool.itemType.Split(':')[1]) size++;
@@ -68,7 +68,7 @@ public class ObjectPooling : MonoBehaviour
         }
     }
 
-    public GameObject GetPoolItem(int index, string type = null)
+    public GameObject GetPoolItem(int index,Vector3 pos, Transform parentP, string type = null)
     {
         if (type != null)
         {
@@ -79,9 +79,15 @@ public class ObjectPooling : MonoBehaviour
         }
         GameObject go ;
         if (pooledObjects[index].objects.Count == 0) go = Instantiate(pooledObjects[index].prefab);
-        else go = pooledObjects[index].objects[0];
+        else
+        {
+            go = pooledObjects[index].objects[0];
+            pooledObjects[index].objects.RemoveAt(0);
+
+        }
+        go.transform.parent = parentP;
+        go.transform.position = pos;
         go.SetActive(true);
-        pooledObjects[index].objects.RemoveAt(0);
         
         return go;
     }

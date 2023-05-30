@@ -278,7 +278,6 @@ public class CameraCtr : MonoBehaviour
             
         foreach(Tile tile in fadeTile)
         {
-            Debug.Log(tile.name);
             if(tile.faded) tile.UnFadeTile();
         } 
         foreach(Tile tile in value) if(!tile.faded) tile.FadeTile(transparencyLevel);

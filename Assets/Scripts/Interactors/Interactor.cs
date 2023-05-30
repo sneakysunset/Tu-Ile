@@ -61,6 +61,24 @@ public class Interactor : MonoBehaviour
     #region SystemCallBacks
     private void Start()
     {
+/*        regrowthTimer /= comp.Length;
+        pSysRegrowth = GetComponentInChildren<ParticleSystem>();
+        regrowthWaiter = new WaitForSeconds(regrowthTimer);
+        stateIndex = comp.Length - 1;
+        meshR.sharedMaterial = comp[stateIndex].material;
+        meshF.mesh = comp[stateIndex].mesh; 
+        meshC.sharedMesh = comp[stateIndex].mesh; 
+        _player = new List<Player>();
+        Transform p = transform.parent.parent.parent;
+        stackPosT = p.Find("StackPos");
+        CreateStack();*/
+        meshF = GetComponent<MeshFilter>();
+        meshR = GetComponent<MeshRenderer>();
+        meshC = GetComponent<MeshCollider>();
+    }
+
+    private void OnEnable()
+    {
         regrowthTimer /= comp.Length;
         pSysRegrowth = GetComponentInChildren<ParticleSystem>();
         regrowthWaiter = new WaitForSeconds(regrowthTimer);
@@ -69,12 +87,17 @@ public class Interactor : MonoBehaviour
         meshR = GetComponent<MeshRenderer>();
         meshC = GetComponent<MeshCollider>();
         meshR.sharedMaterial = comp[stateIndex].material;
-        meshF.mesh = comp[stateIndex].mesh; 
-        meshC.sharedMesh = comp[stateIndex].mesh; 
+        meshF.mesh = comp[stateIndex].mesh;
+        meshC.sharedMesh = comp[stateIndex].mesh;
         _player = new List<Player>();
+        if(transform.parent == null || transform.parent.parent || transform.parent.parent.parent == null)
+        {
+            return;
+        }
         Transform p = transform.parent.parent.parent;
         stackPosT = p.Find("StackPos");
-        CreateStack();
+        Debug.Log(TileSystem.Instance);
+        if(!TileSystem.Instance.isHub)CreateStack();
     }
 
     private void Update()
@@ -112,12 +135,18 @@ public class Interactor : MonoBehaviour
     #region Other Methods
     void CreateStack()
     {
-        if (stackPosT.childCount == 0)
+        if(stackPosT == null)
         {
-            Item_Stack obj = ObjectPooling.SharedInstance.GetPoolItem(5).GetComponent<Item_Stack>();
+            Transform p = transform.parent.parent.parent;
+            stackPosT = p.Find("StackPos");
+        }
+        if (stackPosT.childCount == 0)  
+        {
+            Transform tr = stackPosT;
+            Vector3 pos = stackPosT.position;
+            Item_Stack obj = ObjectPooling.SharedInstance.GetPoolItem(5, pos, tr).GetComponent<Item_Stack>();
 
             //Item_Stack obj = Instantiate(stackPrefab, stackPosT.position, Quaternion.identity, null);
-            obj.transform.parent = stackPosT;
             obj.numberStacked = 0;
             switch (type)
             {

@@ -511,9 +511,9 @@ public class Tile : MonoBehaviour
 
         //Interactor obj = Instantiate(prefab, null);
         //obj.type = tileSpawnType;
-        GameObject obj = ObjectPooling.SharedInstance.GetPoolItem(interactorPoolIndex);
-        obj.transform.parent = t;
-        obj.transform.position = t.position;
+        Transform tr = t;
+        Vector3 pos =  t.position;
+        GameObject obj = ObjectPooling.SharedInstance.GetPoolItem(interactorPoolIndex, pos, tr);
         obj.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
     }
     #endregion

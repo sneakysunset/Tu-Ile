@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Rendering.Universal;
@@ -148,6 +149,31 @@ public class EtabliCanvas : MonoBehaviour
                     break;
             }
             if (yo) break;
+        }
+
+        for (int i = 0; i < etabli.recette.requiredItemUnstackable.Length; i++)
+        {
+            foreach (ressourceMeshCollecUnstackable r in RessourcesManager.Instance.RessourceMeshsUnstackable)
+            {
+                if (etabli.recette.requiredItemUnstackable[i].itemType == r.itemType)
+                {
+                    etabli.stackT.GetChild(i).GetComponent<MeshFilter>().mesh = r.mesh;
+                    etabli.stackT.GetChild(i).GetComponent<MeshRenderer>().material = r.mat;
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < etabli.recette.requiredItemStacks.Length; i++)
+        {
+            foreach (ressourceMeshsCollec r in RessourcesManager.Instance.RessourceMeshs)
+            {
+                if (etabli.recette.requiredItemStacks[i].stackType == r.stackType)
+                {
+                    etabli.stackT.GetChild(i + etabli.recette.requiredItemUnstackable.Length).GetComponent<MeshFilter>().mesh = r.meshs[0];
+                    etabli.stackT.GetChild(i + etabli.recette.requiredItemUnstackable.Length).GetComponent<MeshRenderer>().material = r.materials[0];
+                    break;
+                }
+            }
         }
 
         resultTextNear.text = "x " + etabli.recette.numberOfCrafted;

@@ -84,8 +84,12 @@ public class RessourcesManager : MonoBehaviour
     {
         foreach(var recette in recettes)
         {
-            if (recetteName == recette.ToString()) return recette;
+            if (recetteName.Split(' ')[0] == recette.name)
+            {
+                return recette;
+            }
         }
+        Debug.Log(recetteName);
         return null;
     }
 }

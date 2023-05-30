@@ -31,7 +31,6 @@ public class ChantierCanvas : MonoBehaviour
         }
 
         int f = 0;
-
         for (int i = 0; i < etabli.recette.requiredItemStacks.Length; i++)
         {
             foreach (ressourceMeshsCollec rMC in rMan.RessourceMeshs)
