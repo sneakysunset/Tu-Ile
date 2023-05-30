@@ -19,7 +19,7 @@ public class Player_StopDegradation : MonoBehaviour
         if (context.started)
         {
             if (TileSystem.Instance.isHub && player.tileUnder && player.tileUnder.tileType == TileType.LevelLoader) LoadScene();
-            else if(TileSystem.Instance.isHub) Reperation();
+            else if(!TileSystem.Instance.isHub) Reperation();
         }
     }
 

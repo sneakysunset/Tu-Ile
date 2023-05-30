@@ -504,6 +504,7 @@ public class Tile : MonoBehaviour
                 prefab = TileSystem.Instance.tileM.adamantiumPrefab;
                 break;
             default:
+                tileSpawnType = TileType.Wood;
                 prefab = TileSystem.Instance.tileM.treePrefab;
                 break;
         }

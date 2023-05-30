@@ -48,7 +48,7 @@ public class Tile_Degradation : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (TileSystem.Instance.ready && tile.readyToRoll && tile.IsMoving && tile.readyToRoll)
+        if (TileSystem.Instance.ready /*&& tile.readyToRoll*/ && tile.IsMoving)
         {
             Vector3 localPos = tile.transform.localPosition;
             float distance = Mathf.Abs(tile.transform.position.y - tile.currentPos.y);

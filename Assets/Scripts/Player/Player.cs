@@ -202,7 +202,7 @@ public class Player : MonoBehaviour
         if (pM.stunCor != null)
         {
             StopCoroutine(pM.stunCor);
-            pM.stunCor = null;
+            pM.UnStun();
         }
         Physics.IgnoreCollision(col, hit.collider, true);
         Instantiate(waterSplash, hit.point + 2 * Vector3.up, Quaternion.identity, null);

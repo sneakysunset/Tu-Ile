@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         {
             ApplyMovement();
         }
-        if (!canMove ) player._characterController.enabled = false;
+        if (!canMove && isStunned ) player._characterController.enabled = false;
         dashTimer -= Time.deltaTime;
     }
 
@@ -277,7 +277,6 @@ public class PlayerMovement : MonoBehaviour
         player._characterController.enabled = false;
         yield return new WaitForSeconds(stunDuration);
         UnStun();
-        stunCor = null;
     }
 
     public void UnStun()
@@ -287,6 +286,7 @@ public class PlayerMovement : MonoBehaviour
         rb.mass = 0;
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
         rb.isKinematic = true;
+        stunCor = null;
         player._characterController.enabled = true;
         isStunned = false;
     }
