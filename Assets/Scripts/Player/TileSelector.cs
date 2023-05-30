@@ -131,7 +131,7 @@ public class TileSelector : MonoBehaviour
         if(Application.isPlaying && player.tileUnder)
         {
             UnityEditor.Handles.color = Color.green;
-            UnityEditor.Handles.DrawWireDisc(player.tileUnder.transform.GetChild(0).position, Vector3.up, distanceToBeOnTop);
+            UnityEditor.Handles.DrawWireDisc(player.tileUnder.minableItems.position, Vector3.up, distanceToBeOnTop);
         }
 #endif
 

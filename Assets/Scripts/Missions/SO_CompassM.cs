@@ -45,6 +45,6 @@ public class SO_CompassM : ScriptableObject
             item.targettedTiles.Remove(targettedTile);
             item.UpdateTargettedList();
         }
-        Instantiate(reward, targettedTile.transform.GetChild(0).position, Quaternion.identity);
+        Instantiate(reward, targettedTile.minableItems.position, Quaternion.identity);
     }
 }

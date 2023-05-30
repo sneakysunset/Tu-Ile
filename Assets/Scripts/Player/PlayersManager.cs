@@ -34,15 +34,10 @@ public class PlayersManager : MonoBehaviour
 
     private IEnumerator Start()
     {
-        cam = FindObjectOfType<CameraCtr>();
-        if (cam == null)
-        {
-            Instantiate(pnc);
-            cam = FindObjectOfType<CameraCtr>();
-        }
+        cam = TileSystem.Instance.cam;
         players = FindObjectsOfType<Player>();
         playerInputManager = GetComponent<PlayerInputManager>();
-        playerInputManager.DisableJoining();
+        //playerInputManager.DisableJoining();
         PauseMenu pM = FindObjectOfType<PauseMenu>();
         //pM.transform.GetChild(0).gameObject.SetActive(true);
         //pM.gameObject.SetActive(false);
@@ -51,9 +46,9 @@ public class PlayersManager : MonoBehaviour
         {
             if(cam.players == null || cam.players.Count == 0)
             {
-                cam.AddPlayer(players[0].dummyTarget);      
+                cam.AddPlayer(players[0].dummyTarget, players[0]);      
             } 
-            if ((TileSystem.Instance.isHub) && !cam.players.Contains(players[i].dummyTarget)) cam.AddPlayer(players[i].dummyTarget);
+            if ((TileSystem.Instance.isHub) && !cam.players.Contains(players[i].dummyTarget)) cam.AddPlayer(players[i].dummyTarget, players[i]);
             players[i].GetComponent<Player_Pause>().pauseMenu = pM;
         }
         yield return new WaitUntil(() => TileSystem.Instance.ready);

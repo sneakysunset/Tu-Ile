@@ -16,8 +16,8 @@ public class Tile_Degradation : MonoBehaviour
 
     private void Awake()
     {
-        spawnPos = transform.GetChild(0).GetChild(0);
         tile = GetComponent<Tile>();
+        spawnPos = tile.minableItems.GetChild(0);
         if (tile.visualRoot == null) tile.visualRoot = transform.Find("TileVisuals"); 
     }
 
@@ -35,7 +35,7 @@ public class Tile_Degradation : MonoBehaviour
         else tile.IsMoving = true;
 
 
-        if (FMODUtils.IsPlaying(tfFI)) tfFI.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform.GetChild(0)));
+        if (FMODUtils.IsPlaying(tfFI)) tfFI.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(spawnPos));
         //if (tile.walkable && tile.degradable && tile.walkedOnto && tile.tileType != TileType.Sand) Degrading();
 
 /*        if(tile.timer < tile.shakeActivationTime && shakeCor == null)

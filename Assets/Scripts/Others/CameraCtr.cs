@@ -17,7 +17,7 @@ public class CameraCtr : MonoBehaviour
     #region Components and Lists
     private Camera cam;
     [Foldout("Camera References")] public CinemachineVirtualCamera dezoomCamera;
-    [Foldout("Camera References")] public CinemachineVirtualCamera cam2;
+    [Foldout("Camera References")] public CinemachineVirtualCamera cam1, cam2;
     [HideInInspector] public List<Transform> players;
     public delegate void OnStartUpDelegate();
     public static event OnStartUpDelegate startUp;
@@ -63,8 +63,8 @@ public class CameraCtr : MonoBehaviour
         GridUtils.onLevelMapLoad += OnLoad;
         GridUtils.onEndLevel += OnEndLevel;
         //sCE = GetComponentInChildren<SplitScreenEffect>();
-        dezoomCamera.LookAt = TileSystem.Instance.centerTile.transform.GetChild(0);
-        dezoomCamera.Follow = TileSystem.Instance.centerTile.transform.GetChild(0);
+        dezoomCamera.LookAt = TileSystem.Instance.centerTile.minableItems;
+        dezoomCamera.Follow = TileSystem.Instance.centerTile.minableItems;
         StartCoroutine(changeCam());
     }
 
@@ -72,8 +72,8 @@ public class CameraCtr : MonoBehaviour
     public void OnLoad()
     {
         StartCoroutine(OnLevelLoad());
-        dezoomCamera.LookAt = TileSystem.Instance.centerTile.transform.GetChild(0);
-        dezoomCamera.Follow = TileSystem.Instance.centerTile.transform.GetChild(0);
+        dezoomCamera.LookAt = TileSystem.Instance.centerTile.minableItems;
+        dezoomCamera.Follow = TileSystem.Instance.centerTile.minableItems;
 /*        for (int i = 0; i < sCE.Screens.Count; i++)
         {
             if (sCE.Screens[i].Target == null)
@@ -84,7 +84,7 @@ public class CameraCtr : MonoBehaviour
         }*/
     }
 
-    public void OnEndLevel(Tile tile) => DezoomCam(tile.transform.GetChild(0));
+    public void OnEndLevel(Tile tile) => DezoomCam(tile.minableItems);
 
 /*    private void Update()
     {
@@ -150,15 +150,24 @@ public class CameraCtr : MonoBehaviour
 
 
     #region AddPlayer
-    public void AddPlayer(Transform player)
+    public void AddPlayer(Transform player, Player playerP)
     {
         if(players == null)
         {
             players = new List<Transform>();
         }
         players.Add(player);
-        cam2.Follow = player ;
-        cam2.LookAt = player;
+        playerP.playerIndex = players.Count - 1;
+        if (players.Count > 1)
+        {
+            cam2.Follow = player ;
+            cam2.LookAt = player;
+        }
+        else
+        {
+            cam1.Follow = player ;
+            cam1.LookAt = player;
+        }
         if(players.Count > 1) 
         { 
             Rect rect  = new Rect(0, 0, .5f, 1);
@@ -168,9 +177,6 @@ public class CameraCtr : MonoBehaviour
             SplitBar.DOAnchorPosX(0, 2).SetEase(TileSystem.Instance.easeInOut);
         }
         SetPlayerColor(player);
-        
-        //SetSplitScreens(player);
-        //SetTargetGroups();
     }
 
     private void SetPlayerColor(Transform player)
@@ -189,56 +195,6 @@ public class CameraCtr : MonoBehaviour
         }
     }
 
-/*    private void SetSplitScreens(Transform player)
-    {
-        if (sCE == null) sCE = GetComponentInChildren<SplitScreenEffect>(); ;
-        if (sDatas.Count == 0)
-        {
-            sDatas = new List<ScreenData>();
-            foreach (ScreenData data in sCE.Screens)
-            {
-                sDatas.Add(data);
-            }
-        }
-
-        for (int i = 0; i < sCE.Screens.Count; i++)
-        {
-            sCE.Screens.RemoveAt(i);
-            i--;
-            if (sCE.Screens.Count == 0) break;
-        }
-
-        foreach (ScreenData screen in sDatas)
-        {
-            if (screen.Target != null) sCE.Screens.Add(screen);
-            else if (screen.Target == null)
-            {
-                screen.Target = player;
-                sCE.Screens.Add(screen);
-                break;
-            }
-        }
-    }*/
-
-/*    private void SetTargetGroups()
-    {
-        List<CinemachineTargetGroup.Target> targets = new List<CinemachineTargetGroup.Target>();
-        for (int i = 0; i < players.Count; i++)
-        {
-            CinemachineTargetGroup.Target tar = new CinemachineTargetGroup.Target();
-            tar.weight = 1;
-            tar.target = players[i];
-            targets.Add(tar);
-        }
-        if (targetGroup == null) targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
-        targetGroup.m_Targets = new CinemachineTargetGroup.Target[targets.Count];
-
-        for (int i = 0; i < targets.Count; i++)
-        {
-            targetGroup.m_Targets[i] = targets[i];
-        }
-    }*/
-
     public void RemovePlayer(Transform player)
     {
         players.Remove(player);
@@ -250,23 +206,6 @@ public class CameraCtr : MonoBehaviour
             SplitBar.transform.DOScaleX(0, 2).SetEase(TileSystem.Instance.easeInOut);
             SplitBar.DOAnchorPosX(splitBarPosX, 2).SetEase(TileSystem.Instance.easeInOut);
         }
-
-
-        /*        List<CinemachineTargetGroup.Target> targets = new List<CinemachineTargetGroup.Target>();
-                for (int i = 0; i < players.Count; i++)
-                {
-                    CinemachineTargetGroup.Target tar = new CinemachineTargetGroup.Target();
-                    tar.weight = 1;
-                    tar.target = players[i];
-                    targets.Add(tar);
-                }*/
-        /*if (targetGroup == null) targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
-        targetGroup.m_Targets = new CinemachineTargetGroup.Target[targets.Count];
-
-        for (int i = 0; i < targets.Count; i++)
-        {
-            targetGroup.m_Targets[i] = targets[i];
-        }*/
     }
     #endregion
 

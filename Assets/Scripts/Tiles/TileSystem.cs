@@ -257,78 +257,55 @@ public class TileSystemEditor : Editor
         {
             for (int y = 0; y < t.GetLength(1); y++)
             {
-                //0
+                _content += t[x, y].name;
+                _content += "+";
+                //1
+                _content += "Walkable :";
                 if (t[x, y].walkable) _content += 1.ToString();
                 else _content += 0.ToString();
                 _content += "+";
-                
-                //1
-                if (t[x, y].degradable) _content += 1.ToString();
-                else _content += 0.ToString();
-                _content += "+";                
-                
+
                 //2
-                if (t[x, y].tourbillon) _content += 1.ToString();
+                _content += "Degradable :";
+                if (t[x, y].degradable) _content += 1.ToString();
                 else _content += 0.ToString();
                 _content += "+";
 
                 //3
-                _content += Convert.ToInt32(t[x, y].tileType);
-                /*switch(t[x, y].tileType)
-                {
-                    case TileType.Neutral: _content += 0.ToString(); break;
-                    case TileType.Wood: _content += 1.ToString(); break;
-                    case TileType.Rock: _content += 2.ToString(); break;
-                    case TileType.Gold: _content += 3.ToString(); break;
-                    case TileType.Diamond: _content += 4.ToString(); break;
-                    case TileType.Adamantium: _content += 5.ToString(); break;
-                    case TileType.Sand: _content += 6.ToString(); break;
-                    case TileType.BouncyTile: _content += 7.ToString(); break;
-                    case TileType.LevelLoader: _content += 8.ToString(); break;
-                    case TileType.construction: _content += 9.ToString(); break;
-                }*/
+                _content += "Tourbillon :";
+                if (t[x, y].tourbillon) _content += 1.ToString();
+                else _content += 0.ToString();
                 _content += "+";
 
                 //4
-                _content += Convert.ToInt32(t[x, y].tileSpawnType);
-                /*switch (t[x, y].tileSpawnType)
-                {
-                    case TileType.Neutral: _content += 0.ToString(); break;
-                    case TileType.Wood: _content += 1.ToString(); break;
-                    case TileType.Rock: _content += 2.ToString(); break;
-                    case TileType.Gold: _content += 3.ToString(); break;
-                    case TileType.Diamond: _content += 4.ToString(); break;
-                    case TileType.Adamantium: _content += 5.ToString(); break;
-                    case TileType.Sand: _content += 6.ToString(); break;
-                    case TileType.BouncyTile: _content += 7.ToString(); break;
-                    case TileType.LevelLoader: _content += 8.ToString(); break;
-                    case TileType.construction: _content += 9.ToString(); break;
-                }*/
+                _content += "TileType :";
+                _content += Convert.ToInt32(t[x, y].tileType);
                 _content += "+";
 
                 //5
-                _content += Convert.ToString((int)t[x, y].spawnPositions);
+                _content += "TileSpawnType :";
+                _content += Convert.ToInt32(t[x, y].tileSpawnType);
                 _content += "+";
-/*                int myInt = Convert.ToInt32(t[x, y].spawnPositions);
-*//*                bool[] bools = Utils.GetSpawnPositions(myInt);
-                for (int i = 0; i < bools.Length; i++)
-                {
-                    if (bools[i]) _content += 1;
-                    else _content += 0;
-                    if(i < bools.Length - 1)_content += ";";
-                }*//*
-                string flag = ; ;*/
-
 
                 //6
+                _content += "SpawnPosition :";
+                _content += Convert.ToString((int)t[x, y].spawnPositions);
+                _content += "+";
+
+
+                //7
+                _content += "LevelName :";
                 _content += t[x, y].levelName;
                 if (t[x, y].levelName.Length == 0) _content += "NIVEAU VIDE";
                 _content += "+";
 
-                //7
+                //8
+                _content += "Height :";
                 _content += t[x, y].transform.position.y;
                 _content += "+";
 
+                //9
+                _content += "ItemSpawner :";
                 if (t[x,y].TryGetComponent<ItemSpawner>(out ItemSpawner itemSpawner))
                 {
                     string itemType = itemSpawner.itemToSpawn.ToString();
@@ -348,7 +325,7 @@ public class TileSystemEditor : Editor
                     _content += "No Spawner";
                 }
 
-                _content += "%";
+                _content += "%\n";
             }
             _content += "|";
         }
@@ -370,10 +347,13 @@ public class TileSystemEditor : Editor
             string gameManPath = Application.dataPath + "/Prefab/GameManagers/" + SceneManager.GetActiveScene().name + "_GM.prefab";
             GameObject gameManager = FindObjectOfType<GameTimer>().gameObject;
             GameTimer manag = PrefabUtility.SaveAsPrefabAssetAndConnect(gameManager, gameManPath, UnityEditor.InteractionMode.UserAction).GetComponent<GameTimer>();
-            RessourcesManager rMan = tileS.ressourcesManagerPrefab;
+            RessourcesManager rMan = GameObject.FindObjectOfType<RessourcesManager>();
             if (!rMan.gameManagers.Contains(manag))
             {
                 rMan.gameManagers.Add(manag);
+                string rPath = Application.dataPath + "/Prefab/System/RessourcesManager.prefab";
+                RessourcesManager rManag = PrefabUtility.SaveAsPrefabAssetAndConnect(rMan.gameObject, rPath, UnityEditor.InteractionMode.UserAction).GetComponent<RessourcesManager>();
+
             }
         }
         AssetDatabase.Refresh();

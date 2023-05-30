@@ -482,7 +482,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 251dfe663949ddd4eb791bfdc64d40a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dezoomCamera: {fileID: 0}
+  dezoomCamera: {fileID: 4190664559342532176}
+  cam1: {fileID: 4898351341172603269}
   cam2: {fileID: 6707003948044665404}
   players: []
   SplitBar: {fileID: 0}

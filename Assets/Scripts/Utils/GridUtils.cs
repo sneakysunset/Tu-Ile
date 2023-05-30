@@ -44,17 +44,18 @@ public static class GridUtils
                 Tile tile = tileS.tiles[i, k];
 
                 if (tile.TryGetComponent(out ItemSpawner itemSpawner)) GameObject.Destroy(itemSpawner);
-                tile.walkable = Convert.ToBoolean(int.Parse(tiParam[0]));
-                tile.tourbillon = Convert.ToBoolean(int.Parse(tiParam[2]));
-                tile.tileSpawnType = (TileType)Convert.ToInt32(int.Parse(tiParam[4]));
+                tile.walkable = Convert.ToBoolean(int.Parse(tiParam[1].Split(":")[1]));
+                tile.tourbillon = Convert.ToBoolean(int.Parse(tiParam[3].Split(":")[1]));
+                tile.tileSpawnType = (TileType)Convert.ToInt32(int.Parse(tiParam[5].Split(":")[1]));
                 if (tile.walkable)
                 {
-                    tile.degradable = Convert.ToBoolean(int.Parse(tiParam[1]));
-                    tile.tileType = (TileType)Convert.ToInt32(int.Parse(tiParam[3]));
-                    tile.spawnPositions = (SpawnPositions)int.Parse(tiParam[5]);
-                    tile.levelName = tiParam[6];
-                    tile.currentPos.y = int.Parse(tiParam[7]);
-                    string[] tiSpawner = tiParam[8].Split(";");
+                    
+                    tile.degradable = Convert.ToBoolean(int.Parse(tiParam[2].Split(":")[1]));
+                    tile.tileType = (TileType)Convert.ToInt32(int.Parse(tiParam[4].Split(":")[1]));
+                    tile.spawnPositions = (SpawnPositions)int.Parse(tiParam[6].Split(":")[1]);
+                    tile.levelName = tiParam[7].Split(":")[1];
+                    tile.currentPos.y = int.Parse(tiParam[8].Split(":")[1]);
+                    string[] tiSpawner = tiParam[9].Split(":")[1].Split(";");
                     if (tiSpawner.Length > 1)
                     {
                         ItemSpawner it = tile.AddComponent<ItemSpawner>();

@@ -17,7 +17,7 @@ public class ItemSystem : MonoBehaviour
 
 
 
-    //normal grab action
+    //Normal Grab Action
     public void OnItemInput1(InputAction.CallbackContext context)
     {
         bool isSameOrSubClass = player.closestItem != null && Utils.IsSameOrSubclass(player.closestItem.GetType(), typeof(Item_Etabli));
@@ -84,6 +84,10 @@ public class ItemSystem : MonoBehaviour
             if (player.closestItem == null) player.closestItem = player.heldItem;
             player.heldItem = null;
             return;
+        }
+        else if(context.started && player.heldItem == null && !pPause.isPaused)
+        {
+            player.pM.Push();
         }
     }
 }   

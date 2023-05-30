@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public float jumpStrengthOnBounce = 20;
     public bool autoJump = true;
     [HideInInspector] private float dashStrength;
-    [HideInInspector] public float pushStrength;
+     public float pushStrength;
     [HideInInspector] private float dashDuration;
     [HideInInspector] public float dashCooldown = 1;
     [Header("1 = 0.1 sec, .1 = 1 sec")]
@@ -51,10 +51,13 @@ public class PlayerMovement : MonoBehaviour
     [HideNormalInspector] public bool canMove = true;
     private bool groundHit;
     #endregion
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
         player = GetComponent<Player>();
+        rb = GetComponent<Rigidbody>();
+        constraints = rb.constraints;
     }
 
     private void OnGroundedCallBack()
@@ -92,11 +95,11 @@ public class PlayerMovement : MonoBehaviour
         {
             ApplyDash();
         }
-        else
+        else if(player._characterController.enabled)
         {
             ApplyMovement();
         }
-
+        if (!canMove ) player._characterController.enabled = false;
         dashTimer -= Time.deltaTime;
     }
 
@@ -216,8 +219,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
         
-
-
     private Vector2 Rotate(Vector2 v, float degrees)
     {
         float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
@@ -248,5 +249,71 @@ public class PlayerMovement : MonoBehaviour
         dir = vec;
         yield return new WaitForSeconds(dashDuration);
         dashFlag = false;
+    }
+
+
+    public void Push()
+    {
+        if(otherPM != null && otherPM != this)
+        {
+            Vector3 dir = otherPM.transform.position - transform.position;
+            dir.y = 0;
+            dir = dir.normalized;
+            if (otherPM.stunCor != null) StopCoroutine(otherPM.stunCor);
+            otherPM.stunCor = otherPM.IsPushed(dir);
+            StartCoroutine(otherPM.stunCor);
+            StartCoroutine(otherPM.IsPushed(dir));
+        }
+    }
+
+    public IEnumerator IsPushed(Vector3 pushDirection)
+    {
+        isStunned = true;
+        canMove = false;
+        rb.isKinematic = false;
+        rb.constraints = RigidbodyConstraints.None;
+        rb.mass = 1;
+        rb.AddForce(pushDirection * pushStrength, ForceMode.Impulse);
+        player._characterController.enabled = false;
+        yield return new WaitForSeconds(stunDuration);
+        UnStun();
+        stunCor = null;
+    }
+
+    public void UnStun()
+    {
+        rb.constraints = constraints;
+        canMove = true;
+        rb.mass = 0;
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+        rb.isKinematic = true;
+        player._characterController.enabled = true;
+        isStunned = false;
+    }
+
+    Rigidbody rb;
+    [HideNormalInspector] public PlayerMovement otherPM;
+    public float stunDuration;
+    [HideNormalInspector] public bool isStunned;
+    [HideInInspector] public RigidbodyConstraints constraints;
+    [HideInInspector] public IEnumerator stunCor;
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out PlayerMovement otherPlayerM))
+        {
+            if(otherPlayerM == this)
+            {
+                return;
+            }
+            otherPM = otherPlayerM;            
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player") && otherPM != null && otherPM.gameObject == other.gameObject)
+        {
+            otherPM = null;
+        }
     }
 }

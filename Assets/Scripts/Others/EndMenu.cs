@@ -35,7 +35,7 @@ public class EndMenu : MonoBehaviour
         //MissionManager missionManager = MissionManager.Instance;
         CameraCtr cam = TileSystem.Instance.cam;
         StartCoroutine(gameTimer.LerpTimeLine(gameTimer.UIPos.anchoredPosition, gameTimer.UIPos.anchoredPosition + UnityEngine.Vector2.up * -100, gameTimer.UIPos, gameTimer.lerpCurveEaseIn, gameTimer.lerpSpeed));
-        cam.DezoomCam(TileSystem.Instance.centerTile.transform.GetChild(0));
+        cam.DezoomCam(TileSystem.Instance.centerTile.minableItems);
         //missionManager.CloseMissions();
 
         yield return new WaitForSeconds(2);

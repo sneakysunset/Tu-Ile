@@ -44,7 +44,7 @@ public enum TileType { Neutral = 0, Wood = 1, Rock = 2, Gold = 3, Diamond = 4, A
 
 public class Tile : MonoBehaviour
 {
-    #region Variables
+    #region V=ariables
     #region MainVariables
     [Header("Type de Tile")]
     [Space(10)]
@@ -257,7 +257,7 @@ public class Tile : MonoBehaviour
         {
             int rotation = UnityEngine.Random.Range(0, 6);
             transform.Rotate(0, rotation * 60, 0);
-            transform.GetChild(0).Rotate(0, -rotation * 60, 0);
+            minableItems.Rotate(0, -rotation * 60, 0);
             transform.Find("SpawnPositions2").Rotate(0, -rotation * 60, 0);
         }
 
@@ -299,7 +299,7 @@ public class Tile : MonoBehaviour
             {
                 if (bools[i])
                 {
-                    Transform tr = transform.GetChild(0).GetChild(i);
+                    Transform tr = minableItems.GetChild(i);
                     if(!tr.gameObject.activeInHierarchy)tr.gameObject.SetActive(true);
                     SpawnItem(tr);
                 }
@@ -626,7 +626,7 @@ public class Tile : MonoBehaviour
             if (!walkable)
             {
                 transform.Find("Additional Visuals").gameObject.SetActive(false);
-                minableItems.gameObject.SetActive(false);
+                //minableItems.gameObject.SetActive(false);
             }
             else
             {
@@ -702,10 +702,11 @@ public class TileEditor : Editor
 
     private void OnSceneGUI()
     {
-        if(tile.EditPos) Draw();
+        //base.OnInspectorGUI();
+
+        if (tile.EditPos) Draw();
 
         if(tile.spawnSpawners) SpawnOnTile();
-       
 
         HandleMovement();
     }
@@ -724,7 +725,7 @@ public class TileEditor : Editor
 
     private void Draw()
     {
-        if(t == null) t = tile.transform.GetChild(0);
+        if(t == null) t = tile.minableItems;
         int myInt = Convert.ToInt32(tile.spawnPositions);
         bool[] bools = Utils.GetSpawnPositions(myInt);
         GUIStyle gUIStyle = new GUIStyle();

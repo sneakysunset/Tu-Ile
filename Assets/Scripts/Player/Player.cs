@@ -5,6 +5,7 @@ using ProjectDawn.SplitScreen;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
@@ -45,13 +46,14 @@ public class Player : MonoBehaviour
     [HideNormalInspector] public Vector2Int previousScenePos;
     [HideNormalInspector] public Ship_CharacterController ship;
     [HideNormalInspector] public bool isShipped;
+    [HideNormalInspector] public int playerIndex;
     private void Awake()
     {
         GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = Color.black;
         pPause = GetComponent<Player_Pause>();
         transform.parent = null;
         dummyTarget = transform.Find("DummyTarget");
-        if (/*TileSystem.Instance.isHub && */Time.time > .1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget);
+        if (/*TileSystem.Instance.isHub && */Time.time > .1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget, this);
         col = GetComponent<Collider>();
         pointers = new List<Transform>();
         Transform pointerFolder = transform.Find("PointerFolder");
@@ -87,7 +89,7 @@ public class Player : MonoBehaviour
         pMin = GetComponent<Player_Mining>();
         _characterController = pM.GetComponent<CharacterController>();
         _characterController.enabled = false;
-        transform.position = TileSystem.Instance.centerTile.transform.GetChild(0).position + Vector3.up * 3;
+        transform.position = TileSystem.Instance.centerTile.minableItems.GetChild(playerIndex).position + Vector3.up * 3.5f;
         _characterController.enabled = true;
         anim = GetComponentInChildren<Animator>();
         GridUtils.onLevelMapLoad += OnLoad;
@@ -188,8 +190,8 @@ public class Player : MonoBehaviour
             heldItem.GrabRelease(true);
             Destroy(heldItem.gameObject);
         }
-        currentGravMult = pM.gravityMultiplier;
         WaterHit(hit);
+        currentGravMult = pM.gravityMultiplier;
         yield return new WaitForSeconds(drawningTimer);
         DrawningEnd(hit);
     }
@@ -197,6 +199,11 @@ public class Player : MonoBehaviour
     private void WaterHit(ControllerColliderHit hit)
     {
         pState = PlayerState.Drawning;
+        if (pM.stunCor != null)
+        {
+            StopCoroutine(pM.stunCor);
+            pM.stunCor = null;
+        }
         Physics.IgnoreCollision(col, hit.collider, true);
         Instantiate(waterSplash, hit.point + 2 * Vector3.up, Quaternion.identity, null);
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning", transform.position);
@@ -213,7 +220,7 @@ public class Player : MonoBehaviour
         Physics.IgnoreCollision(col, hit.collider, false);
         pM._velocity = 0;
         _characterController.enabled = false;
-        transform.position = respawnTile.transform.position + (25f + 3f) * Vector3.up;
+        transform.position = respawnTile.minableItems.GetChild(playerIndex).position + 3.5f * Vector3.up;
         _characterController.enabled = true;
         dummyTarget.parent = transform;
         dummyTarget.localPosition = Vector3.zero;
