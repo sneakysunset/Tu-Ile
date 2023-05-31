@@ -4,15 +4,9 @@ using FMOD.Studio;
 using ProjectDawn.SplitScreen;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
-using UnityEngine.Timeline;
-using UnityEngine.Windows;
-using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -50,6 +44,7 @@ public class Player : MonoBehaviour
     [HideNormalInspector] public bool isShipped;
     [HideNormalInspector] public int playerIndex;
     [HideNormalInspector] public CinemachineVirtualCamera closeUpCam;
+    [HideNormalInspector] public Transform myCamera;
     private void Awake()
     {
         GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = Color.black;
@@ -190,7 +185,12 @@ public class Player : MonoBehaviour
             transform.LookAt(pos);
         }
         else if (pPause.isPaused && (pState == PlayerState.Idle || pState == PlayerState.Walk))
+        {
+            Vector3 vec = myCamera.position;
+            vec.y = transform.position.y;
+            transform.LookAt(vec);
             pState = PlayerState.Dance;
+        }
         else if (_characterController.isGrounded && pM._input != Vector2.zero && (pState == PlayerState.Idle || pState == PlayerState.Dance)) pState = PlayerState.Walk;
         else if (_characterController.isGrounded && pM._input == Vector2.zero && (pState == PlayerState.Walk || pState == PlayerState.Dance)) pState = PlayerState.Idle;
     }

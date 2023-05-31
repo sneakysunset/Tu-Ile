@@ -11,7 +11,6 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.Linq.Expressions;
 using System.Linq;
-using static UnityEditor.Progress;
 //sing static UnityEngine.RuleTile.TilingRuleOutput;
 
 [System.Flags]
@@ -322,6 +321,10 @@ public class Tile : MonoBehaviour
                 levelUI = tr.GetComponent<LevelUI>();
             }
             tourbillonT.gameObject.SetActive(false);
+            if (!pSysIsPlaying && !pSys.isPlaying && !TileSystem.Instance.isHub  && degradable)
+            {
+                pSys.Play();
+            }
         }
         else if (tourbillon)
         {
@@ -335,6 +338,21 @@ public class Tile : MonoBehaviour
             tourbillonT.DOMoveY(targetPosY, 5);
         }
         else tourbillonT.gameObject.SetActive(false);
+        if (pSysIsPlaying && pSys.isPlaying && TileSystem.Instance.isHub)
+        {
+            pSys.Stop();
+        }
+        isDegrading = false;
+        if(tileD.degradationCor != null && !TileSystem.Instance.isHub)
+        {
+            StopCoroutine(tileD.degradationCor);
+            tileD.degradationCor = null;
+        } 
+        if(tileD.shakeCor != null && !TileSystem.Instance.isHub)
+        {
+            StopCoroutine(tileD.shakeCor);
+            tileD.shakeCor = null;
+        }
     }
 
     private void Update()
@@ -423,7 +441,7 @@ public class Tile : MonoBehaviour
         timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
         myMeshF.mesh = getCorrespondingMesh(tileType);
         Material[] mats = getCorrespondingMat(tileType);
-        TileSystem.Instance.tileCounter.Count();
+        if(!TileSystem.Instance.isHub) TileSystem.Instance.tileCounter.Count();
         if (tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Play();
         if (tileType == TileType.BouncyTile) rb.isKinematic = false;
         isGrowing = true;

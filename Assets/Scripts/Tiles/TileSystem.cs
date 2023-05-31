@@ -7,9 +7,6 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using System.IO;
 using System;
-using Unity.VisualScripting.FullSerializer;
-using static UnityEngine.Rendering.DebugUI.Table;
-using static UnityEditor.Progress;
 #if UNITY_EDITOR
 using AmplifyShaderEditor;
 #endif
@@ -87,9 +84,8 @@ public class TileSystem : MonoBehaviour
     private void OnLoadScene()
     {
         if(gameTimer != null) Destroy(gameTimer.gameObject);
-        if (fileName != "Hub")
+        if (!isHub)
         {
-            isHub = false;
             previousCenterTile.transform.GetChild(9).gameObject.SetActive(false);
             centerTile.transform.GetChild(9).gameObject.SetActive(true);
 
@@ -105,7 +101,6 @@ public class TileSystem : MonoBehaviour
             tileCounter = gameTimer.GetComponent<TileCounter>();
             scoreManager = gameTimer.GetComponent<ScoreManager>();
         }
-        else isHub = true;
 
         Item[] items = FindObjectsOfType<Item>();
         for (int i = 0; i < items.Length; i++)
@@ -232,8 +227,11 @@ public class TileSystemEditor : Editor
         if (tileS.GenerateMap)
         {
             tileS.GenerateMap = false;
-            GenerateMapContent(tileS.tiles);
-            GenerateMap(_content);
+            GameTimer gameManager = null;
+            if (!TileSystem.Instance.isHub) gameManager = FindObjectOfType<GameTimer>();
+            GridUtils.GenerateMap(GridUtils.GenerateMapContent(), gameManager);
+            //GenerateMapContent(tileS.tiles);
+            //GenerateMap(_content);
         }
 
         if (tileS.InstantiateGrid)

@@ -6,7 +6,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Progress;
 
 #region structs
 [System.Serializable]
@@ -56,6 +55,7 @@ public class Item_Etabli : Item
     {
         base.Awake();
         if(isChantier) spawnPos = transform.GetChild(0);
+        else spawnPos = transform.GetChild(1);
         playersOn = new List<Player>();
         meshs = GetComponentsInChildren<MeshRenderer>();
         waiter = new WaitForSeconds(recette.convertionTime);
@@ -91,6 +91,7 @@ public class Item_Etabli : Item
         {
             transform.position = hit.point + transform.localScale.y * yoffset * Vector3.up;
             transform.LookAt(new Vector3(tileUnder.transform.position.x, transform.position.y, tileUnder.transform.position.z));
+            spawnPos.position = new Vector3(tileUnder.minableItems.position.x, transform.position.y, tileUnder.minableItems.position.z); 
         }
     }
 
@@ -230,6 +231,7 @@ public class Item_Etabli : Item
             for (int i = 0; i < recette.requiredItemStacks.Length; i++)
             {
                 stack iS = recette.requiredItemStacks[i];
+
                 if (iS.stackType == itemS.stackType)
                 {
                     if (!isChantier)
@@ -277,6 +279,7 @@ public class Item_Etabli : Item
                     Item tempItem = player.heldItem;
                     player.heldItem = null;
                     //Destroy(tempItem.gameObject);
+
                     ObjectPooling.SharedInstance.RemovePoolItem(0, tempItem.gameObject, tempItem.GetType().ToString());
                     stackT.GetChild(i).gameObject.SetActive(true);
 

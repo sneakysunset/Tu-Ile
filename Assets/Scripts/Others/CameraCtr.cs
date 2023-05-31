@@ -19,6 +19,7 @@ public class CameraCtr : MonoBehaviour
     private Camera cam;
     [Foldout("Camera References")] public CinemachineVirtualCamera dezoomCamera;
     [Foldout("Camera References")] public CinemachineVirtualCamera cam1, cam2;
+    [HideInInspector] public CinemachineBrain[] brains;
     [HideInInspector] public List<Transform> players;
     public delegate void OnStartUpDelegate();
     public static event OnStartUpDelegate startUp;
@@ -69,6 +70,7 @@ public class CameraCtr : MonoBehaviour
         dezoomCamera.Follow = TileSystem.Instance.centerTile.minableItems;
         StartCoroutine(changeCam());
         playerInputManager = FindObjectOfType<PlayerInputManager>();
+        brains = GetComponentsInChildren<CinemachineBrain>();
     }
 
 
@@ -121,7 +123,7 @@ public class CameraCtr : MonoBehaviour
     {
         yield return new WaitUntil(() => Input.GetButtonDown("StartGame"));
         dezoomCamera.Priority = 2;
-        yield return new WaitForSeconds(GetComponentInChildren<CinemachineBrain>().m_DefaultBlend.m_Time);
+        yield return new WaitForSeconds(brains[0].m_DefaultBlend.m_Time);
         TileSystem.Instance.ready = true;
     }
     public IEnumerator OnLevelLoad()
@@ -167,11 +169,13 @@ public class CameraCtr : MonoBehaviour
             cam2.LookAt = player;
             playerInputManager.DisableJoining();
             playerP.closeUpCam.gameObject.layer = 17;
+            playerP.myCamera = duoCam2.transform;
         }
         else
         {
             cam1.Follow = player ;
             cam1.LookAt = player;
+            playerP.myCamera = soloCam.transform;
             playerP.closeUpCam.gameObject.layer = 18;
         }
         if(players.Count > 1) 

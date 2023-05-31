@@ -39,7 +39,8 @@ public class AI_Movement : MonoBehaviour
     [HideNormalInspector] public Transform Target;
     public LayerMask tileMask;
     #endregion
-
+    public delegate void OnJump();
+    public event OnJump onJump;
     private void Awake()
     {
         AI_B = GetComponent<AI_Behaviour>();
@@ -58,7 +59,7 @@ public class AI_Movement : MonoBehaviour
             OnGroundedCallBack();
         }
 
-        switch (AI_B.currentBehavious)
+        switch (AI_B.currentBehaviour)
         {
             case AI_Behaviour.Behavious.AI:
                 if (AI_B.tilePath.Count > 0)
@@ -78,7 +79,7 @@ public class AI_Movement : MonoBehaviour
                 break;
             case AI_Behaviour.Behavious.Disable:
                 goto case AI_Behaviour.Behavious.Static;
-                
+
         }
 
         groundedCallback = _characterController.isGrounded;
@@ -94,12 +95,12 @@ public class AI_Movement : MonoBehaviour
     {
         Vector2 p = new Vector2(transform.position.x, transform.position.z);
         Vector2 target = new Vector2(AI_B.tilePath[0].transform.position.x, AI_B.tilePath[0].transform.position.z);
-        if (Vector2.Distance(p , target) < rangeToReachDestination)
+        if (Vector2.Distance(p, target) < rangeToReachDestination)
         {
             AI_B.tilePath.RemoveAt(0);
             if (AI_B.tilePath.Count == 0)
             {
-                if(AI_B.target == AI_Behaviour.AITarget.ClosestPlayer)
+                if (AI_B.target == AI_Behaviour.AITarget.ClosestPlayer)
                 {
                     onPlayerReached?.Invoke(AI_B.targetTile.transform, AI_B);
                 }
@@ -109,7 +110,7 @@ public class AI_Movement : MonoBehaviour
         }
         _input = new Vector2((AI_B.tilePath[0].transform.position - transform.position).x, (AI_B.tilePath[0].transform.position - transform.position).z).normalized;
         _direction = new Vector3(_input.x, 0.0f, _input.y);
-        
+
     }
 
     private void dirInputTarget()
@@ -137,6 +138,7 @@ public class AI_Movement : MonoBehaviour
         if (_characterController.isGrounded && jumpInput)
         {
             _velocity = jumpStrength;
+            if (onJump != null) onJump();
         }
         jumpInput = false;
     }
@@ -159,16 +161,19 @@ public class AI_Movement : MonoBehaviour
 
     private void ApplyMovement()
     {
-        if(_characterController.enabled)
-        _characterController.Move(_direction * speedValue * Time.deltaTime);
+        if (_characterController.enabled)
+            _characterController.Move(_direction * speedValue * Time.deltaTime);
     }
 
     private void JumpRayCast()
     {
-        if(Physics.RaycastAll(transform.position, transform.forward + transform.localScale.y / 2 * Vector3.up, 1f, tileMask, QueryTriggerInteraction.Ignore).Length > 0 && _characterController.isGrounded)
+        if (AI_B.tileUnder == null) return;
+        Tile tile = GridUtils.WorldPosToTile(transform.position + transform.forward * 1);
+        if ((tile.transform.position.y - AI_B.tileUnder.transform.position.y) >= (tile.heightByTile - .3f) && tile.walkable) jumpInput = true;
+/*        if(Physics.RaycastAll(transform.position, transform.forward + transform.localScale.y / 2 * Vector3.up, 1f, tileMask, QueryTriggerInteraction.Ignore).Length > 0 && _characterController.isGrounded)
         {
             jumpInput = true;
-        }
+        }*/
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)

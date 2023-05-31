@@ -67,7 +67,7 @@ public class Tile_Degradation : MonoBehaviour
 
     public void SandDegradation()
     {
-        if(shakeCor == null)
+        if(shakeCor == null && !TileSystem.Instance.isHub)
         {
             tile.currentPos.y -= tile.heightByTile;
             shakeCor = TileShake();
@@ -77,10 +77,11 @@ public class Tile_Degradation : MonoBehaviour
 
     public void StartDegradation()
     {
-        if(degradationCor != null)
+        if (degradationCor != null)
         {
             StopCoroutine(degradationCor);
         }
+        if(TileSystem.Instance.isHub) return;
         degradationCor = Degrading();
         StartCoroutine(degradationCor);
     }
@@ -98,26 +99,24 @@ public class Tile_Degradation : MonoBehaviour
     private IEnumerator Degrading()
     {
         //Effect while degrading
-        
         yield return TileSystem.Instance.shakeLongWaiter;
-
-        shakeCor = TileShake();
-        StartCoroutine(shakeCor);
+        if (!TileSystem.Instance.isHub)
+        {
+            shakeCor = TileShake();
+            StartCoroutine(shakeCor);
+        }
+        else
+        {
+            degradationCor = null;
+            yield break;
+        }
 
         float timeBeforeDegradation = Random.Range(tile.degradationTimerMin, tile.degradationTimerMax) / tile.typeDegradingSpeed / TileSystem.Instance.degradationTimerModifier - TileSystem.Instance.tileP.shakeActivationTime;
         yield return new WaitForSeconds(timeBeforeDegradation);
 
-/*        if (tile.timer > 0)
-        {
-            tile.timer -= Time.deltaTime * TileSystem.Instance.degradationTimerModifier * tile.typeDegradingSpeed;
-        }*/
-        //DegradationStart
-/*        else if (tile.timer <= 0 && !tile.isDegrading)
-        {*/
-            tile.isDegrading = true;
-            gameObject.tag = "DegradingTile";
-            tile.currentPos.y -= tile.heightByTile;
-        //}
+        tile.isDegrading = true;
+        gameObject.tag = "DegradingTile";
+        if (!TileSystem.Instance.isHub) tile.currentPos.y -= tile.heightByTile;
         degradationCor = null;
     }
     
@@ -159,6 +158,11 @@ public class Tile_Degradation : MonoBehaviour
         float f = 0;
         while(f < 1)
         {
+            if (TileSystem.Instance.isHub)
+            {
+                shakeCor = null;
+                yield break;
+            }
             f += Time.deltaTime * (1 / TileSystem.Instance.tileP.shakeActivationTime);
             tile.visualRoot.localPosition = ShakeEffect(f);
             yield return TileSystem.Instance.shakeWaiter;
