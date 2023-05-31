@@ -14,6 +14,7 @@ public class AI_Behaviour : MonoBehaviour
     [Range(.1f, 20)] public float refreshRateMin = 1, refreshRateMax = 2;
     [Header("numTilesAround only useful for RandomTileAround AITarget")]
     public int numTilesAround;
+    public int numTilesAroundToMakePath = 5;
     public enum Behavious { AI, Target, Static, Disable}
     public Behavious currentBehavious;
     [HideInInspector] public Tile targetTile;
@@ -72,7 +73,7 @@ public class AI_Behaviour : MonoBehaviour
     {
        
 
-        tilePath = StepAssignment.Initialisation(targetTile, tileS, tileUnder);
+        tilePath = StepAssignment.Initialisation(targetTile, tileUnder, numTilesAroundToMakePath);
         Vector3 pos = transform.position;
         for (int i = 0; i < tilePath.Count; i++)
         {

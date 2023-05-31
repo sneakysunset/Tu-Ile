@@ -57,6 +57,7 @@ public class RessourcesManager : MonoBehaviour
     public ItemToSpawn[] itemsToSpawn;
     public List<GameTimer> gameManagers;
     public SO_Recette[] recettes;
+    public SO_CrateReward[] rewards;
     public static RessourcesManager Instance { get; private set; }
 
     private void Awake()
@@ -87,6 +88,18 @@ public class RessourcesManager : MonoBehaviour
             if (recetteName.Split(' ')[0] == recette.name)
             {
                 return recette;
+            }
+        }
+        return null;
+    }
+
+    public SO_CrateReward getRewardFromList(string rewardName)
+    {
+        foreach (var reward in rewards)
+        {
+            if (rewardName.Split(' ')[0] == reward.name)
+            {
+                return reward;
             }
         }
         return null;

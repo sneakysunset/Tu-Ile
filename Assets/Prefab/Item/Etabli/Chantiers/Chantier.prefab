@@ -1680,6 +1680,7 @@ MonoBehaviour:
   physic: 1
   col: {fileID: 0}
   recette: {fileID: 11400000, guid: 63950be6c7fcbd843a0a261c7c3961a0, type: 2}
+  stackT: {fileID: 0}
   isChantier: 1
   constructed: 0
   isDestroyed: 0
@@ -1692,6 +1693,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3a6ed92184ee3a946be46afa0a3c5755, type: 2}
   - {fileID: 2100000, guid: 898ac10299bc693469dc6ef123bdd0ce, type: 2}
   - {fileID: 2100000, guid: df25f7e94eccff64a8635837499bf63f, type: 2}
+  crate: {fileID: 1895536708061152463, guid: b2c9ab1516a45874b9446697f1dfc0b8, type: 3}
 --- !u!54 &7644044209496618639
 Rigidbody:
   m_ObjectHideFlags: 0
