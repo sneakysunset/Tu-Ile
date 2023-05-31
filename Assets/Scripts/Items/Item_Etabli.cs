@@ -48,7 +48,6 @@ public class Item_Etabli : Item
     [HideNormalInspector] public int[] currentStackRessources;
     [HideNormalInspector] public bool[] itemsFilled;
     [ShowIf("isChantier")] public Material[] houseMaterials;
-    public Item_Crate crate;
     #endregion
 
     #region SystemCallbacks
@@ -344,8 +343,7 @@ public class Item_Etabli : Item
         constructed = true;
         //FindObjectOfType<MissionManager>().CheckMissions();
         SO_Recette_Chantier re = recette as SO_Recette_Chantier;
-        /*Transform house = */Instantiate(crate, transform.parent.GetChild(0).GetChild(4).position + .5f * Vector3.up, Quaternion.identity)/*.transform*/;
-        crate.reward = re.reward;
+        /*Transform house = */Instantiate(re.loot, transform.parent.GetChild(0).GetChild(4).position + .5f * Vector3.up, Quaternion.identity)/*.transform*/;
         itemNumCh.gameObject.SetActive(false);
         //float targetY = house.position.y;
         //house.position -= 5f * Vector3.up;

@@ -1,5 +1,4 @@
 using NaughtyAttributes;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -17,6 +16,7 @@ public enum SpawnableItems
 }
 
 
+
 public class ItemSpawner : MonoBehaviour
 {
     GameObject spawnedItem;
@@ -32,37 +32,56 @@ public class ItemSpawner : MonoBehaviour
     Tile tile;
     [Foldout("Gizmo")] public float gizmoScale = 1;
     [Foldout("Gizmo")] public float gizmoHeightOffset = 0;
-    [ShowIf("itemToSpawn", SpawnableItems.Etabli)] public SO_Recette recette;
-    [ShowIf("itemToSpawn", SpawnableItems.Chantier)] public SO_Recette_Chantier otherRecette;
-    public SO_CrateReward crateReward;
+    [ShowIf("itemToSpawn",SpawnableItems.Etabli)]public SO_Recette recette;
+    [ShowIf("itemToSpawn",SpawnableItems.Chantier)]public SO_Recette_Chantier otherRecette;
     
     private void Start()
     {
         tile = GetComponent<Tile>();
         spawnPoint = transform.Find("SpawnPositions2");
         baseTimerValue = spawnTimer;
-
-        foreach( var item in RessourcesManager.Instance.itemsToSpawn)
-        {
-            if(item.item.name == itemToSpawn.ToString())
+/*        if(chosenItemToSpawn == null)
+        {*/
+            foreach( var item in RessourcesManager.Instance.itemsToSpawn)
             {
-                poolIndex = item.index;
-                chosenItemToSpawn = item.item;
-                return;
-            }
+                if(item.item.name == itemToSpawn.ToString())
+                {
 
-        }
+                    //Debug.Log(itemToSpawn.ToString() + " " + poolIndex);
+                    poolIndex = item.index;
+                    chosenItemToSpawn = item.item;
+                    return;
+                }
+
+            }
+            //Debug.Log(gameObject.name);
+        //}
+/*        else if (chosenItemToSpawn != null)
+        {
+            foreach (var item in RessourcesManager.Instance.itemsToSpawn)
+            {
+                if (item.item.name == chosenItemToSpawn.GetComponent<Item>().getType.ToString())
+                {
+
+                    Debug.Log(itemToSpawn.ToString() + " " + poolIndex);
+                    poolIndex = item.index;
+                    chosenItemToSpawn = item.item;
+                    return;
+                }
+
+            }
+            //Debug.Log(gameObject.name);
+        }*/
     }
 
     private void SpawnItem()
     {
+
+        //spawnedItem = Instantiate(chosenItemToSpawn, spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up, Quaternion.identity);
         SO_Recette tempRecette = null;
-        SO_CrateReward tempReward = null;
         if (itemToSpawn == SpawnableItems.Etabli) tempRecette = recette;
         else if(itemToSpawn == SpawnableItems.Chantier) tempRecette = otherRecette;
-        else if(itemToSpawn == SpawnableItems.Crate || itemToSpawn == SpawnableItems.Mimic) tempReward = crateReward;
-        Vector3 pos = spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up;
-        spawnedItem = ObjectPooling.SharedInstance.GetPoolItem(poolIndex, pos, null, null, tempRecette, crateReward);
+        spawnedItem = ObjectPooling.SharedInstance.GetPoolItem(poolIndex, Vector3.zero, null, null, tempRecette);
         
         spawnedItem.transform.position =  spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up;
         if (itemToSpawn == SpawnableItems.Etabli)

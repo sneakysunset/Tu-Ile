@@ -405,7 +405,7 @@ tile 8 3+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+Sp
 tile 8 4+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 8 5+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :9+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 8 6+Walkable :0+Degradable :1+Tourbillon :1+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 8 7+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :2+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :Crate;3;0;1;Reward_UnDegradableTile (SO_CrateReward)%
+tile 8 7+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :2+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :Mimic;3;0;0;%
 tile 8 8+Walkable :0+Degradable :1+Tourbillon :1+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 8 9+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :9+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 8 10+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -456,7 +456,7 @@ tile 9 4+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+Sp
 tile 9 5+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :9+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 9 6+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :9+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 9 7+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
-tile 9 8+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :Mimic;0;0;0;Reward_Speed 1 (SO_CrateReward)%
+tile 9 8+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :Boussole;3;0;1;%
 tile 9 9+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :9+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 9 10+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 9 11+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%

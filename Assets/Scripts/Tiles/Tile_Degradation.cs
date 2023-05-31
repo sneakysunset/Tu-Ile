@@ -166,6 +166,7 @@ public class Tile_Degradation : MonoBehaviour
         yield return new WaitUntil(() => transform.position != tile.currentPos);
         while (transform.position != tile.currentPos)
         {
+            Debug.Log(f);
             tile.visualRoot.localPosition = ShakeEffect(f);
             yield return TileSystem.Instance.shakeWaiter;
         }

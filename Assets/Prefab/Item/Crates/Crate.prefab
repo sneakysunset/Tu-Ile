@@ -139,7 +139,15 @@ MonoBehaviour:
   _player: {fileID: 0}
   physic: 1
   col: {fileID: 0}
-  reward: {fileID: 11400000, guid: 830be980fd55dbd40890c24d8c8f63b7, type: 2}
+  itemReward: 0
+  isRandom: 0
+  scoreReward: 10
+  playerStateReward:
+  - rewardAdd: 0
+    pReward: 0
+  itemRewards:
+  - number: 3
+    rewardItem: {fileID: 3749829321806436738, guid: 79bacb67c2f79be44932a72ded62af86, type: 3}
   yLerpPositionAmount: 4
   ScaleAmount: 2
   lerpDuration: 2

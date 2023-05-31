@@ -68,7 +68,7 @@ public class ObjectPooling : MonoBehaviour
         }
     }
 
-    public GameObject GetPoolItem(int index,Vector3 pos, Transform parentP, string type = null, SO_Recette optionalRecette = null, SO_CrateReward crateReward = null)
+    public GameObject GetPoolItem(int index,Vector3 pos, Transform parentP, string type = null, SO_Recette optionalRecette = null)
     {
         if (type != null)
         {
@@ -89,7 +89,6 @@ public class ObjectPooling : MonoBehaviour
         }
 
         if(optionalRecette != null) go.GetComponent<Item_Etabli>().recette = optionalRecette;
-        else if(crateReward != null) go.GetComponent<Item_Crate>().reward = crateReward;
         go.transform.parent = parentP;
         go.transform.position = pos;
         go.SetActive(true);

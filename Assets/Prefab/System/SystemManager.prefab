@@ -263,7 +263,7 @@ MonoBehaviour:
     index: 0
     objects: []
     numOfItem: 20
-    prefab: {fileID: 4377360843773846542, guid: 55c071a6a35b3d444a3bd6d264d74561, type: 3}
+    prefab: {fileID: 3388698492052617944, guid: fce0e83e28c991d42a35cd94a6409487, type: 3}
   - itemType: Item_Etabli:Etabli
     index: 0
     objects: []
@@ -278,7 +278,7 @@ MonoBehaviour:
     index: 0
     objects: []
     numOfItem: 20
-    prefab: {fileID: 8888129459989820106, guid: b2c9ab1516a45874b9446697f1dfc0b8, type: 3}
+    prefab: {fileID: 7644044209496618633, guid: bf93c3324d307044f873e1db14dc7521, type: 3}
   - itemType: Item_Boussole
     index: 0
     objects: []

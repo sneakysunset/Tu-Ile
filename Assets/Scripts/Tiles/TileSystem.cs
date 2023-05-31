@@ -309,20 +309,19 @@ public class TileSystemEditor : Editor
 
                 //9
                 _content += "ItemSpawner :";
-                if (t[x, y].TryGetComponent<ItemSpawner>(out ItemSpawner itemSpawner))
+                if (t[x,y].TryGetComponent<ItemSpawner>(out ItemSpawner itemSpawner))
                 {
                     string itemType = itemSpawner.itemToSpawn.ToString();
                     _content += itemType;
                     _content += ";";
                     _content += itemSpawner.spawnTimer.ToString();
                     _content += ";";
-                    _content += Convert.ToInt32(itemSpawner.loop);
+                    _content += Convert.ToInt32(itemSpawner.loop);                    
                     _content += ";";
                     _content += Convert.ToInt32(itemSpawner.spawnPosition);
                     _content += ";";
                     if (itemSpawner.itemToSpawn == SpawnableItems.Chantier) _content += itemSpawner.otherRecette;
-                    else if (itemSpawner.itemToSpawn == SpawnableItems.Etabli) _content += itemSpawner.recette.ToString();
-                    else if (itemSpawner.itemToSpawn == SpawnableItems.Crate || itemSpawner.itemToSpawn == SpawnableItems.Mimic) _content += itemSpawner.crateReward.ToString();
+                    else if(itemSpawner.itemToSpawn == SpawnableItems.Etabli) _content += itemSpawner.recette.ToString();
                 }
                 else
                 {

@@ -206,11 +206,11 @@ public class Tile : MonoBehaviour
         GridUtils.onLevelMapLoad += OnMapLoad;
         CameraCtr.startUp += OnStartUp;
        
-        Transform tr = transform.GetChild(8);
-        levelUI = tr.GetComponent<LevelUI>();
         if(TileSystem.Instance.isHub && tileType == TileType.LevelLoader)
         {
+            Transform tr = transform.GetChild(8);
             tr.gameObject.SetActive(true);
+            levelUI = tr.GetComponent<LevelUI>();
             transform.GetChild(9).gameObject.SetActive(true);
         }
         else if (!TileSystem.Instance.isHub && TileSystem.Instance.centerTile == this)
@@ -278,7 +278,6 @@ public class Tile : MonoBehaviour
 
     private void OnMapLoad()
     {
-        if(tileType != TileType.LevelLoader && levelUI.gameObject.activeInHierarchy) levelUI.gameObject.SetActive(false);
         if (walkable)
         {
             if(TileSystem.Instance.isHub && tileType == TileType.LevelLoader) transform.GetChild(9).gameObject.SetActive(true);

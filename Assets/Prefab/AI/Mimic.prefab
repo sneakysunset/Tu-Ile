@@ -138,9 +138,9 @@ MonoBehaviour:
   target: 1
   tilePath: []
   tileUnder: {fileID: 0}
-  refreshRateMin: 4
-  refreshRateMax: 8
-  numTilesAround: 2
+  refreshRateMin: 1
+  refreshRateMax: 4
+  numTilesAround: 3
   currentBehavious: 0
   targetTile: {fileID: 0}
 --- !u!114 &3131899633482095717
