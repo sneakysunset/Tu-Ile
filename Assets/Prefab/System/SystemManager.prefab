@@ -263,7 +263,7 @@ MonoBehaviour:
     index: 0
     objects: []
     numOfItem: 20
-    prefab: {fileID: 3388698492052617944, guid: fce0e83e28c991d42a35cd94a6409487, type: 3}
+    prefab: {fileID: 4377360843773846542, guid: 55c071a6a35b3d444a3bd6d264d74561, type: 3}
   - itemType: Item_Etabli:Etabli
     index: 0
     objects: []
