@@ -173,6 +173,7 @@ MonoBehaviour:
   - {fileID: 3982822828458313300, guid: 71185b92ee0534b43bea6e105743a8d2, type: 3}
   gameManagers:
   - {fileID: 614773810181506915, guid: 7f80ee2cedd79c44daec8c1627618476, type: 3}
+  - {fileID: 2138704921227410456, guid: c50925a4ae41d6541a9e5029475f79a8, type: 3}
   recettes:
   - {fileID: 11400000, guid: 63950be6c7fcbd843a0a261c7c3961a0, type: 2}
   - {fileID: 11400000, guid: c1a9504e4018eb940a5486c4a8b6693a, type: 2}
