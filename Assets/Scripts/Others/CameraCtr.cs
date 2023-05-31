@@ -248,7 +248,7 @@ public class CameraCtr : MonoBehaviour
             {
                 if (i == 1) camPos = cam2.transform.position;
                 Vector3 direction = (players[i].position - camPos).normalized;
-                float distance = Vector3.Distance(players[i].position, cam.transform.position) - sphereCastRadius;
+                float distance = Vector3.Distance(players[i].position, camPos) - sphereCastRadius;
                 RaycastHit[] hits = Physics.SphereCastAll(camPos, sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
                 if (hits.Length > 0) foreach (RaycastHit hit in hits) if (hit.transform.TryGetComponent<Tile>(out Tile tile) && !tempList.Contains(tile)) tempList.Add(tile);
 /*                {
@@ -264,6 +264,19 @@ public class CameraCtr : MonoBehaviour
             FadeTile = tempList.ToArray();
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        Vector3 camPos = cam1.transform.position;
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (i == 1) camPos = cam2.transform.position;
+            Vector3 direction = (players[i].position - camPos).normalized;
+            float distance = Vector3.Distance(players[i].position, camPos) - sphereCastRadius;
+            UnityEngine.Gizmos.DrawRay(camPos,direction * distance);
+        }
+    }
+
 
     private void OnFadeTileChange(Tile[] value)
     {

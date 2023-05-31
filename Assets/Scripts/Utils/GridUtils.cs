@@ -50,7 +50,7 @@ public static class GridUtils
                 tile.tileSpawnType = (TileType)Convert.ToInt32(int.Parse(tiParam[5].Split(":")[1]));
                 if (tile.walkable)
                 {
-                    
+
                     tile.degradable = Convert.ToBoolean(int.Parse(tiParam[2].Split(":")[1]));
                     tile.tileType = (TileType)Convert.ToInt32(int.Parse(tiParam[4].Split(":")[1]));
                     tile.spawnPositions = (SpawnPositions)int.Parse(tiParam[6].Split(":")[1]);
@@ -62,11 +62,12 @@ public static class GridUtils
                         ItemSpawner it = tile.AddComponent<ItemSpawner>();
                         it.itemToSpawn = (SpawnableItems)System.Enum.Parse(typeof(SpawnableItems), tiSpawner[0]);
                         it.chosenItemToSpawn = reMan.getSpawnableFromList(tiSpawner[0]);
-                        if(it.chosenItemToSpawn == null) it.enabled = false;
+                        if (it.chosenItemToSpawn == null) it.enabled = false;
                         it.spawnTimer = Convert.ToInt32(tiSpawner[1]);
                         it.loop = Convert.ToBoolean(int.Parse(tiSpawner[2]));
                         it.spawnPosition = (SpawnPosition)int.Parse(tiSpawner[3]);
                         if (it.itemToSpawn == SpawnableItems.Etabli || it.itemToSpawn == SpawnableItems.Chantier) it.recette = reMan.getRecetteFromList(tiSpawner[4]);
+                        else if (it.itemToSpawn == SpawnableItems.Crate || it.itemToSpawn == SpawnableItems.Mimic) it.crateReward = reMan.getRewardFromList(tiSpawner[4]);
                     }
                 }
             }
@@ -125,7 +126,6 @@ public static class GridUtils
         {
             isOver = true;
             int ix = ts.Count;
-            //ts.Sort((a, b) => 1 - 2 * UnityEngine.Random.Range(0, 2));
             for (int i = 0; i < ix; i++)
             {
                 if (!ts[i].isPathChecked)
@@ -151,7 +151,6 @@ public static class GridUtils
                                 ts[i].tourbillon = false;
                             }
                         }
-                        //yield return new WaitForSeconds(UnityEngine.Random.Range(0f, .02f));
                     }
                     ts[i].isPathChecked = true;
                 }
@@ -166,91 +165,15 @@ public static class GridUtils
 
         foreach (Interactor inte in GameObject.FindObjectsOfType<Interactor>())
         {
-            //GameObject.Destroy(inte.gameObject);
             ObjectPooling.SharedInstance.RemovePoolItem(0, inte.gameObject, inte.GetType().ToString() + ":" + inte.type.ToString());
 
         }
         LoadLevelMap(toHub);
         if (onLevelMapLoad != null) onLevelMapLoad();
-        //GameObject.Destroy(PlayersManager.Instance.gameObject);
-        //GameObject.Instantiate(obj);
-        //tis.ready = false;
+
     }
 
 
-/*
-    public static IEnumerator ElevateWorld(Tile _centerTile)
-    {
-        TileSystem tis = TileSystem.Instance;
-        Tile tile;
-        if (tis.isHub) tile = _centerTile;
-        else tile = tis.centerTile;
-        if (!tis.isHub)
-            gT.UIPos.anchoredPosition += Vector2.up * -100;
-        if (!tis.isHub)
-            tis.StartCoroutine(gT.LerpTimeLine(gT.UIPos.anchoredPosition, gT.UIPos.anchoredPosition + Vector2.up * 100, gT.UIPos, gT.lerpCurveEaseOut, gT.lerpSpeed));
-        List<Tile> ts = new List<Tile>();
-        ts.Add(tile);
-        bool isOver = false;
-        int j = 0;
-        while (!isOver)
-        {
-            isOver = true;
-            int ix = ts.Count;
-            for (int i = 0; i < ix; i++)
-            {
-                if (!ts[i].isPathChecked)
-                {
-                    foreach (Vector2Int vecs in ts[i].adjTCoords)
-                    {
-                        if (vecs.x >= 0 && vecs.x < tis.rows && vecs.y >= 0 && vecs.y < tis.columns && tiles[vecs.x, vecs.y].walkable && !ts.Contains(tis.tiles[vecs.x, vecs.y]))
-                        {
-                            ts.Add(tis.tiles[vecs.x, vecs.y]);
-                            isOver = false;
-                        }
-                    }
-                    ts[i].isPathChecked = true;
-                }
-            }
-
-
-            foreach (Tile t in ts)
-            {
-                if (t.walkable)
-                {
-                    t.readyToRoll = true;
-                }
-            }
-            tile.degradable = false;
-            j++;
-            float timer = tis.waitTimer / j;
-
-            while (timer > 0)
-            {
-                timer -= Time.deltaTime;
-                foreach (Tile t in ts)
-                {
-                    TileSystem.Instance.lerpingSpeed /= 2.5f;
-                    if (t.walkable && t != tile)
-                    {
-
-                        //t.degSpeed *= 1 + Time.deltaTime * 3 * Random.Range(0f,1f);
-                    }
-                }
-                yield return new WaitForEndOfFrame();
-            }
-        }
-        TileSystem.Instance.lerpingSpeed = 1;
-        tis.ready = true;
-
-
-
-        foreach (Tile t in ts)
-        {
-            t.isPathChecked = false;
-        }
-    }
-*/
 
 
     public static List<Tile> GetTilesAround(int numOfRows, Tile tile)
@@ -285,6 +208,7 @@ public static class GridUtils
         }
         return ts;
     }
+
 
     public static List<Tile> GetTilesBetweenRaws(int rowMin, int rowMax, Tile tile)
     {

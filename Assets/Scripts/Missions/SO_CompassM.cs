@@ -9,7 +9,7 @@ public class SO_CompassM : ScriptableObject
     public int minDistanceFromCenter;
     public int maxDistanceFromCenter;
 
-    public Item_Crate reward;
+    public SO_CrateReward reward;
 
     public void OnActivated(bool isEphemeral, ref Tile targetTile)
     {
@@ -45,6 +45,7 @@ public class SO_CompassM : ScriptableObject
             item.targettedTiles.Remove(targettedTile);
             item.UpdateTargettedList();
         }
-        Instantiate(reward, targettedTile.minableItems.position, Quaternion.identity);
+        Item_Crate crate = Instantiate(RessourcesManager.Instance.getSpawnableFromList("Crate"), targettedTile.minableItems.position, Quaternion.identity).GetComponent<Item_Crate>();
+        crate.reward = reward;
     }
 }
