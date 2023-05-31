@@ -16,7 +16,7 @@ public static class GridUtils
     public static event LevelMapLoad onLevelMapLoad;
     public delegate void OnEndLevel(Tile tile);
     public static event OnEndLevel onEndLevel;
-
+    static int sinkTime;
     public static void LoadLevelMap(bool toHub)
     {
         TileSystem tileS = TileSystem.Instance;
@@ -96,7 +96,7 @@ public static class GridUtils
         if (z % 2 == 1) xOffset = ts.tilePrefab.transform.localScale.x * .9f;
         x = Mathf.RoundToInt((pos.x - xOffset) / (ts.tilePrefab.transform.localScale.x * 1.7f));
         
-        if(ts.tiles != null && ts.tiles.Length > x && ts.tiles.LongLength > z) return ts.tiles[x, z];
+        if(ts.tiles != null && ts.tiles.GetLength(0) > x && ts.tiles.GetLength(1) > z && 0 <= x && 0 <= z) return ts.tiles[x, z];
         else return null;
     }
 
@@ -159,7 +159,8 @@ public static class GridUtils
 
             yield return new WaitForSeconds(UnityEngine.Random.Range(0f, .2f));
         }
-        //yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(sinkTime);
+        sinkTime = 2;
         
         tis.lerpingSpeed *= 6f;
 

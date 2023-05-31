@@ -63,7 +63,7 @@ public class Item_Etabli : Item
         stackT = transform.Find("Stacks");
     }
 
-    private IEnumerator Start()
+    private void OnEnable()
     {
         itemsFilled = new bool[recette.requiredItemUnstackable.Length];
         currentStackRessources = new int[recette.requiredItemStacks.Length];
@@ -82,7 +82,7 @@ public class Item_Etabli : Item
             itemNum = GetComponentInChildren<EtabliCanvas>();
             itemNum.UpdateText(this);
         }
-        yield return new WaitForSeconds(.01f);
+        //yield return new WaitForSeconds(.01f);
         transform.parent = tileUnder.transform;
         int yoffset = 2;
         if (isChantier) yoffset = 0;
@@ -115,8 +115,8 @@ public class Item_Etabli : Item
             transform.LookAt(new Vector3(tileUnder.transform.position.x, transform.position.y, tileUnder.transform.position.z));
         }
 
+        //recette = _recette;
         yield return new WaitForEndOfFrame();
-        recette = _recette;
         if (isChantier)
         {
             itemNumCh = GetComponentInChildren<ChantierCanvas>();

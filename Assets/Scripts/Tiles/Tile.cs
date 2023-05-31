@@ -183,7 +183,7 @@ public class Tile : MonoBehaviour
 
     private void IsWalkedOntoMethod(bool value)
     {
-        if(value == true && degradable && tileType != TileType.Sand && !TileSystem.Instance.isHub) tileD.StartDegradation();
+        if(value == true && degradable && tileType != TileType.Sand && !TileSystem.Instance.isHub && walkable) tileD.StartDegradation();
         else if(value == false)
         {
             if(tileD.degradationCor != null)

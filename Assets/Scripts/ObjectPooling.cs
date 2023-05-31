@@ -68,7 +68,7 @@ public class ObjectPooling : MonoBehaviour
         }
     }
 
-    public GameObject GetPoolItem(int index,Vector3 pos, Transform parentP, string type = null)
+    public GameObject GetPoolItem(int index,Vector3 pos, Transform parentP, string type = null, SO_Recette optionalRecette = null)
     {
         if (type != null)
         {
@@ -78,6 +78,8 @@ public class ObjectPooling : MonoBehaviour
             }
         }
         GameObject go ;
+
+
         if (pooledObjects[index].objects.Count == 0) go = Instantiate(pooledObjects[index].prefab);
         else
         {
@@ -85,6 +87,8 @@ public class ObjectPooling : MonoBehaviour
             pooledObjects[index].objects.RemoveAt(0);
 
         }
+
+        if(optionalRecette != null) go.GetComponent<Item_Etabli>().recette = optionalRecette;
         go.transform.parent = parentP;
         go.transform.position = pos;
         go.SetActive(true);

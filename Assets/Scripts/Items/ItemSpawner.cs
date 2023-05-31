@@ -76,9 +76,12 @@ public class ItemSpawner : MonoBehaviour
 
     private void SpawnItem()
     {
-        
+
         //spawnedItem = Instantiate(chosenItemToSpawn, spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up, Quaternion.identity);
-        spawnedItem = ObjectPooling.SharedInstance.GetPoolItem(poolIndex, Vector3.zero, null);
+        SO_Recette tempRecette = null;
+        if (itemToSpawn == SpawnableItems.Etabli) tempRecette = recette;
+        else if(itemToSpawn == SpawnableItems.Chantier) tempRecette = otherRecette;
+        spawnedItem = ObjectPooling.SharedInstance.GetPoolItem(poolIndex, Vector3.zero, null, null, tempRecette);
         
         spawnedItem.transform.position =  spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up;
         if (itemToSpawn == SpawnableItems.Etabli)

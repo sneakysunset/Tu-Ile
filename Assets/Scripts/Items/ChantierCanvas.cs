@@ -14,15 +14,15 @@ public class ChantierCanvas : MonoBehaviour
     private RessourcesManager rMan;
 
 
-    
 
-    private void OnActivated()
+
+    public void OnActivated()
     {
-        rMan = FindObjectOfType<RessourcesManager>();
-        cam = FindObjectOfType<CameraCtr>();
-        texts = GetComponentsInChildren<TextMeshProUGUI>();
+        if (!rMan) rMan = RessourcesManager.Instance;
+        if (!cam) cam = TileSystem.Instance.cam;
+        if (texts == null || texts.Length == 0)texts = GetComponentsInChildren<TextMeshProUGUI>();
+        if(images ==null || images.Length == 0)images = GetComponentsInChildren<Image>();
 
-        images = GetComponentsInChildren<Image>();
         images[0].rectTransform.localScale = new Vector3(images[0].rectTransform.localScale.x, 0, images[0].rectTransform.localScale.z);
         for (int i = 0; i < images.Length - 1; i++)
         {

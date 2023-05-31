@@ -89,7 +89,6 @@ public class RessourcesManager : MonoBehaviour
                 return recette;
             }
         }
-        Debug.Log(recetteName);
         return null;
     }
 }
