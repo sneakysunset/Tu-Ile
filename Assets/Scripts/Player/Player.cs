@@ -5,12 +5,14 @@ using ProjectDawn.SplitScreen;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
 using UnityEngine.Windows;
+using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -40,18 +42,22 @@ public class Player : MonoBehaviour
     [HideInInspector] public Transform dummyTarget;
     bool respawning;
     float currentGravMult;
+    CameraCtr cam;
     ChainIKConstraint[] iks;
     public Transform itemParent1, itemParent2;
     [HideNormalInspector] public Vector2Int previousScenePos;
     [HideNormalInspector] public Ship_CharacterController ship;
     [HideNormalInspector] public bool isShipped;
+    [HideNormalInspector] public int playerIndex;
+    [HideNormalInspector] public CinemachineVirtualCamera closeUpCam;
     private void Awake()
     {
         GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = Color.black;
+        closeUpCam = GetComponentInChildren<CinemachineVirtualCamera>();
         pPause = GetComponent<Player_Pause>();
         transform.parent = null;
         dummyTarget = transform.Find("DummyTarget");
-        if (/*TileSystem.Instance.isHub && */Time.time > .1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget);
+        if (/*TileSystem.Instance.isHub && */Time.time > .1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget, this);
         col = GetComponent<Collider>();
         pointers = new List<Transform>();
         Transform pointerFolder = transform.Find("PointerFolder");
@@ -60,24 +66,56 @@ public class Player : MonoBehaviour
             pointers.Add(go);
         }
         iks = GetComponentsInChildren<ChainIKConstraint>();
+        Player_Pause.pauseMenuActivation += OnPause;
+        Player_Pause.pauseMenuDesactivation += OnUnPause;
     }
 
-    public void OnLoad(Scene scene, LoadSceneMode mode)
+    void OnPause()
+    {
+        closeUpCam.Priority = 10;
+    }
+
+    void OnUnPause()
+    {
+        closeUpCam.Priority = 0;
+    }
+
+    public void OnLoad()
     {
         respawnTile = TileSystem.Instance.centerTile;
         pState = PlayerState.Idle;
+        if (cam == null) cam = TileSystem.Instance.cam;
+        CinemachineBrain[] cams = cam.GetComponentsInChildren<CinemachineBrain>();
+        float blendTime = cams[0].m_DefaultBlend.m_Time;
+        foreach(CinemachineBrain cineB in cams)
+        {
+            cineB.m_DefaultBlend.m_Time = 0;
+        }
+        float x = TileSystem.Instance.centerTile.transform.position.x - TileSystem.Instance.previousCenterTile.transform.position.x;
+        float z = TileSystem.Instance.centerTile.transform.position.z - TileSystem.Instance.previousCenterTile.transform.position.z;
+        Vector3 diff = new Vector3(x, 0, z);
+        Vector3 pos = TileSystem.Instance.centerTile.transform.position;
+        pos.y = TileSystem.Instance.previousCenterTile.transform.position.y;
+        TileSystem.Instance.centerTile.transform.position = pos;
+        _characterController.enabled = false;
+        transform.position += diff;
+        _characterController.enabled = true;
         if(heldItem != null )
         {
-            Destroy(heldItem.gameObject);
+            ObjectPooling.SharedInstance.RemovePoolItem(0, heldItem.gameObject, heldItem.GetType().ToString());
+
+            //Destroy(heldItem.gameObject);
             heldItem = null;
         }
-        //transform.position = transform.position + new Vector3()
+        foreach (CinemachineBrain cineB in cams)
+        {
+            cineB.m_DefaultBlend.m_Time = blendTime;
+        }
+
     }
 
     private void Start()
     {
-
-        DontDestroyOnLoad(this.gameObject);
         respawnTile = TileSystem.Instance.centerTile;
         interactors = new List<Interactor>();
         holdableItems = new List<Item>();
@@ -85,11 +123,15 @@ public class Player : MonoBehaviour
         pMin = GetComponent<Player_Mining>();
         _characterController = pM.GetComponent<CharacterController>();
         _characterController.enabled = false;
-        transform.position = TileSystem.Instance.centerTile.transform.GetChild(0).position + Vector3.up * 3;
+        transform.position = TileSystem.Instance.centerTile.minableItems.GetChild(playerIndex).position + Vector3.up * 3.5f;
         _characterController.enabled = true;
         anim = GetComponentInChildren<Animator>();
-        SceneManager.sceneLoaded += OnLoad;
+        GridUtils.onLevelMapLoad += OnLoad;
+        GridUtils.onEndLevel += OnEndLevel;
+        currentGravMult = pM.gravityMultiplier;
     }
+
+    void OnEndLevel(Tile tile) => respawnTile = tile;
 
     private void Update()
     {
@@ -126,6 +168,12 @@ public class Player : MonoBehaviour
 
         if (isShipped) _characterController.enabled = false;
 
+    }
+
+    private void OnDisable()
+    {
+        GridUtils.onLevelMapLoad -= OnLoad;
+        GridUtils.onEndLevel -= OnEndLevel;
     }
 
     private void AnimationStatesHandler()
@@ -174,11 +222,14 @@ public class Player : MonoBehaviour
     {
         if (heldItem != null)
         {
+            Item tempItem = heldItem;
             heldItem.GrabRelease(true);
-            Destroy(heldItem.gameObject);
+            //Destroy(heldItem.gameObject);
+            ObjectPooling.SharedInstance.RemovePoolItem(0, tempItem.gameObject, tempItem.GetType().ToString());
+
         }
-        currentGravMult = pM.gravityMultiplier;
         WaterHit(hit);
+        //currentGravMult = pM.gravityMultiplier;
         yield return new WaitForSeconds(drawningTimer);
         DrawningEnd(hit);
     }
@@ -186,6 +237,11 @@ public class Player : MonoBehaviour
     private void WaterHit(ControllerColliderHit hit)
     {
         pState = PlayerState.Drawning;
+        if (pM.stunCor != null)
+        {
+            StopCoroutine(pM.stunCor);
+            pM.UnStun();
+        }
         Physics.IgnoreCollision(col, hit.collider, true);
         Instantiate(waterSplash, hit.point + 2 * Vector3.up, Quaternion.identity, null);
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning", transform.position);
@@ -202,7 +258,7 @@ public class Player : MonoBehaviour
         Physics.IgnoreCollision(col, hit.collider, false);
         pM._velocity = 0;
         _characterController.enabled = false;
-        transform.position = respawnTile.transform.position + (25f + 3f) * Vector3.up;
+        transform.position = respawnTile.minableItems.GetChild(playerIndex).position + 3.5f * Vector3.up;
         _characterController.enabled = true;
         dummyTarget.parent = transform;
         dummyTarget.localPosition = Vector3.zero;

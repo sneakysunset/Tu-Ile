@@ -1,9 +1,12 @@
+using DG.Tweening;
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Progress;
 
 #region structs
 [System.Serializable]
@@ -25,7 +28,7 @@ public class Item_Etabli : Item
     #region variables
     public SO_Recette recette;
     Item craftedItem;
-    private UnityEngine.Transform stackT;
+    [HideInInspector] public UnityEngine.Transform stackT;
     private bool convertorFlag;
     private WaitForSeconds waiter;
     UnityEngine.Transform createdItem;
@@ -35,7 +38,7 @@ public class Item_Etabli : Item
     Tile tileUnder;
     EtabliCanvas itemNum;
     ChantierCanvas itemNumCh;
-    public bool isChantier;
+    [HideNormalInspector] public bool isChantier;
     [HideInInspector] public bool constructed = false;
     [HideInInspector] public bool isDestroyed = false;
     [HideNormalInspector] public bool isNear;
@@ -44,6 +47,7 @@ public class Item_Etabli : Item
     Transform spawnPos;
     [HideNormalInspector] public int[] currentStackRessources;
     [HideNormalInspector] public bool[] itemsFilled;
+    [ShowIf("isChantier")] public Material[] houseMaterials;
     #endregion
 
     #region SystemCallbacks
@@ -57,35 +61,9 @@ public class Item_Etabli : Item
         rb.isKinematic = true;
 
         stackT = transform.Find("Stacks");
-        RessourcesManager rMan = FindObjectOfType<RessourcesManager>(); 
-        for (int i = 0; i < recette.requiredItemUnstackable.Length; i++)
-        {
-            foreach(ressourceMeshCollecUnstackable r in rMan.RessourceMeshsUnstackable)
-            {
-                if (recette.requiredItemUnstackable[i].itemType == r.itemType)
-                {
-                    stackT.GetChild(i).GetComponent<MeshFilter>().mesh = r.mesh;
-                    stackT.GetChild(i).GetComponent<MeshRenderer>().material = r.mat;
-                    break;
-                }
-            }
-        }
-       
-        for (int i = 0; i < recette.requiredItemStacks.Length; i++)
-        {
-            foreach (ressourceMeshsCollec r in rMan.RessourceMeshs)
-            {
-                if (recette.requiredItemStacks[i].stackType == r.stackType)
-                {
-                    stackT.GetChild(i + recette.requiredItemUnstackable.Length).GetComponent<MeshFilter>().mesh = r.meshs[0];
-                    stackT.GetChild(i + recette.requiredItemUnstackable.Length).GetComponent<MeshRenderer>().material = r.materials[0];
-                    break;
-                }
-            }
-        }
     }
 
-    private IEnumerator Start()
+    private void OnEnable()
     {
         itemsFilled = new bool[recette.requiredItemUnstackable.Length];
         currentStackRessources = new int[recette.requiredItemStacks.Length];
@@ -104,12 +82,14 @@ public class Item_Etabli : Item
             itemNum = GetComponentInChildren<EtabliCanvas>();
             itemNum.UpdateText(this);
         }
-        yield return new WaitForSeconds(.01f);
+        //yield return new WaitForSeconds(.01f);
         transform.parent = tileUnder.transform;
-        //transform.localPosition = new Vector3(transform.localPosition.x, /*tileUnder.transform.localPosition.y +*/ 14.6f, transform.localPosition.z);
+        int yoffset = 2;
+        if (isChantier) yoffset = 0;
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 100, LayerMask.GetMask("Tile")))
         {
-            transform.position = hit.point + transform.localScale.y * Vector3.up;
+            transform.position = hit.point + transform.localScale.y * yoffset * Vector3.up;
+            transform.LookAt(new Vector3(tileUnder.transform.position.x, transform.position.y, tileUnder.transform.position.z));
         }
     }
 
@@ -119,6 +99,36 @@ public class Item_Etabli : Item
     {
         if(FMODUtils.IsPlaying(creationInst)) FMODUtils.StopFMODEvent(ref creationInst, true);
     }
+
+    public virtual IEnumerator OnPooled(SO_Recette _recette)
+    {
+
+        tileUnder = GridUtils.WorldPosToTile(transform.position);
+        tileUnder.etabli = this;
+        transform.parent = tileUnder.transform;
+        if (Utils.IsSameOrSubclass(recette.craftedItemPrefab.GetType(), typeof(Item_Chantier))) isChantier = true;
+        int yoffset = 2;
+        if (isChantier) yoffset = 0;
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 100, LayerMask.GetMask("Tile")))
+        {
+            transform.position = hit.point + transform.localScale.y * yoffset * Vector3.up;
+            transform.LookAt(new Vector3(tileUnder.transform.position.x, transform.position.y, tileUnder.transform.position.z));
+        }
+
+        //recette = _recette;
+        yield return new WaitForEndOfFrame();
+        if (isChantier)
+        {
+            itemNumCh = GetComponentInChildren<ChantierCanvas>();
+            itemNumCh.UpdateText(this);
+        }
+        else
+        {
+            itemNum = GetComponentInChildren<EtabliCanvas>();
+            itemNum.UpdateText(this);
+        }
+    }
+
     public override void Update()
     {
         base.Update();
@@ -133,6 +143,11 @@ public class Item_Etabli : Item
         else if(!isActive && tileUnder.walkable)
         {
             SetActiveMesh(true);
+        }
+        
+        if(craftedItem != null && craftedItem.isHeld)
+        {
+            craftedItem = null;
         }
     }
     
@@ -182,8 +197,8 @@ public class Item_Etabli : Item
             {
                 if(isChantier)
                 {
-                    OnDestroyMethod();
-                    Destroy(gameObject);
+                    //OnDestroyMethod();
+                    //Destroy(gameObject);
                 }
                 m.enabled = false;
                 isActive = false;
@@ -199,7 +214,7 @@ public class Item_Etabli : Item
         if (isChantier && tileUnder.tileSpawnType != TileType.construction) tileUnder.tileSpawnType = TileType.construction;
         if (isChantier && !constructed)
         {
-            FindObjectOfType<MissionManager>().CheckMissions();
+            //FindObjectOfType<MissionManager>().CheckMissions();
         }
     }
 
@@ -220,7 +235,8 @@ public class Item_Etabli : Item
                     {
                         currentStackRessources[i] += itemS.numberStacked;
                         player.heldItem = null;
-                        Destroy(itemS.gameObject);
+                        ObjectPooling.SharedInstance.RemovePoolItem(0, itemS.gameObject, itemS.GetType().ToString());
+                        //Destroy(itemS.gameObject);
                     }
                     else
                     {
@@ -231,7 +247,8 @@ public class Item_Etabli : Item
                         {
                             currentStackRessources[i] += itemS.numberStacked;
                             player.heldItem = null;
-                            Destroy(itemS.gameObject);
+                            //Destroy(itemS.gameObject);
+                            ObjectPooling.SharedInstance.RemovePoolItem(0, itemS.gameObject, itemS.GetType().ToString());
                         }
                     }
                     if (currentStackRessources[i] > 0)
@@ -258,7 +275,8 @@ public class Item_Etabli : Item
                     itemsFilled[i] = true;
                     Item tempItem = player.heldItem;
                     player.heldItem = null;
-                    Destroy(tempItem.gameObject);
+                    //Destroy(tempItem.gameObject);
+                    ObjectPooling.SharedInstance.RemovePoolItem(0, tempItem.gameObject, tempItem.GetType().ToString());
                     stackT.GetChild(i).gameObject.SetActive(true);
 
                     Highlight.SetActive(false);
@@ -295,12 +313,16 @@ public class Item_Etabli : Item
             }
             if (craftedItem == null)
             {
-                craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, Quaternion.identity, createdItem);
+                //craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, Quaternion.identity, createdItem);
+                Vector3 pos = createdItem.position;
+                Transform tr = createdItem;
+                craftedItem = ObjectPooling.SharedInstance.GetPoolItem(0, pos, tr, recette.craftedItemPrefab.GetType().ToString()).GetComponent<Item>();
             }
 
             if (Utils.IsSameOrSubclass(System.Type.GetType("Item_Stack"), craftedItem.GetType()))
             {
                 Item_Stack craIt = craftedItem as Item_Stack;
+                craIt.stackType = recette.craftedItemPrefab.GetComponent<Item_Stack>().stackType;
                 craIt.numberStacked += recette.numberOfCrafted;
             }
             if (isChantier) itemNumCh.UpdateText(this);
@@ -316,13 +338,19 @@ public class Item_Etabli : Item
         FMODUtils.SetFMODEvent(ref creationInst, "event:/Tuile/Tile/TileCreation", transform);
         yield return waiter;
         FMODUtils.StopFMODEvent(ref creationInst, true);
-        GameObject chantier = Instantiate(recette.craftedItemPrefab, tileUnder.transform.position + recette.craftedItemPrefab.transform.position + Vector3.up * GameConstant.tileHeight, recette.craftedItemPrefab.transform.rotation).gameObject;
-        chantier.transform.parent = tileUnder.transform;
+        //GameObject chantier = Instantiate(recette.craftedItemPrefab, tileUnder.transform.position + recette.craftedItemPrefab.transform.position + Vector3.up * GameConstant.tileHeight, recette.craftedItemPrefab.transform.rotation).gameObject;
+        //chantier.transform.parent = tileUnder.transform;
         constructed = true;
-        FindObjectOfType<MissionManager>().CheckMissions();
+        //FindObjectOfType<MissionManager>().CheckMissions();
         SO_Recette_Chantier re = recette as SO_Recette_Chantier;
-        Instantiate(re.loot, spawnPos.position, Quaternion.identity);
-        gameObject.SetActive(false); 
+        /*Transform house = */Instantiate(re.loot, transform.parent.GetChild(0).GetChild(4).position + .5f * Vector3.up, Quaternion.identity)/*.transform*/;
+        itemNumCh.gameObject.SetActive(false);
+        //float targetY = house.position.y;
+        //house.position -= 5f * Vector3.up;
+        //house.DOMoveY(targetY, 2).SetEase(TileSystem.Instance.easeOut);
+        GetComponentInChildren<MeshRenderer>().materials = houseMaterials;
+        Highlight.SetActive(false);
+        this.enabled = false; 
         
     }
 
@@ -364,7 +392,7 @@ public class Item_Etabli : Item
         if (!Application.isPlaying)
         {
             Tile tileUnder = GridUtils.WorldPosToTile(transform.position);
-            if (tileUnder != null && restraintEditorMovement)
+            if (tileUnder != null && restraintEditorMovement && (transform.rotation.eulerAngles.y % 60 != 0 || transform.position.y != tileUnder.transform.position.y + GameConstant.tileHeight + .4f))
             {
                 float yAngle = transform.eulerAngles.y - (transform.eulerAngles.y - 30) % 60;
                 Quaternion quat = Quaternion.Euler(0, yAngle, 0);
