@@ -81,7 +81,8 @@ public class ItemSpawner : MonoBehaviour
         SO_Recette tempRecette = null;
         if (itemToSpawn == SpawnableItems.Etabli) tempRecette = recette;
         else if(itemToSpawn == SpawnableItems.Chantier) tempRecette = otherRecette;
-        spawnedItem = ObjectPooling.SharedInstance.GetPoolItem(poolIndex, Vector3.zero, null, null, tempRecette);
+        Vector3 pos = spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up;
+        spawnedItem = ObjectPooling.SharedInstance.GetPoolItem(poolIndex, pos, null, null, tempRecette);
         
         spawnedItem.transform.position =  spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up;
         if (itemToSpawn == SpawnableItems.Etabli)
