@@ -48,7 +48,7 @@ public class Tile_Degradation : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (TileSystem.Instance.ready && tile.readyToRoll && tile.IsMoving && tile.readyToRoll)
+        if (TileSystem.Instance.ready /*&& tile.readyToRoll*/ && tile.IsMoving)
         {
             Vector3 localPos = tile.transform.localPosition;
             float distance = Mathf.Abs(tile.transform.position.y - tile.currentPos.y);
@@ -98,6 +98,7 @@ public class Tile_Degradation : MonoBehaviour
     private IEnumerator Degrading()
     {
         //Effect while degrading
+        
         yield return TileSystem.Instance.shakeLongWaiter;
 
         shakeCor = TileShake();
@@ -150,7 +151,7 @@ public class Tile_Degradation : MonoBehaviour
         started = true;
         if (started && tile.walkable && tile.currentPos.y < 0) SinkTile();
         tile.sandFlag = false;
-        if(tile.degradable && tile.tileType != TileType.Sand && tile.walkedOnto && !TileSystem.Instance.isHub) StartDegradation();
+        if(tile.degradable && tile.walkable && tile.tileType != TileType.Sand && tile.walkedOnto && !TileSystem.Instance.isHub) StartDegradation();
     }
 
     public IEnumerator TileShake()
@@ -165,6 +166,7 @@ public class Tile_Degradation : MonoBehaviour
         yield return new WaitUntil(() => transform.position != tile.currentPos);
         while (transform.position != tile.currentPos)
         {
+            Debug.Log(f);
             tile.visualRoot.localPosition = ShakeEffect(f);
             yield return TileSystem.Instance.shakeWaiter;
         }

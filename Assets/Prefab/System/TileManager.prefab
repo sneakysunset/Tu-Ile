@@ -217,8 +217,8 @@ MonoBehaviour:
   centerTileMat: {fileID: 2100000, guid: b797f39b12d44a8448842238403a9512, type: 2}
   centerTileMatBottom: {fileID: 2100000, guid: d50b940920843574bbf8290e0a38e5b4, type: 2}
   undegradableTileMesh: {fileID: 3163171260390484736, guid: 2eca40f471670324ba33f876ca2de259, type: 3}
-  undegradableTileMat: {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
-  undegradableTileMatBottom: {fileID: 2100000, guid: d50b940920843574bbf8290e0a38e5b4, type: 2}
+  undegradableTileMat: {fileID: 2100000, guid: bc1cf05946cd0624b9a9a124cf6e759d, type: 2}
+  undegradableTileMatBottom: {fileID: 2100000, guid: 5f6e639ee95b02f49b8eb4096bab3fc0, type: 2}
   defaultTileMesh: {fileID: 3163171260390484736, guid: 2eca40f471670324ba33f876ca2de259, type: 3}
   plaineTileMatTop: {fileID: 2100000, guid: cb9a4ac9090db4344bfff89cbfb824ee, type: 2}
   plaineTileMatBottom: {fileID: 2100000, guid: e5f8f155cb83b8249979eb63e0ede8ce, type: 2}

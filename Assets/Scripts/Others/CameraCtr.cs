@@ -10,6 +10,7 @@ using System.IO;
 using UnityEngine.UI;
 using DG.Tweening;
 using NaughtyAttributes;
+using UnityEngine.InputSystem;
 
 public class CameraCtr : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class CameraCtr : MonoBehaviour
     [Foldout("Camera References")] public RectTransform SplitBar;
     float splitBarPosX;
     [Foldout("Camera References")] public Camera soloCam, duoCam2;
+    private PlayerInputManager playerInputManager;
     #endregion
 
     #region Main Variables
@@ -66,6 +68,7 @@ public class CameraCtr : MonoBehaviour
         dezoomCamera.LookAt = TileSystem.Instance.centerTile.minableItems;
         dezoomCamera.Follow = TileSystem.Instance.centerTile.minableItems;
         StartCoroutine(changeCam());
+        playerInputManager = FindObjectOfType<PlayerInputManager>();
     }
 
 
@@ -162,11 +165,14 @@ public class CameraCtr : MonoBehaviour
         {
             cam2.Follow = player ;
             cam2.LookAt = player;
+            playerInputManager.DisableJoining();
+            playerP.closeUpCam.gameObject.layer = 17;
         }
         else
         {
             cam1.Follow = player ;
             cam1.LookAt = player;
+            playerP.closeUpCam.gameObject.layer = 18;
         }
         if(players.Count > 1) 
         { 
@@ -198,6 +204,7 @@ public class CameraCtr : MonoBehaviour
     public void RemovePlayer(Transform player)
     {
         players.Remove(player);
+        playerInputManager.EnableJoining();
         if (players.Count == 1)
         {
             Rect rect = new Rect(0, 0, 1, 1);
@@ -233,14 +240,15 @@ public class CameraCtr : MonoBehaviour
 
     private void LineCastToPlayer()
     {
-        Vector3 camPos = cam.transform.position;
+        Vector3 camPos = cam1.transform.position;
         if (TileSystem.Instance.ready)
         {
             List<Tile> tempList = new List<Tile>();
-            foreach(Transform player in  players)
+            for (int i = 0; i < players.Count; i++)
             {
-                Vector3 direction = (player.position - camPos).normalized;
-                float distance = Vector3.Distance(player.position, cam.transform.position) - sphereCastRadius;
+                if (i == 1) camPos = cam2.transform.position;
+                Vector3 direction = (players[i].position - camPos).normalized;
+                float distance = Vector3.Distance(players[i].position, cam.transform.position) - sphereCastRadius;
                 RaycastHit[] hits = Physics.SphereCastAll(camPos, sphereCastRadius, direction, distance, lineCastLayers, QueryTriggerInteraction.Ignore);
                 if (hits.Length > 0) foreach (RaycastHit hit in hits) if (hit.transform.TryGetComponent<Tile>(out Tile tile) && !tempList.Contains(tile)) tempList.Add(tile);
 /*                {
@@ -254,17 +262,22 @@ public class CameraCtr : MonoBehaviour
                 }*/
             }
             FadeTile = tempList.ToArray();
-/*            fadeTile = new Tile[tempList.Count];
-            for (int i = 0; i < fadeTile.Length; i++)
-            {
-                fadeTile[i] = tempList[i];
-            }*/
         }
     }
 
     private void OnFadeTileChange(Tile[] value)
     {
-        foreach(Tile tile in fadeTile) if(tile.faded) tile.UnFadeTile();
+        if (fadeTile == null)
+        {
+            fadeTile = value;
+            foreach (Tile tile in value) if (!tile.faded) tile.FadeTile(transparencyLevel);
+            return;
+        }
+            
+        foreach(Tile tile in fadeTile)
+        {
+            if(tile.faded) tile.UnFadeTile();
+        } 
         foreach(Tile tile in value) if(!tile.faded) tile.FadeTile(transparencyLevel);
 
         fadeTile = value;

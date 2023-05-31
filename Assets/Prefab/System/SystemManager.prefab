@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8688238561556375764}
   - component: {fileID: 1155359968373649300}
   - component: {fileID: 8716007780495970471}
+  - component: {fileID: 1059558934}
   m_Layer: 0
   m_Name: SystemManager
   m_TagString: Untagged
@@ -120,6 +121,14 @@ MonoBehaviour:
         m_Groups: 
         m_Action: Join
         m_Flags: 0
+      - m_Name: 
+        m_Id: e36f0a07-789c-4dec-a4cf-391c088059fa
+        m_Path: <Keyboard>/space
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Join
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_PlayerPrefab: {fileID: 5703151869213024695, guid: da5aecc5912d8e34182e975467977ecf, type: 3}
@@ -192,3 +201,87 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &1059558934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5452582664362477282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4473895bf34d615479fed6fa5ebbd3e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pooledObjects:
+  - itemType: Interactor:Wood
+    index: 0
+    objects: []
+    numOfItem: 0
+    prefab: {fileID: 8818747911436434145, guid: 79b9421b777be9b48964ef34298b9825, type: 3}
+  - itemType: Interactor:Rock
+    index: 0
+    objects: []
+    numOfItem: 30
+    prefab: {fileID: 2678278403484233012, guid: a1486965bb17ef34d9505a95cad1a333, type: 3}
+  - itemType: Interactor:Gold
+    index: 0
+    objects: []
+    numOfItem: 5
+    prefab: {fileID: 7937501208438684671, guid: 72f3d0f0b08c81645984d3b9dffe7bde, type: 3}
+  - itemType: Interactor:Diamond
+    index: 0
+    objects: []
+    numOfItem: 15
+    prefab: {fileID: 1548326296132660425, guid: e4fdb4ab491feff47aa6ac0bb155e34a, type: 3}
+  - itemType: Interactor:Adamantium
+    index: 0
+    objects: []
+    numOfItem: 0
+    prefab: {fileID: 7786200326323085320, guid: a896e8445800e1e46ad1a5d8b6049d41, type: 3}
+  - itemType: Item_Stack
+    index: 0
+    objects: []
+    numOfItem: 50
+    prefab: {fileID: 7307083508970999916, guid: 916ede32b917e24448f062a764b82885, type: 3}
+  - itemType: Item_Stack_Tile
+    index: 0
+    objects: []
+    numOfItem: 30
+    prefab: {fileID: 5081688468642532139, guid: af6ef38888d32a347baba23a3302fbf0, type: 3}
+  - itemType: Item_Crate_Mimic
+    index: 0
+    objects: []
+    numOfItem: 10
+    prefab: {fileID: 1993684740632381338, guid: e8d87e7fb08b7c641a4addb585c727e3, type: 3}
+  - itemType: Item_Bird
+    index: 0
+    objects: []
+    numOfItem: 20
+    prefab: {fileID: 3388698492052617944, guid: fce0e83e28c991d42a35cd94a6409487, type: 3}
+  - itemType: Item_Bait
+    index: 0
+    objects: []
+    numOfItem: 20
+    prefab: {fileID: 3388698492052617944, guid: fce0e83e28c991d42a35cd94a6409487, type: 3}
+  - itemType: Item_Etabli:Etabli
+    index: 0
+    objects: []
+    numOfItem: 10
+    prefab: {fileID: 6122129862733760003, guid: d7407368c4cdd8f46b94b8effe3ae987, type: 3}
+  - itemType: Item_Etabli:Chantier
+    index: 0
+    objects: []
+    numOfItem: 20
+    prefab: {fileID: 7644044209496618633, guid: bf93c3324d307044f873e1db14dc7521, type: 3}
+  - itemType: Item_Crate
+    index: 0
+    objects: []
+    numOfItem: 20
+    prefab: {fileID: 7644044209496618633, guid: bf93c3324d307044f873e1db14dc7521, type: 3}
+  - itemType: Item_Boussole
+    index: 0
+    objects: []
+    numOfItem: 20
+    prefab: {fileID: 7644044209496618633, guid: bf93c3324d307044f873e1db14dc7521, type: 3}
+  poolFolder: {fileID: 0}

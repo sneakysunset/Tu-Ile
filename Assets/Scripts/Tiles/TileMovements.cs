@@ -19,7 +19,7 @@ public class TileMovements : MonoBehaviour
 
             distance = Mathf.Abs(tile.transform.position.y - tile.currentPos.y);
             distance = Mathf.Clamp(distance, .3f, 5f);
-            if(tile.readyToRoll && tile.IsMoving)
+            if(/*tile.readyToRoll && */tile.IsMoving)
             {
 
                 if (tile.isGrowing)

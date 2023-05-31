@@ -163,17 +163,24 @@ MonoBehaviour:
     tileType: 0
     itemType: 3
     sprite: {fileID: 21300000, guid: b684b903aba26e14185bbba8b3903f91, type: 3}
-  spawnableItems:
-  - {fileID: 8888129459989820106, guid: b2c9ab1516a45874b9446697f1dfc0b8, type: 3}
-  - {fileID: 1993684740632381338, guid: e8d87e7fb08b7c641a4addb585c727e3, type: 3}
-  - {fileID: 3388698492052617944, guid: fce0e83e28c991d42a35cd94a6409487, type: 3}
-  - {fileID: 4377360843773846542, guid: 55c071a6a35b3d444a3bd6d264d74561, type: 3}
-  - {fileID: 6122129862733760003, guid: d7407368c4cdd8f46b94b8effe3ae987, type: 3}
-  - {fileID: 7644044209496618633, guid: bf93c3324d307044f873e1db14dc7521, type: 3}
-  - {fileID: 3982822828458313300, guid: 71185b92ee0534b43bea6e105743a8d2, type: 3}
+  itemsToSpawn:
+  - item: {fileID: 1993684740632381338, guid: e8d87e7fb08b7c641a4addb585c727e3, type: 3}
+    index: 7
+  - item: {fileID: 3388698492052617944, guid: fce0e83e28c991d42a35cd94a6409487, type: 3}
+    index: 8
+  - item: {fileID: 4377360843773846542, guid: 55c071a6a35b3d444a3bd6d264d74561, type: 3}
+    index: 9
+  - item: {fileID: 6122129862733760003, guid: d7407368c4cdd8f46b94b8effe3ae987, type: 3}
+    index: 10
+  - item: {fileID: 7644044209496618633, guid: bf93c3324d307044f873e1db14dc7521, type: 3}
+    index: 11
+  - item: {fileID: 8888129459989820106, guid: b2c9ab1516a45874b9446697f1dfc0b8, type: 3}
+    index: 12
+  - item: {fileID: 3982822828458313300, guid: 71185b92ee0534b43bea6e105743a8d2, type: 3}
+    index: 13
   gameManagers:
   - {fileID: 614773810181506915, guid: 7f80ee2cedd79c44daec8c1627618476, type: 3}
-  - {fileID: 2138704921227410456, guid: c50925a4ae41d6541a9e5029475f79a8, type: 3}
+  - {fileID: 2138704921227410456, guid: 3da5a16e78e61cd428dc4376c2306f50, type: 3}
   recettes:
   - {fileID: 11400000, guid: 63950be6c7fcbd843a0a261c7c3961a0, type: 2}
   - {fileID: 11400000, guid: c1a9504e4018eb940a5486c4a8b6693a, type: 2}

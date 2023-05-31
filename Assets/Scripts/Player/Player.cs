@@ -12,6 +12,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
 using UnityEngine.Windows;
+using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
@@ -41,15 +42,18 @@ public class Player : MonoBehaviour
     [HideInInspector] public Transform dummyTarget;
     bool respawning;
     float currentGravMult;
+    CameraCtr cam;
     ChainIKConstraint[] iks;
     public Transform itemParent1, itemParent2;
     [HideNormalInspector] public Vector2Int previousScenePos;
     [HideNormalInspector] public Ship_CharacterController ship;
     [HideNormalInspector] public bool isShipped;
     [HideNormalInspector] public int playerIndex;
+    [HideNormalInspector] public CinemachineVirtualCamera closeUpCam;
     private void Awake()
     {
         GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = Color.black;
+        closeUpCam = GetComponentInChildren<CinemachineVirtualCamera>();
         pPause = GetComponent<Player_Pause>();
         transform.parent = null;
         dummyTarget = transform.Find("DummyTarget");
@@ -62,26 +66,56 @@ public class Player : MonoBehaviour
             pointers.Add(go);
         }
         iks = GetComponentsInChildren<ChainIKConstraint>();
+        Player_Pause.pauseMenuActivation += OnPause;
+        Player_Pause.pauseMenuDesactivation += OnUnPause;
+    }
+
+    void OnPause()
+    {
+        closeUpCam.Priority = 10;
+    }
+
+    void OnUnPause()
+    {
+        closeUpCam.Priority = 0;
     }
 
     public void OnLoad()
     {
         respawnTile = TileSystem.Instance.centerTile;
         pState = PlayerState.Idle;
-        float x = Mathf.Abs(TileSystem.Instance.centerTile.transform.position.x - TileSystem.Instance.previousCenterTile.transform.position.x);
-        float z = Mathf.Abs(TileSystem.Instance.centerTile.transform.position.z - TileSystem.Instance.previousCenterTile.transform.position.z);
+        if (cam == null) cam = TileSystem.Instance.cam;
+        CinemachineBrain[] cams = cam.GetComponentsInChildren<CinemachineBrain>();
+        float blendTime = cams[0].m_DefaultBlend.m_Time;
+        foreach(CinemachineBrain cineB in cams)
+        {
+            cineB.m_DefaultBlend.m_Time = 0;
+        }
+        float x = TileSystem.Instance.centerTile.transform.position.x - TileSystem.Instance.previousCenterTile.transform.position.x;
+        float z = TileSystem.Instance.centerTile.transform.position.z - TileSystem.Instance.previousCenterTile.transform.position.z;
         Vector3 diff = new Vector3(x, 0, z);
-        transform.Translate(diff);
+        Vector3 pos = TileSystem.Instance.centerTile.transform.position;
+        pos.y = TileSystem.Instance.previousCenterTile.transform.position.y;
+        TileSystem.Instance.centerTile.transform.position = pos;
+        _characterController.enabled = false;
+        transform.position += diff;
+        _characterController.enabled = true;
         if(heldItem != null )
         {
-            Destroy(heldItem.gameObject);
+            ObjectPooling.SharedInstance.RemovePoolItem(0, heldItem.gameObject, heldItem.GetType().ToString());
+
+            //Destroy(heldItem.gameObject);
             heldItem = null;
         }
+        foreach (CinemachineBrain cineB in cams)
+        {
+            cineB.m_DefaultBlend.m_Time = blendTime;
+        }
+
     }
 
     private void Start()
     {
-
         respawnTile = TileSystem.Instance.centerTile;
         interactors = new List<Interactor>();
         holdableItems = new List<Item>();
@@ -94,6 +128,7 @@ public class Player : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         GridUtils.onLevelMapLoad += OnLoad;
         GridUtils.onEndLevel += OnEndLevel;
+        currentGravMult = pM.gravityMultiplier;
     }
 
     void OnEndLevel(Tile tile) => respawnTile = tile;
@@ -187,11 +222,14 @@ public class Player : MonoBehaviour
     {
         if (heldItem != null)
         {
+            Item tempItem = heldItem;
             heldItem.GrabRelease(true);
-            Destroy(heldItem.gameObject);
+            //Destroy(heldItem.gameObject);
+            ObjectPooling.SharedInstance.RemovePoolItem(0, tempItem.gameObject, tempItem.GetType().ToString());
+
         }
         WaterHit(hit);
-        currentGravMult = pM.gravityMultiplier;
+        //currentGravMult = pM.gravityMultiplier;
         yield return new WaitForSeconds(drawningTimer);
         DrawningEnd(hit);
     }
@@ -202,7 +240,7 @@ public class Player : MonoBehaviour
         if (pM.stunCor != null)
         {
             StopCoroutine(pM.stunCor);
-            pM.stunCor = null;
+            pM.UnStun();
         }
         Physics.IgnoreCollision(col, hit.collider, true);
         Instantiate(waterSplash, hit.point + 2 * Vector3.up, Quaternion.identity, null);

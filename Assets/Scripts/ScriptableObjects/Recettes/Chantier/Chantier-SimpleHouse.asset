@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3dda88fd909c2f243a5cd2b7110b29a8, type: 3}
-  m_Name: Chantier - Simple House
+  m_Name: Chantier-SimpleHouse
   m_EditorClassIdentifier: 
   convertionTime: 1
   requiredItemStacks:

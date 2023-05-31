@@ -9,6 +9,7 @@ using System.IO;
 using System;
 using Unity.VisualScripting.FullSerializer;
 using static UnityEngine.Rendering.DebugUI.Table;
+using static UnityEditor.Progress;
 #if UNITY_EDITOR
 using AmplifyShaderEditor;
 #endif
@@ -109,7 +110,9 @@ public class TileSystem : MonoBehaviour
         Item[] items = FindObjectsOfType<Item>();
         for (int i = 0; i < items.Length; i++)
         {
-            Destroy(items[i].gameObject);
+            ObjectPooling.SharedInstance.RemovePoolItem(0, items[i].gameObject, items[i].GetType().ToString());
+
+            //Destroy(items[i].gameObject);
         }
     }
 
