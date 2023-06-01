@@ -154,6 +154,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 9086619422811771270, guid: f829edc149a9f324ab35b769cf9d33f7, type: 3}
+    - target: {fileID: 4747627161314714909, guid: 916ede32b917e24448f062a764b82885, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5174493804729871081, guid: 916ede32b917e24448f062a764b82885, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -234,6 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   holdable: 0
+  targetter: {fileID: 7061860537866337882}
   isHeld: 0
   rb: {fileID: 0}
   Highlight: {fileID: 0}
@@ -246,3 +251,8 @@ MonoBehaviour:
   isTile: 1
   trueHoldable: 1
   degradingSpeed: 1.5
+--- !u!4 &7061860537866337882 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4747627161314714909, guid: 916ede32b917e24448f062a764b82885, type: 3}
+  m_PrefabInstance: {fileID: 2585683019129412423}
+  m_PrefabAsset: {fileID: 0}

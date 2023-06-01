@@ -39,6 +39,7 @@ public class TileSystem : MonoBehaviour
 
     [HideInInspector] public CameraCtr cam;
     [HideInInspector] public PlayersManager playersMan;
+    [HideInInspector] public TutorialManager tutorial;
     [HideInInspector] public TileCounter tileCounter;
     [HideInInspector] public GameTimer gameTimer;
     [HideInInspector] public ScoreManager scoreManager;
@@ -58,6 +59,7 @@ public class TileSystem : MonoBehaviour
 
         cam = FindObjectOfType<CameraCtr>();
         playersMan = FindObjectOfType<PlayersManager>();
+        tutorial = playersMan.GetComponent<TutorialManager>();
         if (!isHub)
         {
             gameTimer = FindObjectOfType<GameTimer>();

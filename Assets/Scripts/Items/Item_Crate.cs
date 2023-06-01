@@ -30,7 +30,6 @@ public class Item_Crate : Item
     [Foldout("Lerp")] public float lerpDuration;
     [Foldout("Lerp")] public float yLerpRotateAmount;
     [Foldout("Lerp")] public AnimationCurve lerpCurve;
-
     public override void GrabStarted(Transform holdPoint, Player player)
     {
         base.GrabStarted(holdPoint, player);
@@ -63,7 +62,8 @@ public class Item_Crate : Item
     private void GiveRewards()
     {
         int i = 0;
-        TileSystem.Instance.scoreManager.ChangeScore(reward.scoreReward);
+        if (!TileSystem.Instance.isHub) TileSystem.Instance.scoreManager.ChangeScore(reward.scoreReward);
+        else TileSystem.Instance.playersMan.GetComponent<HubEvents>().GrowTileList();
         if (reward.itemReward)
         {
             if (reward.isRandom)

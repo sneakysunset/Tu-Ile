@@ -10,6 +10,8 @@ public class Item : MonoBehaviour
     public enum StackType { Other, Wood, Rock, Gold, Diamond, Adamantium, BouncyTile};
     public enum ItemType { Bird, Chantier, Boussole, Bait, Crate};
     [HideInInspector] public bool holdable;
+    [HideInInspector] public bool interactable = true;
+    public Transform targetter;
     [HideNormalInspector] public bool isHeld;
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public GameObject Highlight;
@@ -17,6 +19,7 @@ public class Item : MonoBehaviour
     [HideInInspector] public Player _player;
     [HideInInspector] public bool physic = true;
     [HideInInspector] public Collider col;
+    [HideInInspector] public bool isTuto;
     public virtual void Awake()
     {
         Highlight = transform.Find("Highlight").gameObject;

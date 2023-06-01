@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-
 public class TileSelector : MonoBehaviour
 {
     #region Variables
@@ -103,7 +102,7 @@ public class TileSelector : MonoBehaviour
 
         #region nonHub
         if (tile.tileType == TileType.Sand && !player._characterController.isGrounded && tile.sandFlag) tile.tileD.SandDegradation();
-        else if(isOnTop && player._characterController.isGrounded) tile.sandFlag = true;
+        else if (isOnTop && player._characterController.isGrounded) tile.sandFlag = true;
         #endregion
 
     }
@@ -129,14 +128,14 @@ public class TileSelector : MonoBehaviour
     private void OnDrawGizmos()
     {
 #if UNITY_EDITOR
-        if(Application.isPlaying && player.tileUnder)
+        if (Application.isPlaying && player.tileUnder)
         {
             UnityEditor.Handles.color = Color.green;
             UnityEditor.Handles.DrawWireDisc(player.tileUnder.minableItems.position, Vector3.up, distanceToBeOnTop);
         }
 #endif
 
-        if(Application.isPlaying && player.tileUnder)
+        if (Application.isPlaying && player.tileUnder)
         {
             Gizmos.DrawRay(transform.position + hitDistance * transform.forward, -Vector3.up * 2000);
             Gizmos.DrawSphere(transform.position + transform.forward * hitDistance, .1f);
@@ -164,10 +163,9 @@ public class TileSelector : MonoBehaviour
         bool c3 = player.heldItem && player.heldItem.GetType() == typeof(Item_Stack_Tile);
         if (!c3) goto NotHit;
         Vector3 originCast = transform.position + transform.forward * hitDistance;
-        bool c1 = Physics.Raycast(originCast, -Vector3.up, out RaycastHit hit, 2000, tileLayer);
-        if (!c1) goto NotHit;
-        bool c2 = hit.transform.TryGetComponent<Tile>(out targettedTile) && !targettedTile.walkable && !targettedTile.tourbillon;
-        if (c1 && c2  && c3)
+        targettedTile = GridUtils.WorldPosToTile(originCast);
+        bool c2 = (!targettedTile.walkable && !targettedTile.tourbillon && !TileSystem.Instance.isHub) || (TileSystem.Instance.isHub && targettedTile.coordX == 17 && targettedTile.coordY == 6);
+        if (c2  && c3)
         {
             tileBluePrint.position = new Vector3(targettedTile.transform.position.x, (GameConstant.tileHeight + player.tileUnder.transform.position.y), targettedTile.transform.position.z);
             return;

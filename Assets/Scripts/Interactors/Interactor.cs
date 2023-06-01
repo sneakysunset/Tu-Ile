@@ -32,6 +32,7 @@ public class Interactor : MonoBehaviour
     protected MeshRenderer meshR;
     protected MeshFilter meshF;
     protected MeshCollider meshC;
+    public Transform target;
     #endregion
 
     #region States
@@ -42,7 +43,8 @@ public class Interactor : MonoBehaviour
     #region Ressource Stacks
     public Item_Stack stackPrefab;
     Transform stackPosT;
-    private Item_Stack stackItem;
+    [HideInInspector] public bool isTuto;
+    [HideInInspector] public Item_Stack stackItem;
     #endregion
 
     #region Fade
@@ -188,7 +190,15 @@ public class Interactor : MonoBehaviour
     {
         CreateStack();
         stackItem.numberStacked += numberOfRessourceGenerated;
-
+        if (TileSystem.Instance.isHub && isTuto)
+        {
+            TutorialManager tuto = TileSystem.Instance.tutorial;
+            isTuto = false;
+            if (tuto.enumer != null) StopCoroutine(tuto.enumer);
+            if (tuto.tileSpawned) tuto.enumer = tuto.GetChantier();
+            else tuto.enumer = tuto.GetEtabli();
+            StartCoroutine(tuto.enumer);
+        }
         for (int i = _player.Count - 1; i <= 0 ; i--)
         {
             if (i < 0) break;

@@ -11,6 +11,8 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.Linq.Expressions;
 using System.Linq;
+using UnityEngine.Events;
+
 //sing static UnityEngine.RuleTile.TilingRuleOutput;
 
 [System.Flags]
@@ -122,6 +124,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public Color walkedOnColor, notWalkedOnColor;
     [HideInInspector] public Color penguinedColor;
      public Color falaiseColor;
+    public UnityEvent hubEventOnSpawn;
     #endregion
 
     public float gizmoOffset = 20;
@@ -432,6 +435,7 @@ public class Tile : MonoBehaviour
 
     public void Spawn(float height, string stackType, float degradingSpeed)
     {
+        if (TileSystem.Instance.isHub) hubEventOnSpawn?.Invoke();
         transform.position = new Vector3(transform.position.x, -10, transform.position.z);
         
         if (degradingSpeed == 0) degradable = false;
@@ -541,6 +545,16 @@ public class Tile : MonoBehaviour
         Vector3 pos =  t.position;
         GameObject obj = ObjectPooling.SharedInstance.GetPoolItem(interactorPoolIndex, pos, tr);
         obj.transform.Rotate(0, UnityEngine.Random.Range(0, 360), 0);
+    }
+
+    public void SetToCenterTile(bool save)
+    {
+        TileSystem.Instance.centerTile.transform.GetChild(9).gameObject.SetActive(false);
+        TileSystem.Instance.centerTile = this;
+        myMeshR.materials = getCorrespondingMat(tileType);
+        myMeshF.mesh = getCorrespondingMesh(tileType);
+        transform.GetChild(9).gameObject.SetActive(true);
+
     }
     #endregion
 

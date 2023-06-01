@@ -26,7 +26,7 @@ public class Item_Etabli : Item
 {
     #region variables
     public SO_Recette recette;
-    Item craftedItem;
+    [HideInInspector] public Item craftedItem;
     [HideInInspector] public UnityEngine.Transform stackT;
     private bool convertorFlag;
     private WaitForSeconds waiter;
@@ -95,8 +95,6 @@ public class Item_Etabli : Item
             spawnPos.position = new Vector3(tileUnder.minableItems.position.x, transform.position.y, tileUnder.minableItems.position.z); 
         }
     }
-
-
 
     private void OnDisable()
     {
@@ -335,6 +333,15 @@ public class Item_Etabli : Item
         convertorFlag = false;
         }
         while (CheckStacks());
+
+        if(TileSystem.Instance.isHub && isTuto)
+        {
+            isTuto = false;
+            TutorialManager tuto = TileSystem.Instance.tutorial;
+            if (tuto.enumer != null) StopCoroutine(tuto.enumer);
+            tuto.enumer = tuto.GetSunkTile();
+            StartCoroutine(tuto.enumer);
+        }
         
     }
 
@@ -348,8 +355,9 @@ public class Item_Etabli : Item
         constructed = true;
         //FindObjectOfType<MissionManager>().CheckMissions();
         SO_Recette_Chantier re = recette as SO_Recette_Chantier;
-        /*Transform house = */Instantiate(crate, transform.parent.GetChild(0).GetChild(4).position + .5f * Vector3.up, Quaternion.identity)/*.transform*/;
-        crate.reward = re.reward;
+        /*Transform house = */craftedItem = Instantiate(crate, transform.parent.GetChild(0).GetChild(4).position + .5f * Vector3.up, Quaternion.identity)/*.transform*/;
+        Item_Crate it = craftedItem as Item_Crate;
+        it.reward = re.reward;
         itemNumCh.gameObject.SetActive(false);
         //float targetY = house.position.y;
         //house.position -= 5f * Vector3.up;
