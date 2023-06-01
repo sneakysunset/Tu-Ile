@@ -26,6 +26,7 @@ public class HubEvents : MonoBehaviour
     [HideInInspector] public int index = 0;
     public float timeOffsetBetweenTiles;
     IEnumerator hubEventCoroutine;
+    public float beforeEventWaiter, afterEventWaiter;
     private void Start()
     {
         brains = TileSystem.Instance.cam.brains;
@@ -35,7 +36,7 @@ public class HubEvents : MonoBehaviour
     {
         if(TileSystem.Instance.isHub && hubEventCoroutine == null && index < tileGrowEventList.Count && TileSystem.Instance.ready)
         {
-            hubEventCoroutine = tileGrow(tileGrowEventList[0]);
+            hubEventCoroutine = tileGrow(tileGrowEventList[index]);
             index++;
             StartCoroutine(hubEventCoroutine);
         }
@@ -51,7 +52,7 @@ public class HubEvents : MonoBehaviour
         }
         yield return new WaitForEndOfFrame();
         yield return new WaitUntil(()=> !brains[0].IsBlending);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(beforeEventWaiter);
         string path = Application.streamingAssetsPath + "/LevelMaps/TM_Hub" + ".txt";
         for (int i = 0; i < tiles.tiles.Count; i++)
         {
@@ -59,6 +60,7 @@ public class HubEvents : MonoBehaviour
             GridUtils.UpdateTileSave(GridUtils.GetStringByTile(tiles.tiles[i].tile), tiles.tiles[i].tile, path);
             yield return new WaitForSeconds(timeOffsetBetweenTiles);
         }
+        yield return new WaitForSeconds(afterEventWaiter);
         foreach (Player player in FindObjectsOfType<Player>())
         {
             player.pM.canMove = true;

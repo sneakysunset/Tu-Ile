@@ -94,6 +94,8 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Interactor Spawning
+    public bool isHubCollider;
+    public Collider hubCollider;
     [HideInInspector] public List<Transform> spawnPoints;
     [HideNormalInspector] public bool readyToRoll;
     bool spawning;
@@ -204,7 +206,7 @@ public class Tile : MonoBehaviour
     {
         GridUtils.onLevelMapLoad += OnMapLoad;
         CameraCtr.startUp += OnStartUp;
-       
+        if (isHubCollider && TileSystem.Instance.isHub) hubCollider.enabled = true;
         Transform tr = transform.GetChild(8);
         levelUI = tr.GetComponent<LevelUI>();
         if(TileSystem.Instance.isHub && tileType == TileType.LevelLoader)
@@ -280,6 +282,11 @@ public class Tile : MonoBehaviour
         if(tileType != TileType.LevelLoader && levelUI.gameObject.activeInHierarchy) levelUI.gameObject.SetActive(false);
         if (walkable)
         {
+            if (isHubCollider)
+            {
+                if (TileSystem.Instance.isHub) hubCollider.enabled = true;
+                else hubCollider.enabled = false;
+            }
             if(TileSystem.Instance.isHub && tileType == TileType.LevelLoader) transform.GetChild(9).gameObject.SetActive(true);
             else if(this != TileSystem.Instance.centerTile && transform.GetChild(9).gameObject.activeInHierarchy) transform.GetChild(9).gameObject.SetActive(false);
             if (!myMeshR.enabled) myMeshR.enabled = true;
