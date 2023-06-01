@@ -2372,7 +2372,7 @@ MonoBehaviour:
   penguinedColor: {r: 0.8584906, g: 0.28076416, b: 0.28076416, a: 1}
   falaiseColor: {r: 0.7921569, g: 0.64705884, b: 0.64705884, a: 1}
   gizmoOffset: 22.6
-  destination: {x: 0, y: 22.6, z: 0}
+  destination: {x: 68, y: 24.6, z: 35.52}
   faded: 0
   isPathChecked: 0
   step: 0

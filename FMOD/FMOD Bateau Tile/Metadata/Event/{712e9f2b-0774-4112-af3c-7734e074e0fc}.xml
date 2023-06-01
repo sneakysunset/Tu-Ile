@@ -5,7 +5,7 @@
 			<value>Stomp</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{2c535e69-04c9-49c8-9f2b-9cf762cf5ddb}</destination>
@@ -111,7 +111,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{8eea1e2d-92d6-4edb-8fd9-b62b80506786}">
 		<property name="volume">
-			<value>-8</value>
+			<value>10</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -129,6 +129,7 @@
 	<object class="MixerBusEffectChain" id="{7f9ea25a-deba-4abd-9b06-b7a076592e98}">
 		<relationship name="effects">
 			<destination>{127b4286-9507-4a6c-99f6-05b6dc60c74d}</destination>
+			<destination>{020e0b57-6065-4dd7-9787-b9888dd85026}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2670873c-2845-4a78-a24d-aeac5c6c630b}" />
@@ -164,6 +165,7 @@
 	</object>
 	<object class="MixerBusPanner" id="{6a1b05e9-8e7a-401b-9bcd-49b101870f4f}" />
 	<object class="MixerBusFader" id="{127b4286-9507-4a6c-99f6-05b6dc60c74d}" />
+	<object class="SpatialiserEffect" id="{020e0b57-6065-4dd7-9787-b9888dd85026}" />
 	<object class="AutomationPoint" id="{1434de3b-9e0d-40cf-8bff-8612872299e8}">
 		<property name="position">
 			<value>1.291861678004536</value>

@@ -36,6 +36,12 @@ public class PlayerMovement : MonoBehaviour
     private float jp;
     private float ms;
 
+    Rigidbody rb;
+    [HideNormalInspector] public PlayerMovement otherPM;
+    public float stunDuration;
+    [HideNormalInspector] public bool isStunned;
+    [HideInInspector] public RigidbodyConstraints constraints;
+    [HideInInspector] public IEnumerator stunCor;
     #endregion
     #region Variables: Rotation
 
@@ -135,6 +141,8 @@ public class PlayerMovement : MonoBehaviour
         if (_characterController.isGrounded && jumpInput)
         {
             _velocity = jp;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Jump", transform.localPosition);
+
             player.pState = Player.PlayerState.Jump;
         }
 
@@ -291,12 +299,6 @@ public class PlayerMovement : MonoBehaviour
         isStunned = false;
     }
 
-    Rigidbody rb;
-    [HideNormalInspector] public PlayerMovement otherPM;
-    public float stunDuration;
-    [HideNormalInspector] public bool isStunned;
-    [HideInInspector] public RigidbodyConstraints constraints;
-    [HideInInspector] public IEnumerator stunCor;
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out PlayerMovement otherPlayerM))

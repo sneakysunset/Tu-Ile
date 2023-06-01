@@ -68,6 +68,7 @@ MonoBehaviour:
   fadeChecker: 0
   numberOfRessourceGenerated: 3
   pSysRegrowth: {fileID: 2947226589253691277}
+  scalerDiff: 0.3
 --- !u!33 &3727239290930370502
 MeshFilter:
   m_ObjectHideFlags: 0

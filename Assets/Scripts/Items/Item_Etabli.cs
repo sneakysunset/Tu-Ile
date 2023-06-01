@@ -47,6 +47,7 @@ public class Item_Etabli : Item
     [HideNormalInspector] public int[] currentStackRessources;
     [HideNormalInspector] public bool[] itemsFilled;
     [ShowIf("isChantier")] public Material[] houseMaterials;
+    [ShowIf("isChantier")] public Mesh houseMesh;
     public Item_Crate crate;
     #endregion
 
@@ -354,6 +355,7 @@ public class Item_Etabli : Item
         //house.position -= 5f * Vector3.up;
         //house.DOMoveY(targetY, 2).SetEase(TileSystem.Instance.easeOut);
         GetComponentInChildren<MeshRenderer>().materials = houseMaterials;
+        GetComponentInChildren<MeshFilter>().mesh = houseMesh;
         Highlight.SetActive(false);
         this.enabled = false; 
         

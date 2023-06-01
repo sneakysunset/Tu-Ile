@@ -64,9 +64,8 @@ public class HubEvents : MonoBehaviour
             player.pM.canMove = true;
         }
         tiles.virtualCamera.Priority = 0;
-        tileGrowEventList.RemoveAt(0);
         hubEventCoroutine = null;
-    }
+    }   
 
     public void ResetGame()
     {

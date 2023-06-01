@@ -485,6 +485,7 @@ MonoBehaviour:
   dezoomCamera: {fileID: 4190664559342532176}
   cam1: {fileID: 4898351341172603269}
   cam2: {fileID: 6707003948044665404}
+  brains: []
   players: []
   SplitBar: {fileID: 0}
   soloCam: {fileID: 6667387659626017478}
@@ -602,7 +603,7 @@ MonoBehaviour:
   cavitySamples: 0
   saturateCavity: 1
   cavityRadius: 0.25
-  cavityBrights: 3
+  cavityBrights: 0
   cavityDarks: 4.23
   normalsSource: 1
   debugMode: 0
@@ -888,7 +889,7 @@ MonoBehaviour:
   cavitySamples: 0
   saturateCavity: 1
   cavityRadius: 0.25
-  cavityBrights: 3
+  cavityBrights: 0
   cavityDarks: 4.23
   normalsSource: 1
   debugMode: 0

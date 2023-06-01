@@ -45,6 +45,9 @@ public class Player : MonoBehaviour
     [HideNormalInspector] public int playerIndex;
     [HideNormalInspector] public CinemachineVirtualCamera closeUpCam;
     [HideNormalInspector] public Transform myCamera;
+    [HideNormalInspector] public string groundType;
+    private FMOD.Studio.EventInstance danceEvent;
+
     private void Awake()
     {
         GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = Color.black;
@@ -68,11 +71,13 @@ public class Player : MonoBehaviour
     void OnPause()
     {
         closeUpCam.Priority = 10;
+        FMODUtils.SetFMODEvent(ref danceEvent, "event:/Tuile/Character/Voix/Beatbox", transform);
     }
 
     void OnUnPause()
     {
         closeUpCam.Priority = 0;
+        FMODUtils.StopFMODEvent(ref danceEvent, true);
     }
 
     public void OnLoad()
@@ -215,6 +220,10 @@ public class Player : MonoBehaviour
         else if (hit.transform.TryGetComponent<PlayerMovement>(out PlayerMovement player) && pM.dashFlag && !player.dashFlag)
         {
             StartCoroutine(player.Dashed(-hit.normal, pM.pushStrength));
+        }
+        if (!_characterController.isGrounded)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Stomp", transform.position);
         }
     }
 

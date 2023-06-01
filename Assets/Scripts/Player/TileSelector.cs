@@ -68,6 +68,7 @@ public class TileSelector : MonoBehaviour
 
         #endregion
 
+        player.groundType = getTileType(tile.tileType);
     }
 
     private void OnTileExit(Tile tile)
@@ -143,7 +144,20 @@ public class TileSelector : MonoBehaviour
     }
     #endregion
 
-
+    private string getTileType(TileType tileUnderType)
+    {
+        string groundTypeName = "Neutral";
+        switch (player.tileUnder.tileType)
+        {
+            case TileType.Wood: groundTypeName = player.tileUnder.tileType.ToString(); break;
+            case TileType.Rock: groundTypeName = player.tileUnder.tileType.ToString(); break;
+            case TileType.Sand: groundTypeName = player.tileUnder.tileType.ToString(); break;
+            case TileType.Gold: groundTypeName = "Rock"; break;
+            case TileType.Diamond: groundTypeName = "Rock"; break;
+            default: break;
+        }
+        return groundTypeName;
+    }
     #region Tile Spawning
     private void BluePrintPlacement()
     {

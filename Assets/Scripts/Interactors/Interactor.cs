@@ -56,21 +56,22 @@ public class Interactor : MonoBehaviour
     [HideInInspector] public ParticleSystem pSysRegrowth;
     #endregion
     #endregion
-
+    public float scalerDiff;
     #region SystemCallBacks
     private void Start()
     {
-/*        regrowthTimer /= comp.Length;
-        pSysRegrowth = GetComponentInChildren<ParticleSystem>();
-        regrowthWaiter = new WaitForSeconds(regrowthTimer);
-        stateIndex = comp.Length - 1;
-        meshR.sharedMaterial = comp[stateIndex].material;
-        meshF.mesh = comp[stateIndex].mesh; 
-        meshC.sharedMesh = comp[stateIndex].mesh; 
-        _player = new List<Player>();
-        Transform p = transform.parent.parent.parent;
-        stackPosT = p.Find("StackPos");
-        CreateStack();*/
+        /*        regrowthTimer /= comp.Length;
+                pSysRegrowth = GetComponentInChildren<ParticleSystem>();
+                regrowthWaiter = new WaitForSeconds(regrowthTimer);
+                stateIndex = comp.Length - 1;
+                meshR.sharedMaterial = comp[stateIndex].material;
+                meshF.mesh = comp[stateIndex].mesh; 
+                meshC.sharedMesh = comp[stateIndex].mesh; 
+                _player = new List<Player>();
+                Transform p = transform.parent.parent.parent;
+                stackPosT = p.Find("StackPos");
+                CreateStack();*/
+        transform.localScale *= UnityEngine.Random.Range(1 - scalerDiff, 1 +scalerDiff);
         meshF = GetComponent<MeshFilter>();
         meshR = GetComponent<MeshRenderer>();
         meshC = GetComponent<MeshCollider>();

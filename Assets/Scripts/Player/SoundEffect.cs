@@ -7,6 +7,7 @@ public class SoundEffect : MonoBehaviour
     Player player;
     public Color woodCol, rockCol, goldCol, diamondCol, adamCol;
     public ParticleSystem pSysWalkingR, pSysWalkingL;
+    FMOD.Studio.EventInstance walkEvent;
     private void Start()
     {
         player = GetComponentInParent<Player>();
@@ -15,13 +16,21 @@ public class SoundEffect : MonoBehaviour
 
     public void FootSoundleft()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Move");
+        walkEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Tuile/Character/Actions/Move");
+        walkEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(pSysWalkingL.transform));
+
+        walkEvent.setParameterByNameWithLabel("GroundType", player.groundType);
+        walkEvent.start();
         pSysWalkingR.Play();
     }
 
     public void FootSoundRight()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Move");
+        walkEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Tuile/Character/Actions/Move");
+        walkEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(pSysWalkingR.transform));
+
+        walkEvent.setParameterByNameWithLabel("GroundType", player.groundType);
+        walkEvent.start();
         pSysWalkingL.Play();
     }
 
