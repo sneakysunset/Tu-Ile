@@ -48,7 +48,9 @@ public class Item_Crate : Item
     public IEnumerator OnCenterReached(Transform pos)
     {
         holdable = false;
+        transform.parent = null;
         transform.position = pos.position;
+        interactable = false;
         rb.isKinematic = true;
         transform.DOMoveY(transform.position.y + yLerpPositionAmount + transform.localScale.y, lerpDuration).SetEase(lerpCurve);
         transform.DORotate(new Vector3(0, yLerpRotateAmount, 0), lerpDuration, RotateMode.FastBeyond360);
@@ -63,7 +65,11 @@ public class Item_Crate : Item
     {
         int i = 0;
         if (!TileSystem.Instance.isHub) TileSystem.Instance.scoreManager.ChangeScore(reward.scoreReward);
-        else TileSystem.Instance.playersMan.GetComponent<HubEvents>().GrowTileList();
+        else
+        {
+            TileSystem.Instance.playersMan.GetComponent<HubEvents>().GrowTileList();
+            TileSystem.Instance.tutorial.ExitTuto();
+        } 
         if (reward.itemReward)
         {
             if (reward.isRandom)

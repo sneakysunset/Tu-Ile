@@ -84,18 +84,13 @@ public class Player : MonoBehaviour
     {
         respawnTile = TileSystem.Instance.centerTile;
         pState = PlayerState.Idle;
-        if (cam == null) cam = TileSystem.Instance.cam;
-        CinemachineBrain[] cams = cam.GetComponentsInChildren<CinemachineBrain>();
-        float blendTime = cams[0].m_DefaultBlend.m_Time;
-        foreach(CinemachineBrain cineB in cams)
-        {
-            cineB.m_DefaultBlend.m_Time = 0;
-        }
+
         float x = TileSystem.Instance.centerTile.transform.position.x - TileSystem.Instance.previousCenterTile.transform.position.x;
         float z = TileSystem.Instance.centerTile.transform.position.z - TileSystem.Instance.previousCenterTile.transform.position.z;
         Vector3 diff = new Vector3(x, 0, z);
         Vector3 pos = TileSystem.Instance.centerTile.transform.position;
         pos.y = TileSystem.Instance.previousCenterTile.transform.position.y;
+        TileSystem.Instance.previousCenterTile.transform.position -= 15 * Vector3.up;
         TileSystem.Instance.centerTile.transform.position = pos;
         _characterController.enabled = false;
         transform.position += diff;
@@ -103,13 +98,7 @@ public class Player : MonoBehaviour
         if(heldItem != null )
         {
             ObjectPooling.SharedInstance.RemovePoolItem(0, heldItem.gameObject, heldItem.GetType().ToString());
-
-            //Destroy(heldItem.gameObject);
             heldItem = null;
-        }
-        foreach (CinemachineBrain cineB in cams)
-        {
-            cineB.m_DefaultBlend.m_Time = blendTime;
         }
 
     }

@@ -39,6 +39,7 @@ public class TutorialManager : MonoBehaviour
         if (!firstTime)
         {
             tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
+            targetter.DOMove(interactor.target.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
             yield return new WaitForSeconds(timeToGoOut);
         } 
         else
@@ -60,8 +61,8 @@ public class TutorialManager : MonoBehaviour
 
     public IEnumerator GetEtabli()
     {
-        if (item_Etablis == null)
-        {
+/*        if (item_Etablis == null)
+        {*/
             item_Etablis = FindObjectsOfType<Item_Etabli>();
             etabli = item_Etablis[0];
             chantier = item_Etablis[1];
@@ -70,7 +71,7 @@ public class TutorialManager : MonoBehaviour
                 etabli = item_Etablis[1];
                 chantier = item_Etablis[0];
             }
-        }
+       // }
         etabli.isTuto = true;
         targetter.DOMove(etabli.targetter.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
@@ -78,32 +79,35 @@ public class TutorialManager : MonoBehaviour
         text.text = "Amenez le bois à l'établi";
         tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
-        //targetter.position = etabli.targetter.position;
         enumer = null;
     }
 
     public IEnumerator GetChantier()
     {
         chantier.isTuto = true;
+        chantier.interactable = true;
+        TileSystem.Instance.centerTile = centerTile.GetComponentInParent<Tile>();
+        TileSystem.Instance.centerTile.myMeshR.materials = TileSystem.Instance.centerTile.getCorrespondingMat(TileSystem.Instance.centerTile.tileType);
+        TileSystem.Instance.centerTile.myMeshF.mesh = TileSystem.Instance.centerTile.getCorrespondingMesh(TileSystem.Instance.centerTile.tileType);
+        targetter.DOMove(chantier.targetter.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
         text.text = "Amenez le bois au chantier";
         tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         chantier.interactable = true;
-        targetter.position = chantier.targetter.position;
         enumer = null;
     }
 
     public IEnumerator GetCenterTile()
     {
+        targetter.DOMove(centerTile.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
 
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
         text.text = "Amenez le bois à la tile avec une cercle magique";
         tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
-        targetter.position = centerTile.position;
         enumer = null;
     }
 
@@ -112,10 +116,16 @@ public class TutorialManager : MonoBehaviour
         targetter.DOMove(sunkTile.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
-        text.text = "Utilisez la tile de bois pour créer une plateforme en bois";
+        text.text = "Utilisez la tuile de bois pour créer une plateforme";
         tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         //targetter.position = sunkTile.position;
         enumer = null;
+    }
+
+    public void ExitTuto()
+    {
+        targetter.DOMove(Vector3.zero, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
+        tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
     }
 }

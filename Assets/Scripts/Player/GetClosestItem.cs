@@ -25,7 +25,7 @@ public class GetClosestItem : MonoBehaviour
 
         if (other.TryGetComponent(out Item item) && !player.holdableItems.Contains(item))
         {
-            if (player.heldItem != item && item.holdable)
+            if (player.heldItem != item && item.holdable && item.interactable)
             {
                 if(item.GetType() == typeof(Item_Stack))
                 {
@@ -121,9 +121,14 @@ public class GetClosestItem : MonoBehaviour
         {
             foreach (Item item in player.holdableItems)
             {
+                if(!item.interactable)
+                {
+                    player.holdableItems.Remove(item);
+                    return null;
+                }
                 if (item == null) return null;
                  float itemDistance = Vector2.Distance(item.transform.position, transform.position);
-                 if (itemDistance < distance)
+                 if (itemDistance < distance )
                  {
                      cItem = item;
                  }

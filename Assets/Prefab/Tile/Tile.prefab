@@ -697,7 +697,7 @@ GameObject:
   - component: {fileID: 3649667281379905652}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1010,7 +1010,7 @@ GameObject:
   - component: {fileID: 8686761076212118322}
   m_Layer: 0
   m_Name: Cube (3)
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2424,7 +2424,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   gizmoOffset: 22.6
-  destination: {x: 0, y: 22.6, z: 0}
+  destination: {x: 78.200005, y: 22.6, z: 29.6}
   faded: 0
   isPathChecked: 0
   step: 0
@@ -2433,6 +2433,7 @@ MonoBehaviour:
   levelUI: {fileID: 0}
   isNear: 0
   isDetail: 0
+  runeTargetAlpha: 0.4
   EditPos: 0
   fadeChecker: 0
   constructionMesh: {fileID: 4493585093827132993, guid: 1f6189940713b064abbc4c99fe3e3ffb, type: 3}
@@ -3007,7 +3008,7 @@ GameObject:
   - component: {fileID: 6956549980663854854}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3468,7 +3469,7 @@ GameObject:
   - component: {fileID: 3622292500917594694}
   m_Layer: 0
   m_Name: Rock
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3607,7 +3608,7 @@ GameObject:
   - component: {fileID: 3952620197814853717}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4058,7 +4059,7 @@ GameObject:
   - component: {fileID: 7550582378111950108}
   m_Layer: 0
   m_Name: Tourbillon
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4233,6 +4234,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CliffLow
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b8e830768607173489c0583c3b45463a, type: 3}
+      propertyPath: m_TagString
+      value: Water
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8e830768607173489c0583c3b45463a, type: 3}
 --- !u!4 &2463422295661469449 stripped
@@ -4259,6 +4264,80 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -386731530326178724, guid: b8e830768607173489c0583c3b45463a, type: 3}
+--- !u!1001 &3648776270753908085
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5002407428796330615}
+    m_Modifications:
+    - target: {fileID: 6096741596259655620, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_Name
+      value: TilePureRune
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.13812809
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.13812809
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.13812809
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096741596259655672, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6096741596259655675, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
 --- !u!1001 &4634846857194138973
 PrefabInstance:
   m_ObjectHideFlags: 0

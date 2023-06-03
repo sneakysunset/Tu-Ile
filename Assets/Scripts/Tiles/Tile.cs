@@ -113,6 +113,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public Transform minableItems;
     [HideInInspector] public Transform tourbillonT;
     [HideInInspector] private ParticleSystem pSys;
+    [HideInInspector] private MeshRenderer walkRunes;
     [HideInInspector] ParticleSystem pSysCreation;
     [HideInInspector] public Tile_Degradation tileD;
     #endregion
@@ -142,6 +143,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public bool IsNear { get { return isNear; } set { if (isNear != value) IsNearMethod(value); } }
     [HideInInspector] public bool isDetail;
     [HideInInspector] public bool IsDetail { get { return  isDetail; } set { if (isDetail != value) IsDetailMethod(value); } }
+    [SerializeField] private float runeTargetAlpha;
     #endregion
     #endregion
 
@@ -236,6 +238,7 @@ public class Tile : MonoBehaviour
         AI_Text = GetComponentInChildren<TextMeshProUGUI>();   
         minableItems = transform.Find("SpawnPositions");
         pSys = transform.GetChild(3).GetComponent<ParticleSystem>();
+        walkRunes = pSys.GetComponentInChildren<MeshRenderer>();
         pSysCreation = transform.GetChild(7).GetComponent<ParticleSystem>();
         tourbillonT = transform.Find("Tourbillon");
         tourbillonOgY = tourbillonT.localPosition.y;
@@ -302,6 +305,7 @@ public class Tile : MonoBehaviour
             else if (!walkedOnto && degradable && !TileSystem.Instance.isHub)
             {
                 pSys.Play();
+                walkRunes.material.color = new Color(walkRunes.material.color.r, walkRunes.material.color.g, walkRunes.material.color.b, runeTargetAlpha);
                 pSysIsPlaying = true;
             }
             int myInt = Convert.ToInt32(spawnPositions);
@@ -334,6 +338,7 @@ public class Tile : MonoBehaviour
             if (!pSysIsPlaying && !pSys.isPlaying && !TileSystem.Instance.isHub  && degradable)
             {
                 pSys.Play();
+                walkRunes.material.color = new Color(walkRunes.material.color.r, walkRunes.material.color.g, walkRunes.material.color.b, runeTargetAlpha);
             }
         }
         else if (tourbillon)
@@ -351,6 +356,7 @@ public class Tile : MonoBehaviour
         if (pSysIsPlaying && pSys.isPlaying && TileSystem.Instance.isHub)
         {
             pSys.Stop();
+            walkRunes.material.DOFade(0, 1).SetEase(TileSystem.Instance.easeOut);
         }
         isDegrading = false;
         if(tileD.degradationCor != null && !TileSystem.Instance.isHub)
@@ -372,6 +378,8 @@ public class Tile : MonoBehaviour
         if (pSysIsPlaying && walkedOnto && degradable && tileType != TileType.Sand && !TileSystem.Instance.isHub)
         {
             pSys.Stop();
+            walkRunes.material.DOFade(0, 1).SetEase(TileSystem.Instance.easeOut);
+            //walkRunes.material.color = new Color(walkRunes.material.color.r, walkRunes.material.color.g, walkRunes.material.color.b, runeTargetAlpha);
             Material[] mats = myMeshR.materials;
             myMeshR.materials = mats;
             pSysIsPlaying = false;
@@ -415,6 +423,8 @@ public class Tile : MonoBehaviour
         else if (walkable && !walkedOnto && degradable && !TileSystem.Instance.isHub)
         {
             pSys.Play();
+            print(1);
+            walkRunes.material.DOFade(0, 1).SetEase(TileSystem.Instance.easeOut);
             pSysIsPlaying = true;
             Material[] mats = myMeshR.materials;
             //mats[mats.Length - 1].color = notWalkedOnColor;
@@ -435,7 +445,15 @@ public class Tile : MonoBehaviour
 
     public void Spawn(float height, string stackType, float degradingSpeed)
     {
-        if (TileSystem.Instance.isHub) hubEventOnSpawn?.Invoke();
+        if (TileSystem.Instance.isHub && !TileSystem.Instance.tutorial.tileSpawned)
+        {
+            TutorialManager tuto = TileSystem.Instance.tutorial;
+            tuto.tileSpawned = true;
+            if (tuto.enumer != null) tuto.StopCoroutine(tuto.enumer);
+            tuto.enumer = tuto.GetTree();
+            StartCoroutine(tuto.enumer);
+
+        }
         transform.position = new Vector3(transform.position.x, -10, transform.position.z);
         
         if (degradingSpeed == 0) degradable = false;
@@ -570,10 +588,11 @@ public class Tile : MonoBehaviour
             //mat[1] = disabledMat;
             //mat[0] = disabledMat;
         }
-        else if (TileSystem.Instance && ( this == TileSystem.Instance.centerTile || tileType == TileType.LevelLoader))
+        else if (TileSystem.Instance && ( this == TileSystem.Instance.centerTile || (tileType == TileType.LevelLoader && TileSystem.Instance.isHub)))
         {
             mat[1] = centerTileMat;
             mat[0] = centerTileMatBottom;
+            if(!transform.GetChild(9).gameObject.activeInHierarchy) transform.GetChild(9).gameObject.SetActive(true);
         }
         else if (!degradable && tileType != TileType.LevelLoader)
         {
