@@ -286,13 +286,13 @@ public class Tile : MonoBehaviour
     private void OnMapLoad()
     {
         if(tileType != TileType.LevelLoader && levelUI.gameObject.activeInHierarchy) levelUI.gameObject.SetActive(false);
+        if (isHubCollider)
+        {
+            if (TileSystem.Instance.isHub) hubCollider.enabled = true;
+            else hubCollider.enabled = false;
+        }
         if (walkable)
         {
-            if (isHubCollider)
-            {
-                if (TileSystem.Instance.isHub) hubCollider.enabled = true;
-                else hubCollider.enabled = false;
-            }
             if(TileSystem.Instance.isHub && tileType == TileType.LevelLoader) transform.GetChild(9).gameObject.SetActive(true);
             else if(this != TileSystem.Instance.centerTile && transform.GetChild(9).gameObject.activeInHierarchy) transform.GetChild(9).gameObject.SetActive(false);
             if (!myMeshR.enabled) myMeshR.enabled = true;
