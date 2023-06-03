@@ -21,12 +21,8 @@ public struct rewardPStateStruct
 
 public class Item_Crate : Item
 {
-    public enum PlayerStateReward {None, Speed, MiningSpeed};
-    public bool itemReward;
-    public bool isRandom;
-    public int scoreReward;
-    [HideIf("itemReward")]public rewardPStateStruct[] playerStateReward;
-    [ShowIf("itemReward")] public List<rewardStruct> itemRewards;
+    public SO_CrateReward reward;
+    public enum PlayerStateReward { None, Speed, MiningSpeed };
 
 
     [Foldout("Lerp")] public float yLerpPositionAmount;
@@ -34,7 +30,6 @@ public class Item_Crate : Item
     [Foldout("Lerp")] public float lerpDuration;
     [Foldout("Lerp")] public float yLerpRotateAmount;
     [Foldout("Lerp")] public AnimationCurve lerpCurve;
-
     public override void GrabStarted(Transform holdPoint, Player player)
     {
         base.GrabStarted(holdPoint, player);
@@ -67,46 +62,47 @@ public class Item_Crate : Item
     private void GiveRewards()
     {
         int i = 0;
-        TileSystem.Instance.scoreManager.ChangeScore(scoreReward);
-        if (itemReward)
+        if (!TileSystem.Instance.isHub) TileSystem.Instance.scoreManager.ChangeScore(reward.scoreReward);
+        else TileSystem.Instance.playersMan.GetComponent<HubEvents>().GrowTileList();
+        if (reward.itemReward)
         {
-            if (isRandom)
+            if (reward.isRandom)
             {
-                i = UnityEngine.Random.Range(0, itemRewards.Count - 1);
+                i = UnityEngine.Random.Range(0, reward.itemRewards.Count - 1);
             }
 
-            if (Utils.IsSameOrSubclass(typeof(Item_Stack), itemRewards[i].rewardItem.GetType()))
+            if (Utils.IsSameOrSubclass(typeof(Item_Stack), reward.itemRewards[i].rewardItem.GetType()))
             {
-                Item_Stack it = Instantiate(itemRewards[i].rewardItem, transform.position, Quaternion.identity) as Item_Stack;
-                it.numberStacked = itemRewards[i].number;
+                Item_Stack it = Instantiate(reward.itemRewards[i].rewardItem, transform.position, Quaternion.identity) as Item_Stack;
+                it.numberStacked = reward.itemRewards[i].number;
             }
             else
             {
-                Instantiate(itemRewards[i].rewardItem, transform.position, Quaternion.identity);
+                Instantiate(reward.itemRewards[i].rewardItem, transform.position, Quaternion.identity);
             }
 
         }
         else
         {
-            if (isRandom) 
+            if (reward.isRandom) 
             {
-                i = UnityEngine.Random.Range(0, playerStateReward.Length - 1);
+                i = UnityEngine.Random.Range(0, reward.playerStateReward.Length - 1);
             }
 
 
             foreach(Player p in FindObjectsOfType<Player>())
             {
-                switch(playerStateReward[i].pReward)
+                switch(reward.playerStateReward[i].pReward)
                 {
                     case PlayerStateReward.None: 
                     
                         break;
                     case PlayerStateReward.Speed:
-                        p.pM.speed += playerStateReward[i].rewardAdd;
-                        p.pM.speedOnRocks += playerStateReward[i].rewardAdd;
+                        p.pM.speed += reward.playerStateReward[i].rewardAdd;
+                        p.pM.speedOnRocks += reward.playerStateReward[i].rewardAdd;
                         break;
                     case PlayerStateReward.MiningSpeed:
-                        p.pMin.hitRate += playerStateReward[i].rewardAdd;
+                        p.pMin.hitRate += reward.playerStateReward[i].rewardAdd;
                         break;
                 }
             }

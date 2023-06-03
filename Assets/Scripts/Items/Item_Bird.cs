@@ -46,7 +46,7 @@ public class Item_Bird : Item
         pM.gravityMultiplier *= gravityDivider;
         pM.jumpStrength *= jumpModifier;
         pM.jumpStrengthOnBounce *= jumpModifier;
-        AIB.currentBehavious = AI_Behaviour.Behavious.AI;
+        AIB.currentBehaviour = AI_Behaviour.Behavious.AI;
         AIM.enabled = true;
         AIC.enabled = true;
         gameObject.layer = 8;
@@ -89,7 +89,7 @@ public class Item_Bird : Item
             gameObject.layer = 8;
             rb.isKinematic = true;
             rb.useGravity = false;
-            AIB.currentBehavious = AI_Behaviour.Behavious.AI;
+            AIB.currentBehaviour = AI_Behaviour.Behavious.AI;
             AIM.enabled = true;
             AIC.enabled = true;
         }

@@ -7,7 +7,7 @@ public class Item_Stack : Item
     [HideInInspector] public MeshRenderer meshR;
     public Item_Stack.StackType stackType;
 
-
+    
     public int numberStacked = 0;
     protected RessourcesManager rMan;
     protected MeshFilter meshF;
@@ -63,6 +63,11 @@ public class Item_Stack : Item
     public override void GrabRelease(bool etablied)
     {
         base.GrabRelease(etablied);
+    }
+
+    public override void GrabStarted(Transform holdPoint, Player player)
+    {
+        base.GrabStarted(holdPoint, player);
     }
 
     public void ChangeMesh()

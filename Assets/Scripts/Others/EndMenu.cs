@@ -60,6 +60,7 @@ public class EndMenu : MonoBehaviour
 
     public void DisableEnd()
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
         EventSystem.current.SetSelectedGameObject(null);
 
         TileSystem.Instance.playersMan.enabled = true;
@@ -77,6 +78,8 @@ public class EndMenu : MonoBehaviour
 
     public void Options()
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
+
         EventSystem.current.SetSelectedGameObject(null);
 
         if (pauseMenu.optionOn) return;
@@ -85,6 +88,8 @@ public class EndMenu : MonoBehaviour
 
     public void Restart()
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
+
         DisableEnd();
         TileSystem.Instance.gameTimer.sceneLoadName = SceneManager.GetActiveScene().name;
         TileSystem.Instance.gameTimer.EndLevel(true, false);
@@ -92,6 +97,8 @@ public class EndMenu : MonoBehaviour
 
     public void HUB()
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
+
         DisableEnd();
         TileSystem.Instance.gameTimer.sceneLoadName = "Hub";
         TileSystem.Instance.gameTimer.EndLevel(true, true);

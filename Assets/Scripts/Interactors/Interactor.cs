@@ -2,7 +2,6 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections;
-using static UnityEditor.Progress;
 
 [System.Serializable]
 public struct visualComp
@@ -33,6 +32,7 @@ public class Interactor : MonoBehaviour
     protected MeshRenderer meshR;
     protected MeshFilter meshF;
     protected MeshCollider meshC;
+    public Transform target;
     #endregion
 
     #region States
@@ -43,7 +43,8 @@ public class Interactor : MonoBehaviour
     #region Ressource Stacks
     public Item_Stack stackPrefab;
     Transform stackPosT;
-    private Item_Stack stackItem;
+    [HideInInspector] public bool isTuto;
+    [HideInInspector] public Item_Stack stackItem;
     #endregion
 
     #region Fade
@@ -57,21 +58,22 @@ public class Interactor : MonoBehaviour
     [HideInInspector] public ParticleSystem pSysRegrowth;
     #endregion
     #endregion
-
+    public float scalerDiff;
     #region SystemCallBacks
     private void Start()
     {
-/*        regrowthTimer /= comp.Length;
-        pSysRegrowth = GetComponentInChildren<ParticleSystem>();
-        regrowthWaiter = new WaitForSeconds(regrowthTimer);
-        stateIndex = comp.Length - 1;
-        meshR.sharedMaterial = comp[stateIndex].material;
-        meshF.mesh = comp[stateIndex].mesh; 
-        meshC.sharedMesh = comp[stateIndex].mesh; 
-        _player = new List<Player>();
-        Transform p = transform.parent.parent.parent;
-        stackPosT = p.Find("StackPos");
-        CreateStack();*/
+        /*        regrowthTimer /= comp.Length;
+                pSysRegrowth = GetComponentInChildren<ParticleSystem>();
+                regrowthWaiter = new WaitForSeconds(regrowthTimer);
+                stateIndex = comp.Length - 1;
+                meshR.sharedMaterial = comp[stateIndex].material;
+                meshF.mesh = comp[stateIndex].mesh; 
+                meshC.sharedMesh = comp[stateIndex].mesh; 
+                _player = new List<Player>();
+                Transform p = transform.parent.parent.parent;
+                stackPosT = p.Find("StackPos");
+                CreateStack();*/
+        transform.localScale *= UnityEngine.Random.Range(1 - scalerDiff, 1 +scalerDiff);
         meshF = GetComponent<MeshFilter>();
         meshR = GetComponent<MeshRenderer>();
         meshC = GetComponent<MeshCollider>();
@@ -188,7 +190,15 @@ public class Interactor : MonoBehaviour
     {
         CreateStack();
         stackItem.numberStacked += numberOfRessourceGenerated;
-
+        if (TileSystem.Instance.isHub && isTuto)
+        {
+            TutorialManager tuto = TileSystem.Instance.tutorial;
+            isTuto = false;
+            if (tuto.enumer != null) StopCoroutine(tuto.enumer);
+            if (tuto.tileSpawned) tuto.enumer = tuto.GetChantier();
+            else tuto.enumer = tuto.GetEtabli();
+            StartCoroutine(tuto.enumer);
+        }
         for (int i = _player.Count - 1; i <= 0 ; i--)
         {
             if (i < 0) break;

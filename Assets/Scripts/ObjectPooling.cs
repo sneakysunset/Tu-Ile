@@ -95,13 +95,14 @@ public class ObjectPooling : MonoBehaviour
         
         return go;
     }
+
     public void RemovePoolItem(int index, GameObject obj, string type = null)
     {
         if(type != null)
         {
             for (int i = 0; i < pooledObjects.Count; i++)
             {
-                if (type == pooledObjects[i].itemType) index = i;
+                if (type == pooledObjects[i].itemType.Split(':')[0]) index = i;
             }
         }
         pooledObjects[index].objects.Add(obj);

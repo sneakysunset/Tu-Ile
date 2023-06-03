@@ -97,7 +97,7 @@ public class ItemSpawner : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(TileSystem.Instance.ready && spawnedItem == null && tile.walkable && continueLooping)
+        if((TileSystem.Instance.ready || (itemToSpawn == SpawnableItems.Chantier || itemToSpawn == SpawnableItems.Etabli)) && spawnedItem == null && tile.walkable && continueLooping)
         {
             spawnTimer -= Time.deltaTime;
             if(spawnTimer < 0)

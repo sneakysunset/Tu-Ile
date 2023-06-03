@@ -8,6 +8,7 @@ public class Item_Crate_Mimic : Item_Crate
     AI_Behaviour AIB;
     AI_Targetting AIT;
     AI_Movement AIM;
+    Animator anim;
     public override void Awake()
     {
         base.Awake();
@@ -15,6 +16,13 @@ public class Item_Crate_Mimic : Item_Crate
         AIB = GetComponent<AI_Behaviour>();
         AIT = GetComponent<AI_Targetting>();
         AIM = GetComponent<AI_Movement>();
+        anim = GetComponentInChildren<Animator>();
+        AIM.onJump += OnJump;
+    }
+
+    private void OnDisable()
+    {
+        AIM.onJump -= OnJump;
     }
 
     public override void Update()
@@ -30,7 +38,15 @@ public class Item_Crate_Mimic : Item_Crate
             AIT.enabled = false;
             StartCoroutine(OnCenterReached(tileUnder.minableItems));
         }
-
         if (isConsumed) AIM._characterController.enabled = false;
+
+        if (AIM.isMoving && anim.GetCurrentAnimatorStateInfo(0).IsName("Idle")) anim.Play("Move");
+        else if (!AIM.isMoving && anim.GetCurrentAnimatorStateInfo(0).IsName("Move")) anim.Play("Idle");
+    }
+
+    private void OnJump()
+    {
+        Debug.Log(1);
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Jump")) anim.Play("Jump");
     }
 }

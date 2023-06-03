@@ -30,7 +30,9 @@ public class OptionMenu : MonoBehaviour
 
     public void OptionEnable()
     {
-        if(!isOn)
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
+
+        if (!isOn)
         {
             isOn = true;
         }
@@ -49,6 +51,8 @@ public class OptionMenu : MonoBehaviour
 
     public void ExitOptions()
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
+
         isOn = false;
         mPauseMenu.optionOn = false;
         EventSystem.current.SetSelectedGameObject(null);
@@ -61,7 +65,9 @@ public class OptionMenu : MonoBehaviour
 
     public void AutoJump(bool jump)
     {
-        foreach(PlayerMovement p in FindObjectsOfType<PlayerMovement>())
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
+
+        foreach (PlayerMovement p in FindObjectsOfType<PlayerMovement>())
         {
             p.autoJump = jump;
         }

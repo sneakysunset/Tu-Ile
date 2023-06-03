@@ -14,8 +14,9 @@ public class AI_Behaviour : MonoBehaviour
     [Range(.1f, 20)] public float refreshRateMin = 1, refreshRateMax = 2;
     [Header("numTilesAround only useful for RandomTileAround AITarget")]
     public int numTilesAround;
+    public int numTilesAroundToMakePath = 5;
     public enum Behavious { AI, Target, Static, Disable}
-    public Behavious currentBehavious;
+    public Behavious currentBehaviour;
     [HideInInspector] public Tile targetTile;
     private void Start()
     {
@@ -26,7 +27,7 @@ public class AI_Behaviour : MonoBehaviour
 
     IEnumerator RefreshAIPath()
     {
-        yield return new WaitUntil(()=>  currentBehavious == Behavious.AI);
+        yield return new WaitUntil(()=>  currentBehaviour == Behavious.AI);
         yield return new WaitUntil(()=> tilePath.Count == 0);
         float refreshRate = Random.Range(refreshRateMin, refreshRateMax);
         yield return new WaitForSeconds(refreshRate);
@@ -70,9 +71,7 @@ public class AI_Behaviour : MonoBehaviour
 
     public void InitializePathFinding(Tile targetTile)
     {
-       
-
-        tilePath = StepAssignment.Initialisation(targetTile, tileS, tileUnder);
+        tilePath = StepAssignment.Initialisation(targetTile, tileUnder, numTilesAroundToMakePath);
         Vector3 pos = transform.position;
         for (int i = 0; i < tilePath.Count; i++)
         {
@@ -84,13 +83,13 @@ public class AI_Behaviour : MonoBehaviour
 
     public void ClearPath()
     {
-        currentBehavious = Behavious.Static;
+        currentBehaviour = Behavious.Static;
         tilePath.Clear();
     }
 
     public void Disable()
     {
-        currentBehavious = Behavious.Disable;
+        currentBehaviour = Behavious.Disable;
         tilePath.Clear();
     }
 

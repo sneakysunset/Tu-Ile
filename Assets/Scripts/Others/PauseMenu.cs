@@ -44,6 +44,7 @@ public class PauseMenu : MonoBehaviour
 
     public void DisablePause()
     {
+
         playerInputManager.enabled = true;
         Time.timeScale = 1;
         tr.DOAnchorPosX(465, 1, true).SetEase(easeOut).SetUpdate(false);
@@ -60,18 +61,23 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
+
         if (optionOn) return;
         if (player) player.SetPause();
     }
 
     public void Options()
     {
-        if(optionOn) return;
+
+        if (optionOn) return;
         optionOn = true;
     }
 
     public void Restart()
     {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
+
         if (optionOn) return;
 
         TileSystem.Instance.gameTimer.EndLevel(false, false);
