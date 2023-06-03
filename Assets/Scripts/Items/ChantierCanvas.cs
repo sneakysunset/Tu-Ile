@@ -7,27 +7,42 @@ using UnityEngine.UI;
 public class ChantierCanvas : MonoBehaviour
 {
     CameraCtr cam;
-    Item_Etabli etabli;
-    TextMeshProUGUI[] texts;
+    [HideInInspector] public Item_Etabli etabli;
     Transform mainCamera;
-    Image[] images;
+    [SerializeField] private GameObject[] layoutItems;
+    [SerializeField] private TextMeshProUGUI[] texts;
+    [SerializeField] private Image[] images;
+    [SerializeField] private RectTransform fond;
+
+    [SerializeField] private float baseFondHeight;
+    [SerializeField] private float incrementalFondHeight;
     private RessourcesManager rMan;
 
+    private void Awake()
+    {
 
+    }
 
+    private void OnEnable()
+    {
+        OnActivated();    
+    }
+
+    public void GetRessourceManagerInEditor() => rMan = FindObjectOfType<RessourcesManager>();
 
     public void OnActivated()
     {
-        if (!rMan) rMan = RessourcesManager.Instance;
-        if (!cam) cam = TileSystem.Instance.cam;
-        if (texts == null || texts.Length == 0)texts = GetComponentsInChildren<TextMeshProUGUI>();
-        if(images ==null || images.Length == 0)images = GetComponentsInChildren<Image>();
-
-        images[0].rectTransform.localScale = new Vector3(images[0].rectTransform.localScale.x, 0, images[0].rectTransform.localScale.z);
-        for (int i = 0; i < images.Length - 1; i++)
+        if (cam == null)
         {
-            images[i + 1].gameObject.SetActive(false);
-            texts[i].text = string.Empty;
+            rMan = RessourcesManager.Instance;
+            cam = TileSystem.Instance.cam;
+        }
+
+        fond.sizeDelta = new Vector2(fond.sizeDelta.x, baseFondHeight);
+
+        for (int i = 0; i < layoutItems.Length; i++)
+        {
+            layoutItems[i].gameObject.SetActive(false);
         }
 
         int f = 0;
@@ -37,9 +52,10 @@ public class ChantierCanvas : MonoBehaviour
             {
                 if (rMC.stackType == etabli.recette.requiredItemStacks[i].stackType)
                 {
-                    images[i + 1].sprite = rMC.sprite;
-                    images[i + 1].gameObject.SetActive(true);
-                    images[0].rectTransform.localScale += .35f * Vector3.up;
+                    layoutItems[f].gameObject.SetActive(true);
+                    images[f].sprite = rMC.sprite;
+                    texts[f].text = etabli.recette.requiredItemStacks[i].cost.ToString();
+                    fond.sizeDelta += incrementalFondHeight * Vector2.up;
                     f++;
                 }
             }
@@ -51,9 +67,10 @@ public class ChantierCanvas : MonoBehaviour
             {
                 if (rMC.itemType == etabli.recette.requiredItemUnstackable[i].itemType)
                 {
-                    images[f + 1].gameObject.SetActive(true);
-                    images[f + 1].sprite = rMC.sprite;
-                    images[0].rectTransform.localScale += .35f * Vector3.up;
+                    layoutItems[f].gameObject.SetActive(true);
+                    images[f].sprite = rMC.sprite;
+                    texts[f].text = "V";
+                    fond.sizeDelta += incrementalFondHeight * Vector2.up;
                     f++;
                 }
             }
@@ -65,7 +82,7 @@ public class ChantierCanvas : MonoBehaviour
     public void UpdateText(Item_Etabli et)
     {
         int f = 0;
-        if (etabli == null || rMan == null || mainCamera == null)
+        if(cam == null)
         {
             etabli = et;
             OnActivated();
@@ -76,16 +93,16 @@ public class ChantierCanvas : MonoBehaviour
             {
                 if (rMC.stackType == etabli.recette.requiredItemStacks[i].stackType)
                 {
-                    texts[i].text = "x " + etabli.currentStackRessources[i] + " / " + etabli.recette.requiredItemStacks[i].cost.ToString();
+                    texts[f].text = "x " + etabli.currentStackRessources[i] + " / " + etabli.recette.requiredItemStacks[i].cost.ToString();
+                    f++;
                     if (etabli.currentStackRessources[i] >= etabli.recette.requiredItemStacks[i].cost)
                     {
-                        texts[i].color = Color.green;
+                        texts[f].color = Color.green;
                     }
                     else
                     {
-                        texts[i].color = Color.white;
+                        texts[f].color = Color.black;
                     }
-                    f++;
                     break;
                 }
             }
@@ -97,6 +114,7 @@ public class ChantierCanvas : MonoBehaviour
             {
                 if (rMC.itemType == etabli.recette.requiredItemUnstackable[i].itemType)
                 {
+                    f++;
                     if (etabli.itemsFilled[i])
                     {
                         texts[f].text = " V";
@@ -105,9 +123,8 @@ public class ChantierCanvas : MonoBehaviour
                     else
                     {
                         texts[f].text = "X";
-                        texts[f].color = Color.white;
+                        texts[f].color = Color.black;
                     }
-                    f++;
                     break;
                 }
             }
@@ -119,4 +136,6 @@ public class ChantierCanvas : MonoBehaviour
         if(mainCamera == null && Camera.main) mainCamera = Camera.main.transform;
         if(mainCamera) transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
+
+
 }

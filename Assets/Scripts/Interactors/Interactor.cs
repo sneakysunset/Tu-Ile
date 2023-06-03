@@ -194,10 +194,11 @@ public class Interactor : MonoBehaviour
         {
             TutorialManager tuto = TileSystem.Instance.tutorial;
             isTuto = false;
-            if (tuto.enumer != null) StopCoroutine(tuto.enumer);
+            if (tuto.enumer != null) tuto.StopCoroutine(tuto.enumer);
+            tuto.enumer = null;
             if (tuto.tileSpawned) tuto.enumer = tuto.GetChantier();
             else tuto.enumer = tuto.GetEtabli();
-            StartCoroutine(tuto.enumer);
+            tuto.StartCoroutine(tuto.enumer);
         }
         for (int i = _player.Count - 1; i <= 0 ; i--)
         {

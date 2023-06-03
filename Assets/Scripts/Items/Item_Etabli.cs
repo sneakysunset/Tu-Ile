@@ -36,7 +36,7 @@ public class Item_Etabli : Item
     bool isActive;
     Tile tileUnder;
     EtabliCanvas itemNum;
-    ChantierCanvas itemNumCh;
+    //ChantierCanvas itemNumCh;
     [HideNormalInspector] public bool isChantier;
     [HideInInspector] public bool constructed = false;
     [HideInInspector] public bool isDestroyed = false;
@@ -49,6 +49,7 @@ public class Item_Etabli : Item
     [ShowIf("isChantier")] public Material[] houseMaterials;
     [ShowIf("isChantier")] public Mesh houseMesh;
     public Item_Crate crate;
+    [ShowIf("isChantier"), SerializeField] private ChantierCanvas itemNumCh; 
     #endregion
 
     #region SystemCallbacks
@@ -67,6 +68,8 @@ public class Item_Etabli : Item
 
     private void OnEnable()
     {
+        if (isChantier && TileSystem.Instance.isHub) interactable = false;
+        else interactable = true;
         itemsFilled = new bool[recette.requiredItemUnstackable.Length];
         currentStackRessources = new int[recette.requiredItemStacks.Length];
         if(Utils.IsSameOrSubclass(recette.craftedItemPrefab.GetType(), typeof(Item_Chantier))) isChantier = true;
@@ -76,7 +79,7 @@ public class Item_Etabli : Item
         createdItem = transform.Find("TileCreator/CreatedPos");
         if (isChantier)
         {
-            itemNumCh = GetComponentInChildren<ChantierCanvas>();
+            //itemNumCh = GetComponentInChildren<ChantierCanvas>();
             itemNumCh.UpdateText(this);
         }
         else
@@ -120,7 +123,7 @@ public class Item_Etabli : Item
         yield return new WaitForEndOfFrame();
         if (isChantier)
         {
-            itemNumCh = GetComponentInChildren<ChantierCanvas>();
+            //itemNumCh = GetComponentInChildren<ChantierCanvas>();
             itemNumCh.UpdateText(this);
         }
         else
@@ -338,9 +341,9 @@ public class Item_Etabli : Item
         {
             isTuto = false;
             TutorialManager tuto = TileSystem.Instance.tutorial;
-            if (tuto.enumer != null) StopCoroutine(tuto.enumer);
+            if (tuto.enumer != null) tuto.StopCoroutine(tuto.enumer);
             tuto.enumer = tuto.GetSunkTile();
-            StartCoroutine(tuto.enumer);
+            tuto.StartCoroutine(tuto.enumer);
         }
         
     }
@@ -365,8 +368,16 @@ public class Item_Etabli : Item
         GetComponentInChildren<MeshRenderer>().materials = houseMaterials;
         GetComponentInChildren<MeshFilter>().mesh = houseMesh;
         Highlight.SetActive(false);
-        this.enabled = false; 
-        
+        interactable = false;
+        this.enabled = false;
+        if (TileSystem.Instance.isHub && isTuto)
+        {
+            isTuto = false;
+            TutorialManager tuto = TileSystem.Instance.tutorial;
+            if (tuto.enumer != null) tuto.StopCoroutine(tuto.enumer);
+            tuto.enumer = tuto.GetCenterTile();
+            tuto.StartCoroutine(tuto.enumer);
+        }
     }
 
     bool CheckStacks()
@@ -398,7 +409,15 @@ public class Item_Etabli : Item
         if (!Application.isPlaying && !isChantier)
         {
             itemNum = GetComponentInChildren<EtabliCanvas>();
+            itemNum.etabli = this;
             itemNum.OnActivated();
+        }
+        else if(!Application.isPlaying && isChantier)
+        {
+            //itemNumCh = gameObject.GetComponentInChildren<ChantierCanvas>();
+            itemNumCh.etabli = this;
+            itemNumCh.GetRessourceManagerInEditor();
+            itemNumCh.OnActivated();
         }
     }
 
