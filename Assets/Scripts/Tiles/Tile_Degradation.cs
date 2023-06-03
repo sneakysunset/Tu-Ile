@@ -12,8 +12,7 @@ public class Tile_Degradation : MonoBehaviour
     bool to;
     [HideInInspector] public IEnumerator shakeCor;
     [HideInInspector] public IEnumerator degradationCor;
-    public float sFre;
-
+    [HideInInspector] public float tileDegraderMult = 1;
     private void Awake()
     {
         tile = GetComponent<Tile>();
@@ -36,13 +35,7 @@ public class Tile_Degradation : MonoBehaviour
 
 
         if (FMODUtils.IsPlaying(tfFI)) tfFI.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(spawnPos));
-        //if (tile.walkable && tile.degradable && tile.walkedOnto && tile.tileType != TileType.Sand) Degrading();
 
-/*        if(tile.timer < tile.shakeActivationTime && shakeCor == null)
-        {
-            shakeCor = TileShake();
-            StartCoroutine(shakeCor);
-        }*/
     }
 
 
@@ -56,11 +49,11 @@ public class Tile_Degradation : MonoBehaviour
 
             if (tile.isGrowing)
             {
-                tile.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), (1 / TileSystem.Instance.tileMov.tileGrowthLerpSpeed) * Time.deltaTime * distance));
+                tile.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), (1 / TileSystem.Instance.tileMov.tileGrowthLerpSpeed) * Time.deltaTime * distance * tileDegraderMult));
             }
             else
             {
-                tile.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), TileSystem.Instance.tileMov.degradationLerpSpeed * Time.deltaTime * tile.degSpeed * TileSystem.Instance.lerpingSpeed * distance));
+                tile.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), TileSystem.Instance.tileMov.degradationLerpSpeed * Time.deltaTime * tile.degSpeed * TileSystem.Instance.lerpingSpeed * distance * tileDegraderMult));
             }
         }
     }

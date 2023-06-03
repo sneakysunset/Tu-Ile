@@ -38,6 +38,10 @@ public class TutorialManager : MonoBehaviour
         interactor.isTuto = true;
         if (!firstTime)
         {
+            TileSystem.Instance.centerTile.transform.GetChild(9).gameObject.SetActive(false);
+            TileSystem.Instance.centerTile = centerTile.GetComponentInParent<Tile>();
+            TileSystem.Instance.centerTile.myMeshR.materials = TileSystem.Instance.centerTile.getCorrespondingMat(TileSystem.Instance.centerTile.tileType);
+            TileSystem.Instance.centerTile.myMeshF.mesh = TileSystem.Instance.centerTile.getCorrespondingMesh(TileSystem.Instance.centerTile.tileType);
             tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
             targetter.DOMove(interactor.target.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
             yield return new WaitForSeconds(timeToGoOut);
@@ -86,9 +90,7 @@ public class TutorialManager : MonoBehaviour
     {
         chantier.isTuto = true;
         chantier.interactable = true;
-        TileSystem.Instance.centerTile = centerTile.GetComponentInParent<Tile>();
-        TileSystem.Instance.centerTile.myMeshR.materials = TileSystem.Instance.centerTile.getCorrespondingMat(TileSystem.Instance.centerTile.tileType);
-        TileSystem.Instance.centerTile.myMeshF.mesh = TileSystem.Instance.centerTile.getCorrespondingMesh(TileSystem.Instance.centerTile.tileType);
+
         targetter.DOMove(chantier.targetter.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
@@ -101,6 +103,7 @@ public class TutorialManager : MonoBehaviour
 
     public IEnumerator GetCenterTile()
     {
+
         targetter.DOMove(centerTile.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
 
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
