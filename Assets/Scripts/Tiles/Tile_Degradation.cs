@@ -12,9 +12,10 @@ public class Tile_Degradation : MonoBehaviour
     bool to;
     [HideInInspector] public IEnumerator shakeCor;
     [HideInInspector] public IEnumerator degradationCor;
-    [HideInInspector] public float tileDegraderMult = 1;
+    [HideNormalInspector] public float tileDegraderMult = 1;
     private void Awake()
     {
+        tileDegraderMult = 1;
         tile = GetComponent<Tile>();
         spawnPos = tile.minableItems.GetChild(0);
         if (tile.visualRoot == null) tile.visualRoot = transform.Find("TileVisuals"); 
@@ -133,6 +134,8 @@ public class Tile_Degradation : MonoBehaviour
 
     public void EndTileMovement()
     {
+        Debug.Log(1);
+        tileDegraderMult = 1;
         FMODUtils.StopFMODEvent(ref tfFI, true);
         if(shakeCor != null ) StopCoroutine(shakeCor);
         shakeCor = null;

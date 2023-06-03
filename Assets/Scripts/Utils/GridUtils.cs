@@ -75,7 +75,7 @@ public static class GridUtils
                             {
                                 ts[i].degradable = true;
                                 ts[i].currentPos.y = -16;
-                                tile.tileD.tileDegraderMult = UnityEngine.Random.Range(0.8f, 1.8f);
+                                tile.tileD.tileDegraderMult = UnityEngine.Random.Range(0.8f, 3f);
                             }
                             else if (ts[i] == tile)
                             {
@@ -98,7 +98,7 @@ public static class GridUtils
         foreach (Tile t in TileSystem.Instance.tiles)
         {
             if (t.isPathChecked) t.isPathChecked = false;
-            tile.tileD.tileDegraderMult = 1;
+            
         }
         
         tis.lerpingSpeed *= 6f;
