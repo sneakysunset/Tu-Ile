@@ -298,7 +298,7 @@ public static class GridUtils
         if (File.Exists(altPath)) File.Delete(altPath);
         File.WriteAllText(path, content);
         File.WriteAllText(altPath, content);
-#if editor
+#if UNITY_EDITOR
         if (!TileSystem.Instance.isHub)
         {
             string gameManPath = Application.dataPath + "/Prefab/GameManagers/" + SceneManager.GetActiveScene().name + "_GM.prefab";
@@ -381,7 +381,7 @@ public static class GridUtils
             result += ";";
             if (itemSpawner.itemToSpawn == SpawnableItems.Chantier) result += itemSpawner.otherRecette;
             else if (itemSpawner.itemToSpawn == SpawnableItems.Etabli) result += itemSpawner.recette.ToString();
-            else if (itemSpawner.itemToSpawn == SpawnableItems.Crate || itemSpawner.itemToSpawn == SpawnableItems.Mimic) result += itemSpawner.crateReward.ToString();
+            else if (itemSpawner.itemToSpawn == SpawnableItems.Crate || itemSpawner.itemToSpawn == SpawnableItems.Mimic) result += itemSpawner.crateReward.ToString();  
         }
         else
         {

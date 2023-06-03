@@ -2463,7 +2463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f33708c86899c32449b6abed1b61e997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sFre: 0.03
+  tileDegraderMult: 1
 --- !u!54 &6909962092960525056
 Rigidbody:
   m_ObjectHideFlags: 0
