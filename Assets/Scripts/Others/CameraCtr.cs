@@ -16,13 +16,10 @@ public class CameraCtr : MonoBehaviour
 {
     #region Variables
     #region Components and Lists
-    private Camera cam;
     [Foldout("Camera References")] public CinemachineVirtualCamera dezoomCamera;
     [Foldout("Camera References")] public CinemachineVirtualCamera cam1, cam2;
     [HideInInspector] public CinemachineBrain[] brains;
     [HideInInspector] public List<Transform> players;
-    public delegate void OnStartUpDelegate();
-    public static event OnStartUpDelegate startUp;
     [Foldout("Camera References")] public RectTransform SplitBar;
     float splitBarPosX;
     [Foldout("Camera References")] public Camera soloCam, duoCam2;
@@ -60,14 +57,12 @@ public class CameraCtr : MonoBehaviour
     #region System CallBacks 
     private void Start()
     {
-        if (startUp != null) startUp();
         splitBarPosX = SplitBar.anchoredPosition.x;
-        cam = Camera.main;
         GridUtils.onLevelMapLoad += OnLoad;
         GridUtils.onEndLevel += OnEndLevel;
         //sCE = GetComponentInChildren<SplitScreenEffect>();
-        dezoomCamera.LookAt = TileSystem.Instance.centerTile.minableItems;
-        dezoomCamera.Follow = TileSystem.Instance.centerTile.minableItems;
+        dezoomCamera.LookAt = TileSystem.Instance.centerTile.tc.minableItems;
+        dezoomCamera.Follow = TileSystem.Instance.centerTile.tc.minableItems;
         StartCoroutine(changeCam());
         playerInputManager = FindObjectOfType<PlayerInputManager>();
         brains = GetComponentsInChildren<CinemachineBrain>();
@@ -77,8 +72,8 @@ public class CameraCtr : MonoBehaviour
     public void OnLoad()
     {
         StartCoroutine(OnLevelLoad());
-        dezoomCamera.LookAt = TileSystem.Instance.centerTile.minableItems;
-        dezoomCamera.Follow = TileSystem.Instance.centerTile.minableItems;
+        dezoomCamera.LookAt = TileSystem.Instance.centerTile.tc.minableItems;
+        dezoomCamera.Follow = TileSystem.Instance.centerTile.tc.minableItems;
 /*        for (int i = 0; i < sCE.Screens.Count; i++)
         {
             if (sCE.Screens[i].Target == null)
@@ -89,7 +84,7 @@ public class CameraCtr : MonoBehaviour
         }*/
     }
 
-    public void OnEndLevel(Tile tile) => DezoomCam(tile.minableItems);
+    public void OnEndLevel(Tile tile) => DezoomCam(tile.tc.minableItems);
 
 /*    private void Update()
     {

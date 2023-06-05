@@ -6488,6 +6488,7 @@ MonoBehaviour:
   playerIndex: 0
   closeUpCam: {fileID: 0}
   myCamera: {fileID: 0}
+  groundType: 
 --- !u!114 &5703151869213025868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6513,14 +6514,14 @@ MonoBehaviour:
   autoJump: 1
   pushStrength: 10
   dashCooldown: 0.5
-  smoothTime: 0.05
-  gravityMultiplier: 1
-  _velocity: 0
-  canMove: 1
   otherPM: {fileID: 0}
   stunDuration: 0.3
   isStunned: 0
   constraints: 0
+  smoothTime: 0.05
+  gravityMultiplier: 1
+  _velocity: 0
+  canMove: 1
 --- !u!114 &6593446547532280454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6540,6 +6541,7 @@ MonoBehaviour:
     m_Bits: 128
   hitDistance: 2
   distanceToBeOnTop: 3
+  scoreOnTileCreation: 10
 --- !u!114 &8619637260931592777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6567,6 +6569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ressourcesManager: {fileID: 0}
+  scoreOnTileElevate: 5
 --- !u!114 &5610916058789591604
 MonoBehaviour:
   m_ObjectHideFlags: 0

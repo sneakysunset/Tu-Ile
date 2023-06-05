@@ -47,7 +47,6 @@ public static class GridUtils
     public static IEnumerator SinkWorld(Tile _centerTile, bool isEnd, bool toHub)
     {
         TileSystem tis = TileSystem.Instance;
-       // tis.ready = false;
         Tile tile = _centerTile;
         if (onEndLevel != null) onEndLevel(tile);
 
@@ -75,7 +74,7 @@ public static class GridUtils
                             {
                                 ts[i].degradable = true;
                                 ts[i].currentPos.y = -16;
-                                tile.tileD.tileDegraderMult = UnityEngine.Random.Range(0.8f, 3f);
+                                ts[i].td.tileDegraderMult = UnityEngine.Random.Range(0.8f, 3f);
                             }
                             else if (ts[i] == tile)
                             {
@@ -83,7 +82,7 @@ public static class GridUtils
                             }
                             if (!ts[i].walkable && ts[i].tourbillon)
                             {
-                                ts[i].tourbillonT.DOMoveY(ts[i].tourbillonT.position.y - 10, 2);
+                                ts[i].tc.tourbillonT.DOMoveY(ts[i].tc.tourbillonT.position.y - 10, 2);
                                 ts[i].tourbillon = false;
                             }
                         }

@@ -36,7 +36,7 @@ public class Item_Crate_Mimic : Item_Crate
             AIB.enabled = false;
             AIM.enabled = false;
             AIT.enabled = false;
-            StartCoroutine(OnCenterReached(tileUnder.minableItems));
+            StartCoroutine(OnCenterReached(tileUnder.tc.minableItems));
         }
         if (isConsumed) AIM._characterController.enabled = false;
 

@@ -8,6 +8,7 @@ public class Player_StopDegradation : MonoBehaviour
 {
     private Player player;
     [HideInInspector] public RessourcesManager ressourcesManager;
+    [SerializeField] private int scoreOnTileElevate;
     private void Start()
     {
         player = GetComponent<Player>();
@@ -25,7 +26,7 @@ public class Player_StopDegradation : MonoBehaviour
 
     private void LoadScene()
     {
-        player.tileUnder.levelUI.gameObject.SetActive(false);
+        player.tileUnder.tc.levelUI.gameObject.SetActive(false);
         TileSystem.Instance.fileName = player.tileUnder.levelName;
         TileSystem.Instance.previousCenterTile = player.tileUnder;
         StartCoroutine(GridUtils.SinkWorld(player.tileUnder, false, false)) ;
@@ -53,9 +54,10 @@ public class Player_StopDegradation : MonoBehaviour
         if (cd3 && cd4 && cd5 && cd6 && cd7 && cd8)
         {
             stackItem.numberStacked -= ressourcesManager.growthCost;
-            tile.currentPos.y += tile.heightByTile;
+            tile.currentPos.y += tile.td.heightByTile;
             tile.isGrowing = true;
             tile.StopDegradation();
+            if (!TileSystem.Instance.isHub) TileSystem.Instance.scoreManager.ChangeScore(tile.GetScoreValue());
             StartCoroutine(player.Casting(Player.PlayerState.SpellUp));
         }
     }

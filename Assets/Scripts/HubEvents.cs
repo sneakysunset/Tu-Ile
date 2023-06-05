@@ -56,7 +56,7 @@ public class HubEvents : MonoBehaviour
         string path = Application.streamingAssetsPath + "/LevelMaps/TM_Hub" + ".txt";
         for (int i = 0; i < tiles.tiles.Count; i++)
         {
-            tiles.tiles[i].tile.Spawn(tiles.tiles[i].targetHeight, tiles.tiles[i].tileTypes.ToString(), 1);
+            tiles.tiles[i].tile.Spawn(tiles.tiles[i].targetHeight, tiles.tiles[i].tileTypes.ToString());
             GridUtils.UpdateTileSave(GridUtils.GetStringByTile(tiles.tiles[i].tile), tiles.tiles[i].tile, path);
             yield return new WaitForSeconds(timeOffsetBetweenTiles);
         }

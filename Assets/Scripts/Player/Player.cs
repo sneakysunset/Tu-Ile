@@ -112,7 +112,7 @@ public class Player : MonoBehaviour
         pMin = GetComponent<Player_Mining>();
         _characterController = pM.GetComponent<CharacterController>();
         _characterController.enabled = false;
-        transform.position = TileSystem.Instance.centerTile.minableItems.GetChild(playerIndex).position + Vector3.up * 3.5f;
+        transform.position = TileSystem.Instance.centerTile.tc.minableItems.GetChild(playerIndex).position + Vector3.up * 3.5f;
         _characterController.enabled = true;
         anim = GetComponentInChildren<Animator>();
         GridUtils.onLevelMapLoad += OnLoad;
@@ -256,7 +256,7 @@ public class Player : MonoBehaviour
         Physics.IgnoreCollision(col, hit.collider, false);
         pM._velocity = 0;
         _characterController.enabled = false;
-        transform.position = respawnTile.minableItems.GetChild(playerIndex).position + 3.5f * Vector3.up;
+        transform.position = respawnTile.tc.minableItems.GetChild(playerIndex).position + 3.5f * Vector3.up;
         _characterController.enabled = true;
         dummyTarget.parent = transform;
         dummyTarget.localPosition = Vector3.zero;

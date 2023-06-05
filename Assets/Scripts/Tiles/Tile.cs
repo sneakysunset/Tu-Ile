@@ -42,114 +42,92 @@ public enum SpawnPosition
 
 public enum TileType { Neutral = 0, Wood = 1, Rock = 2, Gold = 3, Diamond = 4, Adamantium = 5, Sand = 6, BouncyTile = 7, LevelLoader = 8, construction = 9 };
 
-[SelectionBase]
+[System.Serializable]
+public struct tileTypeList
+{
+    public TileType type;
+    public float tileMult;
+    public int scoreValueOnElevate;
+    public int scoreValueOnCreate;
+}
 
 public class Tile : MonoBehaviour
 {
-    #region V=ariables
-    #region MainVariables
-    [Header("Type de Tile")]
+    #region Variables
+    #region Serialized Variables
+    [Header("Tile Type")]
     [Space(10)]
-    [SerializeField] public bool walkable = true;
-    private bool isMoving;
-    public bool IsMoving { get { return isMoving; } set { if (isMoving != value) IsMovingCallBack(value); } }
+    public bool walkable = true;
     public bool degradable = true;
-    [SerializeField] public TileType tileType = TileType.Neutral;
+    public TileType tileType = TileType.Neutral;
+    public bool tourbillon;
 
     [Space(15)]
     [Header("Spawn sur Tile")]
     [Space(10)]
-    [SerializeField] public TileType tileSpawnType;
+    public TileType tileSpawnType;
     public SpawnPositions spawnPositions;
-    [SerializeField] public bool spawnSpawners;
+    public bool spawnSpawners;
+    public bool EditPos;
+    [Space(15)]
+    [Header("Other")]
+    [Space(10)]
+    public string levelName;
+    public bool isHubCollider;
+    [SerializeField] private float runeTargetAlpha;
+    [SerializeField] private float runeFadeOutDuration;
+    public TileComponentReferencer tc;
+    public Tile_Degradation td;
+    public float gizmoOffset = 20;
+    [SerializeField] private tileTypeList[] tileTypeValues;
+    #endregion
 
-    [HideNormalInspector] public int coordX, coordFX, coordY;
+    #region MainVariables
+    private bool isMoving;
+    public bool IsMoving { get { return isMoving; } set { if (isMoving != value) IsMovingCallBack(value); } }
+
+    [HideNormalInspector] public int coordX, coordY;
     private bool walkedOntoIni = false;
     public bool walkedOnto { get { return walkedOntoIni; } set { if (walkedOnto != value) IsWalkedOntoMethod(value); } }
     [HideNormalInspector] public Vector3 currentPos;
     [HideInInspector] public Vector2Int[] adjTCoords;
-    [HideNormalInspector] public float heightByTile;
-    [HideNormalInspector] bool isFaded;
-    [Space(15)]
-    [Header("Other")]
-    [Space(10)]
-    public bool tourbillon;
-    public float tourbillonSpeed;
-     public string levelName;
     #endregion
 
     #region Degradation
     [HideNormalInspector] public bool isDegrading;
     [HideNormalInspector] public float timer;
     [HideNormalInspector] public float terraFormingSpeed;
-    [HideNormalInspector] public float degradationTimerMin, degradationTimerMax;
-    [HideNormalInspector] public AnimationCurve degradationTimerAnimCurve;
+
     [HideInInspector] public float degradingSpeed;
     [HideInInspector] public float typeDegradingSpeed = 1;
     [HideNormalInspector] public bool isGrowing;
     [HideInInspector] public float degSpeed = 1;
-    [HideNormalInspector] public float timeToGetToMaxDegradationSpeed;
     [HideNormalInspector] public bool sandFlag;
-    public float shakeMagnitude = .1f;
-    public AnimationCurve shakeCurve;
     private float tourbillonOgY;
     #endregion
 
     #region Interactor Spawning
-    public bool isHubCollider;
-    public Collider hubCollider;
+
     [HideInInspector] public List<Transform> spawnPoints;
     [HideNormalInspector] public bool readyToRoll;
     bool spawning;
     #endregion
-
-    #region Components
-    [HideInInspector] public Transform visualRoot;
-    [HideInInspector] public MeshRenderer myMeshR;
-    [HideInInspector] public MeshFilter myMeshF;
-    [HideInInspector] public MeshCollider myMeshC;
-    [HideInInspector] public Rigidbody rb;
-
-    [HideInInspector] public Transform minableItems;
-    [HideInInspector] public Transform tourbillonT;
-    [HideInInspector] private ParticleSystem pSys;
-    [HideInInspector] private MeshRenderer walkRunes;
-    [HideInInspector] ParticleSystem pSysCreation;
-    [HideInInspector] public Tile_Degradation tileD;
-    #endregion
-
-    #region Materials
-    [HideInInspector, SerializeField] public Material disabledMat;
-    [HideNormalInspector] public Material undegradableMatBottom, falaiseMat, plaineMatTop, plaineMatBottom, undegradableMat, sandMatTop, sandMatBottom, bounceMat, woodMat, rockMat, goldMat, diamondMat, adamantiumMat, centerTileMat, centerTileMatBottom;
-    [HideNormalInspector] public Mesh defaultMesh, woodMesh, rockMesh, sandMesh, undegradableMesh, centerTileMesh, colliderMesh;
-    [HideInInspector] public Color walkedOnColor, notWalkedOnColor;
-    [HideInInspector] public Color penguinedColor;
-     public Color falaiseColor;
-    public UnityEvent hubEventOnSpawn;
-    #endregion
-
-    public float gizmoOffset = 20;
     [HideInInspector] public Vector3 destination;
     [HideNormalInspector] public bool faded;
     #region AI
     [HideInInspector] public bool isPathChecked;
     [HideNormalInspector] public int step;
-    private TextMeshProUGUI AI_Text;
-    [HideInInspector] public bool isPenguined;
     bool pSysIsPlaying;
     [HideNormalInspector] public Item_Etabli etabli;
-    [HideNormalInspector] public LevelUI levelUI;
     [HideInInspector] public bool isNear;
     [HideInInspector] public bool IsNear { get { return isNear; } set { if (isNear != value) IsNearMethod(value); } }
     [HideInInspector] public bool isDetail;
     [HideInInspector] public bool IsDetail { get { return  isDetail; } set { if (isDetail != value) IsDetailMethod(value); } }
-    [SerializeField] private float runeTargetAlpha;
     #endregion
     #endregion
 
     #region Call Methods
 
-    public bool EditPos;
 
     private void IsMovingCallBack(bool value)
     {
@@ -157,106 +135,96 @@ public class Tile : MonoBehaviour
         if (value)
         {
 
-            tileD.StartTileMovement();
+            td.StartTileMovement();
         }
         else
         {
             if (spawning && !TileSystem.Instance.isHub)
             {
                 spawning = false;
-                pSys.transform.position = new Vector3(pSys.transform.position.x, 0, pSys.transform.position.z);
-                pSysCreation.Play();
+                tc.undegradableParticleSystem.transform.position = new Vector3(tc.undegradableParticleSystem.transform.position.x, 0, tc.undegradableParticleSystem.transform.position.z);
+                tc.pSysCreation.Play();
             }
-            tileD.EndTileMovement();
+            tc.tileD.EndTileMovement();
         } 
     }
 
     private void IsNearMethod(bool value)
     {
-        if(!value) levelUI.PlayerFar();
-        else levelUI.PlayerNear();
+        if(!value) tc.levelUI.PlayerFar();
+        else tc.levelUI.PlayerNear();
 
         isNear = value;
     }
 
     private void IsDetailMethod(bool value)
     {
-        if(!value) levelUI.NoDetail();
-        else levelUI.Detail();
+        if(!value) tc.levelUI.NoDetail();
+        else tc.levelUI.Detail();
 
         isDetail = value;
     }
 
     private void IsWalkedOntoMethod(bool value)
     {
-        if(value == true && degradable && tileType != TileType.Sand && !TileSystem.Instance.isHub && walkable) tileD.StartDegradation();
-        else if(value == false)
+        if(value == true && degradable && tileType != TileType.Sand && !TileSystem.Instance.isHub && walkable)
         {
-            if(tileD.degradationCor != null)
-            {
-                StopCoroutine(tileD.degradationCor);
-                tileD.degradationCor = null;
-            }
-
-            if(tileD.shakeCor != null)
-            {
-                StopCoroutine(tileD.shakeCor);
-                tileD.shakeCor = null;
-            }
+            td.StartDegradation();
+            ActivateWalkedOntoPsys(false, true);
+        }
+        else if(value == false && !TileSystem.Instance.isHub)
+        {
+            td.EndDegradation();
         }
         walkedOntoIni = value;
     }
 
     private void Awake()
     {
+        GridUtils.onEndLevel += OnEndLevel;
         GridUtils.onLevelMapLoad += OnMapLoad;
-        CameraCtr.startUp += OnStartUp;
-        if (isHubCollider && TileSystem.Instance.isHub) hubCollider.enabled = true;
-        Transform tr = transform.GetChild(8);
-        levelUI = tr.GetComponent<LevelUI>();
-        if(TileSystem.Instance.isHub && tileType == TileType.LevelLoader)
+
+
+        if (isHubCollider && TileSystem.Instance.isHub) tc.hubCollider.enabled = true;
+        readyToRoll = true;
+
+
+        if (TileSystem.Instance.isHub && tileType == TileType.LevelLoader)
         {
-            tr.gameObject.SetActive(true);
-            transform.GetChild(9).gameObject.SetActive(true);
+            tc.levelUI.gameObject.SetActive(true);
+            tc.pSysCenterTile.gameObject.SetActive(true);
         }
         else if (!TileSystem.Instance.isHub && TileSystem.Instance.centerTile == this)
         {
-            transform.GetChild(9).gameObject.SetActive(true);
+            tc.pSysCenterTile.gameObject.SetActive(true);
         }
         
 
 
-        rb = GetComponent<Rigidbody>();
+        
 
         if (!walkable)
         {
             Vector3 v = transform.position;
-            v.y = -heightByTile * 8f;
+            v.y = -td.heightByTile * 8f;
             transform.position = v;
         }
-        tileD = GetComponent<Tile_Degradation>();
-        AI_Text = GetComponentInChildren<TextMeshProUGUI>();   
-        minableItems = transform.Find("SpawnPositions");
-        pSys = transform.GetChild(3).GetComponent<ParticleSystem>();
-        walkRunes = pSys.GetComponentInChildren<MeshRenderer>();
-        pSysCreation = transform.GetChild(7).GetComponent<ParticleSystem>();
-        tourbillonT = transform.Find("Tourbillon");
-        tourbillonOgY = tourbillonT.localPosition.y;
+        
+        tourbillonOgY = tc.tourbillonT.localPosition.y;
         if (tourbillon)
         {
-            tourbillonT.Rotate(0, UnityEngine.Random.Range(0f, 360f), 0);
-            tourbillonT.Translate(0, UnityEngine.Random.Range(0f, 1f), 0);
-            float targetPosY = tourbillonT.position.y;
-            tourbillonT.position -= Vector3.up * 20;
-            tourbillonT.DOMoveY(targetPosY, 5);
+            tc.tourbillonT.Rotate(0, UnityEngine.Random.Range(0f, 360f), 0);
+            tc.tourbillonT.Translate(0, UnityEngine.Random.Range(0f, 1f), 0);
+            float targetPosY = tc.tourbillonT.position.y;
+            tc.tourbillonT.position -= Vector3.up * 20;
+            tc.tourbillonT.DOMoveY(targetPosY, 5);
         }
         if(tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Play();
 
         degSpeed = 1;
-        coordFX = coordX - coordY / 2;
         currentPos = transform.position;
 
-        timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
+        timer = UnityEngine.Random.Range(td.degradationTimerMin, td.degradationTimerMax);
 
         GetAdjCoords();
         SetMatOnStart();
@@ -265,154 +233,146 @@ public class Tile : MonoBehaviour
         {
             int rotation = UnityEngine.Random.Range(0, 6);
             transform.Rotate(0, rotation * 60, 0);
-            minableItems.Rotate(0, -rotation * 60, 0);
-            transform.Find("SpawnPositions2").Rotate(0, -rotation * 60, 0);
+            tc.minableItems.Rotate(0, -rotation * 60, 0);
+            tc.altSpawnPositions.Rotate(0, -rotation * 60, 0);
         }
 
-        if (tileType == TileType.BouncyTile) rb.isKinematic = false;
+        //if (tileType == TileType.BouncyTile) tc.rb.isKinematic = false;
     }
 
     private void OnDisable()
     {
-        CameraCtr.startUp -= OnStartUp;
         GridUtils.onLevelMapLoad -= OnMapLoad;
     }
 
-    private void OnStartUp()
+    private void OnEndLevel(Tile tile)
     {
-        readyToRoll = true;
+        /*        if (td.degradationCor != null && !TileSystem.Instance.isHub)
+                {
+                    StopCoroutine(td.degradationCor);
+                    td.degradationCor = null;
+                }
+                if (td.shakeCor != null && !TileSystem.Instance.isHub)
+                {
+                    StopCoroutine(td.shakeCor);
+                    td.shakeCor = null;
+                }*/
+        td.EndDegradation();
     }
 
     private void OnMapLoad()
     {
-        if(tileType != TileType.LevelLoader && levelUI.gameObject.activeInHierarchy) levelUI.gameObject.SetActive(false);
-        if (isHubCollider)
-        {
-            if (TileSystem.Instance.isHub) hubCollider.enabled = true;
-            else hubCollider.enabled = false;
-        }
+        tc.pSysCenterTile.gameObject.SetActive(false);
+        tc.tourbillonT.gameObject.SetActive(false);
+        ActivateWalkedOntoPsys(false, false);
+        walkedOntoIni = false;
+        OnHubLoad();
+        OnLevelLoad();
         if (walkable)
         {
-            if(TileSystem.Instance.isHub && tileType == TileType.LevelLoader) transform.GetChild(9).gameObject.SetActive(true);
-            else if(this != TileSystem.Instance.centerTile && transform.GetChild(9).gameObject.activeInHierarchy) transform.GetChild(9).gameObject.SetActive(false);
-            if (!myMeshR.enabled) myMeshR.enabled = true;
-            walkedOnto = false;
-            if ((!degradable || tileType == TileType.Sand || tileType == TileType.BouncyTile) && !TileSystem.Instance.isHub)
-            {
-                pSysIsPlaying = false;
-                walkedOnto = true;
-            }
-            else if (!walkedOnto && degradable && !TileSystem.Instance.isHub)
-            {
-                pSys.Play();
-                walkRunes.material.color = new Color(walkRunes.material.color.r, walkRunes.material.color.g, walkRunes.material.color.b, runeTargetAlpha);
-                pSysIsPlaying = true;
-            }
-            int myInt = Convert.ToInt32(spawnPositions);
-            bool[] bools = Utils.GetSpawnPositions(myInt);
-            for (int i = 0; i < bools.Length; i++)
-            {
-                if (bools[i])
-                {
-                    Transform tr = minableItems.GetChild(i);
-                    if(!tr.gameObject.activeInHierarchy)tr.gameObject.SetActive(true);
-                    SpawnItem(tr);
-                }
-            }
-            myMeshR.materials = getCorrespondingMat(tileType);
-            myMeshF.mesh = getCorrespondingMesh(tileType);
+            tc.myMeshR.materials = getCorrespondingMat(tileType);
+            tc.myMeshF.mesh = getCorrespondingMesh(tileType);
+            tc.myMeshR.enabled = true;
+            FilonLoader();
+            if(degradable) typeDegradingSpeed = tileTypeValues[(int)tileType].tileMult;
             gameObject.layer = LayerMask.NameToLayer("Tile");
             transform.tag = "Tile";
-            timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
-            TileSystem.Instance.tileCounter.Count();
-            if (tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Play();
-            if (tileType == TileType.BouncyTile) rb.isKinematic = false;
+            if (tileType == TileType.Sand) tc.sandParticleSystem.Play();
             isGrowing = true;
-            if (TileSystem.Instance.isHub && tileType == TileType.LevelLoader)
+            tc.tourbillonT.gameObject.SetActive(false);
+        }
+        else if (tourbillon) ActivateVortex();
+    }
+
+    private void OnHubLoad()
+    {
+        if (isHubCollider) tc.hubCollider.enabled = true;
+        if(tileType == TileType.LevelLoader) tc.levelUI.gameObject.SetActive(true);
+        if (TileSystem.Instance.centerTile == this || tileType == TileType.LevelLoader) tc.pSysCenterTile.gameObject.SetActive(true);
+    }
+
+    private void OnLevelLoad()
+    {
+        if (isHubCollider) tc.hubCollider.enabled = false;
+        tc.levelUI.gameObject.SetActive(false);
+        if (TileSystem.Instance.centerTile == this) tc.pSysCenterTile.gameObject.SetActive(true);
+        if(walkable && degradable && tileType != TileType.Sand)
+        {
+            ActivateWalkedOntoPsys(true, false);
+            walkedOntoIni = false;
+        }
+    }
+
+    private void FilonLoader() 
+    {
+        int myInt = Convert.ToInt32(spawnPositions);
+        bool[] bools = Utils.GetSpawnPositions(myInt);
+        for (int i = 0; i < bools.Length; i++)
+        {
+            if (bools[i])
             {
-                Transform tr = transform.GetChild(8);
-                tr.gameObject.SetActive(true);
-                levelUI = tr.GetComponent<LevelUI>();
-            }
-            tourbillonT.gameObject.SetActive(false);
-            if (!pSysIsPlaying && !pSys.isPlaying && !TileSystem.Instance.isHub  && degradable)
-            {
-                pSys.Play();
-                walkRunes.material.color = new Color(walkRunes.material.color.r, walkRunes.material.color.g, walkRunes.material.color.b, runeTargetAlpha);
+                Transform tr = tc.minableItems.GetChild(i);
+                if (!tr.gameObject.activeInHierarchy) tr.gameObject.SetActive(true);
+                SpawnItem(tr);
             }
         }
-        else if (tourbillon)
+    }
+
+    public int GetScoreValue(){ return tileTypeValues[(int)tileType].scoreValueOnElevate; }
+
+    private void ActivateWalkedOntoPsys(bool activate, bool allowFadeOut)
+    {
+        if (activate)
         {
-            tourbillonT = transform.Find("Tourbillon");
-            tourbillonT.gameObject.SetActive(true);
-            tourbillonT.localPosition = Vector3.up * tourbillonOgY;
-            tourbillonT.Rotate(0, UnityEngine.Random.Range(0f, 360f), 0);
-            tourbillonT.Translate(0, UnityEngine.Random.Range(0f, 1f), 0);
-            float targetPosY = tourbillonT.position.y;
-            tourbillonT.position -= Vector3.up * 20;
-            tourbillonT.DOMoveY(targetPosY, 5);
+            tc.undegradableParticleSystem.Play();
+            tc.walkRunes.material.color = new Color(tc.walkRunes.material.color.r, tc.walkRunes.material.color.g, tc.walkRunes.material.color.b, runeTargetAlpha);
+            tc.walkRunes.enabled = true;
         }
-        else tourbillonT.gameObject.SetActive(false);
-        if (pSysIsPlaying && pSys.isPlaying && TileSystem.Instance.isHub)
+        else
         {
-            pSys.Stop();
-            walkRunes.material.DOFade(0, 1).SetEase(TileSystem.Instance.easeOut);
+            tc.undegradableParticleSystem.Stop();
+            if (allowFadeOut) tc.walkRunes.material.DOFade(0, runeFadeOutDuration).SetEase(TileSystem.Instance.easeOut);
+            else tc.walkRunes.enabled = false;
         }
-        isDegrading = false;
-        if(tileD.degradationCor != null && !TileSystem.Instance.isHub)
-        {
-            StopCoroutine(tileD.degradationCor);
-            tileD.degradationCor = null;
-        } 
-        if(tileD.shakeCor != null && !TileSystem.Instance.isHub)
-        {
-            StopCoroutine(tileD.shakeCor);
-            tileD.shakeCor = null;
-        }
+    }
+
+    private void ActivateVortex()
+    {
+        tc.tourbillonT.gameObject.SetActive(true);
+        tc.tourbillonT.localPosition = Vector3.up * tourbillonOgY;
+        tc.tourbillonT.Rotate(0, UnityEngine.Random.Range(0f, 360f), 0);
+        tc.tourbillonT.Translate(0, UnityEngine.Random.Range(0f, 1f), 0);
+        float targetPosY = tc.tourbillonT.position.y;
+        tc.tourbillonT.position -= Vector3.up * 20;
+        tc.tourbillonT.DOMoveY(targetPosY, 5);
     }
 
     private void Update()
     {
-        //isFaded = false;
-
-        if (pSysIsPlaying && walkedOnto && degradable && tileType != TileType.Sand && !TileSystem.Instance.isHub)
-        {
-            pSys.Stop();
-            walkRunes.material.DOFade(0, 1).SetEase(TileSystem.Instance.easeOut);
-            //walkRunes.material.color = new Color(walkRunes.material.color.r, walkRunes.material.color.g, walkRunes.material.color.b, runeTargetAlpha);
-            Material[] mats = myMeshR.materials;
-            myMeshR.materials = mats;
-            pSysIsPlaying = false;
-        }
     }
 
     #endregion
 
     #region Tile Functions
 
-    public void StopDegradation() => tileD.EndDegradation();
+    public void StopDegradation() => td.EndDegradation();
 
     private void SetMatOnStart()
     {
-        visualRoot = transform.Find("TileVisuals");
-        myMeshR = visualRoot.GetComponent<MeshRenderer>();
-        myMeshF = visualRoot.GetComponent<MeshFilter>();
-        myMeshC = GetComponent<MeshCollider>();
-
          if (!walkable)
         {
             walkedOnto = true;
             gameObject.layer = LayerMask.NameToLayer("DisabledTile");
-            myMeshR.enabled = false;
+            tc.myMeshR.enabled = false;
             //GetComponent<Collider>().enabled = false;
             //transform.Find("Additional Visuals").gameObject.SetActive(false);
             //minableItems.gameObject.SetActive(false);
         }
         else
         {
-            myMeshF.mesh = getCorrespondingMesh(tileType);
-            myMeshC.sharedMesh = colliderMesh;
-            myMeshR.materials = getCorrespondingMat(tileType);
+            tc.myMeshF.mesh = getCorrespondingMesh(tileType);
+            tc.myMeshC.sharedMesh = tc.meshCollider;
+            tc.myMeshR.materials = getCorrespondingMat(tileType);
         }
 
         if (walkable && (!degradable || tileType == TileType.Sand || tileType == TileType.BouncyTile) && !TileSystem.Instance.isHub)
@@ -422,13 +382,12 @@ public class Tile : MonoBehaviour
         }
         else if (walkable && !walkedOnto && degradable && !TileSystem.Instance.isHub)
         {
-            pSys.Play();
-            print(1);
-            walkRunes.material.DOFade(0, 1).SetEase(TileSystem.Instance.easeOut);
+            tc.undegradableParticleSystem.Play();
+            tc.walkRunes.material.DOFade(0, 1).SetEase(TileSystem.Instance.easeOut);
             pSysIsPlaying = true;
-            Material[] mats = myMeshR.materials;
+            Material[] mats = tc.myMeshR.materials;
             //mats[mats.Length - 1].color = notWalkedOnColor;
-            myMeshR.materials = mats;
+            tc.myMeshR.materials = mats;
             //myMeshR.material.color = notWalkedOnColor;
         }
 /*        else if (!walkable && walkedOnto && degradable && tileType == TileType.Neutral)
@@ -438,12 +397,12 @@ public class Tile : MonoBehaviour
 
         if (!walkable && tourbillon)
         {
-            tourbillonT.gameObject.SetActive(true);
+            tc.tourbillonT.gameObject.SetActive(true);
         }
 
     }
 
-    public void Spawn(float height, string stackType, float degradingSpeed)
+    public void Spawn(float height, string stackType)
     {
         if (TileSystem.Instance.isHub && !TileSystem.Instance.tutorial.tileSpawned)
         {
@@ -455,7 +414,6 @@ public class Tile : MonoBehaviour
 
         }
         transform.position = new Vector3(transform.position.x, -10, transform.position.z);
-        
         if (degradingSpeed == 0) degradable = false;
         TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
         float rot = UnityEngine.Random.Range(0, 360);
@@ -464,24 +422,28 @@ public class Tile : MonoBehaviour
         tileType = tType;
         spawning = true;
         walkable = true;
-        myMeshR.enabled = true;
+        tc.myMeshR.enabled = true;
         gameObject.layer = LayerMask.NameToLayer("Tile");
         transform.tag = "Tile";
-        timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
-        myMeshF.mesh = getCorrespondingMesh(tileType);
+        timer = UnityEngine.Random.Range(td.degradationTimerMin, td.degradationTimerMax);
+        tc.myMeshF.mesh = getCorrespondingMesh(tileType);
         Material[] mats = getCorrespondingMat(tileType);
         if(!TileSystem.Instance.isHub) TileSystem.Instance.tileCounter.Count();
         if (tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Play();
-        if (tileType == TileType.BouncyTile) rb.isKinematic = false;
+        if (tileType == TileType.BouncyTile) tc.rb.isKinematic = false;
         isGrowing = true;
-        myMeshR.materials = mats;
-        typeDegradingSpeed = degradingSpeed;
+        tc.myMeshR.materials = mats;
+        typeDegradingSpeed = tileTypeValues[(int)tileType].tileMult;
+        if (!TileSystem.Instance.isHub)
+        {
+            TileSystem.Instance.scoreManager.ChangeScore(GetScoreValue());
+        }
         //myMeshR.material.color = walkedOnColor;
         //transform.Find("Additional Visuals").gameObject.SetActive(true);
         //minableItems.gameObject.SetActive(true);
         isDegrading = false;
         transform.position = new Vector3(transform.position.x, -7f, transform.position.z) ;
-        currentPos.y = height - (height % heightByTile);
+        currentPos.y = height - (height % td.heightByTile);
     }
     private void GetAdjCoords()
     {
@@ -510,24 +472,24 @@ public class Tile : MonoBehaviour
     Color currentColor;
     public void FadeTile(float t)
     {
-        for (int i = 0; i < myMeshR.materials.Length; i++)
+        for (int i = 0; i < tc.myMeshR.materials.Length; i++)
         {
-            ChangeRenderMode.ChangeRenderModer(myMeshR.materials[i], ChangeRenderMode.BlendMode.Transparent);
-            Color col = myMeshR.materials[i].color;
+            ChangeRenderMode.ChangeRenderModer(tc.myMeshR.materials[i], ChangeRenderMode.BlendMode.Transparent);
+            Color col = tc.myMeshR.materials[i].color;
             col.a = t;
-            myMeshR.materials[i].color = col;
+            tc.myMeshR.materials[i].color = col;
         }
         faded = true;
     }
 
     public void UnFadeTile()
     {
-        for (int i = 0; i < myMeshR.materials.Length; i++)
+        for (int i = 0; i < tc.myMeshR.materials.Length; i++)
         {
-            ChangeRenderMode.ChangeRenderModer(myMeshR.materials[i], ChangeRenderMode.BlendMode.Opaque);
-            Color col = myMeshR.materials[i].color;
+            ChangeRenderMode.ChangeRenderModer(tc.myMeshR.materials[i], ChangeRenderMode.BlendMode.Opaque);
+            Color col = tc.myMeshR.materials[i].color;
             col.a = .2f;
-            myMeshR.materials[i].color = col;
+            tc.myMeshR.materials[i].color = col;
         }
         faded = false;
     }
@@ -556,7 +518,6 @@ public class Tile : MonoBehaviour
                 interactorPoolIndex = 0;
                 break;
         }
-
         //Interactor obj = Instantiate(prefab, null);
         //obj.type = tileSpawnType;
         Transform tr = t;
@@ -569,8 +530,8 @@ public class Tile : MonoBehaviour
     {
         TileSystem.Instance.centerTile.transform.GetChild(9).gameObject.SetActive(false);
         TileSystem.Instance.centerTile = this;
-        myMeshR.materials = getCorrespondingMat(tileType);
-        myMeshF.mesh = getCorrespondingMesh(tileType);
+        tc.myMeshR.materials = getCorrespondingMat(tileType);
+        tc.myMeshF.mesh = getCorrespondingMesh(tileType);
         transform.GetChild(9).gameObject.SetActive(true);
 
     }
@@ -583,41 +544,39 @@ public class Tile : MonoBehaviour
         
         if (!walkable)
         {
-            myMeshR.enabled = false;
+            tc.myMeshR.enabled = false;
             return null;
-            //mat[1] = disabledMat;
-            //mat[0] = disabledMat;
         }
         else if (TileSystem.Instance && ( this == TileSystem.Instance.centerTile || (tileType == TileType.LevelLoader && TileSystem.Instance.isHub)))
         {
-            mat[1] = centerTileMat;
-            mat[0] = centerTileMatBottom;
+            mat[1] = tc.centerMat;
+            mat[0] = tc.centerMatBottom;
             if(!transform.GetChild(9).gameObject.activeInHierarchy) transform.GetChild(9).gameObject.SetActive(true);
         }
         else if (!degradable && tileType != TileType.LevelLoader)
         {
-            mat[1] = undegradableMat;
-            mat[0] = undegradableMatBottom;
+            mat[1] = tc.undegradableMat;
+            mat[0] = tc.undegradableMatBottom;
         }
         else
         {
             switch (tType)
             {
-                case TileType.Neutral: mat[1] = plaineMatTop; mat[0] = plaineMatBottom; break;
-                case TileType.Wood: mat = new Material[1]; mat[0] = woodMat; break;
-                case TileType.Rock: mat = new Material[1]; mat[0] = rockMat; break;
-                case TileType.Gold: mat[1] = goldMat; break;
-                case TileType.Diamond: mat[1] = diamondMat; break;
-                case TileType.Adamantium: mat[1] = adamantiumMat; break;
-                case TileType.Sand: mat = new Material[1];  mat[0] = sandMatBottom; break;
-                case TileType.BouncyTile: mat[1] = bounceMat; mat[0] = plaineMatBottom; break;
-                case TileType.LevelLoader: mat = new Material[1]; mat[0] = centerTileMat; break;
-                default: mat[1] = plaineMatTop; mat[0] = plaineMatBottom; break;
+                case TileType.Neutral: mat[1] = tc.plaineMatTop; mat[0] = tc.plaineMatBottom; break;
+                case TileType.Wood: mat = new Material[1]; mat[0] = tc.woodMat; break;
+                case TileType.Rock: mat = new Material[1]; mat[0] = tc.rockMat; break;
+                case TileType.Gold: mat[1] = tc.goldMat; break;
+                case TileType.Diamond: mat[1] = tc.diamondMat; break;
+                case TileType.Adamantium: mat[1] = tc.adamantiumMat; break;
+                case TileType.Sand: mat = new Material[1];  mat[0] = tc.desertMatBottom; break;
+                case TileType.BouncyTile: mat[1] = tc.bounceMat; mat[0] = tc.plaineMatBottom; break;
+                case TileType.LevelLoader: mat = new Material[1]; mat[0] = tc.centerMatBottom; break;
+                default: mat[1] = tc.plaineMatTop; mat[0] = tc.plaineMatBottom; break;
             }
         }
-        if(walkable && !myMeshR.enabled)
+        if(walkable && !tc.myMeshR.enabled)
         {
-            myMeshR.enabled = true;
+            tc.myMeshR.enabled = true;
         }
 
         return mat;
@@ -629,25 +588,25 @@ public class Tile : MonoBehaviour
         if (!walkable) return null;
         if (TileSystem.Instance && this == TileSystem.Instance.centerTile)
         {
-            mesh = centerTileMesh;
+            mesh = tc.centerMesh;
         }
         else if (!degradable && tileType != TileType.LevelLoader)
         {
-            mesh = undegradableMesh;
+            mesh = tc.undegradableMesh;
         }
         else
         {
             switch (tType)
             {
-                case TileType.Neutral: mesh = defaultMesh; break;
-                case TileType.Wood: mesh = woodMesh; break;
-                case TileType.Rock: mesh = rockMesh; break;
-                case TileType.Gold: mesh = rockMesh; break;
-                case TileType.Diamond: mesh = rockMesh; break;
-                case TileType.Adamantium: mesh = rockMesh; break;
-                case TileType.Sand: mesh = sandMesh; break;
-                case TileType.LevelLoader: mesh = centerTileMesh; break;
-                default: mesh = defaultMesh; break;
+                case TileType.Neutral: mesh = tc.defaultMesh; break;
+                case TileType.Wood: mesh = tc.woodMesh; break;
+                case TileType.Rock: mesh = tc.rockMesh; break;
+                case TileType.Gold: mesh = tc.rockMesh; break;
+                case TileType.Diamond: mesh = tc.rockMesh; break;
+                case TileType.Adamantium: mesh = tc.rockMesh; break;
+                case TileType.Sand: mesh = tc.sandMesh; break;
+                case TileType.LevelLoader: mesh = tc.centerMesh; break;
+                default: mesh = tc.defaultMesh; break;
             }
         }
 
@@ -666,34 +625,26 @@ public class Tile : MonoBehaviour
     {
         if (!Application.isPlaying)
         {
-            if (this == null) return;
-            if (visualRoot == null) visualRoot = transform.Find("TileVisuals");
-            if (!myMeshR) myMeshR = visualRoot.GetComponent<MeshRenderer>();
-            if (!myMeshF) myMeshF = visualRoot.GetComponent<MeshFilter>();
-            if (!myMeshC) myMeshC = GetComponent<MeshCollider>();
-            minableItems = transform.Find("SpawnPositions");
             if (getCorrespondingMat(tileType) != null)
             {
                 Material[] mats = getCorrespondingMat(tileType);
-                if (!Application.isPlaying) myMeshR.sharedMaterials = mats;
-                else myMeshR.materials = mats;
+                if (!Application.isPlaying) tc.myMeshR.sharedMaterials = mats;
+                else tc.myMeshR.materials = mats;
             }
 
             if (getCorrespondingMesh(tileType) != null)
             {
-                myMeshF.sharedMesh = getCorrespondingMesh(tileType);
-                myMeshC.sharedMesh = colliderMesh;
+                tc.myMeshF.sharedMesh = getCorrespondingMesh(tileType);
+                tc.myMeshC.sharedMesh = tc.meshCollider;
             } 
-            //myMeshC.sharedMesh = myMeshF.sharedMesh;
             if (!walkable)
             {
                 transform.Find("Additional Visuals").gameObject.SetActive(false);
-                //minableItems.gameObject.SetActive(false);
             }
             else
             {
                 transform.Find("Additional Visuals").gameObject.SetActive(true);
-                minableItems.gameObject.SetActive(true);
+                tc.minableItems.gameObject.SetActive(true);
             }
             EditorUtility.SetDirty(this);
         }
@@ -703,9 +654,9 @@ public class Tile : MonoBehaviour
     public Mesh constructionMesh;
     private void OnDrawGizmos()
     {
-        if(heightByTile != 0 && !Application.isPlaying && transform.position.y % heightByTile != 0)
+        if(td.heightByTile != 0 && !Application.isPlaying && transform.position.y % td.heightByTile != 0)
         {
-            float r = transform.position.y % heightByTile;
+            float r = transform.position.y % td.heightByTile;
             transform.position = new Vector3(transform.position.x, transform.position.y - r, transform.position.z);
         }
         
@@ -722,16 +673,10 @@ public class Tile : MonoBehaviour
         transform.position = destination - Vector3.up * gizmoOffset;
 
     }
-    private void StepText()
-    {
-        AI_Text.text = step.ToString();
-        if (!walkable && AI_Text.gameObject.activeInHierarchy) AI_Text.gameObject.SetActive(false);
-        else if (walkable && !AI_Text.gameObject.activeInHierarchy) AI_Text.gameObject.SetActive(true);
-    }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireMesh(colliderMesh, 0, transform.localPosition, transform.localRotation, transform.localScale);
+        Gizmos.DrawWireMesh(tc.meshCollider, 0, transform.localPosition, transform.localRotation, transform.localScale);
     }
 
     #endregion
@@ -787,7 +732,7 @@ public class TileEditor : Editor
 
     private void Draw()
     {
-        if(t == null) t = tile.minableItems;
+        if(t == null) t = tile.tc.minableItems;
         int myInt = Convert.ToInt32(tile.spawnPositions);
         bool[] bools = Utils.GetSpawnPositions(myInt);
         GUIStyle gUIStyle = new GUIStyle();
@@ -837,7 +782,6 @@ public class TileEditor : Editor
                 if (bools[i])
                 {
                     if (TileSystem.Instance == null) TileSystem.Instance = FindObjectOfType<TileSystem>();
-                    if(TileSystem.Instance.tileM == null)TileSystem.Instance.tileM = TileSystem.Instance.GetComponent<TileMats>();
                     SpawnItem(t.GetChild(i));
                 }
             }
@@ -868,19 +812,19 @@ public class TileEditor : Editor
         switch (tile.tileSpawnType)
         {
             case TileType.Wood:
-                prefab = TileSystem.Instance.tileM.treePrefab;
+                prefab = tile.tc.treePrefab;
                 break;
             case TileType.Rock:
-                prefab = TileSystem.Instance.tileM.rockPrefab;
+                prefab = tile.tc.rockPrefab;
                 break;
             case TileType.Gold:
-                prefab = TileSystem.Instance.tileM.goldPrefab;
+                prefab = tile.tc.goldPrefab;
                 break;
             case TileType.Diamond:
-                prefab = TileSystem.Instance.tileM.diamondPrefab;
+                prefab = tile.tc.diamondPrefab;
                 break;
             case TileType.Adamantium:
-                prefab = TileSystem.Instance.tileM.adamantiumPrefab;
+                prefab = tile.tc.adamantiumPrefab;
                 break;
         }
         Interactor obj = PrefabUtility.InstantiatePrefab(prefab, null) as Interactor;

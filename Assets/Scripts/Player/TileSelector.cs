@@ -23,6 +23,7 @@ public class TileSelector : MonoBehaviour
     private MissionManager mM;
     public delegate void MissionComplete(Tile tile);
     public static event MissionComplete missionComplete;
+    [SerializeField] private int scoreOnTileCreation;
     #endregion
 
     #region System CallBacks
@@ -74,7 +75,7 @@ public class TileSelector : MonoBehaviour
     {
         #region HUB
         //Disable levelUI
-        if (tile.levelUI != null)
+        if (tile.tc.levelUI != null)
         {
             tile.IsNear = false;
             tile.IsDetail = false;
@@ -90,7 +91,7 @@ public class TileSelector : MonoBehaviour
             if (tile.etabli.playersOn.Count == 0) tile.etabli.PlayerFar();
         }
         //Sand Tile Got Down
-        if (tile.tileType == TileType.Sand && tile.sandFlag) tile.tileD.SandDegradation();
+        if (tile.tileType == TileType.Sand && tile.sandFlag) tile.td.SandDegradation();
         tile.sandFlag = false;
         #endregion
     }
@@ -101,7 +102,7 @@ public class TileSelector : MonoBehaviour
         #endregion
 
         #region nonHub
-        if (tile.tileType == TileType.Sand && !player._characterController.isGrounded && tile.sandFlag) tile.tileD.SandDegradation();
+        if (tile.tileType == TileType.Sand && !player._characterController.isGrounded && tile.sandFlag) tile.td.SandDegradation();
         else if (isOnTop && player._characterController.isGrounded) tile.sandFlag = true;
         #endregion
 
@@ -131,7 +132,7 @@ public class TileSelector : MonoBehaviour
         if (Application.isPlaying && player.tileUnder)
         {
             UnityEditor.Handles.color = Color.green;
-            UnityEditor.Handles.DrawWireDisc(player.tileUnder.minableItems.position, Vector3.up, distanceToBeOnTop);
+            UnityEditor.Handles.DrawWireDisc(player.tileUnder.tc.minableItems.position, Vector3.up, distanceToBeOnTop);
         }
 #endif
 
@@ -187,7 +188,8 @@ public class TileSelector : MonoBehaviour
                 if (item.numberStacked >= 1)
                 {
                     item.numberStacked--;
-                    targettedTile.Spawn(player.tileUnder.transform.position.y, item.stackType.ToString(), item.degradingSpeed);
+                    
+                    targettedTile.Spawn(player.tileUnder.transform.position.y, item.stackType.ToString());
                     StartCoroutine(player.Casting(Player.PlayerState.SpellCreate));
                     if (item.numberStacked == 0)
                     {

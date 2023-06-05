@@ -40,8 +40,8 @@ public class TutorialManager : MonoBehaviour
         {
             TileSystem.Instance.centerTile.transform.GetChild(9).gameObject.SetActive(false);
             TileSystem.Instance.centerTile = centerTile.GetComponentInParent<Tile>();
-            TileSystem.Instance.centerTile.myMeshR.materials = TileSystem.Instance.centerTile.getCorrespondingMat(TileSystem.Instance.centerTile.tileType);
-            TileSystem.Instance.centerTile.myMeshF.mesh = TileSystem.Instance.centerTile.getCorrespondingMesh(TileSystem.Instance.centerTile.tileType);
+            TileSystem.Instance.centerTile.tc.myMeshR.materials = TileSystem.Instance.centerTile.getCorrespondingMat(TileSystem.Instance.centerTile.tileType);
+            TileSystem.Instance.centerTile.tc.myMeshF.mesh = TileSystem.Instance.centerTile.getCorrespondingMesh(TileSystem.Instance.centerTile.tileType);
             tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
             targetter.DOMove(interactor.target.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
             yield return new WaitForSeconds(timeToGoOut);
