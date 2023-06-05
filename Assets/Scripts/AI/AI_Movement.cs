@@ -169,7 +169,7 @@ public class AI_Movement : MonoBehaviour
     {
         if (AI_B.tileUnder == null) return;
         Tile tile = GridUtils.WorldPosToTile(transform.position + transform.forward * 1);
-        if ((tile.transform.position.y - AI_B.tileUnder.transform.position.y) >= (tile.heightByTile - .3f) && tile.walkable) jumpInput = true;
+        if ((tile.transform.position.y - AI_B.tileUnder.transform.position.y) >= (tile.td.heightByTile - .3f) && tile.walkable) jumpInput = true;
 /*        if(Physics.RaycastAll(transform.position, transform.forward + transform.localScale.y / 2 * Vector3.up, 1f, tileMask, QueryTriggerInteraction.Ignore).Length > 0 && _characterController.isGrounded)
         {
             jumpInput = true;

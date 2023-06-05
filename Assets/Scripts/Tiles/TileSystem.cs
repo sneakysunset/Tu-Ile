@@ -20,17 +20,12 @@ public class TileSystem : MonoBehaviour
     public string fileName;
     [HideInInspector] public Tile[,] tiles;
     public Tile tilePrefab;
-    [HideInInspector] public TileParameters tileP;
-    [HideInInspector] public TileMats tileM;
-    [HideInInspector] public TileMovements tileMov;
     [HideInInspector] public Vector3 gridOgTile;
     static bool editorFlag = false;
     public Tile centerTile;
     [HideInInspector] public Transform tileFolder;
     public bool isHub;
     public static TileSystem Instance { get;  set; }
-    [HideNormalInspector] public float degradationTimerModifier;
-    float timerInterpolateValue;
     [HideInInspector] public bool ready = true;
     [HideNormalInspector] public float lerpingSpeed = 1;
     [HideNormalInspector] public Tile previousCenterTile;
@@ -67,13 +62,10 @@ public class TileSystem : MonoBehaviour
             tileCounter = gameTimer.GetComponent<TileCounter>();
             scoreManager = gameTimer.GetComponent<ScoreManager>();
         }
-        shakeLongWaiter = new WaitForSeconds(tileP.shakeActivationTime);
-        shakeWaiter = new WaitForSeconds(tileP.shakeFrequency);
         if (this.enabled)
         {
             RegenGrid();
         }
-        tileMov = GetComponent<TileMovements>();
         GridUtils.onLevelMapLoad += OnLoadScene;
     }
 
@@ -113,15 +105,6 @@ public class TileSystem : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (!isHub)
-        {
-            timerInterpolateValue += Time.deltaTime * (1 / gameTimer.gameTimer);
-            degradationTimerModifier = tileP.degradationTimerAnimCurve.Evaluate(timerInterpolateValue); 
-        } 
-    }
-
     void RegenGrid()
     {
         Tile[] list = FindObjectsOfType<Tile>();
@@ -135,47 +118,6 @@ public class TileSystem : MonoBehaviour
             int y = list[i].coordY;
             tiles[x, y] = list[i];
             tiles[x, y].name = "tile " + x + " " + y;
-        }
-        UpdateGridParameters();
-    }
-
-    public void UpdateGridParameters()
-    {
-        tileM = GetComponent<TileMats>();
-        tileP = GetComponent<TileParameters>();
-        if (tiles == null || tiles.Length == 0) return;
-        foreach (var tile in tiles)
-        {
-            if (tile == null) continue;
-            tile.degradationTimerMin = tileP.degradationTileTimerMin;
-            tile.degradationTimerMax = tileP.degradationTileTimerMax;
-            tile.degradationTimerAnimCurve = tileP.degradationTimerAnimCurve;
-            tile.heightByTile = tileP.heightByTile;
-            tile.plaineMatBottom = tileM.plaineTileMatBottom;
-            tile.plaineMatTop = tileM.plaineTileMatTop;
-            tile.disabledMat = tileM.disabledTileMaterial;
-            tile.sandMatTop = tileM.desertTileMatTop;
-            tile.sandMatBottom = tileM.desertTileMatBottom;
-            tile.bounceMat = tileM.bounceTileMat;
-            tile.undegradableMat = tileM.undegradableTileMat;
-            tile.undegradableMatBottom = tileM.undegradableTileMatBottom;
-            tile.woodMat = tileM.woodTileMat;
-            tile.rockMat = tileM.rockTileMat;
-            tile.goldMat = tileM.goldTileMat;
-            tile.diamondMat = tileM.diamondTileMat;
-            tile.adamantiumMat = tileM.adamantiumTileMat;
-            tile.centerTileMat = tileM.centerTileMat;
-            tile.centerTileMatBottom = tileM.centerTileMatBottom;
-            tile.defaultMesh = tileM.defaultTileMesh;
-            tile.colliderMesh = tileM.meshCollider;
-            tile.woodMesh = tileM.woodTileMesh;
-            tile.rockMesh = tileM.rockTileMesh;
-            tile.sandMesh = tileM.sandTileMesh;
-            tile.undegradableMesh = tileM.undegradableTileMesh;
-            tile.centerTileMesh = tileM.centerTileMesh;
-            tile.notWalkedOnColor = tileM.notWalkedOnColor;
-            tile.walkedOnColor = tileM.walkedOnColor;
-            tile.penguinedColor = tileM.acceleratedDegradationColor;
         }
     }
 
@@ -203,7 +145,6 @@ public class TileSystemEditor : Editor
         tileS = (TileSystem)target;
         if (TileSystem.Instance == null) TileSystem.Instance = tileS.transform.GetComponent<TileSystem>();
         if (tileS.tiles == null) return;
-        tileS.UpdateGridParameters();
         foreach (var tile in tileS.tiles)
         {
             tile.UpdateObject();
@@ -450,7 +391,6 @@ public class TileSystemEditor : Editor
 
         tileS.UpdateParameters = false;
         if (tileS.tiles == null) return;
-        tileS.UpdateGridParameters();
     }
 
     void DestroyGrid()

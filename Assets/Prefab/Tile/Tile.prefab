@@ -2271,8 +2271,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4695394438935391193}
   - component: {fileID: 6595983220944661741}
-  - component: {fileID: 1723577319114880016}
   - component: {fileID: 6588057917838640578}
+  - component: {fileID: 1464382876671372394}
+  - component: {fileID: 1723577319114880016}
   - component: {fileID: 6909962092960525056}
   m_Layer: 6
   m_Name: Tile
@@ -2325,48 +2326,141 @@ MonoBehaviour:
   walkable: 1
   degradable: 1
   tileType: 0
+  tourbillon: 0
   tileSpawnType: 0
   spawnPositions: 0
   spawnSpawners: 0
+  EditPos: 0
+  levelName: 
+  isHubCollider: 0
+  runeTargetAlpha: 0.4
+  runeFadeOutDuration: 1
+  tc: {fileID: 1464382876671372394}
+  td: {fileID: 6588057917838640578}
+  gizmoOffset: 22.6
+  tileTypeValues:
+  - type: 0
+    tileMult: 1
+    scoreValueOnElevate: 3
+    scoreValueOnCreate: 8
+  - type: 1
+    tileMult: 1.2
+    scoreValueOnElevate: 3
+    scoreValueOnCreate: 8
+  - type: 2
+    tileMult: 0.8
+    scoreValueOnElevate: 5
+    scoreValueOnCreate: 10
+  - type: 3
+    tileMult: 0.65
+    scoreValueOnElevate: 7
+    scoreValueOnCreate: 15
+  - type: 4
+    tileMult: 0.5
+    scoreValueOnElevate: 10
+    scoreValueOnCreate: 20
+  - type: 5
+    tileMult: 0.1
+    scoreValueOnElevate: 25
+    scoreValueOnCreate: 50
+  - type: 6
+    tileMult: 1
+    scoreValueOnElevate: 5
+    scoreValueOnCreate: 10
+  - type: 7
+    tileMult: 1
+    scoreValueOnElevate: 5
+    scoreValueOnCreate: 10
   coordX: 0
-  coordFX: 0
   coordY: 0
   currentPos: {x: 0, y: 0, z: 0}
   adjTCoords: []
-  heightByTile: 0
-  tourbillon: 0
-  tourbillonSpeed: 3
-  levelName: 
   isDegrading: 0
   timer: 0
   terraFormingSpeed: 0
-  degradationTimerMin: 0
-  degradationTimerMax: 0
-  degradationTimerAnimCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   degradingSpeed: 0
   typeDegradingSpeed: 1
   isGrowing: 0
   degSpeed: 0
-  timeToGetToMaxDegradationSpeed: 0
   sandFlag: 0
-  shakeMagnitude: 0.15
-  shakeCurve:
+  spawnPoints:
+  - {fileID: 1949783130783487149}
+  - {fileID: 4691495834763128532}
+  readyToRoll: 0
+  destination: {x: 0, y: 22.6, z: 0}
+  faded: 0
+  isPathChecked: 0
+  step: 0
+  etabli: {fileID: 0}
+  isNear: 0
+  isDetail: 0
+  fadeChecker: 0
+  constructionMesh: {fileID: 4493585093827132993, guid: 1f6189940713b064abbc4c99fe3e3ffb, type: 3}
+--- !u!114 &6588057917838640578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5360045457859342691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f33708c86899c32449b6abed1b61e997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileDegraderMult: 1
+  degradationTimer: 0
+  degradationTimerMin: 60
+  degradationTimerMax: 80
+  degradationTimerAnimCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  heightByTile: 2
+  shakeActivationTimePercent: 0.3
+  shakeFrequency: 0.03
+  shakeMagnitude: 0.1
+  shakeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.005218506
+      value: -0.003479004
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
+    - serializedVersion: 3
+      time: 0.70004225
+      value: -0.0046756417
+      inSlope: -0.0012183292
+      outSlope: -0.0012183292
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.35782865
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1.0083313
       value: 0.59198
@@ -2379,64 +2473,64 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  isHubCollider: 0
-  hubCollider: {fileID: 2116976973030696114}
-  spawnPoints:
-  - {fileID: 1949783130783487149}
-  - {fileID: 4691495834763128532}
-  readyToRoll: 0
+  degradationLerpSpeed: 8
+  growthLerpSpeed: 0.6
+--- !u!114 &1464382876671372394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5360045457859342691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7ed65341bcecb54b97ed1b365e9b49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tourbillonSpeed: 30
+  meshCollider: {fileID: -125435165217083709, guid: d07a8c1885021254abc24dac6768c417, type: 3}
+  centerMesh: {fileID: 3163171260390484736, guid: 2eca40f471670324ba33f876ca2de259, type: 3}
+  centerMat: {fileID: 2100000, guid: b797f39b12d44a8448842238403a9512, type: 2}
+  centerMatBottom: {fileID: 2100000, guid: d50b940920843574bbf8290e0a38e5b4, type: 2}
+  undegradableMesh: {fileID: 3163171260390484736, guid: 2eca40f471670324ba33f876ca2de259, type: 3}
+  undegradableMat: {fileID: 2100000, guid: bc1cf05946cd0624b9a9a124cf6e759d, type: 2}
+  undegradableMatBottom: {fileID: 2100000, guid: 5f6e639ee95b02f49b8eb4096bab3fc0, type: 2}
+  defaultMesh: {fileID: 3163171260390484736, guid: 2eca40f471670324ba33f876ca2de259, type: 3}
+  plaineMatTop: {fileID: 2100000, guid: cb9a4ac9090db4344bfff89cbfb824ee, type: 2}
+  plaineMatBottom: {fileID: 2100000, guid: e5f8f155cb83b8249979eb63e0ede8ce, type: 2}
+  woodMesh: {fileID: 6239881831769578202, guid: fd987fb914f92b54481249887cee245b, type: 3}
+  woodMat: {fileID: 2100000, guid: afcb50dbf7bf08246bbe7bc99e74680b, type: 2}
+  rockMesh: {fileID: 1151850364201779074, guid: caff68d3bfbfa30459765972d5377dd8, type: 3}
+  rockMat: {fileID: 2100000, guid: e62d1a6150c1fa04ab863071f4519599, type: 2}
+  goldMat: {fileID: 2100000, guid: 326db776b16202c4bb20fb62a2ed0f9a, type: 2}
+  diamondMat: {fileID: 2100000, guid: 056df16b00997df49b3b50dcdbefd92d, type: 2}
+  adamantiumMat: {fileID: 2100000, guid: 056df16b00997df49b3b50dcdbefd92d, type: 2}
+  sandMesh: {fileID: 8252082891154211873, guid: e692a67560af377479c2dbbd2b7149fe, type: 3}
+  desertMatTop: {fileID: 2100000, guid: fceb072b17286fd41b41fc251b41458c, type: 2}
+  desertMatBottom: {fileID: 2100000, guid: fceb072b17286fd41b41fc251b41458c, type: 2}
+  bounceMat: {fileID: 2100000, guid: 3193cf6cf65b8a748b1a843c78e6c26d, type: 2}
+  disabledMaterial: {fileID: 2100000, guid: 20de2eb994387b84c87f32d664a1d1a3, type: 2}
+  treePrefab: {fileID: 7374582616296487918, guid: 79b9421b777be9b48964ef34298b9825, type: 3}
+  rockPrefab: {fileID: 4115889106414382139, guid: a1486965bb17ef34d9505a95cad1a333, type: 3}
+  goldPrefab: {fileID: 8219649974141795056, guid: 72f3d0f0b08c81645984d3b9dffe7bde, type: 3}
+  diamondPrefab: {fileID: 669199890930183622, guid: e4fdb4ab491feff47aa6ac0bb155e34a, type: 3}
+  adamantiumPrefab: {fileID: 8087225372383977735, guid: a896e8445800e1e46ad1a5d8b6049d41, type: 3}
   visualRoot: {fileID: 888890250030377708}
   myMeshR: {fileID: 1506125273960030959}
   myMeshF: {fileID: 3689870674546328165}
   myMeshC: {fileID: 1723577319114880016}
-  rb: {fileID: 0}
+  rb: {fileID: 6909962092960525056}
+  hubCollider: {fileID: 2116976973030696114}
   minableItems: {fileID: 8755437412334106841}
-  tourbillonT: {fileID: 0}
-  tileD: {fileID: 0}
-  disabledMat: {fileID: 2100000, guid: d98d8fb09cb390f4fb3da296ca7f09df, type: 2}
-  undegradableMatBottom: {fileID: 0}
-  falaiseMat: {fileID: 0}
-  plaineMatTop: {fileID: 0}
-  plaineMatBottom: {fileID: 0}
-  undegradableMat: {fileID: 0}
-  sandMatTop: {fileID: 0}
-  sandMatBottom: {fileID: 0}
-  bounceMat: {fileID: 0}
-  woodMat: {fileID: 0}
-  rockMat: {fileID: 0}
-  goldMat: {fileID: 0}
-  diamondMat: {fileID: 0}
-  adamantiumMat: {fileID: 0}
-  centerTileMat: {fileID: 0}
-  centerTileMatBottom: {fileID: 0}
-  defaultMesh: {fileID: 0}
-  woodMesh: {fileID: 0}
-  rockMesh: {fileID: 0}
-  sandMesh: {fileID: 0}
-  undegradableMesh: {fileID: 0}
-  centerTileMesh: {fileID: 0}
-  colliderMesh: {fileID: 0}
-  walkedOnColor: {r: 0.8490566, g: 0.734247, b: 0.734247, a: 1}
-  notWalkedOnColor: {r: 1, g: 1, b: 1, a: 1}
-  penguinedColor: {r: 0.8584906, g: 0.28076416, b: 0.28076416, a: 1}
-  falaiseColor: {r: 0.7921569, g: 0.64705884, b: 0.64705884, a: 1}
-  hubEventOnSpawn:
-    m_PersistentCalls:
-      m_Calls: []
-  gizmoOffset: 22.6
-  destination: {x: 78.200005, y: 22.6, z: 29.6}
-  faded: 0
-  isPathChecked: 0
-  step: 0
-  isPenguined: 0
-  etabli: {fileID: 0}
-  levelUI: {fileID: 0}
-  isNear: 0
-  isDetail: 0
-  runeTargetAlpha: 0.4
-  EditPos: 0
-  fadeChecker: 0
-  constructionMesh: {fileID: 4493585093827132993, guid: 1f6189940713b064abbc4c99fe3e3ffb, type: 3}
+  altSpawnPositions: {fileID: 8102468550848589849}
+  tourbillonT: {fileID: 774271360629026932}
+  undegradableParticleSystem: {fileID: 9121216991355272443}
+  sandParticleSystem: {fileID: 4319606682069283533}
+  walkRunes: {fileID: 7365906028259367567}
+  pSysCreation: {fileID: 6110715987752271232}
+  pSysCenterTile: {fileID: 8095128037604950866}
+  tileD: {fileID: 6588057917838640578}
+  levelUI: {fileID: 1066067390205510466}
 --- !u!64 &1723577319114880016
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2450,20 +2544,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -371179953123635698, guid: 0d3237167e2c7184ba48d34c7b16935d, type: 3}
---- !u!114 &6588057917838640578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5360045457859342691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f33708c86899c32449b6abed1b61e997, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sFre: 0.03
+  m_Mesh: {fileID: -125435165217083709, guid: d07a8c1885021254abc24dac6768c417, type: 3}
 --- !u!54 &6909962092960525056
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3969,7 +4050,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8368719166968480802}
-  m_Mesh: {fileID: 6567690165969998825, guid: 56fd4239a25f3024ca7ef45755896fa0, type: 3}
+  m_Mesh: {fileID: 3163171260390484736, guid: 2eca40f471670324ba33f876ca2de259, type: 3}
 --- !u!23 &1506125273960030959
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3990,8 +4071,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: e5f8f155cb83b8249979eb63e0ede8ce, type: 2}
+  - {fileID: 2100000, guid: cb9a4ac9090db4344bfff89cbfb824ee, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4338,6 +4419,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 6096741596259655675, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+--- !u!23 &7365906028259367567 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6096741596259655674, guid: 72a329834e475604abaabcb92cbbf3a1, type: 3}
+  m_PrefabInstance: {fileID: 3648776270753908085}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4634846857194138973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4460,6 +4546,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3460423296961211916, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
   m_PrefabInstance: {fileID: 4634846857194138973}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8095128037604950866 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3460423296961211919, guid: 58dc9845597fc8a449f856538b7c1b42, type: 3}
+  m_PrefabInstance: {fileID: 4634846857194138973}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4840148051000715612
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4520,6 +4611,11 @@ PrefabInstance:
 --- !u!4 &4319606682069283531 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8708266670593334167, guid: 0f73d873298e50643a79ebfa06c2f19e, type: 3}
+  m_PrefabInstance: {fileID: 4840148051000715612}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4319606682069283533 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8708266670593334161, guid: 0f73d873298e50643a79ebfa06c2f19e, type: 3}
   m_PrefabInstance: {fileID: 4840148051000715612}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4965133989803128468
@@ -4588,6 +4684,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 111371748364043491, guid: 0ccf48f9929999b479d536e50ab87a38, type: 3}
   m_PrefabInstance: {fileID: 4965133989803128468}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &9121216991355272443 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4211606214222678639, guid: 0ccf48f9929999b479d536e50ab87a38, type: 3}
+  m_PrefabInstance: {fileID: 4965133989803128468}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9172272754830069823
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4653,6 +4754,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82a97053668f3e24e96e3892019d5fb1, type: 3}
+--- !u!198 &6110715987752271232 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3136733680746491327, guid: 82a97053668f3e24e96e3892019d5fb1, type: 3}
+  m_PrefabInstance: {fileID: 9172272754830069823}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6110715987752271233 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3136733680746491326, guid: 82a97053668f3e24e96e3892019d5fb1, type: 3}

@@ -58,7 +58,7 @@ public class StepAssignment
         if (cd1 || cd2) return false;
         bool cd3 = TileSystem.Instance.tiles[x, y].step == - 1;
         bool cd6 = tiles.Contains(TileSystem.Instance.tiles[x, y]);
-        bool cd4 = height - TileSystem.Instance.tiles[x, y].transform.position.y <= TileSystem.Instance.tileP.heightByTile;
+        bool cd4 = height - TileSystem.Instance.tiles[x, y].transform.position.y <= TileSystem.Instance.centerTile.td.heightByTile;
         bool cd5 = TileSystem.Instance.tiles[x, y].walkable;
         
         if (cd1 && cd2 && cd3 && cd4 && cd5)

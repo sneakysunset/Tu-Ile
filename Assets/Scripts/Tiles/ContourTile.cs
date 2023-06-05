@@ -25,7 +25,7 @@ public class ContourTile : MonoBehaviour
         {
             meshRenderer.enabled = false;
         }
-        if(myParent.position.y == myParent.position.y / tile.heightByTile && transform.position.y != myParent.position.y) 
+        if(myParent.position.y == myParent.position.y / tile.td.heightByTile && transform.position.y != myParent.position.y) 
         { 
             transform.position = myParent.position;
         }

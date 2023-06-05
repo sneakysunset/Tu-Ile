@@ -5,20 +5,37 @@ using UnityEngine;
 
 public class Tile_Degradation : MonoBehaviour
 {
-    Tile tile;
-    bool started = false;
+    //bool started = false;
+    #region Variables
+    Tile t;
+    TileComponentReferencer tc;
     FMOD.Studio.EventInstance tfFI;
-    Transform spawnPos;
-    bool to;
-    [HideInInspector] public IEnumerator shakeCor;
-    [HideInInspector] public IEnumerator degradationCor;
     [HideNormalInspector] public float tileDegraderMult = 1;
+    [HideNormalInspector] private bool isDegrading;
+    private IEnumerator shakeCor;
+
+
+    #region SerializedFields
+    [SerializeField, NaughtyAttributes.ProgressBar(1)] private float degradationTimer;
+    private float timerValue;
+    public float degradationTimerMin, degradationTimerMax;
+    [SerializeField] private AnimationCurve degradationTimerAnimCurve;
+    public float heightByTile;
+    [SerializeField, Range(0, 1)] private float shakeActivationTimePercent = .3f;
+    [SerializeField] private float shakeFrequency = .03f;
+    [SerializeField] private float shakeMagnitude = .1f;
+    [SerializeField] private AnimationCurve shakeCurve;
+    [SerializeField, Range(0, 10)] private float degradationLerpSpeed;
+    [SerializeField, Range(0, 10)] private float growthLerpSpeed;
+    #endregion
+    #endregion
+
     private void Awake()
     {
+        degradationTimer = 1;
+        t = GetComponent<Tile>();
+        tc = GetComponent<TileComponentReferencer>();
         tileDegraderMult = 1;
-        tile = GetComponent<Tile>();
-        spawnPos = tile.minableItems.GetChild(0);
-        if (tile.visualRoot == null) tile.visualRoot = transform.Find("TileVisuals"); 
     }
 
     private void OnDestroy()
@@ -31,30 +48,40 @@ public class Tile_Degradation : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y == tile.currentPos.y) tile.IsMoving = false;
-        else tile.IsMoving = true;
+        if (transform.position.y == t.currentPos.y) t.IsMoving = false;
+        else t.IsMoving = true;
 
 
-        if (FMODUtils.IsPlaying(tfFI)) tfFI.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(spawnPos));
+        if (FMODUtils.IsPlaying(tfFI)) tfFI.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(tc.minableItems));
 
+        if(isDegrading && t.tileType != TileType.Sand) degradationTimer -= Time.deltaTime * t.typeDegradingSpeed / timerValue;
+        if(isDegrading && degradationTimer < 0) 
+        {
+            t.currentPos.y -= heightByTile;
+            isDegrading = false;
+        }
+        if(isDegrading && degradationTimer < shakeActivationTimePercent * t.typeDegradingSpeed && shakeCor == null)
+        {
+            shakeCor = TileShake();
+            StartCoroutine(shakeCor);
+        }
     }
-
 
     private void FixedUpdate()
     {
-        if (TileSystem.Instance.ready /*&& tile.readyToRoll*/ && tile.IsMoving)
+        if (TileSystem.Instance.ready /*&& tile.readyToRoll*/ && t.IsMoving)
         {
-            Vector3 localPos = tile.transform.localPosition;
-            float distance = Mathf.Abs(tile.transform.position.y - tile.currentPos.y);
-            distance = Mathf.Clamp(distance, .3f, 5f);
+            Vector3 localPos = t.transform.localPosition;
+            float distance = Mathf.Abs(t.transform.position.y - t.currentPos.y);
+            distance = Mathf.Clamp(distance, .3f, 3f);
 
-            if (tile.isGrowing)
+            if (t.isGrowing)
             {
-                tile.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), (1 / TileSystem.Instance.tileMov.tileGrowthLerpSpeed) * Time.deltaTime * distance * tileDegraderMult));
+                tc.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, t.currentPos.y, localPos.z), (1 / growthLerpSpeed) * Time.deltaTime * distance * tileDegraderMult));
             }
             else
             {
-                tile.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, tile.currentPos.y, localPos.z), TileSystem.Instance.tileMov.degradationLerpSpeed * Time.deltaTime * tile.degSpeed * TileSystem.Instance.lerpingSpeed * distance * tileDegraderMult));
+                tc.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, t.currentPos.y, localPos.z), degradationLerpSpeed * Time.deltaTime * t.degSpeed * TileSystem.Instance.lerpingSpeed * distance * tileDegraderMult));
             }
         }
     }
@@ -63,7 +90,7 @@ public class Tile_Degradation : MonoBehaviour
     {
         if(shakeCor == null && !TileSystem.Instance.isHub)
         {
-            tile.currentPos.y -= tile.heightByTile;
+            t.currentPos.y -= t.td.heightByTile;
             shakeCor = TileShake();
             StartCoroutine(shakeCor);
         }
@@ -71,27 +98,24 @@ public class Tile_Degradation : MonoBehaviour
 
     public void StartDegradation()
     {
-        if (degradationCor != null)
-        {
-            StopCoroutine(degradationCor);
-        }
-        if(TileSystem.Instance.isHub) return;
-        degradationCor = Degrading();
-        StartCoroutine(degradationCor);
+        timerValue = Random.Range(degradationTimerMin, degradationTimerMax);
+        degradationTimer = 1;
+        isDegrading = true;
     }
 
     public void EndDegradation()
     {
-        if (degradationCor != null)
+        isDegrading = false;
+/*        if (degradationCor != null)
         {
             StopCoroutine(degradationCor);
             degradationCor = null;
-        }
+        }*/
     }
 
-
-    private IEnumerator Degrading()
+/*    private IEnumerator Degrading()
     {
+        print("StartDegradation" + gameObject.name);
         //Effect while degrading
         yield return TileSystem.Instance.shakeLongWaiter;
         if (!TileSystem.Instance.isHub)
@@ -105,77 +129,70 @@ public class Tile_Degradation : MonoBehaviour
             yield break;
         }
 
-        float timeBeforeDegradation = Random.Range(tile.degradationTimerMin, tile.degradationTimerMax) / tile.typeDegradingSpeed / TileSystem.Instance.degradationTimerModifier - TileSystem.Instance.tileP.shakeActivationTime;
+        float timeBeforeDegradation = Random.Range(degradationTimerMin, degradationTimerMax) / t.typeDegradingSpeed / TileSystem.Instance.degradationTimerModifier - TileSystem.Instance.tileP.shakeActivationTime;
         yield return new WaitForSeconds(timeBeforeDegradation);
 
-        tile.isDegrading = true;
+        t.isDegrading = true;
         gameObject.tag = "DegradingTile";
-        if (!TileSystem.Instance.isHub) tile.currentPos.y -= tile.heightByTile;
+        print("Degradation" + gameObject.name);
+        if (!TileSystem.Instance.isHub) t.currentPos.y -= t.td.heightByTile;
         degradationCor = null;
-    }
+    }*/
     
     void SinkTile()
     {
-        tile.walkable = false;
-        tile.currentPos.y = -16f;
+        t.walkable = false;
+        t.currentPos.y = -16f;
         gameObject.layer = LayerMask.NameToLayer("DisabledTile");
         //tile.myMeshR.enabled = false;
         //transform.Find("Additional Visuals").gameObject.SetActive(false);
         //tile.minableItems.gameObject.SetActive(false);
-        if (tile.tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Stop();
-        if (tile.tileType == TileType.BouncyTile) tile.rb.isKinematic = true;
+        if (t.tileType == TileType.Sand) transform.Find("SandParticleSystem").GetComponent<ParticleSystem>().Stop();
+        if (t.tileType == TileType.BouncyTile) tc.rb.isKinematic = true;
         if(!TileSystem.Instance.isHub) TileSystem.Instance.tileCounter.Count();
     }
 
     public void StartTileMovement()
     {
-        FMODUtils.SetFMODEvent(ref tfFI, "event:/Tuile/Tile/Terraformingdown", spawnPos);
+        FMODUtils.SetFMODEvent(ref tfFI, "event:/Tuile/Tile/Terraformingdown", tc.minableItems);
     }
 
     public void EndTileMovement()
     {
-        Debug.Log(1);
         tileDegraderMult = 1;
         FMODUtils.StopFMODEvent(ref tfFI, true);
         if(shakeCor != null ) StopCoroutine(shakeCor);
         shakeCor = null;
-        if (tile.isGrowing) tile.isGrowing = false;
-        else if (tile.isDegrading) tile.isDegrading = false;
-        tile.timer = UnityEngine.Random.Range(tile.degradationTimerMin, tile.degradationTimerMax);
-        if(tile.currentPos.y == GameConstant.maxTileHeight && CompareTag("DegradingTile")) tag = "Tile";
-        started = true;
-        if (started && tile.walkable && tile.currentPos.y < 0) SinkTile();
-        tile.sandFlag = false;
-        if(tile.degradable && tile.walkable && tile.tileType != TileType.Sand && tile.walkedOnto && !TileSystem.Instance.isHub) StartDegradation();
+        if (t.isGrowing) t.isGrowing = false;
+        else if (t.isDegrading) t.isDegrading = false;
+        t.timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
+        if(t.currentPos.y == GameConstant.maxTileHeight && CompareTag("DegradingTile")) tag = "Tile";
+        if (t.walkable && t.currentPos.y < 0) SinkTile();
+        t.sandFlag = false;
+        if(t.degradable && t.walkable && t.tileType != TileType.Sand && t.walkedOnto && !TileSystem.Instance.isHub) StartDegradation();
     }
 
     public IEnumerator TileShake()
     {
-        float f = 0;
-        while(f < 1)
+        Vector3 pos = transform.localPosition;
+        while(isDegrading)
         {
-            if (TileSystem.Instance.isHub)
-            {
-                shakeCor = null;
-                yield break;
-            }
-            f += Time.deltaTime * (1 / TileSystem.Instance.tileP.shakeActivationTime);
-            tile.visualRoot.localPosition = ShakeEffect(f);
+            transform.localPosition = ShakeEffect(1 - degradationTimer, pos);
             yield return TileSystem.Instance.shakeWaiter;
         }
-        yield return new WaitUntil(() => transform.position != tile.currentPos);
-        while (transform.position != tile.currentPos)
+       // yield return new WaitUntil(() => transform.position != t.currentPos);
+        while (transform.position != t.currentPos)
         {
-            tile.visualRoot.localPosition = ShakeEffect(f);
+            //transform.localPosition = ShakeEffect(1, pos);
             yield return TileSystem.Instance.shakeWaiter;
         }
         shakeCor = null;
     }
 
-    private Vector3 ShakeEffect(float curveTime)
+    private Vector3 ShakeEffect(float curveTime, Vector3 ogPos)
     {
-        float x = UnityEngine.Random.Range(-1f, 1f) * tile.shakeMagnitude * tile.shakeCurve.Evaluate(curveTime);
-        float y = UnityEngine.Random.Range(-1f, 1f) * tile.shakeMagnitude * tile.shakeCurve.Evaluate(curveTime);
-        return new Vector3(0 + x, tile.visualRoot.localPosition.y, 0 + y);
+        float x = UnityEngine.Random.Range(-1f, 1f) * shakeMagnitude * shakeCurve.Evaluate(curveTime);
+        float y = UnityEngine.Random.Range(-1f, 1f) * shakeMagnitude * shakeCurve.Evaluate(curveTime);
+        return new Vector3(ogPos.x + x, transform.localPosition.y, ogPos.z + y);
     }
 }

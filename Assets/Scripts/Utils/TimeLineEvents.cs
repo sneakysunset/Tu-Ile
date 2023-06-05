@@ -13,7 +13,7 @@ public class TimeLineEvents
         {
             if (t.degradable)
             {
-                t.currentPos.y -= t.heightByTile;
+                t.currentPos.y -= t.td.heightByTile;
             }
         }
     }

@@ -20,6 +20,8 @@ public class EndMenu : MonoBehaviour
     private RawImage screenShot;
     public Button ogButton;
     public Button optionButton;
+    public delegate void OnLevelEnd();
+    public OnLevelEnd onLevelEnd;
     private void Start()
     {
         players = FindObjectsOfType<PlayerInput>();
@@ -31,13 +33,15 @@ public class EndMenu : MonoBehaviour
 
     public IEnumerator EnableEnd()
     {
+        if(onLevelEnd != null) onLevelEnd();
         GameTimer gameTimer = TileSystem.Instance.gameTimer;
         //MissionManager missionManager = MissionManager.Instance;
         CameraCtr cam = TileSystem.Instance.cam;
-        StartCoroutine(gameTimer.LerpTimeLine(gameTimer.UIPos.anchoredPosition, gameTimer.UIPos.anchoredPosition + UnityEngine.Vector2.up * -100, gameTimer.UIPos, gameTimer.lerpCurveEaseIn, gameTimer.lerpSpeed));
-        cam.DezoomCam(TileSystem.Instance.centerTile.minableItems);
-        //missionManager.CloseMissions();
 
+        //StartCoroutine(gameTimer.LerpTimeLine(timerTr.anchoredPosition, timerTr.anchoredPosition + UnityEngine.Vector2.up * -100, timerTr, gameTimer.lerpCurveEaseIn, gameTimer.lerpSpeed));
+        cam.DezoomCam(TileSystem.Instance.centerTile.tc.minableItems);
+        //missionManager.CloseMissions();
+        gameTimer.canvasRef.DisableUI();
         yield return new WaitForSeconds(2);
 
         cam.CamCapture();
@@ -91,7 +95,7 @@ public class EndMenu : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
 
         DisableEnd();
-        TileSystem.Instance.gameTimer.sceneLoadName = SceneManager.GetActiveScene().name;
+        //TileSystem.Instance.gameTimer.sceneLoadName = SceneManager.GetActiveScene().name;
         TileSystem.Instance.gameTimer.EndLevel(true, false);
     }
 
@@ -100,7 +104,7 @@ public class EndMenu : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
 
         DisableEnd();
-        TileSystem.Instance.gameTimer.sceneLoadName = "Hub";
+        //TileSystem.Instance.gameTimer.sceneLoadName = "Hub";
         TileSystem.Instance.gameTimer.EndLevel(true, true);
     }
 }

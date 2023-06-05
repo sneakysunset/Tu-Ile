@@ -41,7 +41,7 @@ public class Item_Crate : Item
         Tile tileUnder = GridUtils.WorldPosToTile(this.gameObject.transform.position);
         if(tileUnder == TileSystem.Instance.centerTile)
         {
-            StartCoroutine(OnCenterReached(tileUnder.minableItems));
+            StartCoroutine(OnCenterReached(tileUnder.tc.minableItems));
         }
     }
 

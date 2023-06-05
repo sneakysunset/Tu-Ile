@@ -45,7 +45,7 @@ public class SO_CompassM : ScriptableObject
             item.targettedTiles.Remove(targettedTile);
             item.UpdateTargettedList();
         }
-        Item_Crate crate = Instantiate(RessourcesManager.Instance.getSpawnableFromList("Crate"), targettedTile.minableItems.position, Quaternion.identity).GetComponent<Item_Crate>();
+        Item_Crate crate = Instantiate(RessourcesManager.Instance.getSpawnableFromList("Crate"), targettedTile.tc.minableItems.position, Quaternion.identity).GetComponent<Item_Crate>();
         crate.reward = reward;
     }
 }
