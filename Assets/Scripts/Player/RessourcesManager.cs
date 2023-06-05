@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using NaughtyAttributes;
+using Complete;
 
 [System.Serializable]
 public struct ressourceMeshsCollec
@@ -70,6 +71,15 @@ public class RessourcesManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    public GameTimer getGameManagerFromList(string gameManName)
+    {
+        foreach (var item in gameManagers)
+        {
+            if (item.gameObject.name == gameManName) return item;
+        }
+        return null;
     }
 
     public GameObject getSpawnableFromList(string spawnableName)

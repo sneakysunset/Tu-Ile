@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using System.IO;
 using System;
+using static UnityEditor.PlayerSettings;
 #if UNITY_EDITOR
 using AmplifyShaderEditor;
 #endif
@@ -75,7 +76,7 @@ public class TileSystem : MonoBehaviour
         editorFlag = true;
     }
 
-    private void OnLoadScene()
+    private void OnLoadScene(string path)
     {
         if(gameTimer != null) Destroy(gameTimer.gameObject);
         if (!isHub)
@@ -88,13 +89,20 @@ public class TileSystem : MonoBehaviour
                 if (gt.gameObject.name.Split('_')[0] == fileName)
                 {
                     gameTimer = Instantiate(gt);
+                    gameTimer.gameObject.name = gt.gameObject.name;
                     break;
                 }
             }
             compassManager = gameTimer.GetComponent<CompassMissionManager>();
             tileCounter = gameTimer.GetComponent<TileCounter>();
             scoreManager = gameTimer.GetComponent<ScoreManager>();
+
+
         }
+        Vector3 pos = centerTile.transform.position;
+        pos.y = previousCenterTile.transform.position.y;
+        previousCenterTile.transform.position -= 15 * Vector3.up;
+        Instance.centerTile.transform.position = pos;
 
         Item[] items = FindObjectsOfType<Item>();
         for (int i = 0; i < items.Length; i++)

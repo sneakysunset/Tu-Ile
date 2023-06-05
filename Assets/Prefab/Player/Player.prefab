@@ -6478,7 +6478,7 @@ MonoBehaviour:
   col: {fileID: 0}
   hitParticleSystem: {fileID: 6184105888123498867}
   pointers: []
-  drawningTimer: 2
+  drawningTimer: 3.2
   dummyTarget: {fileID: 0}
   itemParent1: {fileID: 7645626118983673044}
   itemParent2: {fileID: 83618933762917008}

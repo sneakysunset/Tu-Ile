@@ -8,10 +8,11 @@ using UnityEngine.Events;
 using System;
 using Unity.VisualScripting;
 using UnityEditor;
+using Complete;
 
 public static class GridUtils
 {
-    public delegate void LevelMapLoad();
+    public delegate void LevelMapLoad(string path);
     public static event LevelMapLoad onLevelMapLoad;
     public delegate void OnEndLevel(Tile tile);
     public static event OnEndLevel onEndLevel;
@@ -105,10 +106,9 @@ public static class GridUtils
         foreach (Interactor inte in GameObject.FindObjectsOfType<Interactor>())
         {
             ObjectPooling.SharedInstance.RemovePoolItem(0, inte.gameObject, inte.GetType().ToString() + ":" + inte.type.ToString());
-
         }
-        LoadLevelMap(toHub);
-        if (onLevelMapLoad != null) onLevelMapLoad();
+        string path = LoadLevelMap(toHub);
+        if (onLevelMapLoad != null) onLevelMapLoad(path);
 
     }
 
@@ -190,7 +190,7 @@ public static class GridUtils
     #endregion
 
     #region Saving System
-    public static void LoadLevelMap(bool toHub)
+    public static string LoadLevelMap(bool toHub)
     {
         TileSystem tileS = TileSystem.Instance;
         RessourcesManager reMan = RessourcesManager.Instance;
@@ -251,7 +251,7 @@ public static class GridUtils
                 }
             }
         }
-        if (toHub) return;
+        //if (toHub) return tileMapInfo;
         string[] strings = tileMapInfo.Split('£');
         char c = strings[1][0];
         char c2 = strings[1][1];
@@ -259,7 +259,10 @@ public static class GridUtils
         char d2 = strings[1][3];
         int x = (int)char.GetNumericValue(c) * 10 + (int)char.GetNumericValue(c2);
         int y = (int)char.GetNumericValue(d) * 10 + (int)char.GetNumericValue(d2);
+        tileS.previousCenterTile = tileS.centerTile;
         tileS.centerTile = tileS.tiles[x, y];
+
+        return tileMapInfo;
     }
     public static string GenerateMapContent()
     {
@@ -269,7 +272,7 @@ public static class GridUtils
         {
             for (int y = 0; y < t.GetLength(1); y++)
             {
-               _content += GetStringByTile(t[x, y]) + "\n"; 
+                _content += GetStringByTile(t[x, y]) + "\n";
             }
             _content += "|";
         }
@@ -278,8 +281,8 @@ public static class GridUtils
         else _content += TileSystem.Instance.centerTile.coordX;
         if (TileSystem.Instance.centerTile.coordY < 10) _content += 0 + "" + TileSystem.Instance.centerTile.coordY;
         else _content += TileSystem.Instance.centerTile.coordY;
-
-
+        _content += '£';
+        _content += 0;
         return _content;
     }
     public static void UpdateTileSave(string line, Tile tile, string path)

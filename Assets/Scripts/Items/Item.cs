@@ -90,6 +90,7 @@ public class Item : MonoBehaviour
     {
         if (other.collider.CompareTag("Water"))
         {
+            print(2);
             StartCoroutine(KillItem(other.collider));
         }
         if(_player != null && Physics.GetIgnoreCollision(col, _player.col))

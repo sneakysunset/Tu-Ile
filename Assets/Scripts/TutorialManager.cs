@@ -24,9 +24,22 @@ public class TutorialManager : MonoBehaviour
     private float ogY;
     bool firstTime = true;
     public IEnumerator enumer;
+    [SerializeField] private Tile endTutoCenterTile;
+    [SerializeField] private Tile startTutoCenterTile;
+    [SerializeField] private bool activatTuto;
     private void Start()
     {
         tutoTextTr = text.transform.parent as RectTransform;
+        if(activatTuto)
+        {
+            TileSystem.Instance.centerTile = startTutoCenterTile;
+            startTutoCenterTile.tc.myMeshR.materials = startTutoCenterTile.getCorrespondingMat(startTutoCenterTile.tileType);
+        }
+        else
+        {
+            tutoTextTr.gameObject.SetActive(false);
+            return;
+        }
         targetY = tutoTextTr.anchoredPosition.y + amountToGoUp;
         ogY = tutoTextTr.anchoredPosition.y;
         enumer = GetTree();
@@ -128,6 +141,8 @@ public class TutorialManager : MonoBehaviour
 
     public void ExitTuto()
     {
+        TileSystem.Instance.centerTile.transform.GetChild(9).gameObject.SetActive(false);
+        TileSystem.Instance.centerTile = endTutoCenterTile;
         targetter.DOMove(Vector3.zero, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
     }

@@ -117,7 +117,6 @@ public class Tile : MonoBehaviour
     #region AI
     [HideInInspector] public bool isPathChecked;
     [HideNormalInspector] public int step;
-    bool pSysIsPlaying;
     [HideNormalInspector] public Item_Etabli etabli;
     [HideInInspector] public bool isNear;
     [HideInInspector] public bool IsNear { get { return isNear; } set { if (isNear != value) IsNearMethod(value); } }
@@ -260,21 +259,21 @@ public class Tile : MonoBehaviour
         td.EndDegradation();
     }
 
-    private void OnMapLoad()
+    private void OnMapLoad(string p)
     {
         tc.pSysCenterTile.gameObject.SetActive(false);
         tc.tourbillonT.gameObject.SetActive(false);
         ActivateWalkedOntoPsys(false, false);
         walkedOntoIni = false;
-        OnHubLoad();
-        OnLevelLoad();
+        if(TileSystem.Instance.isHub)OnHubLoad();
+        else OnLevelLoad();
         if (walkable)
         {
             tc.myMeshR.materials = getCorrespondingMat(tileType);
             tc.myMeshF.mesh = getCorrespondingMesh(tileType);
             tc.myMeshR.enabled = true;
             FilonLoader();
-            if(degradable) typeDegradingSpeed = tileTypeValues[(int)tileType].tileMult;
+            
             gameObject.layer = LayerMask.NameToLayer("Tile");
             transform.tag = "Tile";
             if (tileType == TileType.Sand) tc.sandParticleSystem.Play();
@@ -301,6 +300,7 @@ public class Tile : MonoBehaviour
             ActivateWalkedOntoPsys(true, false);
             walkedOntoIni = false;
         }
+        if (degradable && walkable) typeDegradingSpeed = tileTypeValues[(int)tileType].tileMult;
     }
 
     private void FilonLoader() 
@@ -377,14 +377,12 @@ public class Tile : MonoBehaviour
 
         if (walkable && (!degradable || tileType == TileType.Sand || tileType == TileType.BouncyTile) && !TileSystem.Instance.isHub)
         {
-            pSysIsPlaying = false;
             walkedOnto = true;
         }
         else if (walkable && !walkedOnto && degradable && !TileSystem.Instance.isHub)
         {
             tc.undegradableParticleSystem.Play();
             tc.walkRunes.material.DOFade(0, 1).SetEase(TileSystem.Instance.easeOut);
-            pSysIsPlaying = true;
             Material[] mats = tc.myMeshR.materials;
             //mats[mats.Length - 1].color = notWalkedOnColor;
             tc.myMeshR.materials = mats;
