@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13611ddd9b085584cb37be27c3b75a01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  growthCost: 2
+  growthCost: 1
   RessourceMeshs:
   - name: Wood
     stackType: 1
