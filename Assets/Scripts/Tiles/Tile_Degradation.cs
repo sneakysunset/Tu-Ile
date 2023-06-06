@@ -22,7 +22,7 @@ public class Tile_Degradation : MonoBehaviour
     [SerializeField] private AnimationCurve degradationTimerAnimCurve;
     public float heightByTile;
     [SerializeField, Range(0, 1)] private float shakeActivationTimePercent = .3f;
-    [SerializeField] private float shakeFrequency = .03f;
+   // [SerializeField] private float shakeFrequency = .03f;
     [SerializeField] private float shakeMagnitude = .1f;
     [SerializeField] private AnimationCurve shakeCurve;
     [SerializeField, Range(0, 10)] private float degradationLerpSpeed;

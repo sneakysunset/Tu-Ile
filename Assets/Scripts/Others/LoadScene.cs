@@ -29,7 +29,7 @@ public class LoadScene : MonoBehaviour
         GridUtils.onLevelMapLoad -= OnMapLoaded;
     }
 
-    private void OnMapLoaded()
+    private void OnMapLoaded(string path)
     {
         if (!TileSystem.Instance.isHub)
         {

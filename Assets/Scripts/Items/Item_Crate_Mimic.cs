@@ -46,7 +46,10 @@ public class Item_Crate_Mimic : Item_Crate
 
     private void OnJump()
     {
-        Debug.Log(1);
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Jump")) anim.Play("Jump");
+    }
+    public override void OnCollisionEnter(Collision other)
+    {
+        base.OnCollisionEnter(other);
     }
 }

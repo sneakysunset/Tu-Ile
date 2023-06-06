@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+
+
 public class ScoreManager : MonoBehaviour
 {
     public int score { get; private set; }
     public TextMeshProUGUI scoreText;
-    
+    public int[] scoreCaps;
+    public int highscore;
 
     public void ChangeScore(int _score)
     {

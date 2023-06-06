@@ -34,7 +34,10 @@ public class EndMenu : MonoBehaviour
     public IEnumerator EnableEnd()
     {
         if(onLevelEnd != null) onLevelEnd();
+
         GameTimer gameTimer = TileSystem.Instance.gameTimer;
+        ScoreManager score = RessourcesManager.Instance.getGameManagerFromList(gameTimer.gameObject.name).GetComponent<ScoreManager>();
+        score.highscore = TileSystem.Instance.scoreManager.score;
         //MissionManager missionManager = MissionManager.Instance;
         CameraCtr cam = TileSystem.Instance.cam;
 

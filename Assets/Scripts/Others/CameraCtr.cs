@@ -69,7 +69,7 @@ public class CameraCtr : MonoBehaviour
     }
 
 
-    public void OnLoad()
+    public void OnLoad(string path)
     {
         StartCoroutine(OnLevelLoad());
         dezoomCamera.LookAt = TileSystem.Instance.centerTile.tc.minableItems;

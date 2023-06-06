@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
     void OnPause()
     {
         closeUpCam.Priority = 10;
-        FMODUtils.SetFMODEvent(ref danceEvent, "event:/Tuile/Character/Voix/Beatbox", transform);
+        //FMODUtils.SetFMODEvent(ref danceEvent, "event:/Tuile/Character/Voix/Beatbox", transform);
     }
 
     void OnUnPause()
@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
         FMODUtils.StopFMODEvent(ref danceEvent, true);
     }
 
-    public void OnLoad()
+    public void OnLoad(string path)
     {
         respawnTile = TileSystem.Instance.centerTile;
         pState = PlayerState.Idle;
@@ -88,10 +88,7 @@ public class Player : MonoBehaviour
         float x = TileSystem.Instance.centerTile.transform.position.x - TileSystem.Instance.previousCenterTile.transform.position.x;
         float z = TileSystem.Instance.centerTile.transform.position.z - TileSystem.Instance.previousCenterTile.transform.position.z;
         Vector3 diff = new Vector3(x, 0, z);
-        Vector3 pos = TileSystem.Instance.centerTile.transform.position;
-        pos.y = TileSystem.Instance.previousCenterTile.transform.position.y;
-        TileSystem.Instance.previousCenterTile.transform.position -= 15 * Vector3.up;
-        TileSystem.Instance.centerTile.transform.position = pos;
+        
         _characterController.enabled = false;
         transform.position += diff;
         _characterController.enabled = true;
@@ -222,6 +219,7 @@ public class Player : MonoBehaviour
         {
             Item tempItem = heldItem;
             heldItem.GrabRelease(true);
+            heldItem = null;
             //Destroy(heldItem.gameObject);
             ObjectPooling.SharedInstance.RemovePoolItem(0, tempItem.gameObject, tempItem.GetType().ToString());
 
