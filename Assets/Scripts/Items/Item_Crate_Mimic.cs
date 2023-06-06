@@ -50,7 +50,6 @@ public class Item_Crate_Mimic : Item_Crate
     }
     public override void OnCollisionEnter(Collision other)
     {
-        print(1);
         base.OnCollisionEnter(other);
     }
 }

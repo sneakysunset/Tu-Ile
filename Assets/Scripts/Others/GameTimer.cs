@@ -118,6 +118,11 @@ public class GameTimer : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            timer = gameTimer - 1;
+        }
+
         if (TileSystem.Instance.ready)
         {
             GameTimerFunction();
