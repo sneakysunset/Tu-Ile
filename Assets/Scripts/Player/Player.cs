@@ -70,6 +70,8 @@ public class Player : MonoBehaviour
         Player_Pause.pauseMenuDesactivation += OnUnPause;
     }
 
+    
+
     void OnPause()
     {
         closeUpCam.Priority = 10;
@@ -162,6 +164,8 @@ public class Player : MonoBehaviour
     {
         GridUtils.onLevelMapLoad -= OnLoad;
         GridUtils.onEndLevel -= OnEndLevel;
+        Player_Pause.pauseMenuDesactivation -= OnUnPause;
+        Player_Pause.pauseMenuActivation -= OnPause;
     }
 
     private void AnimationStatesHandler()

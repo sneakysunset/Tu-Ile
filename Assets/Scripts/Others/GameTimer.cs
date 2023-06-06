@@ -39,7 +39,7 @@ public class GameTimer : MonoBehaviour
     {
         canvasRef = FindObjectOfType<LoadScene>();    
         scoreMan = GetComponent<ScoreManager>();
-        scoreMan.fillStar = canvasRef.fillStar;
+        scoreMan.fillStars = canvasRef.fillStars;
         scoreMan.scoreText = canvasRef.scoreText;
         scoreMan.ChangeScore(0);
     }
@@ -178,7 +178,7 @@ public class GameTimer : MonoBehaviour
                 //case Events.Apocalypse:
                     //TimeLineEvents.ApocalypseEvent();
                  //   break;
-               // case Events.AddMissionSlot:
+                // case Events.AddMissionSlot:
                     //TimeLineEvents.AddMissionPage(missionManager);
                    // break;
                 //case Events.ReduceMissionPool:

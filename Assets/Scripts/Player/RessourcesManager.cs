@@ -134,4 +134,13 @@ public class RessourcesManager : MonoBehaviour
         }
         return null;
     }
+
+    public void SpawnRessources(int type)
+    {
+        if(!TileSystem.Instance.isHub) 
+        {         
+            GameObject obj = Instantiate(itemsToSpawn[type].item, FindObjectOfType<Player>().transform.position + Vector3.up * 30,  Quaternion.identity);
+            if (obj.TryGetComponent(out Item_Stack itemS)) itemS.numberStacked = 50;
+        }
+    }
 }

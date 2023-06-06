@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,7 +14,7 @@ public class ScoreManager : MonoBehaviour
     public int highscore;
     public bool isCompleted;
     public bool activated;
-    [HideInInspector] public Image fillStar;
+    [HideInInspector] public Image[] fillStars;
 
 
 
@@ -22,6 +23,13 @@ public class ScoreManager : MonoBehaviour
         score += _score;
         score = Mathf.Clamp(score, 0, 9999);
         scoreText.text = score.ToString();
-        fillStar.fillAmount = (float)score / (float)scoreCaps[2];
+        for (int i = 0; i < fillStars.Length; i++)
+        {
+            float scoreCapsMinus = 0;
+            if(i > 0) scoreCapsMinus = (float)scoreCaps[(i - 1)];
+            fillStars[i].fillAmount = ((float)score - scoreCapsMinus) / (float)scoreCaps[i];
+            DOVirtual.Float(fillStars[i].fillAmount, ((float)score - scoreCapsMinus) / (float)scoreCaps[i], 1, v => fillStars[i].fillAmount = v);
+            //fillStars[i].fillAmount.
+        }
     }
 }

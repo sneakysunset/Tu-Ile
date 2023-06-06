@@ -14,7 +14,7 @@ public struct tileList
 [System.Serializable]
 public struct tileStruct
 {
-    public Tile tile;
+    public Tile[] tile;
     public int targetHeight;
     public Item.StackType tileTypes;
 }
@@ -56,8 +56,11 @@ public class HubEvents : MonoBehaviour
         string path = Application.streamingAssetsPath + "/LevelMaps/TM_Hub" + ".txt";
         for (int i = 0; i < tiles.tiles.Count; i++)
         {
-            tiles.tiles[i].tile.Spawn(tiles.tiles[i].targetHeight, tiles.tiles[i].tileTypes.ToString());
-            GridUtils.UpdateTileSave(GridUtils.GetStringByTile(tiles.tiles[i].tile), tiles.tiles[i].tile, path);
+            foreach(Tile tile in tiles.tiles[i].tile)
+            {
+                tile.Spawn(tiles.tiles[i].targetHeight, tiles.tiles[i].tileTypes.ToString());
+                GridUtils.UpdateTileSave(GridUtils.GetStringByTile(tile), tile, path);
+            }
             yield return new WaitForSeconds(timeOffsetBetweenTiles);
         }
         yield return new WaitForSeconds(afterEventWaiter);

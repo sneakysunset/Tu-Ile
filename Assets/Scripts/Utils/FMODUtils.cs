@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FMODUtils 
+public class FMODUtils
 {
     static public bool IsPlaying(FMOD.Studio.EventInstance instance)
     {
@@ -20,8 +21,21 @@ public class FMODUtils
 
     static public void StopFMODEvent(ref FMOD.Studio.EventInstance instance, bool allowFadeOut)
     {
-        if (allowFadeOut) instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        else instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        if (allowFadeOut)
+        {
+            instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            TileSystem.Instance.StartCoroutine(fadeoutTimeOut(instance));
+        }
+        else
+        {
+            instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            instance.release();
+        }
+
+    }
+    static IEnumerator fadeoutTimeOut(FMOD.Studio.EventInstance instance)
+    {
+        yield return new WaitForSeconds(1);
         instance.release();
     }
 }

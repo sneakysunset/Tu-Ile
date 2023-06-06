@@ -215,14 +215,6 @@ public class TileSelector : MonoBehaviour
                                 cmm.CompleteMission(tile);
                             }
                         }
-                        for (int i = 0; i < mM.activeMissions.Length; i++)
-                        {
-                            if (mM.activeMissions[i].boussoleTile && tile == mM.activeMissions[i].boussoleTile)
-                            {
-                                mM.activeMissions[i].tresorFound = true;
-                                if (missionComplete != null) missionComplete(player.tileUnder);
-                            }
-                        }
 
                         TileSystem.Instance.compassManager.CompleteMission(tile);
                         break;

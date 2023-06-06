@@ -14,7 +14,7 @@ public class LoadScene : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public RectTransform timerTr;
     public RectTransform scoreTr;
-    public Image fillStar;
+    public Image[] fillStars;
     [SerializeField] private float lerpDuration;
     [SerializeField] private float disabledPos;
     private float ogPos;

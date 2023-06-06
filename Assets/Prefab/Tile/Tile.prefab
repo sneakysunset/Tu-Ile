@@ -2601,7 +2601,7 @@ MonoBehaviour:
     scoreValueOnElevate: 3
     scoreValueOnCreate: 8
   - type: 2
-    tileMult: 0.8
+    tileMult: 0.6
     scoreValueOnElevate: 5
     scoreValueOnCreate: 10
   - type: 3

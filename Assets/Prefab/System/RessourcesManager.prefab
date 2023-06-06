@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13611ddd9b085584cb37be27c3b75a01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  growthCost: 2
+  growthCost: 1
   RessourceMeshs:
   - name: Wood
     stackType: 1
@@ -58,6 +58,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 9ee57a835abf71544b864397f3ebb673, type: 2}
     necessaryNum: 030000000600000009000000
     sprite: {fileID: 21300000, guid: ffc43ac98e0a29749bf006dec39eaf1e, type: 3}
+    tileSprite: {fileID: 21300000, guid: 24f7765f6021e1e40bf6df74d843afc5, type: 3}
   - name: Rock
     stackType: 2
     meshs:
@@ -70,6 +71,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 3ab60182c03b70945b158f1605d88218, type: 2}
     necessaryNum: 020000000400000006000000
     sprite: {fileID: 21300000, guid: cfaed7eb6078de34aa199b0035bc61ad, type: 3}
+    tileSprite: {fileID: 21300000, guid: 5a060343e8e5f7e4f9b7eda26eab7521, type: 3}
   - name: Gold
     stackType: 3
     meshs:
@@ -82,6 +84,7 @@ MonoBehaviour:
     - {fileID: -6478536213147159724, guid: 642afb5bc5dc21f49b1bd15a3e575a9e, type: 3}
     necessaryNum: 010000000200000003000000
     sprite: {fileID: 21300000, guid: a883498e3d7923443ab111c96b724ba4, type: 3}
+    tileSprite: {fileID: 21300000, guid: 5a060343e8e5f7e4f9b7eda26eab7521, type: 3}
   - name: Diamond
     stackType: 4
     meshs:
@@ -94,6 +97,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 3176e65691398b74b918d81098c1beea, type: 2}
     necessaryNum: 010000000200000003000000
     sprite: {fileID: 21300000, guid: 0647d565d43add24e8cf63ca2b8edb91, type: 3}
+    tileSprite: {fileID: 21300000, guid: 5a060343e8e5f7e4f9b7eda26eab7521, type: 3}
   - name: Adamantium
     stackType: 5
     meshs:
@@ -106,6 +110,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: a148dfd9566cf574e942a28854723245, type: 2}
     necessaryNum: 010000000200000003000000
     sprite: {fileID: 21300000, guid: a7c6f9ade6c4b504385395ac8af38f7b, type: 3}
+    tileSprite: {fileID: 21300000, guid: 5a060343e8e5f7e4f9b7eda26eab7521, type: 3}
   RessourceMeshsUnstackable:
   - name: Eltender
     itemType: 0
@@ -132,12 +137,12 @@ MonoBehaviour:
     isTile: 1
     tileType: 1
     itemType: 0
-    sprite: {fileID: 21300000, guid: 735c47635f623f64598ecfc1e86a3282, type: 3}
+    sprite: {fileID: 21300000, guid: 24f7765f6021e1e40bf6df74d843afc5, type: 3}
   - name: Rock Tile
     isTile: 1
     tileType: 2
     itemType: 0
-    sprite: {fileID: 21300000, guid: a31c360b21ac51e4b9a995104ebc333c, type: 3}
+    sprite: {fileID: 21300000, guid: 5a060343e8e5f7e4f9b7eda26eab7521, type: 3}
   - name: Diamond Tile
     isTile: 1
     tileType: 4
@@ -178,6 +183,18 @@ MonoBehaviour:
     index: 12
   - item: {fileID: 3982822828458313300, guid: 71185b92ee0534b43bea6e105743a8d2, type: 3}
     index: 13
+  - item: {fileID: 7307083508970999916, guid: 916ede32b917e24448f062a764b82885, type: 3}
+    index: 14
+  - item: {fileID: 8119176005250283699, guid: c4722584de298b6449b81d405df55f16, type: 3}
+    index: 15
+  - item: {fileID: 1778619372719119619, guid: 39cdcf0cbd58c154080ce34126f322a3, type: 3}
+    index: 16
+  - item: {fileID: 5081688468642532139, guid: af6ef38888d32a347baba23a3302fbf0, type: 3}
+    index: 17
+  - item: {fileID: 885834808780137686, guid: 210b15a271081554fb901b5bf58d7553, type: 3}
+    index: 18
+  - item: {fileID: 5953813166993551873, guid: 018e1ac020e33f344a2f9d59f5d14b17, type: 3}
+    index: 19
   gameManagers:
   - {fileID: 614773810181506915, guid: 7f80ee2cedd79c44daec8c1627618476, type: 3}
   - {fileID: 2138704921227410456, guid: 3da5a16e78e61cd428dc4376c2306f50, type: 3}

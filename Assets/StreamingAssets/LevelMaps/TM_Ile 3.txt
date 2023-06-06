@@ -454,7 +454,7 @@ tile 9 2+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+Sp
 tile 9 3+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 9 4+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 9 5+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :9+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 9 6+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :9+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
+tile 9 6+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :9+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :Boussole;3;1;0;%
 tile 9 7+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 9 8+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :Chantier;0;0;0;Chantier-SimpleHouse (SO_Recette_Chantier)%
 tile 9 9+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :9+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
