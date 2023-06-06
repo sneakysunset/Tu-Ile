@@ -266,14 +266,14 @@ public class CameraCtr : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Vector3 camPos = cam1.transform.position;
+/*        Vector3 camPos = cam1.transform.position;
         for (int i = 0; i < players.Count; i++)
         {
             if (i == 1) camPos = cam2.transform.position;
             Vector3 direction = (players[i].position - camPos).normalized;
             float distance = Vector3.Distance(players[i].position, camPos) - sphereCastRadius;
             UnityEngine.Gizmos.DrawRay(camPos,direction * distance);
-        }
+        }*/
     }
 
 

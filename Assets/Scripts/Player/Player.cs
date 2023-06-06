@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public CharacterController _characterController;
     [HideInInspector] public PlayerMovement pM;
     [HideInInspector] public Player_Mining pMin;
+    [HideInInspector] public TileSelector tileSelec;
     public Tile respawnTile;
     [HideInInspector] public Tile tileUnder;
     [HideNormalInspector] public List<Item> holdableItems;
@@ -53,6 +54,7 @@ public class Player : MonoBehaviour
         GetComponentInChildren<SkinnedMeshRenderer>().materials[1].color = Color.black;
         closeUpCam = GetComponentInChildren<CinemachineVirtualCamera>();
         pPause = GetComponent<Player_Pause>();
+        tileSelec = GetComponent<TileSelector>();
         transform.parent = null;
         dummyTarget = transform.Find("DummyTarget");
         if (/*TileSystem.Instance.isHub && */Time.time > .1f) FindObjectOfType<CameraCtr>().AddPlayer(dummyTarget, this);
@@ -71,7 +73,7 @@ public class Player : MonoBehaviour
     void OnPause()
     {
         closeUpCam.Priority = 10;
-        //FMODUtils.SetFMODEvent(ref danceEvent, "event:/Tuile/Character/Voix/Beatbox", transform);
+        FMODUtils.SetFMODEvent(ref danceEvent, "event:/Tuile/Character/Voix/Beatbox", transform);
     }
 
     void OnUnPause()
@@ -94,7 +96,7 @@ public class Player : MonoBehaviour
         _characterController.enabled = true;
         if(heldItem != null )
         {
-            ObjectPooling.SharedInstance.RemovePoolItem(0, heldItem.gameObject, heldItem.GetType().ToString());
+            Destroy(heldItem.gameObject);
             heldItem = null;
         }
 
@@ -221,7 +223,7 @@ public class Player : MonoBehaviour
             heldItem.GrabRelease(true);
             heldItem = null;
             //Destroy(heldItem.gameObject);
-            ObjectPooling.SharedInstance.RemovePoolItem(0, tempItem.gameObject, tempItem.GetType().ToString());
+            Destroy(tempItem.gameObject);
 
         }
         WaterHit(hit);

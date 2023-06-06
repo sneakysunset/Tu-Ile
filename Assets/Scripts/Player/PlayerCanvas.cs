@@ -32,11 +32,18 @@ public class PlayerCanvas : MonoBehaviour
             text.text = "x " + itemS.numberStacked.ToString();
             image.gameObject.SetActive(true);
             Sprite sprite = null;
+            bool isTile = false;
+            if (player.heldItem.GetType() == typeof(Item_Stack_Tile)) isTile = true;
             foreach(ressourceMeshsCollec rMC in rMan.RessourceMeshs)
             {
-                if(rMC.stackType == itemS.stackType)
+                if(rMC.stackType == itemS.stackType && !isTile)
                 {
                     sprite = rMC.sprite;
+                    break;
+                }
+                else if(rMC.stackType == itemS.stackType && isTile)
+                {
+                    sprite = rMC.tileSprite;
                     break;
                 }
             }

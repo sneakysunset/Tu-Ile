@@ -38,6 +38,7 @@ public class TutorialManager : MonoBehaviour
         else
         {
             tutoTextTr.gameObject.SetActive(false);
+            GetComponent<HubEvents>().tileGrowEventList.RemoveAt(0);
             return;
         }
         targetY = tutoTextTr.anchoredPosition.y + amountToGoUp;
@@ -51,7 +52,7 @@ public class TutorialManager : MonoBehaviour
         interactor.isTuto = true;
         if (!firstTime)
         {
-            TileSystem.Instance.centerTile.transform.GetChild(9).gameObject.SetActive(false);
+            TileSystem.Instance.centerTile.tc.pSysCenterTile.gameObject.SetActive(false);
             TileSystem.Instance.centerTile = centerTile.GetComponentInParent<Tile>();
             TileSystem.Instance.centerTile.tc.myMeshR.materials = TileSystem.Instance.centerTile.getCorrespondingMat(TileSystem.Instance.centerTile.tileType);
             TileSystem.Instance.centerTile.tc.myMeshF.mesh = TileSystem.Instance.centerTile.getCorrespondingMesh(TileSystem.Instance.centerTile.tileType);
@@ -141,7 +142,7 @@ public class TutorialManager : MonoBehaviour
 
     public void ExitTuto()
     {
-        TileSystem.Instance.centerTile.transform.GetChild(9).gameObject.SetActive(false);
+        TileSystem.Instance.centerTile.tc.pSysCenterTile.gameObject.SetActive(false);
         TileSystem.Instance.centerTile = endTutoCenterTile;
         targetter.DOMove(Vector3.zero, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);

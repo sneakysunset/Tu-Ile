@@ -66,8 +66,9 @@ public class Item_Etabli : Item
         stackT = transform.Find("Stacks");
     }
 
-    private void OnEnable()
+    public IEnumerator Enable()
     {
+        //yield return new WaitForEndOfFrame();
         if (isChantier && TileSystem.Instance.isHub) interactable = false;
         else interactable = true;
         itemsFilled = new bool[recette.requiredItemUnstackable.Length];
@@ -87,7 +88,6 @@ public class Item_Etabli : Item
             itemNum = GetComponentInChildren<EtabliCanvas>();
             itemNum.UpdateText(this);
         }
-        //yield return new WaitForSeconds(.01f);
         transform.parent = tileUnder.transform;
         int yoffset = 2;
         if (isChantier) yoffset = 0;
@@ -97,6 +97,7 @@ public class Item_Etabli : Item
             transform.LookAt(new Vector3(tileUnder.transform.position.x, transform.position.y, tileUnder.transform.position.z));
             spawnPos.position = new Vector3(tileUnder.tc.minableItems.position.x, transform.position.y, tileUnder.tc.minableItems.position.z); 
         }
+        yield return new WaitForEndOfFrame();
     }
 
     private void OnDisable()
@@ -240,7 +241,7 @@ public class Item_Etabli : Item
                     {
                         currentStackRessources[i] += itemS.numberStacked;
                         player.heldItem = null;
-                        ObjectPooling.SharedInstance.RemovePoolItem(0, itemS.gameObject, itemS.GetType().ToString());
+                        Destroy(itemS.gameObject);
                         //Destroy(itemS.gameObject);
                     }
                     else
@@ -253,7 +254,7 @@ public class Item_Etabli : Item
                             currentStackRessources[i] += itemS.numberStacked;
                             player.heldItem = null;
                             //Destroy(itemS.gameObject);
-                            ObjectPooling.SharedInstance.RemovePoolItem(0, itemS.gameObject, itemS.GetType().ToString());
+                            Destroy(itemS.gameObject);
                         }
                     }
                     if (currentStackRessources[i] > 0)
@@ -282,7 +283,7 @@ public class Item_Etabli : Item
                     player.heldItem = null;
                     //Destroy(tempItem.gameObject);
 
-                    ObjectPooling.SharedInstance.RemovePoolItem(0, tempItem.gameObject, tempItem.GetType().ToString());
+                    Destroy(tempItem.gameObject);
                     stackT.GetChild(i).gameObject.SetActive(true);
 
                     Highlight.SetActive(false);
@@ -321,8 +322,9 @@ public class Item_Etabli : Item
             {
                 //craftedItem = Instantiate(recette.craftedItemPrefab, createdItem.position, Quaternion.identity, createdItem);
                 Vector3 pos = createdItem.position;
-                Transform tr = createdItem;
-                craftedItem = ObjectPooling.SharedInstance.GetPoolItem(0, pos, tr, recette.craftedItemPrefab.GetType().ToString()).GetComponent<Item>();
+                //Transform tr = createdItem;
+                craftedItem = Instantiate(recette.craftedItemPrefab, pos, Quaternion.identity);
+                //craftedItem = ObjectPooling.SharedInstance.GetPoolItem(0, pos, tr, recette.craftedItemPrefab.GetType().ToString()).GetComponent<Item>();
             }
 
             if (Utils.IsSameOrSubclass(System.Type.GetType("Item_Stack"), craftedItem.GetType()))
@@ -412,13 +414,13 @@ public class Item_Etabli : Item
             itemNum.etabli = this;
             itemNum.OnActivated();
         }
-        else if(!Application.isPlaying && isChantier)
+/*        else if(!Application.isPlaying && isChantier)
         {
             //itemNumCh = gameObject.GetComponentInChildren<ChantierCanvas>();
             itemNumCh.etabli = this;
             itemNumCh.GetRessourceManagerInEditor();
             itemNumCh.OnActivated();
-        }
+        }*/
     }
 
     private void OnDrawGizmos()

@@ -10,7 +10,7 @@ public class TileSelector : MonoBehaviour
 {
     #region Variables
     public GameObject bluePrintPrefab;
-    Transform tileBluePrint;
+    [HideInInspector] public Transform tileBluePrint;
     public float maxAngleToTarget = 50;
     public LayerMask tileLayer;
     public float hitDistance = 4;
@@ -138,8 +138,8 @@ public class TileSelector : MonoBehaviour
 
         if (Application.isPlaying && player.tileUnder)
         {
-            Gizmos.DrawRay(transform.position + hitDistance * transform.forward, -Vector3.up * 2000);
-            Gizmos.DrawSphere(transform.position + transform.forward * hitDistance, .1f);
+            //Gizmos.DrawRay(transform.position + hitDistance * transform.forward, -Vector3.up * 2000);
+            //Gizmos.DrawSphere(transform.position + transform.forward * hitDistance, .1f);
         }
     }
     #endregion
@@ -168,7 +168,8 @@ public class TileSelector : MonoBehaviour
         bool c2 = (!targettedTile.walkable && !targettedTile.tourbillon && !TileSystem.Instance.isHub) || (TileSystem.Instance.isHub && targettedTile.coordX == 17 && targettedTile.coordY == 6);
         if (c2  && c3)
         {
-            tileBluePrint.position = new Vector3(targettedTile.transform.position.x, (GameConstant.tileHeight + player.tileUnder.transform.position.y), targettedTile.transform.position.z);
+            tileBluePrint.position = new Vector3(targettedTile.transform.position.x, (player.tileUnder.transform.position.y), targettedTile.transform.position.z);
+            
             return;
         }
         else goto NotHit;

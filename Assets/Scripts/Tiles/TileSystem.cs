@@ -81,8 +81,8 @@ public class TileSystem : MonoBehaviour
         if(gameTimer != null) Destroy(gameTimer.gameObject);
         if (!isHub)
         {
-            previousCenterTile.transform.GetChild(9).gameObject.SetActive(false);
-            centerTile.transform.GetChild(9).gameObject.SetActive(true);
+            previousCenterTile.tc.pSysCenterTile.gameObject.SetActive(false);
+            centerTile.tc.pSysCenterTile.gameObject.SetActive(true);
 
             foreach (GameTimer gt in RessourcesManager.Instance.gameManagers)
             {
@@ -107,9 +107,9 @@ public class TileSystem : MonoBehaviour
         Item[] items = FindObjectsOfType<Item>();
         for (int i = 0; i < items.Length; i++)
         {
-            ObjectPooling.SharedInstance.RemovePoolItem(0, items[i].gameObject, items[i].GetType().ToString());
+           // ObjectPooling.SharedInstance.RemovePoolItem(0, items[i].gameObject, items[i].GetType().ToString());
 
-            //Destroy(items[i].gameObject);
+            Destroy(items[i].gameObject);
         }
     }
 

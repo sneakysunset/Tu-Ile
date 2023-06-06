@@ -193,3 +193,14 @@ MonoBehaviour:
   rewards:
   - {fileID: 11400000, guid: 1640324d09c0b444691a8c2c91ce0833, type: 2}
   - {fileID: 11400000, guid: 830be980fd55dbd40890c24d8c8f63b7, type: 2}
+  meshs:
+  - mesh: {fileID: 6239881831769578202, guid: fd987fb914f92b54481249887cee245b, type: 3}
+    stackType: 1
+  - mesh: {fileID: -7342570971367548042, guid: 80990df15ad59774ab465d3c3c6420e8, type: 3}
+    stackType: 2
+  - mesh: {fileID: -7342570971367548042, guid: 80990df15ad59774ab465d3c3c6420e8, type: 3}
+    stackType: 3
+  - mesh: {fileID: -7342570971367548042, guid: 80990df15ad59774ab465d3c3c6420e8, type: 3}
+    stackType: 4
+  - mesh: {fileID: -7342570971367548042, guid: 80990df15ad59774ab465d3c3c6420e8, type: 3}
+    stackType: 5

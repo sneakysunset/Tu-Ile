@@ -26,7 +26,8 @@ public class Player_StopDegradation : MonoBehaviour
 
     private void LoadScene()
     {
-        player.tileUnder.tc.levelUI.gameObject.SetActive(false);
+        if (!TileSystem.Instance.isHub) player.tileUnder.tc.levelUI.DisableUI();
+        else TileSystem.Instance.centerTile.tc.levelUI.EnableUI();
         TileSystem.Instance.fileName = player.tileUnder.levelName;
         TileSystem.Instance.previousCenterTile = player.tileUnder;
         StartCoroutine(GridUtils.SinkWorld(player.tileUnder, false, false)) ;

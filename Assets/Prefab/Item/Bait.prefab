@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 1220876259281220899}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.01, y: 1.01, z: 1.01}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6312354110190620753}
   m_RootOrder: 0
@@ -40,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1220876259281220899}
-  m_Mesh: {fileID: 4300000, guid: 755fec698c6100444bc2a332b153347e, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: fbc815ef71c8e964080398c506b423cf, type: 3}
 --- !u!23 &8193584577459036232
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -113,7 +113,7 @@ Transform:
   m_GameObject: {fileID: 4377360843773846542}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.1059244, y: 3.1059244, z: 3.1059244}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 178803577201532249}
@@ -133,12 +133,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   holdable: 0
+  interactable: 1
+  targetter: {fileID: 0}
   isHeld: 0
   rb: {fileID: 0}
   Highlight: {fileID: 0}
   _player: {fileID: 0}
   physic: 1
   col: {fileID: 0}
+  isTuto: 0
 --- !u!33 &8887652996630868445
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -146,7 +149,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4377360843773846542}
-  m_Mesh: {fileID: 4300000, guid: 755fec698c6100444bc2a332b153347e, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: fbc815ef71c8e964080398c506b423cf, type: 3}
 --- !u!23 &1393896282069438319
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -167,7 +170,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f9c4a99059a34d842b70997d0245fde2, type: 2}
+  - {fileID: 2100000, guid: fdd9471714d36b541bc48502c8fd7f89, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -218,4 +221,4 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 755fec698c6100444bc2a332b153347e, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: fbc815ef71c8e964080398c506b423cf, type: 3}

@@ -37,7 +37,15 @@ public class ObjectPooling : MonoBehaviour
             
             if (strType == "Interactor")
             {
-                foreach (Interactor inte in FindObjectsOfType<Interactor>()) if (inte.type.ToString() == pool.itemType.Split(':')[1]) size++;
+                foreach (Interactor inte in FindObjectsOfType<Interactor>())
+                {
+                    if (inte.type.ToString() == pool.itemType.Split(':')[1])
+                    {
+                        size++;
+                        pool.objects.Add(inte.gameObject);
+                    }
+                }
+                
             }
             else if(strType == "Item_Etabli")
             {
@@ -68,7 +76,7 @@ public class ObjectPooling : MonoBehaviour
         }
     }
 
-    public GameObject GetPoolItem(int index,Vector3 pos, Transform parentP, string type = null, SO_Recette optionalRecette = null, SO_CrateReward crateReward = null)
+    public GameObject GetPoolItem(int index, Vector3 pos, Transform parentP, string type = null, SO_Recette optionalRecette = null, SO_CrateReward crateReward = null)
     {
         if (type != null)
         {
@@ -77,7 +85,7 @@ public class ObjectPooling : MonoBehaviour
                 if (type == pooledObjects[i].itemType) index = i;
             }
         }
-        GameObject go ;
+        GameObject go;
 
 
         if (pooledObjects[index].objects.Count == 0) go = Instantiate(pooledObjects[index].prefab);
@@ -88,18 +96,18 @@ public class ObjectPooling : MonoBehaviour
 
         }
 
-        if(optionalRecette != null) go.GetComponent<Item_Etabli>().recette = optionalRecette;
-        else if(crateReward != null) go.GetComponent<Item_Crate>().reward = crateReward;
+        if (optionalRecette != null) go.GetComponent<Item_Etabli>().recette = optionalRecette;
+        else if (crateReward != null) go.GetComponent<Item_Crate>().reward = crateReward;
         go.transform.parent = parentP;
         go.transform.position = pos;
         go.SetActive(true);
-        
+
         return go;
     }
 
     public void RemovePoolItem(int index, GameObject obj, string type = null)
     {
-        if(type != null)
+        if (type != null)
         {
             for (int i = 0; i < pooledObjects.Count; i++)
             {

@@ -186,6 +186,6 @@ public class AI_Movement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawRay(transform.position + transform.localScale.y / 2 * Vector3.up, transform.forward * 1f);
+       // Gizmos.DrawRay(transform.position + transform.localScale.y / 2 * Vector3.up, transform.forward * 1f);
     }
 }
