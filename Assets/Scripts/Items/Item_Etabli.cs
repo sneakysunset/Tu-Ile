@@ -80,7 +80,8 @@ public class Item_Etabli : Item
         createdItem = transform.Find("TileCreator/CreatedPos");
         if (isChantier)
         {
-            //itemNumCh = GetComponentInChildren<ChantierCanvas>();
+            itemNumCh = GetComponentInChildren<ChantierCanvas>();
+            itemNumCh.OnActivated();
             itemNumCh.UpdateText(this);
         }
         else

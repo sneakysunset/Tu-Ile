@@ -158,12 +158,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   holdable: 0
+  interactable: 1
+  targetter: {fileID: 0}
   isHeld: 0
   rb: {fileID: 0}
   Highlight: {fileID: 0}
   _player: {fileID: 0}
   physic: 1
   col: {fileID: 0}
+  isTuto: 0
   reward: {fileID: 11400000, guid: 1640324d09c0b444691a8c2c91ce0833, type: 2}
   yLerpPositionAmount: 4
   ScaleAmount: 2

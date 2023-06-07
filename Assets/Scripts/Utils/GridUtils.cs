@@ -231,6 +231,7 @@ public static class GridUtils
                 tile.walkable = Convert.ToBoolean(int.Parse(tiParam[1].Split(":")[1]));
                 tile.tourbillon = Convert.ToBoolean(int.Parse(tiParam[3].Split(":")[1]));
                 tile.tileSpawnType = (TileType)Convert.ToInt32(int.Parse(tiParam[5].Split(":")[1]));
+                tile.degradable = false;
                 if (tile.walkable)
                 {
 

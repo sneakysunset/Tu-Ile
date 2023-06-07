@@ -217,9 +217,18 @@ public class Player : MonoBehaviour
         }
         if (!_characterController.isGrounded)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Stomp", transform.position);
+            stompEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Tuile/Character/Actions/Stomp");
+            //print(groundType);
+            stompEvent.setParameterByNameWithLabel("GroundType", groundType.ToString());
+            stompEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform));
+            //stompEvent.setParameterByNameWithLabel("GroundType", groundType);
+            stompEvent.start();
+
+            //FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Stomp", transform.position);
         }
     }
+
+    FMOD.Studio.EventInstance stompEvent;
 
     IEnumerator Drawning(ControllerColliderHit hit)
     {

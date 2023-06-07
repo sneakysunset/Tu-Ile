@@ -44,7 +44,6 @@ public class ChantierCanvas : MonoBehaviour
         {
             layoutItems[i].gameObject.SetActive(false);
         }
-
         int f = 0;
         for (int i = 0; i < etabli.recette.requiredItemStacks.Length; i++)
         {

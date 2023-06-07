@@ -49,7 +49,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6354948749326121284, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: m_Name
-      value: GameManager
+      value: Ile 3_GM
       objectReference: {fileID: 0}
     - target: {fileID: 6354948749326121285, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: m_Enabled

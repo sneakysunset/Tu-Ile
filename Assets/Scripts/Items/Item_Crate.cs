@@ -58,19 +58,21 @@ public class Item_Crate : Item
         yield return new WaitForSeconds(lerpDuration);
         transform.DOScale(transform.localScale * ScaleAmount, 1);
         yield return new WaitForSeconds(1);
-        GiveRewards();
+        if(!TileSystem.Instance.isHub)GiveRewards();
+        else
+        {
+            TileSystem.Instance.playersMan.GetComponent<HubEvents>().GrowTileList();
+            TileSystem.Instance.tutorial.ExitTuto();
+        }
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/ChestComplete", transform.position);
         Destroy(gameObject);
     }
     
     private void GiveRewards()
     {
         int i = 0;
-        if (!TileSystem.Instance.isHub) TileSystem.Instance.scoreManager.ChangeScore(reward.scoreReward);
-        else
-        {
-            TileSystem.Instance.playersMan.GetComponent<HubEvents>().GrowTileList();
-            TileSystem.Instance.tutorial.ExitTuto();
-        } 
+        TileSystem.Instance.scoreManager.ChangeScore(reward.scoreReward);
+
         if (reward.itemReward)
         {
             if (reward.isRandom)

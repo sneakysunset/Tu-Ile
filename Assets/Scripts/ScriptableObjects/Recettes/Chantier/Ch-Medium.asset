@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dda88fd909c2f243a5cd2b7110b29a8, type: 3}
   m_Name: Ch-Medium
   m_EditorClassIdentifier: 
-  convertionTime: 0
+  convertionTime: 1
   requiredItemStacks:
   - stackType: 1
     cost: 6

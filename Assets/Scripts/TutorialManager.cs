@@ -19,9 +19,9 @@ public class TutorialManager : MonoBehaviour
     public TextMeshProUGUI text;
     private RectTransform tutoTextTr;
     public float timeToGoOut, timeToGoIn;
-    public float amountToGoUp;
-    private float targetY;
-    private float ogY;
+    public float amountToGoLeft;
+    private float targetX;
+    private float ogX;
     bool firstTime = true;
     public IEnumerator enumer;
     [SerializeField] private Tile endTutoCenterTile;
@@ -41,8 +41,8 @@ public class TutorialManager : MonoBehaviour
             GetComponent<HubEvents>().tileGrowEventList.RemoveAt(0);
             return;
         }
-        targetY = tutoTextTr.anchoredPosition.y + amountToGoUp;
-        ogY = tutoTextTr.anchoredPosition.y;
+        targetX = tutoTextTr.anchoredPosition.x + amountToGoLeft;
+        ogX = tutoTextTr.anchoredPosition.x;
         enumer = GetTree();
         StartCoroutine(enumer);
     }
@@ -56,14 +56,14 @@ public class TutorialManager : MonoBehaviour
             TileSystem.Instance.centerTile = centerTile.GetComponentInParent<Tile>();
             TileSystem.Instance.centerTile.tc.myMeshR.materials = TileSystem.Instance.centerTile.getCorrespondingMat(TileSystem.Instance.centerTile.tileType);
             TileSystem.Instance.centerTile.tc.myMeshF.mesh = TileSystem.Instance.centerTile.getCorrespondingMesh(TileSystem.Instance.centerTile.tileType);
-            tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
+            tutoTextTr.DOAnchorPosX(targetX, timeToGoOut);
             targetter.DOMove(interactor.target.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
             yield return new WaitForSeconds(timeToGoOut);
         } 
         else
         {
             
-            tutoTextTr.anchoredPosition = new Vector2(tutoTextTr.anchoredPosition.x, targetY);
+            tutoTextTr.anchoredPosition = new Vector2(targetX, tutoTextTr.anchoredPosition.y);
             firstTime = false;
             yield return new WaitUntil(()=>TileSystem.Instance.ready);
             targetter.DOMove(interactor.target.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
@@ -71,7 +71,7 @@ public class TutorialManager : MonoBehaviour
             //DOVirtual.Float(0f, 50, 1, v => light.intensity = v);
         }
         text.text = "Couper l'arbre en vous placant devant lui";
-        tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
+        tutoTextTr.DOAnchorPosX(ogX, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         //targetter.position = interactor.target.position;
         enumer = null;
@@ -92,10 +92,10 @@ public class TutorialManager : MonoBehaviour
        // }
         etabli.isTuto = true;
         targetter.DOMove(etabli.targetter.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
-        tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
+        tutoTextTr.DOAnchorPosX(targetX, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
-        text.text = "Ramassez le bois avec le bouton 'X'. Puis amenez le bois à l'établi et déposez le avec le bouton 'X'";
-        tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
+        text.text = "Ramasser le bois avec le bouton 'X'. Puis amener le bois à l'établi et déposer le avec le bouton 'X'";
+        tutoTextTr.DOAnchorPosX(ogX, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         enumer = null;
     }
@@ -106,10 +106,10 @@ public class TutorialManager : MonoBehaviour
         chantier.interactable = true;
 
         targetter.DOMove(chantier.targetter.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
-        tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
+        tutoTextTr.DOAnchorPosX(targetX, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
-        text.text = "Amenez le bois au chantier et déposez le avec le bouton 'X'";
-        tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
+        text.text = "Amener le bois au chantier et déposez le avec le bouton 'X'";
+        tutoTextTr.DOAnchorPosX(ogX, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         chantier.interactable = true;
         enumer = null;
@@ -120,10 +120,10 @@ public class TutorialManager : MonoBehaviour
 
         targetter.DOMove(centerTile.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
 
-        tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
+        tutoTextTr.DOAnchorPosX(targetX, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
-        text.text = "Amenez le bois à la tile avec une cercle magique et déposez la avec le bouton 'X'";
-        tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
+        text.text = "Amener le bois à la tile avec une cercle magique et déposez la avec le bouton 'X'";
+        tutoTextTr.DOAnchorPosX(ogX, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         enumer = null;
     }   
@@ -131,10 +131,10 @@ public class TutorialManager : MonoBehaviour
     public IEnumerator GetSunkTile()
     {
         targetter.DOMove(sunkTile.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
-        tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
+        tutoTextTr.DOAnchorPosX(targetX, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
-        text.text = "Utilisez la tuile de bois avec le bouton 'RT' pour créer une plateforme dans l'eau";
-        tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
+        text.text = "Utiliser la tuile de bois avec le bouton 'RT' pour créer une plateforme dans l'eau";
+        tutoTextTr.DOAnchorPosX(ogX, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         //targetter.position = sunkTile.position;
         enumer = null;
@@ -145,6 +145,6 @@ public class TutorialManager : MonoBehaviour
         TileSystem.Instance.centerTile.tc.pSysCenterTile.gameObject.SetActive(false);
         TileSystem.Instance.centerTile = endTutoCenterTile;
         targetter.DOMove(Vector3.zero, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
-        tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
+        tutoTextTr.DOAnchorPosX(targetX, timeToGoOut);
     }
 }

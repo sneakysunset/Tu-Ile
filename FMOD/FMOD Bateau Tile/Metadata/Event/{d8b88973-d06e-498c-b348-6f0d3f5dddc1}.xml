@@ -99,6 +99,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{54067472-342e-46ae-8998-8ff7fe18e16e}">
+		<property name="volume">
+			<value>-3</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -123,6 +126,9 @@
 		<property name="startOffset">
 			<value>1</value>
 		</property>
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{7cc47c54-b86a-485e-86ca-6353efcabade}</destination>
 		</relationship>
@@ -131,6 +137,9 @@
 		<property name="startOffset">
 			<value>1</value>
 		</property>
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{7a730af6-3bbe-44c4-8ba5-0fb0a68afa21}</destination>
 		</relationship>
@@ -138,6 +147,9 @@
 	<object class="SingleSound" id="{491b69b5-a1a5-44be-9f85-1ef0ee7e8274}">
 		<property name="startOffset">
 			<value>2</value>
+		</property>
+		<property name="volume">
+			<value>10</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{1a55ceef-00ba-480c-9ca3-df7fee02f78d}</destination>
