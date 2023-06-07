@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minDistanceFromCenter: 0
   maxDistanceFromCenter: 3
-  reward: {fileID: 11400000, guid: 830be980fd55dbd40890c24d8c8f63b7, type: 2}
+  reward: {fileID: 11400000, guid: 1640324d09c0b444691a8c2c91ce0833, type: 2}

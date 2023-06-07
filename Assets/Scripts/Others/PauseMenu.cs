@@ -18,7 +18,6 @@ public class PauseMenu : MonoBehaviour
     public Button ogButton;
     public Button optionButton;
     public bool optionOn;
-
     private void Awake()
     {
         players = FindObjectsOfType<PlayerInput>();
@@ -88,7 +87,14 @@ public class PauseMenu : MonoBehaviour
     public void HUB()
     {
         if (optionOn) return;
-        TileSystem.Instance.gameTimer.EndLevel(false, true);
-        player.SetPause();
+        if (TileSystem.Instance.isHub)
+        {
+            Application.Quit();
+        }
+        else
+        {
+            TileSystem.Instance.gameTimer.EndLevel(false, true);
+            player.SetPause();
+        }
     }
 }

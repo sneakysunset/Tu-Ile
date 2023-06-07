@@ -21,8 +21,8 @@ public class TileSelector : MonoBehaviour
     public float distanceToBeOnTop = 2.5f;
     private Player player;
     private MissionManager mM;
-    public delegate void MissionComplete(Tile tile);
-    public static event MissionComplete missionComplete;
+    //public delegate void MissionComplete(Tile tile);
+    //public static event MissionComplete missionComplete;
     [SerializeField] private int scoreOnTileCreation;
     #endregion
 
@@ -190,7 +190,7 @@ public class TileSelector : MonoBehaviour
                 {
                     item.numberStacked--;
                     
-                    targettedTile.Spawn(player.tileUnder.transform.position.y, item.stackType.ToString());
+                    targettedTile.Spawn(player.tileUnder.currentPos.y, item.stackType.ToString());
                     StartCoroutine(player.Casting(Player.PlayerState.SpellCreate));
                     if (item.numberStacked == 0)
                     {

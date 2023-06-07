@@ -148,7 +148,7 @@ public class Interactor : MonoBehaviour
             //Vector3 pos = stackPosT.position;
             //Item_Stack obj = ObjectPooling.SharedInstance.GetPoolItem(5, pos, tr).GetComponent<Item_Stack>();
 
-            Item_Stack obj = Instantiate(stackPrefab, stackPosT.position, Quaternion.identity, null);
+            Item_Stack obj = Instantiate(stackPrefab, stackPosT.position, Quaternion.identity, stackPosT);
             obj.numberStacked = 0;
             switch (type)
             {

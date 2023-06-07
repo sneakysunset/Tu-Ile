@@ -15,6 +15,7 @@ public class PlayersManager : MonoBehaviour
     private PlayerInputManager playerInputManager;
     CameraCtr cam;
     public GameObject pnc;
+    [SerializeField] private PauseMenu pM, pHM;
 
     private void Awake()
     {
@@ -38,7 +39,6 @@ public class PlayersManager : MonoBehaviour
         players = FindObjectsOfType<Player>();
         playerInputManager = GetComponent<PlayerInputManager>();
         //playerInputManager.DisableJoining();
-        PauseMenu pM = FindObjectOfType<PauseMenu>();
         //pM.transform.GetChild(0).gameObject.SetActive(true);
         //pM.gameObject.SetActive(false);
         //SplitScreenEffect sse = FindObjectOfType<SplitScreenEffect>();
@@ -49,11 +49,15 @@ public class PlayersManager : MonoBehaviour
                 cam.AddPlayer(players[0].dummyTarget, players[0]);      
             } 
             if ((TileSystem.Instance.isHub) && !cam.players.Contains(players[i].dummyTarget)) cam.AddPlayer(players[i].dummyTarget, players[i]);
-            players[i].GetComponent<Player_Pause>().pauseMenu = pM;
+            Player_Pause pPause = players[i].GetComponent<Player_Pause>();
+            print(pHM);
+            pPause.pauseHubMenu = pHM;
+            pPause.pauseMenu = pM;
+            print(pPause.pauseHubMenu);
         }
-        yield return new WaitUntil(() => TileSystem.Instance.ready);
 
         if(!cam.GetComponentInChildren<CinemachineBrain>().IsBlending) playerInputManager.EnableJoining();
+        yield return new WaitUntil(() => TileSystem.Instance.ready);
     }
 
     private void OnEnable()

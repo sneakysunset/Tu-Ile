@@ -50,6 +50,7 @@ public class Item_Crate : Item
         holdable = false;
         transform.parent = null;
         transform.position = pos.position;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Chest", transform.position);
         interactable = false;
         rb.isKinematic = true;
         transform.DOMoveY(transform.position.y + yLerpPositionAmount + transform.localScale.y, lerpDuration).SetEase(lerpCurve);

@@ -45,7 +45,8 @@ public class HubEvents : MonoBehaviour
     IEnumerator tileGrow(tileList tiles)
     {
         tiles.virtualCamera.Priority = 10;
-        foreach(Player player in FindObjectsOfType<Player>())
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Camera");
+        foreach (Player player in FindObjectsOfType<Player>())
         {
             player.pM.canMove = false;
             
@@ -69,6 +70,7 @@ public class HubEvents : MonoBehaviour
             player.pM.canMove = true;
         }
         tiles.virtualCamera.Priority = 0;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Camera");
         hubEventCoroutine = null;
     }   
 

@@ -207,8 +207,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8d2189b6e56deb74cbefd43a539c277b, type: 2}
   - {fileID: 11400000, guid: 3f73750fb5480c64d849678d2297043a, type: 2}
   - {fileID: 11400000, guid: 79a0ddb0119b79d49a44a73c0e33091b, type: 2}
+  - {fileID: 11400000, guid: 7b6c849501c857a43903fdf34bb51e20, type: 2}
+  - {fileID: 11400000, guid: 6f3b7d8392473c4428e9ac574eb1704b, type: 2}
   rewards:
   - {fileID: 11400000, guid: 1640324d09c0b444691a8c2c91ce0833, type: 2}
+  - {fileID: 11400000, guid: b69dc3957b6eb014f91386d7de5b8381, type: 2}
   - {fileID: 11400000, guid: 830be980fd55dbd40890c24d8c8f63b7, type: 2}
   meshs:
   - mesh: {fileID: 6239881831769578202, guid: fd987fb914f92b54481249887cee245b, type: 3}

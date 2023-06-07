@@ -137,7 +137,7 @@ public class MissionManager : MonoBehaviour
         Player_Pause.pauseMenuDesactivation -= OnUnpause;
     }
 
-    private void OnPause()
+    private void OnPause(Player player)
     {
         foreach(var page in activeMissions)
         {
@@ -146,7 +146,7 @@ public class MissionManager : MonoBehaviour
         }
     }
 
-    private void OnUnpause()
+    private void OnUnpause(Player player)
     {
         foreach (var page in activeMissions)
         {

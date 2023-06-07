@@ -28,7 +28,7 @@ public class ScoreManager : MonoBehaviour
             float scoreCapsMinus = 0;
             if(i > 0) scoreCapsMinus = (float)scoreCaps[(i - 1)];
             fillStars[i].fillAmount = ((float)score - scoreCapsMinus) / (float)scoreCaps[i];
-            DOVirtual.Float(fillStars[i].fillAmount, ((float)score - scoreCapsMinus) / (float)scoreCaps[i], 1, v => fillStars[i].fillAmount = v);
+            //DOVirtual.Float(fillStars[i].fillAmount, ((float)score - scoreCapsMinus) / (float)scoreCaps[i], 1, v => fillStars[i].fillAmount = v);
             //fillStars[i].fillAmount.
         }
     }

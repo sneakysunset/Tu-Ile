@@ -70,7 +70,7 @@ public class TutorialManager : MonoBehaviour
             //Light light = tutoTextTr.GetComponentInChildren<Light>();
             //DOVirtual.Float(0f, 50, 1, v => light.intensity = v);
         }
-        text.text = "Couper l'arbre";
+        text.text = "Couper l'arbre en vous placant devant lui";
         tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         //targetter.position = interactor.target.position;
@@ -94,7 +94,7 @@ public class TutorialManager : MonoBehaviour
         targetter.DOMove(etabli.targetter.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
-        text.text = "Amenez le bois à l'établi";
+        text.text = "Ramassez le bois avec le bouton 'X'. Puis amenez le bois à l'établi et déposez le avec le bouton 'X'";
         tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         enumer = null;
@@ -108,7 +108,7 @@ public class TutorialManager : MonoBehaviour
         targetter.DOMove(chantier.targetter.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
-        text.text = "Amenez le bois au chantier";
+        text.text = "Amenez le bois au chantier et déposez le avec le bouton 'X'";
         tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         chantier.interactable = true;
@@ -122,18 +122,18 @@ public class TutorialManager : MonoBehaviour
 
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
-        text.text = "Amenez le bois à la tile avec une cercle magique";
+        text.text = "Amenez le bois à la tile avec une cercle magique et déposez la avec le bouton 'X'";
         tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         enumer = null;
-    }
+    }   
 
     public IEnumerator GetSunkTile()
     {
         targetter.DOMove(sunkTile.position, timeToGoIn + timeToGoOut).SetEase(TileSystem.Instance.easeInOut);
         tutoTextTr.DOAnchorPosY(targetY, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
-        text.text = "Utilisez la tuile de bois pour créer une plateforme";
+        text.text = "Utilisez la tuile de bois avec le bouton 'RT' pour créer une plateforme dans l'eau";
         tutoTextTr.DOAnchorPosY(ogY, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         //targetter.position = sunkTile.position;

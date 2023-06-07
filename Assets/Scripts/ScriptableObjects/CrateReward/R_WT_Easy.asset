@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae8ad992b77fbb4480b08a672d6e54b, type: 3}
+  m_Name: R_WT_Easy
+  m_EditorClassIdentifier: 
+  itemReward: 1
+  isRandom: 1
+  scoreReward: 30
+  playerStateReward:
+  - rewardAdd: 0.5
+    pReward: 1
+  itemRewards:
+  - number: 3
+    rewardItem: {fileID: -7700456598475612927, guid: af6ef38888d32a347baba23a3302fbf0, type: 3}
+  - number: 1
+    rewardItem: {fileID: 6912089915621339900, guid: 210b15a271081554fb901b5bf58d7553, type: 3}

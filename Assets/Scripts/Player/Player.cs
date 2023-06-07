@@ -72,15 +72,17 @@ public class Player : MonoBehaviour
 
     
 
-    void OnPause()
+    void OnPause(Player player)
     {
         closeUpCam.Priority = 10;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Camera");
         FMODUtils.SetFMODEvent(ref danceEvent, "event:/Tuile/Character/Voix/Beatbox", transform);
     }
 
-    void OnUnPause()
+    void OnUnPause(Player player)
     {
         closeUpCam.Priority = 0;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Camera");
         FMODUtils.StopFMODEvent(ref danceEvent, true);
     }
 
@@ -247,6 +249,8 @@ public class Player : MonoBehaviour
         Physics.IgnoreCollision(col, hit.collider, true);
         Instantiate(waterSplash, hit.point + 2 * Vector3.up, Quaternion.identity, null);
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Drowning", transform.position);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Voix/Drawning", transform.position);
+
         dummyTarget.parent = null;
         pM.canMove = false;
         transform.LookAt(new Vector3(Camera.main.transform.position.x, 0, Camera.main.transform.position.z));
