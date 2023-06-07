@@ -33,7 +33,7 @@ public class ItemSpawner : MonoBehaviour
     [Foldout("Gizmo")] public float gizmoScale = 1;
     [Foldout("Gizmo")] public float gizmoHeightOffset = 0;
     [ShowIf("itemToSpawn", SpawnableItems.Etabli)] public SO_Recette recette;
-    [ShowIf("itemToSpawn", SpawnableItems.Chantier)] public SO_Recette_Chantier otherRecette;
+    [ShowIf("itemToSpawn", SpawnableItems.Chantier)] public SO_Recette otherRecette;
     public SO_CrateReward crateReward;
     
     private void Start()
@@ -56,22 +56,38 @@ public class ItemSpawner : MonoBehaviour
 
     private void SpawnItem()
     {
-        SO_Recette tempRecette = null;
+/*        SO_Recette tempRecette = null;
         SO_CrateReward tempReward = null;
         if (itemToSpawn == SpawnableItems.Etabli) tempRecette = recette;
         else if(itemToSpawn == SpawnableItems.Chantier) tempRecette = otherRecette;
-        else if(itemToSpawn == SpawnableItems.Crate || itemToSpawn == SpawnableItems.Mimic) tempReward = crateReward;
-        Vector3 pos = spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up;
-        spawnedItem = ObjectPooling.SharedInstance.GetPoolItem(poolIndex, pos, null, null, tempRecette, crateReward);
-        
+        else if(itemToSpawn == SpawnableItems.Crate || itemToSpawn == SpawnableItems.Mimic) tempReward = crateReward;*/
+        //Vector3 pos = spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up;
+        //spawnedItem = ObjectPooling.SharedInstance.GetPoolItem(poolIndex, pos, null, null, tempRecette, crateReward);
+        spawnedItem = Instantiate(chosenItemToSpawn);
         spawnedItem.transform.position =  spawnPoint.GetChild((int)spawnPosition).position + chosenItemToSpawn.transform.position + 30 * Vector3.up;
-        if (itemToSpawn == SpawnableItems.Etabli)
+        switch (itemToSpawn)
         {
-            StartCoroutine(spawnedItem.GetComponent<Item_Etabli>().OnPooled(recette));
-        }
-        else if (itemToSpawn == SpawnableItems.Chantier)
-        {
-            StartCoroutine(spawnedItem.GetComponent<Item_Etabli>().OnPooled(otherRecette));    
+            case SpawnableItems.Etabli:
+                Item_Etabli it = spawnedItem.GetComponent<Item_Etabli>();
+                it.recette = recette;
+                //print(it.recette);
+                StartCoroutine(it.Enable());
+                break;
+            case SpawnableItems.Chantier:
+                Item_Etabli itc = spawnedItem.GetComponent<Item_Etabli>();
+                itc.recette = otherRecette;
+                //print(itc.recette);
+                StartCoroutine(itc.Enable());
+
+                break;
+            case SpawnableItems.Crate:
+                Item_Crate itcr = spawnedItem.GetComponent<Item_Crate>();
+                itcr.reward = crateReward;
+                break;
+            case SpawnableItems.Mimic:
+                Item_Crate_Mimic itcrm = spawnedItem.GetComponent<Item_Crate_Mimic>();
+                itcrm.reward = crateReward;
+                break;
         }
         if (!loop) { continueLooping = false; }
     }
@@ -91,9 +107,8 @@ public class ItemSpawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-
-            if(spawnPoint == null) spawnPoint = transform.GetChild(0);
-            Gizmos.DrawCube(spawnPoint.position + gizmoHeightOffset * Vector3.up, Vector3.one * gizmoScale);
-            return;
+         if(spawnPoint == null) spawnPoint = transform.GetChild(0);
+         Gizmos.DrawCube(spawnPoint.position + gizmoHeightOffset * Vector3.up, Vector3.one * gizmoScale);
+         return;
     }
 }

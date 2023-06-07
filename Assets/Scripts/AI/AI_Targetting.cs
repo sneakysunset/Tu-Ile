@@ -58,7 +58,7 @@ public class AI_Targetting : MonoBehaviour
     {
         if(Selection.objects.Contains(this.gameObject as Object))
         {
-            Gizmos.DrawWireSphere(transform.position, distanceToBait);
+            //Gizmos.DrawWireSphere(transform.position, distanceToBait);
         }
     }
 #endif

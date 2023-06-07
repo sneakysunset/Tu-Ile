@@ -15,6 +15,8 @@ public struct ressourceMeshsCollec
     public List<Material> materials;
     public List<int> necessaryNum;
     public Sprite sprite;
+    public Sprite tileSprite;
+
 }
 
 [System.Serializable]
@@ -34,6 +36,7 @@ public struct recetteResultCollec
     public bool isTile;
     public Item_Etabli.StackType tileType;
     public Item_Etabli.ItemType itemType;
+
     public Sprite sprite;
 }
 
@@ -44,6 +47,12 @@ public struct ItemToSpawn
     public int index;
 }
 
+[System.Serializable]
+public struct tileMeshs
+{
+    public Mesh mesh;
+    public Item.StackType stackType;
+}
 
 public class RessourcesManager : MonoBehaviour
 {
@@ -59,7 +68,18 @@ public class RessourcesManager : MonoBehaviour
     public List<GameTimer> gameManagers;
     public SO_Recette[] recettes;
     public SO_CrateReward[] rewards;
+    public tileMeshs[] meshs;
     public static RessourcesManager Instance { get; private set; }
+    
+
+    public Mesh GetMeshByStackType(Item.StackType _stackType)
+    {
+        foreach(tileMeshs tmesh in meshs)
+        {
+            if (_stackType == tmesh.stackType) return tmesh.mesh;
+        }
+        return null;
+    }
 
     private void Awake()
     {
@@ -113,5 +133,14 @@ public class RessourcesManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void SpawnRessources(int type)
+    {
+        if(!TileSystem.Instance.isHub) 
+        {         
+            GameObject obj = Instantiate(itemsToSpawn[type].item, FindObjectOfType<Player>().transform.position + Vector3.up * 30,  Quaternion.identity);
+            if (obj.TryGetComponent(out Item_Stack itemS)) itemS.numberStacked = 50;
+        }
     }
 }

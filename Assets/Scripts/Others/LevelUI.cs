@@ -12,6 +12,7 @@ public class LevelUI : MonoBehaviour
     public GameObject NoDetailUI;
     public RawImage levelIcon;
     public Image[] Stars;
+    [SerializeField] private GameObject UIRoot;
     private RessourcesManager rMan;
     [SerializeField] private RectTransform detailRight, detailLeft;
     [SerializeField] private TextMeshProUGUI timeT, scoreT;
@@ -20,10 +21,15 @@ public class LevelUI : MonoBehaviour
     private ScoreManager scoreManager;
     private GameTimer gameTimer;
 
-    private void Enable()
+    private void OnEnable()
     {
         GridUtils.onLevelMapLoad += OnLevelLoad;
+        GridUtils.onStartLevel += OnStartLevel;
     }
+
+    public void EnableUI() => UIRoot.SetActive(true);
+
+    public void DisableUI() => UIRoot.SetActive(false);
 
     private void Start()
     {
@@ -32,32 +38,31 @@ public class LevelUI : MonoBehaviour
         gameTimer = rMan.getGameManagerFromList(tile.levelName + "_GM");
         scoreManager = gameTimer.GetComponent<ScoreManager>();
         StarActivation(string.Empty);
-        timeT.text = gameTimer.gameTimer.ToString();
+        timeT.text = "Time:         " + gameTimer.gameTimer.ToString();
     }
 
     private void OnDisable()
     {
         GridUtils.onLevelMapLoad -= OnLevelLoad;
+        GridUtils.onStartLevel -= OnStartLevel;
     }
 
     void OnLevelLoad(string path)
     {
-        print(3);
         if(tile.tileType == TileType.LevelLoader && TileSystem.Instance.isHub) StarActivation(path);
     }
 
     private void StarActivation(string path)
     {
-        scoreT.text = scoreManager.highscore.ToString();
-        print(scoreManager.highscore);
+        scoreT.text = "HighScore: " + scoreManager.highscore.ToString();
         int[] scoreCaps = scoreManager.scoreCaps;
         int highScore = scoreManager.highscore;
+
         scoreCapValue[0].text = scoreManager.scoreCaps[0].ToString();
         scoreCapValue[1].text = scoreManager.scoreCaps[1].ToString();
         scoreCapValue[2].text = scoreManager.scoreCaps[2].ToString();
         for (int i = 0; i < Stars.Length; i++)
         {
-            print(highScore + " " + scoreCaps[i]);
             if (highScore >= scoreCaps[i])
             {
                 Stars[i].color = Color.yellow;
@@ -68,6 +73,15 @@ public class LevelUI : MonoBehaviour
                 Stars[i].color = Color.black;
                 scoreCapValue[i].color = Color.yellow;
             }
+        }
+    }
+
+    void OnStartLevel()
+    {
+        if(scoreManager.isCompleted && !scoreManager.activated)
+        {
+            scoreManager.activated = true;
+            TileSystem.Instance.tutorial.GetComponent<HubEvents>().GrowTileList();
         }
     }
 
@@ -82,7 +96,7 @@ public class LevelUI : MonoBehaviour
     {
         while(mainCamera == null) OnActivated();
         //transform.position = cam.targetGroup.transform.position;
-        if (mainCamera) transform.GetChild(0).LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
+        if (mainCamera) NearUI.transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
 
     public void PlayerNear()
@@ -106,8 +120,8 @@ public class LevelUI : MonoBehaviour
     public void Detail()
     {
         //DetailUI.gameObject.SetActive(true);
-        detailLeft.DOAnchorPosX(-2f, 1).SetEase(TileSystem.Instance.easeInOut);
-        detailRight.DOAnchorPosX(2f, 1).SetEase(TileSystem.Instance.easeInOut);
+        detailLeft.DOAnchorPosX(-1.8f, 1).SetEase(TileSystem.Instance.easeInOut);
+        detailRight.DOAnchorPosX(1.8f, 1).SetEase(TileSystem.Instance.easeInOut);
        // NoDetailUI.gameObject.SetActive(false);
     }
 }

@@ -42,6 +42,8 @@ public class TileSystem : MonoBehaviour
     [HideInInspector] public CompassMissionManager compassManager;
     public AnimationCurve easeIn, easeOut, easeInOut;
     public RessourcesManager ressourcesManagerPrefab;
+    private FMOD.Studio.EventInstance music;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -68,11 +70,20 @@ public class TileSystem : MonoBehaviour
             RegenGrid();
         }
         GridUtils.onLevelMapLoad += OnLoadScene;
+        GridUtils.onStartLevel += OnSceneStart;
+        GridUtils.onEndLevel += OnSceneEnd;
+        Player_Pause.pauseMenuActivation += OnPauseStart;
+        Player_Pause.pauseMenuDesactivation += OnPauseEnd;
+        OnSceneStart();
     }
 
     private void OnDisable()
     {
         GridUtils.onLevelMapLoad -= OnLoadScene;
+        GridUtils.onEndLevel -= OnSceneEnd;
+        GridUtils.onStartLevel -= OnSceneStart;
+        Player_Pause.pauseMenuActivation -= OnPauseStart;
+        Player_Pause.pauseMenuDesactivation -= OnPauseEnd;
         editorFlag = true;
     }
 
@@ -81,8 +92,8 @@ public class TileSystem : MonoBehaviour
         if(gameTimer != null) Destroy(gameTimer.gameObject);
         if (!isHub)
         {
-            previousCenterTile.transform.GetChild(9).gameObject.SetActive(false);
-            centerTile.transform.GetChild(9).gameObject.SetActive(true);
+            previousCenterTile.tc.pSysCenterTile.gameObject.SetActive(false);
+            centerTile.tc.pSysCenterTile.gameObject.SetActive(true);
 
             foreach (GameTimer gt in RessourcesManager.Instance.gameManagers)
             {
@@ -107,11 +118,32 @@ public class TileSystem : MonoBehaviour
         Item[] items = FindObjectsOfType<Item>();
         for (int i = 0; i < items.Length; i++)
         {
-            ObjectPooling.SharedInstance.RemovePoolItem(0, items[i].gameObject, items[i].GetType().ToString());
+           // ObjectPooling.SharedInstance.RemovePoolItem(0, items[i].gameObject, items[i].GetType().ToString());
 
-            //Destroy(items[i].gameObject);
+            Destroy(items[i].gameObject);
         }
     }
+
+    private void OnSceneEnd(Tile tile)
+    {
+        FMODUtils.StopFMODEvent(ref music, true);
+    }
+
+    private void OnSceneStart()
+    {
+        if (isHub)
+        {
+            FMODUtils.SetFMODEvent(ref music, "event:/Tuile/Music/Hub", transform);
+        }
+        else
+        {
+            FMODUtils.SetFMODEvent(ref music, "event:/Tuile/Music/Niveau 1", transform);
+        }
+    }
+
+    private void OnPauseStart() => music.setPaused(true);
+
+    private void OnPauseEnd() => music.setPaused(false);
 
     void RegenGrid()
     {

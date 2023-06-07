@@ -22,21 +22,32 @@ public class ObjectPooling : MonoBehaviour
     void Awake()
     {
         SharedInstance = this;
+    }
 
+    void Start()
+    {
         int index = 0;
-        foreach (ObjectPool pool in pooledObjects)
+        foreach(ObjectPool pool in pooledObjects)
         {
             pool.index = index;
             index++;
-
+            
             int size = 0;
             string strType = pool.itemType.Split(':')[0];
-
+            
             if (strType == "Interactor")
             {
-                foreach (Interactor inte in FindObjectsOfType<Interactor>()) if (inte.type.ToString() == pool.itemType.Split(':')[1]) size++;
+                foreach (Interactor inte in FindObjectsOfType<Interactor>())
+                {
+                    if (inte.type.ToString() == pool.itemType.Split(':')[1])
+                    {
+                        size++;
+                        pool.objects.Add(inte.gameObject);
+                    }
+                }
+                
             }
-            else if (strType == "Item_Etabli")
+            else if(strType == "Item_Etabli")
             {
                 foreach (Item_Etabli inte in FindObjectsOfType<Item_Etabli>())
                 {
@@ -48,9 +59,9 @@ public class ObjectPooling : MonoBehaviour
             {
                 size = FindObjectsOfType(System.Type.GetType(strType)).Length;
             }
-            if (size < pool.numOfItem)
+            if(size < pool.numOfItem)
             {
-                for (int i = size; i < pool.numOfItem; i++)
+                for(int i = size;  i < pool.numOfItem; i++)
                 {
                     GameObject item = Instantiate(pool.prefab);
                     item.SetActive(false);
@@ -65,12 +76,7 @@ public class ObjectPooling : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        
-    }
-
-    public GameObject GetPoolItem(int index,Vector3 pos, Transform parentP, string type = null, SO_Recette optionalRecette = null, SO_CrateReward crateReward = null)
+    public GameObject GetPoolItem(int index, Vector3 pos, Transform parentP, string type = null, SO_Recette optionalRecette = null, SO_CrateReward crateReward = null)
     {
         if (type != null)
         {
@@ -79,7 +85,7 @@ public class ObjectPooling : MonoBehaviour
                 if (type == pooledObjects[i].itemType) index = i;
             }
         }
-        GameObject go ;
+        GameObject go;
 
 
         if (pooledObjects[index].objects.Count == 0) go = Instantiate(pooledObjects[index].prefab);
@@ -90,18 +96,18 @@ public class ObjectPooling : MonoBehaviour
 
         }
 
-        if(optionalRecette != null) go.GetComponent<Item_Etabli>().recette = optionalRecette;
-        else if(crateReward != null) go.GetComponent<Item_Crate>().reward = crateReward;
+        if (optionalRecette != null) go.GetComponent<Item_Etabli>().recette = optionalRecette;
+        else if (crateReward != null) go.GetComponent<Item_Crate>().reward = crateReward;
         go.transform.parent = parentP;
         go.transform.position = pos;
         go.SetActive(true);
-        
+
         return go;
     }
 
     public void RemovePoolItem(int index, GameObject obj, string type = null)
     {
-        if(type != null)
+        if (type != null)
         {
             for (int i = 0; i < pooledObjects.Count; i++)
             {

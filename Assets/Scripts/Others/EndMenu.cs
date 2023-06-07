@@ -37,7 +37,8 @@ public class EndMenu : MonoBehaviour
 
         GameTimer gameTimer = TileSystem.Instance.gameTimer;
         ScoreManager score = RessourcesManager.Instance.getGameManagerFromList(gameTimer.gameObject.name).GetComponent<ScoreManager>();
-        score.highscore = TileSystem.Instance.scoreManager.score;
+        if(TileSystem.Instance.scoreManager.score > score.highscore) score.highscore = TileSystem.Instance.scoreManager.score;
+        if (score.highscore > score.scoreCaps[0]) score.isCompleted = true;
         //MissionManager missionManager = MissionManager.Instance;
         CameraCtr cam = TileSystem.Instance.cam;
 

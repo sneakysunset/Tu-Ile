@@ -16,12 +16,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: activated
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: highscore
-      value: 0
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: scoreText
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: isCompleted
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: scoreCaps.Array.size
@@ -41,7 +49,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6354948749326121284, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: m_Name
-      value: Ile 3_GM
+      value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 6354948749326121285, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: m_Enabled
@@ -137,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.size
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: lerpCurve.m_Curve.Array.size
@@ -145,15 +153,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.data[0].eventTime
-      value: 10
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.data[1].eventTime
-      value: 105
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.data[2].eventTime
-      value: 15
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: events.Array.data[3].eventTime
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.data[0].widthOfSpawn
@@ -165,15 +177,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.data[0].timeLineEvent
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.data[1].timeLineEvent
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.data[2].timeLineEvent
-      value: 2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: events.Array.data[3].timeLineEvent
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: lerpCurve.m_Curve.Array.data[1].time
@@ -182,7 +198,7 @@ PrefabInstance:
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.data[0].ephemeralMission
       value: 
-      objectReference: {fileID: 11400000, guid: 098378642a5131845aa62c4f9ba15742, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.data[0].numberOfChickens
       value: 5
@@ -215,6 +231,18 @@ PrefabInstance:
       propertyPath: LevelEnd.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7337067159720949784, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: compassMissions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7337067159720949784, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: compassMissions.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: d00bdfb95b994d14d96369303922256f, type: 2}
+    - target: {fileID: 7337067159720949784, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: compassMissions.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 771535681100a6b43ade0997da511d82, type: 2}
     - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: m_Enabled
       value: 0

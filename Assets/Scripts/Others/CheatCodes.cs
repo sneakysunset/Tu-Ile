@@ -15,6 +15,7 @@ public class CheatCodes : MonoBehaviour
 {
     public enum InputType { DOWN,UP,STAY}
     public List<InputEvent> inputEvents;
+
     private void Update()
     {
         foreach(InputEvent input in inputEvents)

@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 1155359968373649300}
   - component: {fileID: 8716007780495970471}
   - component: {fileID: 1059558934}
+  - component: {fileID: 1856134475}
+  - component: {fileID: 1856134482}
   m_Layer: 0
   m_Name: SystemManager
   m_TagString: Untagged
@@ -66,8 +68,173 @@ MonoBehaviour:
   inputEvents:
   - CheatCodeEvent:
       m_PersistentCalls:
-        m_Calls: []
-    CheatKeyCode: 0
+        m_Calls:
+        - m_Target: {fileID: 1856134475}
+          m_TargetAssemblyTypeName: HubEvents, Assembly-CSharp
+          m_MethodName: GrowTileList
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    CheatKeyCode: 118
+    cheatCodesType: 0
+  - CheatCodeEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1856134475}
+          m_TargetAssemblyTypeName: HubEvents, Assembly-CSharp
+          m_MethodName: ResetGame
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    CheatKeyCode: 98
+    cheatCodesType: 0
+  - CheatCodeEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: RessourcesManager, Assembly-CSharp
+          m_MethodName: SpawnRessources
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 7
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    CheatKeyCode: 282
+    cheatCodesType: 0
+  - CheatCodeEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: RessourcesManager, Assembly-CSharp
+          m_MethodName: SpawnRessources
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 8
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    CheatKeyCode: 283
+    cheatCodesType: 0
+  - CheatCodeEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: RessourcesManager, Assembly-CSharp
+          m_MethodName: SpawnRessources
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 10
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    CheatKeyCode: 284
+    cheatCodesType: 0
+  - CheatCodeEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: RessourcesManager, Assembly-CSharp
+          m_MethodName: SpawnRessources
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 6
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    CheatKeyCode: 285
+    cheatCodesType: 0
+  - CheatCodeEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: RessourcesManager, Assembly-CSharp
+          m_MethodName: SpawnRessources
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    CheatKeyCode: 286
+    cheatCodesType: 0
+  - CheatCodeEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: RessourcesManager, Assembly-CSharp
+          m_MethodName: SpawnRessources
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    CheatKeyCode: 287
+    cheatCodesType: 0
+  - CheatCodeEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: RessourcesManager, Assembly-CSharp
+          m_MethodName: SpawnRessources
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    CheatKeyCode: 288
+    cheatCodesType: 0
+  - CheatCodeEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: RessourcesManager, Assembly-CSharp
+          m_MethodName: SpawnRessources
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 5
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    CheatKeyCode: 289
     cheatCodesType: 0
 --- !u!114 &8688238561556375764
 MonoBehaviour:
@@ -156,10 +323,10 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -1896200864
-      Data2: 1222522075
-      Data3: 1649964728
-      Data4: 990034101
+      Data1: 1997402010
+      Data2: 1247331098
+      Data3: 1521908919
+      Data4: 934408
     Path: event:/Tuile/Environnement/Ocean
   Event: 
   PlayEvent: 1
@@ -186,11 +353,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -431386005
-      Data2: 1135596140
-      Data3: -2070349429
-      Data4: 1996713905
-    Path: event:/Music/Niveau 1
+      Data1: 1160132732
+      Data2: 1234764037
+      Data3: -788196937
+      Data4: 1535034939
+    Path: event:/Tuile/Music/Niveau 1
   Event: 
   PlayEvent: 1
   StopEvent: 2
@@ -242,46 +409,133 @@ MonoBehaviour:
   - itemType: Item_Stack
     index: 0
     objects: []
-    numOfItem: 50
+    numOfItem: 0
     prefab: {fileID: 7307083508970999916, guid: 916ede32b917e24448f062a764b82885, type: 3}
   - itemType: Item_Stack_Tile
     index: 0
     objects: []
-    numOfItem: 30
+    numOfItem: 0
     prefab: {fileID: 5081688468642532139, guid: af6ef38888d32a347baba23a3302fbf0, type: 3}
   - itemType: Item_Crate_Mimic
     index: 0
     objects: []
-    numOfItem: 10
+    numOfItem: 0
     prefab: {fileID: 1993684740632381338, guid: e8d87e7fb08b7c641a4addb585c727e3, type: 3}
   - itemType: Item_Bird
     index: 0
     objects: []
-    numOfItem: 20
+    numOfItem: 0
     prefab: {fileID: 3388698492052617944, guid: fce0e83e28c991d42a35cd94a6409487, type: 3}
   - itemType: Item_Bait
     index: 0
     objects: []
-    numOfItem: 20
+    numOfItem: 0
     prefab: {fileID: 4377360843773846542, guid: 55c071a6a35b3d444a3bd6d264d74561, type: 3}
   - itemType: Item_Etabli:Etabli
     index: 0
     objects: []
-    numOfItem: 10
+    numOfItem: 0
     prefab: {fileID: 6122129862733760003, guid: d7407368c4cdd8f46b94b8effe3ae987, type: 3}
   - itemType: Item_Etabli:Chantier
     index: 0
     objects: []
-    numOfItem: 20
+    numOfItem: 0
     prefab: {fileID: 7644044209496618633, guid: bf93c3324d307044f873e1db14dc7521, type: 3}
   - itemType: Item_Crate
     index: 0
     objects: []
-    numOfItem: 20
+    numOfItem: 0
     prefab: {fileID: 8888129459989820106, guid: b2c9ab1516a45874b9446697f1dfc0b8, type: 3}
   - itemType: Item_Boussole
     index: 0
     objects: []
-    numOfItem: 20
+    numOfItem: 0
     prefab: {fileID: 7644044209496618633, guid: bf93c3324d307044f873e1db14dc7521, type: 3}
   poolFolder: {fileID: 0}
+--- !u!114 &1856134475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5452582664362477282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5cce55b67eaa4d4b894abf99c8038d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileGrowEventList:
+  - tiles:
+    - tile:
+      - {fileID: 0}
+      targetHeight: 0
+      tileTypes: 1
+    - tile:
+      - {fileID: 0}
+      targetHeight: 0
+      tileTypes: 1
+    - tile:
+      - {fileID: 0}
+      targetHeight: 0
+      tileTypes: 1
+    virtualCamera: {fileID: 0}
+  - tiles:
+    - tile:
+      - {fileID: 0}
+      targetHeight: 0
+      tileTypes: 1
+    - tile:
+      - {fileID: 0}
+      targetHeight: 0
+      tileTypes: 1
+    - tile:
+      - {fileID: 0}
+      targetHeight: 0
+      tileTypes: 1
+    virtualCamera: {fileID: 0}
+  - tiles:
+    - tile:
+      - {fileID: 0}
+      targetHeight: 6
+      tileTypes: 2
+    - tile:
+      - {fileID: 0}
+      targetHeight: 6
+      tileTypes: 2
+    - tile:
+      - {fileID: 0}
+      targetHeight: 8
+      tileTypes: 2
+    - tile:
+      - {fileID: 0}
+      targetHeight: 10
+      tileTypes: 2
+    virtualCamera: {fileID: 0}
+  index: 0
+  timeOffsetBetweenTiles: 1
+  beforeEventWaiter: 0.3
+  afterEventWaiter: 1
+--- !u!114 &1856134482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5452582664362477282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bc0e48f3316d9441ba51465941af564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetter: {fileID: 0}
+  interactor: {fileID: 0}
+  sunkTile: {fileID: 0}
+  centerTile: {fileID: 0}
+  tileSpawned: 0
+  text: {fileID: 0}
+  timeToGoOut: 1
+  timeToGoIn: 1
+  amountToGoUp: 200
+  endTutoCenterTile: {fileID: 0}
+  startTutoCenterTile: {fileID: 0}
+  activatTuto: 0

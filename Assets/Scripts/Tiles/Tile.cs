@@ -51,6 +51,7 @@ public struct tileTypeList
     public int scoreValueOnCreate;
 }
 
+[SelectionBase]
 public class Tile : MonoBehaviour
 {
     #region Variables
@@ -182,15 +183,16 @@ public class Tile : MonoBehaviour
     {
         GridUtils.onEndLevel += OnEndLevel;
         GridUtils.onLevelMapLoad += OnMapLoad;
+        GridUtils.onStartLevel += OnStartLevel;
 
-
+        if (tileType == TileType.LevelLoader) tc.levelUI.enabled = true;
         if (isHubCollider && TileSystem.Instance.isHub) tc.hubCollider.enabled = true;
         readyToRoll = true;
 
 
         if (TileSystem.Instance.isHub && tileType == TileType.LevelLoader)
         {
-            tc.levelUI.gameObject.SetActive(true);
+            tc.levelUI.EnableUI();
             tc.pSysCenterTile.gameObject.SetActive(true);
         }
         else if (!TileSystem.Instance.isHub && TileSystem.Instance.centerTile == this)
@@ -241,7 +243,9 @@ public class Tile : MonoBehaviour
 
     private void OnDisable()
     {
+        GridUtils.onEndLevel -= OnEndLevel;
         GridUtils.onLevelMapLoad -= OnMapLoad;
+        GridUtils.onStartLevel -= OnStartLevel;
     }
 
     private void OnEndLevel(Tile tile)
@@ -283,17 +287,22 @@ public class Tile : MonoBehaviour
         else if (tourbillon) ActivateVortex();
     }
 
+    private void OnStartLevel()
+    {
+        if (this == TileSystem.Instance.centerTile) tc.levelUI.EnableUI();
+    }
+
     private void OnHubLoad()
     {
         if (isHubCollider) tc.hubCollider.enabled = true;
-        if(tileType == TileType.LevelLoader) tc.levelUI.gameObject.SetActive(true);
+        if(tileType == TileType.LevelLoader) tc.levelUI.EnableUI();
         if (TileSystem.Instance.centerTile == this || tileType == TileType.LevelLoader) tc.pSysCenterTile.gameObject.SetActive(true);
     }
 
     private void OnLevelLoad()
     {
         if (isHubCollider) tc.hubCollider.enabled = false;
-        tc.levelUI.gameObject.SetActive(false);
+        tc.levelUI.DisableUI();
         if (TileSystem.Instance.centerTile == this) tc.pSysCenterTile.gameObject.SetActive(true);
         if(walkable && degradable && tileType != TileType.Sand)
         {
@@ -345,10 +354,6 @@ public class Tile : MonoBehaviour
         float targetPosY = tc.tourbillonT.position.y;
         tc.tourbillonT.position -= Vector3.up * 20;
         tc.tourbillonT.DOMoveY(targetPosY, 5);
-    }
-
-    private void Update()
-    {
     }
 
     #endregion
@@ -436,13 +441,12 @@ public class Tile : MonoBehaviour
         {
             TileSystem.Instance.scoreManager.ChangeScore(GetScoreValue());
         }
-        //myMeshR.material.color = walkedOnColor;
-        //transform.Find("Additional Visuals").gameObject.SetActive(true);
-        //minableItems.gameObject.SetActive(true);
+
         isDegrading = false;
         transform.position = new Vector3(transform.position.x, -7f, transform.position.z) ;
         currentPos.y = height - (height % td.heightByTile);
     }
+
     private void GetAdjCoords()
     {
         adjTCoords = new Vector2Int[6];
@@ -526,11 +530,11 @@ public class Tile : MonoBehaviour
 
     public void SetToCenterTile(bool save)
     {
-        TileSystem.Instance.centerTile.transform.GetChild(9).gameObject.SetActive(false);
+        TileSystem.Instance.centerTile.tc.pSysCenterTile.gameObject.SetActive(false);
         TileSystem.Instance.centerTile = this;
         tc.myMeshR.materials = getCorrespondingMat(tileType);
         tc.myMeshF.mesh = getCorrespondingMesh(tileType);
-        transform.GetChild(9).gameObject.SetActive(true);
+        tc.pSysCenterTile.gameObject.SetActive(true);
 
     }
     #endregion
@@ -549,7 +553,7 @@ public class Tile : MonoBehaviour
         {
             mat[1] = tc.centerMat;
             mat[0] = tc.centerMatBottom;
-            if(!transform.GetChild(9).gameObject.activeInHierarchy) transform.GetChild(9).gameObject.SetActive(true);
+            if(!transform.GetChild(9).gameObject.activeInHierarchy) tc.pSysCenterTile.gameObject.SetActive(true);
         }
         else if (!degradable && tileType != TileType.LevelLoader)
         {
@@ -658,10 +662,10 @@ public class Tile : MonoBehaviour
             transform.position = new Vector3(transform.position.x, transform.position.y - r, transform.position.z);
         }
         
-        if(tileSpawnType == TileType.construction)
+/*        if(tileSpawnType == TileType.construction)
         {
             Gizmos.DrawMesh(constructionMesh, 0, transform.position + GameConstant.tileHeight * Vector3.up, Quaternion.identity);
-        }
+        }*/
 
         if (tourbillon && !Application.isPlaying) Gizmos.DrawWireCube(transform.position + Vector3.up * 23, Vector3.one);
     }

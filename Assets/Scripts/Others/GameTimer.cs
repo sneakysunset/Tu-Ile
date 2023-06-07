@@ -22,12 +22,13 @@ public class Event
 public class GameTimer : MonoBehaviour
 {
     [HideInInspector] public LoadScene canvasRef { get; private set; }
-    public enum Events { Neutral, Apocalypse, AddMissionSlot, ExtendMissionPool, ReduceMissionPool, EnlargeMissionPool, EphemeralMission};
+    public enum Events { Neutral/*, Apocalypse, AddMissionSlot, ExtendMissionPool, ReduceMissionPool, EnlargeMissionPool, EphemeralMission, */, AddBoussoleMissionSlot, UpBoussoleMissionPool, AddBoussoleMissionPool, ReduceBoussoleMissionPool };
     public List<Event> events;
     public float gameTimer;
     [HideNormalInspector] public float timer;
     public UnityEvent LevelEnd;
     public ScoreManager scoreMan;
+    public CompassMissionManager compassMan;
     //[HideNormalInspector] public string sceneLoadName = "Hub";
     //public Sprite apocalypseImage;
     //public Sprite newPageImage;
@@ -38,6 +39,7 @@ public class GameTimer : MonoBehaviour
     {
         canvasRef = FindObjectOfType<LoadScene>();    
         scoreMan = GetComponent<ScoreManager>();
+        scoreMan.fillStars = canvasRef.fillStars;
         scoreMan.scoreText = canvasRef.scoreText;
         scoreMan.ChangeScore(0);
     }
@@ -161,24 +163,36 @@ public class GameTimer : MonoBehaviour
         {
             switch (events[0].timeLineEvent)
             {
-                case Events.Apocalypse:
-                    TimeLineEvents.ApocalypseEvent();
+                case Events.AddBoussoleMissionSlot:
+                    TimeLineEvents.AddBoussoleMissionSlot(compassMan);
                     break;
-                case Events.AddMissionSlot:
+                case Events.UpBoussoleMissionPool:
+                    TimeLineEvents.UpBoussoleMissionPool(compassMan);
+                    break;
+                case Events.AddBoussoleMissionPool:
+                    TimeLineEvents.AddBoussoleMissionPool(compassMan);
+                    break;
+                case Events.ReduceBoussoleMissionPool:
+                    TimeLineEvents.ReduceBoussoleMissionPool(compassMan);
+                    break;
+                //case Events.Apocalypse:
+                    //TimeLineEvents.ApocalypseEvent();
+                 //   break;
+                // case Events.AddMissionSlot:
                     //TimeLineEvents.AddMissionPage(missionManager);
-                    break;
-                case Events.ReduceMissionPool:
+                   // break;
+                //case Events.ReduceMissionPool:
                     //TimeLineEvents.ReduceMissionPool(missionManager);
-                    break;
-                case Events.ExtendMissionPool:
+                  //  break;
+                //case Events.ExtendMissionPool:
                     //TimeLineEvents.ExtendMissionPool(missionManager);
-                    break;
-                case Events.EnlargeMissionPool:
+                  //  break;
+                //case Events.EnlargeMissionPool:
                     //TimeLineEvents.EnlargeMissionPool(missionManager);
-                    break;
-                case Events.EphemeralMission:
+                  //  break;
+                //case Events.EphemeralMission:
                     //TimeLineEvents.AddEphemeralMission(missionManager, events[0].ephemeralMission);
-                    break;
+                  //  break;
                 default:
                     break;
             }

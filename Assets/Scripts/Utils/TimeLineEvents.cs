@@ -5,6 +5,18 @@ using UnityEngine;
 
 public class TimeLineEvents
 {
+    static public void AddBoussoleMissionSlot(CompassMissionManager bmm) => bmm.compassMissionSlots++;
+
+    static public void AddBoussoleMissionPool(CompassMissionManager bmm) => bmm.maxCompassM++;
+
+    static public void ReduceBoussoleMissionPool(CompassMissionManager bmm) => bmm.minCompassM++;
+
+    static public void UpBoussoleMissionPool(CompassMissionManager bmm)
+    {
+        bmm.maxCompassM++;
+        bmm.minCompassM++;
+    }
+
     static public void ApocalypseEvent()
     {
         TileSystem tileS = TileSystem.Instance;

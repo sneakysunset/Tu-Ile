@@ -16,7 +16,8 @@ public static class GridUtils
     public static event LevelMapLoad onLevelMapLoad;
     public delegate void OnEndLevel(Tile tile);
     public static event OnEndLevel onEndLevel;
-
+    public delegate void OnStartLevel();
+    public static event OnStartLevel onStartLevel;
     #region Tile Methods
     public static Tile WorldPosToTile(Vector3 pos)
     {
@@ -109,7 +110,9 @@ public static class GridUtils
         }
         string path = LoadLevelMap(toHub);
         if (onLevelMapLoad != null) onLevelMapLoad(path);
- 
+
+        yield return new WaitForSeconds(3);
+        if (onStartLevel != null) onStartLevel();
 
     }
 
@@ -246,7 +249,8 @@ public static class GridUtils
                         it.spawnTimer = Convert.ToInt32(tiSpawner[1]);
                         it.loop = Convert.ToBoolean(int.Parse(tiSpawner[2]));
                         it.spawnPosition = (SpawnPosition)int.Parse(tiSpawner[3]);
-                        if (it.itemToSpawn == SpawnableItems.Etabli || it.itemToSpawn == SpawnableItems.Chantier) it.recette = reMan.getRecetteFromList(tiSpawner[4]);
+                        if (it.itemToSpawn == SpawnableItems.Etabli) it.recette = reMan.getRecetteFromList(tiSpawner[4]);
+                        else if (it.itemToSpawn == SpawnableItems.Chantier) it.otherRecette = reMan.getRecetteFromList(tiSpawner[4]);
                         else if (it.itemToSpawn == SpawnableItems.Crate || it.itemToSpawn == SpawnableItems.Mimic) it.crateReward = reMan.getRewardFromList(tiSpawner[4]);
                     }
                 }
@@ -404,6 +408,14 @@ public static class GridUtils
         for (int i = 0; i < altFileInfo.Length; i++)
         {
             altFileInfo[i].CopyTo(fileInfo[i].FullName, true);
+        }
+
+        foreach(GameTimer gameTimer in RessourcesManager.Instance.gameManagers)
+        {
+            ScoreManager scoreMan = gameTimer.GetComponent<ScoreManager>();
+            scoreMan.highscore = 0;
+            scoreMan.isCompleted = false;
+            scoreMan.activated = false;
         }
     }
 
