@@ -973,7 +973,7 @@ tile 19 21+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 19 22+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 19 23+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 19 24+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :8+LevelName :NIVEAU VIDE+Height :14+ItemSpawner :No Spawner%
-tile 19 25+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :12+ItemSpawner :Chantier;0;0;0;Chantier-Medium (SO_Recette_Chantier)%
+tile 19 25+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :12+ItemSpawner :Chantier;0;0;0;Ch-Medium (SO_Recette_Chantier)%
 tile 19 26+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :20+LevelName :NIVEAU VIDE+Height :14+ItemSpawner :No Spawner%
 tile 19 27+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 19 28+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1026,8 +1026,8 @@ tile 20 24+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 20 25+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :10+ItemSpawner :No Spawner%
 tile 20 26+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 20 27+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 20 28+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 20 29+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :8+ItemSpawner :Chantier;0;0;0;Chantier-SimpleHouse (SO_Recette_Chantier)%
+tile 20 28+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
+tile 20 29+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :8+ItemSpawner :Chantier;0;0;0;Ch-Simple (SO_Recette_Chantier)%
 tile 20 30+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 20 31+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 20 32+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1075,7 +1075,7 @@ tile 21 23+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 21 24+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :8+ItemSpawner :No Spawner%
 tile 21 25+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 21 26+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 21 27+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
+tile 21 27+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 21 28+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 21 29+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :2+SpawnPosition :66+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
 tile 21 30+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
@@ -1180,7 +1180,7 @@ tile 23 28+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 23 29+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 23 30+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 23 31+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
-tile 23 32+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :Chantier;0;0;0;Chantier-Medium (SO_Recette_Chantier)%
+tile 23 32+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :Chantier;0;0;0;Ch-Medium (SO_Recette_Chantier)%
 tile 23 33+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 23 34+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 23 35+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1220,14 +1220,14 @@ tile 24 18+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 24 19+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 24 20+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 24 21+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 24 22+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
+tile 24 22+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 24 23+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 24 24+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :2+SpawnPosition :4+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 24 25+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 24 26+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 24 27+Walkable :1+Degradable :1+Tourbillon :0+TileType :6+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 24 28+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
-tile 24 29+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :8+ItemSpawner :Chantier;0;0;0;Chantier-Medium (SO_Recette_Chantier)%
+tile 24 29+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :8+ItemSpawner :Chantier;0;0;0;Ch-Medium (SO_Recette_Chantier)%
 tile 24 30+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 24 31+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 24 32+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1270,14 +1270,14 @@ tile 25 18+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 25 19+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
 tile 25 20+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 25 21+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 25 22+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :Chantier;3;0;0;Chantier-Medium (SO_Recette_Chantier)%
+tile 25 22+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :Chantier;3;0;0;Ch-Medium (SO_Recette_Chantier)%
 tile 25 23+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 25 24+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :Etabli;0;0;0;R_WoodTile (SO_Recette)%
 tile 25 25+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 25 26+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 25 27+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
+tile 25 27+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :5+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 25 28+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
-tile 25 29+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
+tile 25 29+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :36+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
 tile 25 30+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 25 31+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 25 32+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1373,7 +1373,7 @@ tile 27 21+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 27 22+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 27 23+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 27 24+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 27 25+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
+tile 27 25+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 27 26+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 27 27+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 27 28+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1424,7 +1424,7 @@ tile 28 22+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 28 23+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 28 24+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 28 25+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
-tile 28 26+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
+tile 28 26+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 28 27+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 28 28+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 28 29+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1474,7 +1474,7 @@ tile 29 22+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 29 23+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
 tile 29 24+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 29 25+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
-tile 29 26+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
+tile 29 26+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 29 27+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 29 28+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 29 29+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1522,7 +1522,7 @@ tile 30 20+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 30 21+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 30 22+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 30 23+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 30 24+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :8+ItemSpawner :Chantier;0;0;0;Chantier-SimpleHouse (SO_Recette_Chantier)%
+tile 30 24+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :8+ItemSpawner :Chantier;0;0;0;Ch-Simple (SO_Recette_Chantier)%
 tile 30 25+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 30 26+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 30 27+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -2498,4 +2498,4 @@ tile 49 46+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 49 47+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 49 48+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 49 49+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-|£2423
+|£2423£0
