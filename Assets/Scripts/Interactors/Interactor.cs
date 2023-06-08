@@ -77,6 +77,7 @@ public class Interactor : MonoBehaviour
         meshF = GetComponent<MeshFilter>();
         meshR = GetComponent<MeshRenderer>();
         meshC = GetComponent<MeshCollider>();
+        //UnfadeInteractor();
     }
 
     private void OnEnable()
@@ -245,14 +246,14 @@ public class Interactor : MonoBehaviour
         }
     }
 
-    private void UnFadeTile()
+    private void UnfadeInteractor()
     {
         if (!isFaded && fadeChecker)
         {
             fadeChecker = false;
             ChangeRenderMode.ChangeRenderModer(meshR.material, ChangeRenderMode.BlendMode.Opaque);
             Color col = meshR.material.color;
-            col.a = .2f;
+            col.a = 1f;
             meshR.material.color = col;
         }
     }

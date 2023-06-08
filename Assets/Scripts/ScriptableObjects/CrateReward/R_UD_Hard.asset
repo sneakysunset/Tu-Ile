@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemReward: 1
   isRandom: 1
-  scoreReward: 300
+  scoreReward: 250
   playerStateReward:
   - rewardAdd: 0.5
     pReward: 1
   itemRewards:
-  - number: 1
+  - number: 2
     rewardItem: {fileID: 74171677379847211, guid: 018e1ac020e33f344a2f9d59f5d14b17, type: 3}
   - number: 6
-    rewardItem: {fileID: 74171677379847211, guid: 018e1ac020e33f344a2f9d59f5d14b17, type: 3}
+    rewardItem: {fileID: 6912089915621339900, guid: 210b15a271081554fb901b5bf58d7553, type: 3}
   - number: 7
-    rewardItem: {fileID: 74171677379847211, guid: 018e1ac020e33f344a2f9d59f5d14b17, type: 3}
+    rewardItem: {fileID: 6912089915621339900, guid: 210b15a271081554fb901b5bf58d7553, type: 3}
   - number: 8
-    rewardItem: {fileID: 74171677379847211, guid: 018e1ac020e33f344a2f9d59f5d14b17, type: 3}
+    rewardItem: {fileID: 6912089915621339900, guid: 210b15a271081554fb901b5bf58d7553, type: 3}

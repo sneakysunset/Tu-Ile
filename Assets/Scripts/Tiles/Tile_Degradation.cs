@@ -90,8 +90,9 @@ public class Tile_Degradation : MonoBehaviour
 
     public void SandDegradation()
     {
-        if(shakeCor == null && !TileSystem.Instance.isHub)
+        if(shakeCor == null && !TileSystem.Instance.isHub && t.sandFlag)
         {
+            t.sandFlag = false;
             //t.currentPos.y -= t.td.heightByTile;
             t.ChangeCurrentPos(-1);
             shakeCor = TileShake();
@@ -179,7 +180,7 @@ public class Tile_Degradation : MonoBehaviour
         t.timer = UnityEngine.Random.Range(degradationTimerMin, degradationTimerMax);
         if(t.currentPos.y == GameConstant.maxTileHeight && CompareTag("DegradingTile")) tag = "Tile";
         if (t.walkable && t.currentPos.y < 0) SinkTile();
-        t.sandFlag = false;
+        //t.sandFlag = true;
         if(t.degradable && t.walkable && t.tileType != TileType.Sand && t.walkedOnto && !TileSystem.Instance.isHub) StartDegradation();
     }
 

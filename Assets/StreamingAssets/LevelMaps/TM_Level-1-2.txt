@@ -1870,7 +1870,7 @@ tile 37 18+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 37 19+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 37 20+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 37 21+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 37 22+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :Crate;0;0;0;Reward_Woodtile (SO_CrateReward)%
+tile 37 22+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :Crate;3;0;0;R_WT_Easy (SO_CrateReward)%
 tile 37 23+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 37 24+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 37 25+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%

@@ -922,7 +922,7 @@ tile 18 20+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 18 21+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 18 22+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 18 23+Walkable :0+Degradable :1+Tourbillon :1+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 18 24+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :10+ItemSpawner :Mimic;0;0;0;Reward_Woodtile (SO_CrateReward)%
+tile 18 24+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :10+ItemSpawner :Mimic;3;0;0;R_WT_Easy (SO_CrateReward)%
 tile 18 25+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :2+LevelName :NIVEAU VIDE+Height :10+ItemSpawner :No Spawner%
 tile 18 26+Walkable :0+Degradable :1+Tourbillon :1+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 18 27+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1128,7 +1128,7 @@ tile 22 26+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 22 27+Walkable :1+Degradable :1+Tourbillon :0+TileType :6+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
 tile 22 28+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :8+ItemSpawner :No Spawner%
 tile 22 29+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 22 30+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :10+ItemSpawner :Mimic;0;0;0;Reward_Woodtile (SO_CrateReward)%
+tile 22 30+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :10+ItemSpawner :Mimic;3;0;0;R_WT_Easy (SO_CrateReward)%
 tile 22 31+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 22 32+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 22 33+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1172,7 +1172,7 @@ tile 23 20+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 23 21+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :Chantier;0;0;0;Ch-Simple (SO_Recette_Chantier)%
 tile 23 22+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :10+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 23 23+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
-tile 23 24+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :Mimic;0;0;0;Reward_Woodtile (SO_CrateReward)%
+tile 23 24+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :Mimic;3;0;0;R_WT_Easy (SO_CrateReward)%
 tile 23 25+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 23 26+Walkable :1+Degradable :1+Tourbillon :0+TileType :6+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 23 27+Walkable :1+Degradable :1+Tourbillon :0+TileType :6+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
@@ -1220,7 +1220,7 @@ tile 24 18+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 24 19+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 24 20+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :Chantier;0;0;0;Ch-Medium (SO_Recette_Chantier)%
 tile 24 21+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
-tile 24 22+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :Bait;0;0;0;%
+tile 24 22+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :Bait;3;1;0;%
 tile 24 23+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 24 24+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :2+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
 tile 24 25+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1271,7 +1271,7 @@ tile 25 19+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 25 20+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 25 21+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 25 22+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
-tile 25 23+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :Mimic;0;0;0;Reward_Woodtile (SO_CrateReward)%
+tile 25 23+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :Mimic;3;0;0;R_WT_Easy (SO_CrateReward)%
 tile 25 24+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :Etabli;0;0;0;R_WoodTile (SO_Recette)%
 tile 25 25+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 25 26+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1477,7 +1477,7 @@ tile 29 25+Walkable :0+Degradable :1+Tourbillon :1+TileType :0+TileSpawnType :0+
 tile 29 26+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 29 27+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 29 28+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :12+ItemSpawner :No Spawner%
-tile 29 29+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :12+ItemSpawner :Mimic;0;0;0;Reward_Woodtile (SO_CrateReward)%
+tile 29 29+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :12+ItemSpawner :Mimic;3;0;0;R_WT_Easy (SO_CrateReward)%
 tile 29 30+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 29 31+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 29 32+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -1523,7 +1523,7 @@ tile 30 21+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+
 tile 30 22+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 30 23+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 30 24+Walkable :0+Degradable :1+Tourbillon :1+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 30 25+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :10+ItemSpawner :Crate;0;0;0;Reward_Woodtile (SO_CrateReward)%
+tile 30 25+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :10+ItemSpawner :Crate;3;0;0;R_WT_Easy (SO_CrateReward)%
 tile 30 26+Walkable :0+Degradable :1+Tourbillon :1+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 30 27+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 30 28+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%

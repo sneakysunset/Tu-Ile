@@ -5220,6 +5220,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4695394438935391193}
     m_Modifications:
+    - target: {fileID: 3772199384605402632, guid: b282197236a667d4094a5d8a54d97d1c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3772199385149421331, guid: b282197236a667d4094a5d8a54d97d1c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3772199385149421331, guid: b282197236a667d4094a5d8a54d97d1c, type: 3}
       propertyPath: InitialModule.startSize.scalar
       value: 0.7
@@ -5287,6 +5295,10 @@ PrefabInstance:
     - target: {fileID: 3772199385149421342, guid: b282197236a667d4094a5d8a54d97d1c, type: 3}
       propertyPath: m_Name
       value: OnActivation
+      objectReference: {fileID: 0}
+    - target: {fileID: 3772199385666418728, guid: b282197236a667d4094a5d8a54d97d1c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3772199385666418728, guid: b282197236a667d4094a5d8a54d97d1c, type: 3}
       propertyPath: InitialModule.startSize.scalar

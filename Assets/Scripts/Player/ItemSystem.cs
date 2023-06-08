@@ -43,7 +43,6 @@ public class ItemSystem : MonoBehaviour
             {
                 //player.holdableItems.Add(player.heldItem);
                 player.heldItem.GrabRelease(false);
-                print(1);
             }
             if(player.closestItem.GetType() != typeof(Item_Etabli))
             {
@@ -61,7 +60,6 @@ public class ItemSystem : MonoBehaviour
             }
             else
             {
-                print(2);
                 player.closestItem.GrabStarted(holdPoint, player);
                 player.holdableItems.Remove(player.closestItem);
             }

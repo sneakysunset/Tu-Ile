@@ -52,4 +52,12 @@ public class Item_Crate_Mimic : Item_Crate
     {
         base.OnCollisionEnter(other);
     }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("Water"))
+        {
+            StartCoroutine(base.KillItem(hit.collider));
+        }
+    }
 }

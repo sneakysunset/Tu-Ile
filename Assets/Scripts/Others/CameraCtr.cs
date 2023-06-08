@@ -163,7 +163,7 @@ public class CameraCtr : MonoBehaviour
     public IEnumerator OnLevelLoad()
     {
         TileSystem.Instance.ready = true;
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(7);
         //yield return new WaitUntil(() => TileSystem.Instance.ready);
         if (dezoomCamera != null)
         {

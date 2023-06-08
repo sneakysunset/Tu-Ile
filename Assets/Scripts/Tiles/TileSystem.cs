@@ -111,7 +111,7 @@ public class TileSystem : MonoBehaviour
         Vector3 pos = centerTile.transform.position;
         pos.y = previousCenterTile.transform.position.y;
         previousCenterTile.transform.position -= 15 * Vector3.up;
-        Instance.centerTile.transform.position = pos;
+        centerTile.transform.position = pos;
 
         Item[] items = FindObjectsOfType<Item>();
         for (int i = 0; i < items.Length; i++)

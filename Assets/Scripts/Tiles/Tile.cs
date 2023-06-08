@@ -200,8 +200,8 @@ public class Tile : MonoBehaviour
         {
             tc.pSysCenterTile.gameObject.SetActive(true);
         }
-        
 
+        
 
         
 
@@ -238,6 +238,11 @@ public class Tile : MonoBehaviour
             tc.minableItems.Rotate(0, -rotation * 60, 0);
             tc.altSpawnPositions.Rotate(0, -rotation * 60, 0);
         }
+    }
+
+    private void Start()
+    {
+        //UnFadeTile();
     }
 
     private void OnDisable()
@@ -442,7 +447,7 @@ public class Tile : MonoBehaviour
 
         }
         transform.position = new Vector3(transform.position.x, -10, transform.position.z);
-        if (degradingSpeed == 0) degradable = false;
+        //if (degradingSpeed == 0) degradable = false;
         TileType tType = (TileType)Enum.Parse(typeof(TileType), stackType);
         float rot = UnityEngine.Random.Range(0, 360);
         readyToRoll = true;
@@ -516,7 +521,7 @@ public class Tile : MonoBehaviour
         {
             ChangeRenderMode.ChangeRenderModer(tc.myMeshR.materials[i], ChangeRenderMode.BlendMode.Opaque);
             Color col = tc.myMeshR.materials[i].color;
-            col.a = .2f;
+            col.a = 1f;
             tc.myMeshR.materials[i].color = col;
         }
         faded = false;

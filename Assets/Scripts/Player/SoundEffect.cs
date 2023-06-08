@@ -8,6 +8,8 @@ public class SoundEffect : MonoBehaviour
     public Color woodCol, rockCol, goldCol, diamondCol, adamCol;
     public ParticleSystem pSysWalkingR, pSysWalkingL;
     FMOD.Studio.EventInstance walkEvent;
+    [SerializeField] private ParticleSystem castPSys;
+
     private void Start()
     {
         player = GetComponentInParent<Player>();
@@ -73,6 +75,11 @@ public class SoundEffect : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void CastSpell()
+    {
+        castPSys.Play();
     }
 }
 

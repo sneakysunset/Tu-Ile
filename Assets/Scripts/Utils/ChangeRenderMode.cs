@@ -24,7 +24,7 @@ public class ChangeRenderMode
                 standardShaderMaterial.DisableKeyword("_ALPHATEST_ON");
                 standardShaderMaterial.DisableKeyword("_ALPHABLEND_ON");
                 standardShaderMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                standardShaderMaterial.renderQueue = -1;
+                standardShaderMaterial.renderQueue = 2000;
                 standardShaderMaterial.SetFloat("_Mode", 0);
                 break;
             case BlendMode.Cutout:

@@ -17,9 +17,9 @@ MonoBehaviour:
   scoreReward: 100
   playerStateReward: []
   itemRewards:
+  - number: 2
+    rewardItem: {fileID: 6912089915621339900, guid: 210b15a271081554fb901b5bf58d7553, type: 3}
   - number: 3
     rewardItem: {fileID: 6912089915621339900, guid: 210b15a271081554fb901b5bf58d7553, type: 3}
   - number: 4
-    rewardItem: {fileID: 6912089915621339900, guid: 210b15a271081554fb901b5bf58d7553, type: 3}
-  - number: 5
     rewardItem: {fileID: 6912089915621339900, guid: 210b15a271081554fb901b5bf58d7553, type: 3}

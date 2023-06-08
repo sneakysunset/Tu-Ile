@@ -19,6 +19,18 @@ PrefabInstance:
       propertyPath: scoreCaps.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: scoreCaps.Array.data[0]
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: scoreCaps.Array.data[1]
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: scoreCaps.Array.data[2]
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 6354948749326121284, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: m_Name
       value: Level-1-9_GM

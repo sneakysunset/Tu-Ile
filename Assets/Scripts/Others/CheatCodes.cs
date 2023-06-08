@@ -29,7 +29,7 @@ public class CheatCodes : MonoBehaviour
         foreach (FileInfo fi in fileInfo)
         {
             string[] d = fi.Name.Split('.');
-            if(d.Length == 2) options.Add(d[0]);
+            if(d.Length == 2 && d[0] != "Hub") options.Add(d[0]);
         }
 
         levelLoader.AddOptions(options);
@@ -70,10 +70,12 @@ public class CheatCodes : MonoBehaviour
         string selectedOption = levelLoader.options[selectedIndex].text;
       
         TileSystem.Instance.fileName = selectedOption.Split('_')[1];
-        TileSystem.Instance.previousCenterTile = FindObjectOfType<Player>().tileUnder;
+        Player p = FindObjectOfType<Player>();
+        TileSystem.Instance.centerTile = p.tileUnder;
+        
         bool toHub = false;
         if (selectedOption == "Hub") toHub = true;
-        StartCoroutine(GridUtils.SinkWorld(FindObjectOfType<Player>().tileUnder, false, toHub));
+        StartCoroutine(GridUtils.SinkWorld(p.tileUnder, false, toHub));
     }
 
     [SerializeField] private TMP_Dropdown levelLoader;    

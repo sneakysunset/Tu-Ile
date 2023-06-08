@@ -29,7 +29,7 @@ public class Player_StopDegradation : MonoBehaviour
         if (!TileSystem.Instance.isHub) player.tileUnder.tc.levelUI.DisableUI();
         else TileSystem.Instance.centerTile.tc.levelUI.EnableUI();
         TileSystem.Instance.fileName = player.tileUnder.levelName;
-        TileSystem.Instance.previousCenterTile = player.tileUnder;
+        TileSystem.Instance.centerTile = player.tileUnder;
         StartCoroutine(GridUtils.SinkWorld(player.tileUnder, false, false)) ;
     }
 

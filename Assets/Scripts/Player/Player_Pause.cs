@@ -17,7 +17,7 @@ public class Player_Pause : MonoBehaviour
     private Player player;
     private void Start()
     {
-        pauseMenu = FindObjectOfType<PauseMenu>();
+        //pauseMenu = FindObjectOfType<PauseMenu>();
         optionMenu = FindObjectOfType<OptionMenu>();
         player = GetComponent<Player>();
     }
@@ -36,7 +36,7 @@ public class Player_Pause : MonoBehaviour
 
     public void SetPause()
     {
-        if (pauseHubMenu.optionOn)
+        if (pauseMenu.optionOn)
         {
             optionMenu.ExitOptions();
             optionMenu.transform.GetChild(0).gameObject.SetActive(false);
@@ -58,7 +58,7 @@ public class Player_Pause : MonoBehaviour
 
     public void SetHubPause()
     {
-        if (pauseMenu.optionOn)
+        if (pauseHubMenu.optionOn)
         {
             optionMenu.ExitOptions();
             optionMenu.transform.GetChild(0).gameObject.SetActive(false);

@@ -131,6 +131,9 @@
 		<property name="start">
 			<value>1</value>
 		</property>
+		<property name="volume">
+			<value>-7.5</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{6528f211-ea41-4e92-84b4-df14c07e3a4a}</destination>
 		</relationship>

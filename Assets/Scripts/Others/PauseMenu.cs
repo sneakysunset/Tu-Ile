@@ -63,7 +63,8 @@ public class PauseMenu : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
 
         if (optionOn) return;
-        if (player) player.SetPause();
+        if (player && !TileSystem.Instance.isHub) player.SetPause();
+        else if (player && TileSystem.Instance.isHub) player.SetHubPause();
     }
 
     public void Options()
@@ -75,10 +76,10 @@ public class PauseMenu : MonoBehaviour
 
     public void Restart()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
-
         if (optionOn) return;
 
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
         TileSystem.Instance.gameTimer.EndLevel(false, false);
 
         player.SetPause();

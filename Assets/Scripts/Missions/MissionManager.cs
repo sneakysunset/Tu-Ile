@@ -125,16 +125,14 @@ public class MissionManager : MonoBehaviour
         lerpWaiter = new WaitForEndOfFrame();
         cooldownWaiter = new WaitForSeconds(missionCooldown);
         yield return new WaitUntil(() => TileSystem.Instance.ready);
-        Player_Pause.pauseMenuActivation += OnPause;
-        Player_Pause.pauseMenuDesactivation += OnUnpause;
+
         AddMissionPool();
         SetMissionPages();
     }
 
     private void OnDisable()
     {
-        Player_Pause.pauseMenuActivation -= OnPause;
-        Player_Pause.pauseMenuDesactivation -= OnUnpause;
+
     }
 
     private void OnPause(Player player)

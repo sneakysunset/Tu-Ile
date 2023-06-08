@@ -111,7 +111,12 @@ public class ObjectPooling : MonoBehaviour
         {
             for (int i = 0; i < pooledObjects.Count; i++)
             {
-                if (type == pooledObjects[i].itemType.Split(':')[0]) index = i;
+                //if (type == pooledObjects[i].itemType.Split(':')[0]) index = i;
+                if (type == pooledObjects[i].itemType)
+                {
+                    index = i;
+                    break;
+                }
             }
         }
         pooledObjects[index].objects.Add(obj);
