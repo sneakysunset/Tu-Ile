@@ -52,6 +52,6 @@ public class TileComponentReferencer : MonoBehaviour
     [Foldout("Component")] public GameObject pSysCenterTile;
     [Foldout("Component")] public Tile_Degradation tileD;
     [Foldout("Component")] public LevelUI levelUI;
-
+    [Foldout("Component")] public ParticleSystem huizinga;
     #endregion
 }

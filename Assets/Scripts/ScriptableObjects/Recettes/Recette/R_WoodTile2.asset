@@ -15,11 +15,9 @@ MonoBehaviour:
   convertionTime: 1.4
   requiredItemStacks:
   - stackType: 1
-    currentNumber: 0
-    cost: 1
+    cost: 2
   - stackType: 2
-    currentNumber: 0
-    cost: 1
+    cost: 2
   requiredItemUnstackable: []
   craftedItemPrefab: {fileID: 6912089915621339900, guid: 210b15a271081554fb901b5bf58d7553, type: 3}
-  numberOfCrafted: 4
+  numberOfCrafted: 1

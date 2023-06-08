@@ -1,0 +1,223 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &629013158046440979
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 329582481206523742, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: playerNumber
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: scoreText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: scoreCaps.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121284, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_Name
+      value: Level-1-3_GM
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121286, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121286, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 63
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121286, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 27.347
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121286, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 40.554
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121286, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121286, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121286, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121286, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121286, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121286, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354948749326121286, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: eventFolder
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: minuteFolder
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: timerFillImage
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: events.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: events.Array.data[0].eventTime
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: events.Array.data[1].eventTime
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: events.Array.data[0].timeLineEvent
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: events.Array.data[1].timeLineEvent
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: LevelEnd.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: LevelEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: LevelEnd.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: missionsFolder
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[0].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[0].b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[0].g
+      value: 0.8166218
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[0].r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[1].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[1].b
+      value: 0.27058828
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[1].g
+      value: 0.56849146
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[1].r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[2].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[2].b
+      value: 0.044025064
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[2].g
+      value: 0.044025064
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: fillBarColors.Array.data[2].r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: barColors.Array.data[0].fillBarColors.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: barColors.Array.data[0].fillBarColors.g
+      value: 0.8156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: barColors.Array.data[0].fillBarColors.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: barColors.Array.data[1].fillBarColors.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: barColors.Array.data[1].fillBarColors.b
+      value: 0.27058825
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: barColors.Array.data[1].fillBarColors.g
+      value: 0.5686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: barColors.Array.data[1].fillBarColors.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: barColors.Array.data[2].fillBarColors.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: barColors.Array.data[2].fillBarColors.b
+      value: 0.043137256
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: barColors.Array.data[2].fillBarColors.g
+      value: 0.043137256
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: barColors.Array.data[2].fillBarColors.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: missionPools.Array.data[0].missionList.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299111489155243357, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
+      propertyPath: missionPools.Array.data[0].missionList.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: e82001e141ae19045b00c19622a8c7a9, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}

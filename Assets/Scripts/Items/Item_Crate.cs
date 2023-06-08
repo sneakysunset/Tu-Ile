@@ -42,12 +42,14 @@ public class Item_Crate : Item
         if(tileUnder == TileSystem.Instance.centerTile)
         {
             StartCoroutine(OnCenterReached(tileUnder.tc.minableItems));
+            tileUnder.tc.huizinga.Play();
         }
     }
 
     public IEnumerator OnCenterReached(Transform pos)
     {
         holdable = false;
+        
         transform.parent = null;
         transform.position = pos.position;
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Chest", transform.position);

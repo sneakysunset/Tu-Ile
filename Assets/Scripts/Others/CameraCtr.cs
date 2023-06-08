@@ -72,7 +72,6 @@ public class CameraCtr : MonoBehaviour
         brains = GetComponentsInChildren<CinemachineBrain>();
     }
 
-
     private void PauseMenuActivation(Player player)
     {
         /*if(players.Count == 2)
@@ -164,7 +163,7 @@ public class CameraCtr : MonoBehaviour
     public IEnumerator OnLevelLoad()
     {
         TileSystem.Instance.ready = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
         //yield return new WaitUntil(() => TileSystem.Instance.ready);
         if (dezoomCamera != null)
         {

@@ -231,10 +231,6 @@ public class Interactor : MonoBehaviour
     #endregion
 
     #region FadeTile
-    private void LateUpdate()
-    {
-        //UnFadeTile();
-    }
 
     public void FadeTile(float t)
     {

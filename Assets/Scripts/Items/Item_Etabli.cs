@@ -354,11 +354,14 @@ public class Item_Etabli : Item
     IEnumerator ChantierConvert()
     {
         FMODUtils.SetFMODEvent(ref creationInst, "event:/Tuile/Tile/TileCreation", transform);
+        interactable = false;
+        this.enabled = false;
+        Highlight.SetActive(false);
         yield return waiter;
         FMODUtils.StopFMODEvent(ref creationInst, true);
+        constructed = true;
         //GameObject chantier = Instantiate(recette.craftedItemPrefab, tileUnder.transform.position + recette.craftedItemPrefab.transform.position + Vector3.up * GameConstant.tileHeight, recette.craftedItemPrefab.transform.rotation).gameObject;
         //chantier.transform.parent = tileUnder.transform;
-        constructed = true;
         //FindObjectOfType<MissionManager>().CheckMissions();
         SO_Recette_Chantier re = recette as SO_Recette_Chantier;
         /*Transform house = */craftedItem = Instantiate(crate, transform.parent.GetChild(0).GetChild(4).position + .5f * Vector3.up, Quaternion.identity)/*.transform*/;
@@ -370,9 +373,6 @@ public class Item_Etabli : Item
         //house.DOMoveY(targetY, 2).SetEase(TileSystem.Instance.easeOut);
         GetComponentInChildren<MeshRenderer>().materials = houseMaterials;
         GetComponentInChildren<MeshFilter>().mesh = houseMesh;
-        Highlight.SetActive(false);
-        interactable = false;
-        this.enabled = false;
         if (TileSystem.Instance.isHub && isTuto)
         {
             isTuto = false;

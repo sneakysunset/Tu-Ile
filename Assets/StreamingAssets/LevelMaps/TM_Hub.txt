@@ -209,7 +209,7 @@ tile 4 7+Walkable :0+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+Sp
 tile 4 8+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 4 9+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 4 10+Walkable :1+Degradable :1+Tourbillon :0+TileType :6+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 4 11+Walkable :1+Degradable :1+Tourbillon :0+TileType :8+TileSpawnType :0+SpawnPosition :10+LevelName :Ile 3+Height :0+ItemSpawner :No Spawner%
+tile 4 11+Walkable :1+Degradable :1+Tourbillon :0+TileType :8+TileSpawnType :0+SpawnPosition :10+LevelName :Level-1-4+Height :0+ItemSpawner :No Spawner%
 tile 4 12+Walkable :1+Degradable :1+Tourbillon :0+TileType :6+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 4 13+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 4 14+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -504,7 +504,7 @@ tile 10 2+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+S
 tile 10 3+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 10 4+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 10 5+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
-tile 10 6+Walkable :1+Degradable :0+Tourbillon :0+TileType :8+TileSpawnType :0+SpawnPosition :0+LevelName :Ile 3+Height :2+ItemSpawner :No Spawner%
+tile 10 6+Walkable :1+Degradable :0+Tourbillon :0+TileType :8+TileSpawnType :0+SpawnPosition :0+LevelName :Level-1-1+Height :2+ItemSpawner :No Spawner%
 tile 10 7+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 10 8+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
 tile 10 9+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
@@ -556,11 +556,11 @@ tile 11 4+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+S
 tile 11 5+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 11 6+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :FallVillage+Height :2+ItemSpawner :No Spawner%
 tile 11 7+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :-1+LevelName :NIVEAU VIDE+Height :6+ItemSpawner :No Spawner%
-tile 11 8+Walkable :1+Degradable :0+Tourbillon :0+TileType :8+TileSpawnType :0+SpawnPosition :12+LevelName :Ile 3+Height :6+ItemSpawner :No Spawner%
+tile 11 8+Walkable :1+Degradable :0+Tourbillon :0+TileType :8+TileSpawnType :0+SpawnPosition :0+LevelName :Level-1-2+Height :6+ItemSpawner :No Spawner%
 tile 11 9+Walkable :1+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :1+SpawnPosition :-1+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 11 10+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :4+ItemSpawner :No Spawner%
 tile 11 11+Walkable :1+Degradable :0+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
-tile 11 12+Walkable :1+Degradable :0+Tourbillon :0+TileType :8+TileSpawnType :0+SpawnPosition :0+LevelName :Ile 3+Height :12+ItemSpawner :No Spawner%
+tile 11 12+Walkable :1+Degradable :0+Tourbillon :0+TileType :8+TileSpawnType :0+SpawnPosition :0+LevelName :Level-1-3+Height :12+ItemSpawner :No Spawner%
 tile 11 13+Walkable :1+Degradable :1+Tourbillon :0+TileType :2+TileSpawnType :2+SpawnPosition :-1+LevelName :NIVEAU VIDE+Height :12+ItemSpawner :No Spawner%
 tile 11 14+Walkable :1+Degradable :1+Tourbillon :0+TileType :2+TileSpawnType :2+SpawnPosition :-1+LevelName :NIVEAU VIDE+Height :12+ItemSpawner :No Spawner%
 tile 11 15+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -654,7 +654,7 @@ tile 13 2+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+S
 tile 13 3+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 13 4+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 13 5+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 13 6+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
+tile 13 6+Walkable :0+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :-2+ItemSpawner :No Spawner%
 tile 13 7+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 13 8+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 13 9+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -704,7 +704,7 @@ tile 14 2+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+S
 tile 14 3+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 14 4+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 14 5+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 14 6+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
+tile 14 6+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 14 7+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 14 8+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 14 9+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
@@ -753,8 +753,8 @@ tile 15 1+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+S
 tile 15 2+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 15 3+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 15 4+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
-tile 15 5+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :2+ItemSpawner :No Spawner%
-tile 15 6+Walkable :1+Degradable :1+Tourbillon :0+TileType :1+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
+tile 15 5+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
+tile 15 6+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 15 7+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 15 8+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
 tile 15 9+Walkable :0+Degradable :1+Tourbillon :0+TileType :0+TileSpawnType :0+SpawnPosition :0+LevelName :NIVEAU VIDE+Height :0+ItemSpawner :No Spawner%
