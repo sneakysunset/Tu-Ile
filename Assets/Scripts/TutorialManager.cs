@@ -122,7 +122,7 @@ public class TutorialManager : MonoBehaviour
 
         tutoTextTr.DOAnchorPosX(targetX, timeToGoOut);
         yield return new WaitForSeconds(timeToGoOut);
-        text.text = "Amener le bois à la tile avec une cercle magique et déposez la avec le bouton 'X'";
+        text.text = "Amener le coffre à la tile avec une cercle magique et déposez la avec le bouton 'X'";
         tutoTextTr.DOAnchorPosX(ogX, timeToGoIn);
         yield return new WaitForSeconds(timeToGoIn);
         enumer = null;

@@ -36,10 +36,13 @@ public class Player_Mining : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        print(1);
         if (other.CompareTag("Interactor") && other.transform.TryGetComponent<Interactor>(out Interactor tempInt))
         {
+        print(2);
             if (player.interactors.Contains(tempInt))
             {
+        print(3);
                 tempInt.OnInteractionExit(player);
             }
         }
