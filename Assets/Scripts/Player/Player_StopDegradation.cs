@@ -55,7 +55,8 @@ public class Player_StopDegradation : MonoBehaviour
         if (cd3 && cd4 && cd5 && cd6 && cd7 && cd8)
         {
             stackItem.numberStacked -= ressourcesManager.growthCost;
-            tile.currentPos.y += tile.td.heightByTile;
+            tile.ChangeCurrentPos(1);
+            //tile.currentPos.y += tile.td.heightByTile;
             tile.isGrowing = true;
             tile.StopDegradation();
             if (!TileSystem.Instance.isHub) TileSystem.Instance.scoreManager.ChangeScore(tile.GetScoreValue());

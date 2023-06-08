@@ -25,7 +25,8 @@ public class TimeLineEvents
         {
             if (t.degradable)
             {
-                t.currentPos.y -= t.td.heightByTile;
+                //t.currentPos.y -= t.td.heightByTile;
+                t.ChangeCurrentPos(-1);
             }
         }
     }

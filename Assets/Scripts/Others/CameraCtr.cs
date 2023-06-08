@@ -67,7 +67,7 @@ public class CameraCtr : MonoBehaviour
         //sCE = GetComponentInChildren<SplitScreenEffect>();
         dezoomCamera.LookAt = TileSystem.Instance.centerTile.tc.minableItems;
         dezoomCamera.Follow = TileSystem.Instance.centerTile.tc.minableItems;
-        StartCoroutine(changeCam());
+        
         playerInputManager = FindObjectOfType<PlayerInputManager>();
         brains = GetComponentsInChildren<CinemachineBrain>();
     }
@@ -149,14 +149,18 @@ public class CameraCtr : MonoBehaviour
 
 
     #region OnLoad
-    IEnumerator changeCam()
+    bool once;
+    void ChangeCam()
     {
-        yield return new WaitUntil(() => Input.GetButtonDown("StartGame"));
+        if (once) return;
+        else once = true;
+        //yield return new WaitUntil(() => Input.GetButtonDown("StartGame"));
         dezoomCamera.Priority = 2;
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Camera");
-        yield return new WaitForSeconds(brains[0].m_DefaultBlend.m_Time);
+        //yield return new WaitForSeconds(brains[0].m_DefaultBlend.m_Time);
         TileSystem.Instance.ready = true;
     }
+
     public IEnumerator OnLevelLoad()
     {
         TileSystem.Instance.ready = true;
@@ -197,6 +201,7 @@ public class CameraCtr : MonoBehaviour
         }
         players.Add(player);
         playerP.playerIndex = players.Count - 1;
+        ChangeCam();
         if (players.Count > 1)
         {
             cam2.Follow = player ;
