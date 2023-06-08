@@ -17,11 +17,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: activated
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: highscore
-      value: 13
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: scoreText
@@ -29,7 +29,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: isCompleted
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: scoreCaps.Array.size
@@ -37,19 +37,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: scoreCaps.Array.data[0]
-      value: 10
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: scoreCaps.Array.data[1]
-      value: 50
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 5061697531550802697, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: scoreCaps.Array.data[2]
-      value: 100
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 6354948749326121284, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: m_Name
-      value: GameManager
+      value: Ile 3_GM
       objectReference: {fileID: 0}
     - target: {fileID: 6354948749326121285, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: m_Enabled
@@ -129,7 +129,7 @@ PrefabInstance:
       objectReference: {fileID: 3388698492052617944, guid: fce0e83e28c991d42a35cd94a6409487, type: 3}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: gameTimer
-      value: 300
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: eventFolder
@@ -165,7 +165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.data[3].eventTime
-      value: 150
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 6472450743787329740, guid: 655e9d8fad2ebec43a026c6a6793ec66, type: 3}
       propertyPath: events.Array.data[0].widthOfSpawn

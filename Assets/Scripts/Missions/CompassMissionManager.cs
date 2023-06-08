@@ -29,7 +29,7 @@ public class CompassMissionManager : MonoBehaviour
     private IEnumerator Start()
     {
         activeM = new List<BoussoleMission> ();
-        TileSelector.missionComplete += CompleteMission;
+        //TileSelector.missionComplete += CompleteMission;
         yield return new WaitUntil(() => TileSystem.Instance.ready);
         for (int i = 0; i < compassMissionSlots; i++)
         {
@@ -39,7 +39,7 @@ public class CompassMissionManager : MonoBehaviour
 
     private void OnDisable()
     {
-        TileSelector.missionComplete -= CompleteMission;
+        //TileSelector.missionComplete -= CompleteMission;
     }
 
     private void AddCompassMission(bool isEphemeral, Tile targettedTile = null)

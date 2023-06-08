@@ -24,6 +24,8 @@ public class CameraCtr : MonoBehaviour
     float splitBarPosX;
     [Foldout("Camera References")] public Camera soloCam, duoCam2;
     private PlayerInputManager playerInputManager;
+    [SerializeField] private PauseMenu pauseMenu;
+    [SerializeField] private PauseMenu pauseHubMenu;
     #endregion
 
     #region Main Variables
@@ -60,46 +62,79 @@ public class CameraCtr : MonoBehaviour
         splitBarPosX = SplitBar.anchoredPosition.x;
         GridUtils.onLevelMapLoad += OnLoad;
         GridUtils.onEndLevel += OnEndLevel;
+        Player_Pause.pauseMenuActivation += PauseMenuActivation;
+        Player_Pause.pauseMenuDesactivation += PauseMenuDesactivation;
         //sCE = GetComponentInChildren<SplitScreenEffect>();
         dezoomCamera.LookAt = TileSystem.Instance.centerTile.tc.minableItems;
         dezoomCamera.Follow = TileSystem.Instance.centerTile.tc.minableItems;
-        StartCoroutine(changeCam());
+        
         playerInputManager = FindObjectOfType<PlayerInputManager>();
         brains = GetComponentsInChildren<CinemachineBrain>();
     }
 
+
+    private void PauseMenuActivation(Player player)
+    {
+        /*if(players.Count == 2)
+        {
+            Camera cam;
+            Camera otherCam; 
+            if (player == players[0])
+            {
+                cam = soloCam;
+                otherCam = duoCam2;
+            }
+            else
+            {
+                cam = duoCam2;
+                otherCam = soloCam;
+            }
+            print(cam);
+            print(otherCam);
+            Rect rect = new Rect(0, 0, 1, 1);
+            cam.DORect(rect, 1).SetEase(TileSystem.Instance.easeInOut).SetUpdate(true);
+            otherCam.gameObject.SetActive(false);
+            SplitBar.transform.DOScaleX(0, 1).SetEase(TileSystem.Instance.easeInOut).SetUpdate(true);
+            SplitBar.DOAnchorPosX(splitBarPosX, 1).SetEase(TileSystem.Instance.easeInOut).SetUpdate(true);
+        }*/
+    }
+
+    private void PauseMenuDesactivation(Player player)
+    {
+        /*if (players.Count == 2)
+        {
+            Camera cam;
+            Camera otherCam;
+            if (player == players[0])
+            {
+                cam = soloCam;
+                otherCam = duoCam2;
+            }
+            else
+            {
+                cam = duoCam2;
+                otherCam = soloCam;
+            }
+
+            Rect rect = new Rect(0, 0, .5f, 1);
+            cam.DORect(rect, 1).SetEase(TileSystem.Instance.easeInOut).SetUpdate(true);
+            //cam.DO().SetEase(TileSystem.Instance.easeInOut).SetUpdate(true);
+            otherCam.gameObject.SetActive(true);
+            SplitBar.transform.DOScaleX(1, 1).SetEase(TileSystem.Instance.easeInOut).SetUpdate(true);
+            SplitBar.DOAnchorPosX(0, 1).SetEase(TileSystem.Instance.easeInOut).SetUpdate(true);
+        }*/
+    }
 
     public void OnLoad(string path)
     {
         StartCoroutine(OnLevelLoad());
         dezoomCamera.LookAt = TileSystem.Instance.centerTile.tc.minableItems;
         dezoomCamera.Follow = TileSystem.Instance.centerTile.tc.minableItems;
-/*        for (int i = 0; i < sCE.Screens.Count; i++)
-        {
-            if (sCE.Screens[i].Target == null)
-            {
-                sCE.Screens.RemoveAt(i);
-                i--;
-            } 
-        }*/
     }
 
     public void OnEndLevel(Tile tile) => DezoomCam(tile.tc.minableItems);
 
-/*    private void Update()
-    {
-        if(!TileSystem.Instance.isHub && players.Count > 1) 
-        { 
-            if (Vector3.Distance(players[0].transform.position, players[1].transform.position) > distanceToSplit)
-            {
-                sCE.enabled = true;
-            }
-            else if(Vector3.Distance(players[0].transform.position, players[1].transform.position) < distanceToSplit + 15)
-            {
-                sCE.enabled = false;   
-            }        
-        }
-    }*/
+
 
     private void OnDisable()
     {
@@ -114,13 +149,18 @@ public class CameraCtr : MonoBehaviour
 
 
     #region OnLoad
-    IEnumerator changeCam()
+    bool once;
+    void ChangeCam()
     {
-        yield return new WaitUntil(() => Input.GetButtonDown("StartGame"));
+        if (once) return;
+        else once = true;
+        //yield return new WaitUntil(() => Input.GetButtonDown("StartGame"));
         dezoomCamera.Priority = 2;
-        yield return new WaitForSeconds(brains[0].m_DefaultBlend.m_Time);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Camera");
+        //yield return new WaitForSeconds(brains[0].m_DefaultBlend.m_Time);
         TileSystem.Instance.ready = true;
     }
+
     public IEnumerator OnLevelLoad()
     {
         TileSystem.Instance.ready = true;
@@ -129,6 +169,7 @@ public class CameraCtr : MonoBehaviour
         if (dezoomCamera != null)
         {
             dezoomCamera.Priority = 2;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Camera");
         }
     }
 
@@ -136,6 +177,7 @@ public class CameraCtr : MonoBehaviour
     {
 
         dezoomCamera.Priority = 4;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Camera");
     }
 
     public void DezoomCam(Transform targetTile)
@@ -144,6 +186,7 @@ public class CameraCtr : MonoBehaviour
         {
             dezoomCamera.LookAt = targetTile;
             dezoomCamera.Priority = 4;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Camera");
         }
     }
     #endregion
@@ -158,6 +201,7 @@ public class CameraCtr : MonoBehaviour
         }
         players.Add(player);
         playerP.playerIndex = players.Count - 1;
+        ChangeCam();
         if (players.Count > 1)
         {
             cam2.Follow = player ;
@@ -165,6 +209,7 @@ public class CameraCtr : MonoBehaviour
             playerInputManager.DisableJoining();
             playerP.closeUpCam.gameObject.layer = 17;
             playerP.myCamera = duoCam2.transform;
+            playerP.transform.LookAt(new Vector3(playerP.myCamera.position.x, playerP.transform.position.y, playerP.myCamera.position.z));
         }
         else
         {
@@ -172,15 +217,20 @@ public class CameraCtr : MonoBehaviour
             cam1.LookAt = player;
             playerP.myCamera = soloCam.transform;
             playerP.closeUpCam.gameObject.layer = 18;
+            playerP.transform.LookAt(new Vector3(playerP.myCamera.position.x, playerP.transform.position.y, playerP.myCamera.position.z));
         }
         if(players.Count > 1) 
         { 
             Rect rect  = new Rect(0, 0, .5f, 1);
-            soloCam.DORect(rect, 2).SetEase(TileSystem.Instance.easeInOut);
             duoCam2.gameObject.SetActive(true);
+            soloCam.DORect(rect, 2).SetEase(TileSystem.Instance.easeInOut);
+            //DOVirtual.Float(soloCam.rect.width, .5f, 2, v => soloCam.rect.width = v).SetUpdate();
             SplitBar.transform.DOScaleX(1, 2).SetEase(TileSystem.Instance.easeInOut);
             SplitBar.DOAnchorPosX(0, 2).SetEase(TileSystem.Instance.easeInOut);
         }
+        Player_Pause pPause = playerP.GetComponent<Player_Pause>();
+        pPause.pauseHubMenu = pauseHubMenu;
+        pPause.pauseMenu = pauseMenu;
         SetPlayerColor(player);
     }
 
@@ -264,17 +314,6 @@ public class CameraCtr : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-/*        Vector3 camPos = cam1.transform.position;
-        for (int i = 0; i < players.Count; i++)
-        {
-            if (i == 1) camPos = cam2.transform.position;
-            Vector3 direction = (players[i].position - camPos).normalized;
-            float distance = Vector3.Distance(players[i].position, camPos) - sphereCastRadius;
-            UnityEngine.Gizmos.DrawRay(camPos,direction * distance);
-        }*/
-    }
 
 
     private void OnFadeTileChange(Tile[] value)

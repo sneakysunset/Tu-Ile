@@ -22,6 +22,8 @@ public class EndMenu : MonoBehaviour
     public Button optionButton;
     public delegate void OnLevelEnd();
     public OnLevelEnd onLevelEnd;
+    public Image[] endFillStars;
+    public TextMeshProUGUI[] endStarsScore;
     private void Start()
     {
         players = FindObjectsOfType<PlayerInput>();
@@ -37,11 +39,25 @@ public class EndMenu : MonoBehaviour
 
         GameTimer gameTimer = TileSystem.Instance.gameTimer;
         ScoreManager score = RessourcesManager.Instance.getGameManagerFromList(gameTimer.gameObject.name).GetComponent<ScoreManager>();
+        
         if(TileSystem.Instance.scoreManager.score > score.highscore) score.highscore = TileSystem.Instance.scoreManager.score;
         if (score.highscore > score.scoreCaps[0]) score.isCompleted = true;
         //MissionManager missionManager = MissionManager.Instance;
         CameraCtr cam = TileSystem.Instance.cam;
-
+        for (int i = 0; i < endFillStars.Length; i++)
+        {
+            endStarsScore[i].text = score.scoreCaps[i].ToString();
+            if(TileSystem.Instance.scoreManager.score > score.scoreCaps[i])
+            {
+                endFillStars[i].color = Color.yellow;
+                endStarsScore[i].color = Color.black;
+            }
+            else
+            {
+                endFillStars[i].color = Color.black;
+                endStarsScore[i].color = Color.white;
+            }
+        }
         //StartCoroutine(gameTimer.LerpTimeLine(timerTr.anchoredPosition, timerTr.anchoredPosition + UnityEngine.Vector2.up * -100, timerTr, gameTimer.lerpCurveEaseIn, gameTimer.lerpSpeed));
         cam.DezoomCam(TileSystem.Instance.centerTile.tc.minableItems);
         //missionManager.CloseMissions();

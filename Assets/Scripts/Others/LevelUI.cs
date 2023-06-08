@@ -115,6 +115,7 @@ public class LevelUI : MonoBehaviour
         //NoDetailUI.gameObject.SetActive(true);
         detailRight.DOAnchorPosX(0, 1).SetEase(TileSystem.Instance.easeInOut);
         detailLeft.DOAnchorPosX(0, 1).SetEase(TileSystem.Instance.easeInOut);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Paper");
     }
 
     public void Detail()
@@ -122,6 +123,7 @@ public class LevelUI : MonoBehaviour
         //DetailUI.gameObject.SetActive(true);
         detailLeft.DOAnchorPosX(-1.8f, 1).SetEase(TileSystem.Instance.easeInOut);
         detailRight.DOAnchorPosX(1.8f, 1).SetEase(TileSystem.Instance.easeInOut);
-       // NoDetailUI.gameObject.SetActive(false);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Paper");
+        // NoDetailUI.gameObject.SetActive(false);
     }
 }

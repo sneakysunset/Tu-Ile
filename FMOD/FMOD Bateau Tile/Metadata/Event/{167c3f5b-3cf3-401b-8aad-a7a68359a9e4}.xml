@@ -98,6 +98,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{48161507-5d69-4983-b355-299a12ca2a15}">
+		<property name="volume">
+			<value>-3</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -127,6 +130,9 @@
 		</property>
 	</object>
 	<object class="SingleSound" id="{f618d093-9ab3-4f8f-bd49-8b883dace260}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<property name="pitch">
 			<value>0.300000012</value>
 		</property>
@@ -138,6 +144,9 @@
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{ecfb251f-fc3e-4ba8-a600-5eb119ddfcae}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{016b5d0f-b689-4e4e-ac0e-570db871a48b}</destination>
 		</relationship>

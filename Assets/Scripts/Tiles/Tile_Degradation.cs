@@ -13,7 +13,8 @@ public class Tile_Degradation : MonoBehaviour
     [HideNormalInspector] public float tileDegraderMult = 1;
     [HideNormalInspector] private bool isDegrading;
     private IEnumerator shakeCor;
-
+    private IEnumerator movementCor;
+    
 
     #region SerializedFields
     [SerializeField, NaughtyAttributes.ProgressBar(1)] private float degradationTimer;
@@ -48,16 +49,17 @@ public class Tile_Degradation : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y == t.currentPos.y) t.IsMoving = false;
-        else t.IsMoving = true;
+        //if (transform.position.y == t.currentPos.y) t.IsMoving = false;
+        //else t.IsMoving = true;
 
 
-        if (FMODUtils.IsPlaying(tfFI)) tfFI.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(tc.minableItems));
+        
 
         if(isDegrading && t.tileType != TileType.Sand) degradationTimer -= Time.deltaTime * t.typeDegradingSpeed / timerValue;
         if(isDegrading && degradationTimer < 0) 
         {
-            t.currentPos.y -= heightByTile;
+            //t.currentPos.y -= heightByTile;
+            t.ChangeCurrentPos(-1);
             isDegrading = false;
         }
         if(isDegrading && degradationTimer < shakeActivationTimePercent * t.typeDegradingSpeed && shakeCor == null)
@@ -67,9 +69,9 @@ public class Tile_Degradation : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+/*    private void FixedUpdate()
     {
-        if (TileSystem.Instance.ready /*&& tile.readyToRoll*/ && t.IsMoving)
+        if (TileSystem.Instance.ready && tile.readyToRoll && t.IsMoving)
         {
             Vector3 localPos = t.transform.localPosition;
             float distance = Mathf.Abs(t.transform.position.y - t.currentPos.y);
@@ -84,13 +86,14 @@ public class Tile_Degradation : MonoBehaviour
                 tc.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, t.currentPos.y, localPos.z), degradationLerpSpeed * Time.deltaTime * t.degSpeed * TileSystem.Instance.lerpingSpeed * distance * tileDegraderMult));
             }
         }
-    }
+    }*/
 
     public void SandDegradation()
     {
         if(shakeCor == null && !TileSystem.Instance.isHub)
         {
-            t.currentPos.y -= t.td.heightByTile;
+            //t.currentPos.y -= t.td.heightByTile;
+            t.ChangeCurrentPos(-1);
             shakeCor = TileShake();
             StartCoroutine(shakeCor);
         }
@@ -142,7 +145,8 @@ public class Tile_Degradation : MonoBehaviour
     void SinkTile()
     {
         t.walkable = false;
-        t.currentPos.y = -16f;
+        //t.currentPos.y = -16f;
+        t.SetCurrentPos(-16f);
         gameObject.layer = LayerMask.NameToLayer("DisabledTile");
         //tile.myMeshR.enabled = false;
         //transform.Find("Additional Visuals").gameObject.SetActive(false);
@@ -155,6 +159,13 @@ public class Tile_Degradation : MonoBehaviour
     public void StartTileMovement()
     {
         FMODUtils.SetFMODEvent(ref tfFI, "event:/Tuile/Tile/Terraformingdown", tc.minableItems);
+        tfFI.setParameterByNameWithLabel("GroundType", t.GetTileType());
+        if (movementCor == null)
+        {
+            movementCor = TileMovement();
+            StartCoroutine(movementCor);
+        }
+
     }
 
     public void EndTileMovement()
@@ -181,11 +192,11 @@ public class Tile_Degradation : MonoBehaviour
             yield return TileSystem.Instance.shakeWaiter;
         }
        // yield return new WaitUntil(() => transform.position != t.currentPos);
-        while (transform.position != t.currentPos)
+/*        while (transform.position != t.currentPos)
         {
             //transform.localPosition = ShakeEffect(1, pos);
             yield return TileSystem.Instance.shakeWaiter;
-        }
+        }*/
         shakeCor = null;
     }
 
@@ -194,5 +205,30 @@ public class Tile_Degradation : MonoBehaviour
         float x = UnityEngine.Random.Range(-1f, 1f) * shakeMagnitude * shakeCurve.Evaluate(curveTime);
         float y = UnityEngine.Random.Range(-1f, 1f) * shakeMagnitude * shakeCurve.Evaluate(curveTime);
         return new Vector3(ogPos.x + x, transform.localPosition.y, ogPos.z + y);
+    }
+
+    IEnumerator TileMovement()
+    {
+        while(transform.position.y != t.currentPos.y) 
+        {
+            if (FMODUtils.IsPlaying(tfFI)) tfFI.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(tc.minableItems));
+            //tfFI.setParameterByNameWithLabel("GroundType", t.GetTileType());
+            Vector3 localPos = t.transform.localPosition;
+            float distance = Mathf.Abs(t.transform.position.y - t.currentPos.y);
+            distance = Mathf.Clamp(distance, .3f, 3f);
+
+            if (t.isGrowing)
+            {
+                tc.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, t.currentPos.y, localPos.z), (1 / growthLerpSpeed) * Time.deltaTime * distance * tileDegraderMult));
+            }
+            else
+            {
+                tc.rb.MovePosition(Vector3.MoveTowards(localPos, new Vector3(localPos.x, t.currentPos.y, localPos.z), degradationLerpSpeed * Time.deltaTime * t.degSpeed * TileSystem.Instance.lerpingSpeed * distance * tileDegraderMult));
+            }
+            yield return new WaitForFixedUpdate();
+        }
+        movementCor = null;
+        t.IsMoving = false;
+        
     }
 }

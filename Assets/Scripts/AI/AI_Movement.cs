@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
 using UnityEngine.Events;
+using Unity.VisualScripting;
+
 public class AI_Movement : MonoBehaviour
 {
     private AI_Behaviour AI_B;
@@ -47,10 +49,40 @@ public class AI_Movement : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
     }
 
+    private string getTileType(TileType tileUnderType)
+    {
+        string groundTypeName = "Neutral";
+        switch (AI_B.tileUnder.tileType)
+        {
+            case TileType.Wood: groundTypeName = AI_B.tileUnder.tileType.ToString(); break;
+            case TileType.Rock: groundTypeName = AI_B.tileUnder.tileType.ToString(); break;
+            case TileType.Sand: groundTypeName = AI_B.tileUnder.tileType.ToString(); break;
+            case TileType.Gold: groundTypeName = "Rock"; break;
+            case TileType.Diamond: groundTypeName = "Rock"; break;
+            default: break;
+        }
+        return groundTypeName;
+    }
+
     private void OnGroundedCallBack()
     {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Character/Actions/Stomp", transform.position);
+        groundType = getTileType(AI_B.tileUnder.tileType);
+        stompEvent = FMODUnity.RuntimeManager.CreateInstance("event:/Tuile/Character/Actions/Stomp");
+        stompEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(transform));
+
+        stompEvent.setParameterByNameWithLabel("GroundType", groundType);
+        stompEvent.start();
     }
+
+    void OnDestroy()
+    {
+        stompEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        stompEvent.release();
+    }
+
+
+    FMOD.Studio.EventInstance stompEvent;
+    string groundType;
 
     private void Update()
     {

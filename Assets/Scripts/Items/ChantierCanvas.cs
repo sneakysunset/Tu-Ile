@@ -44,7 +44,6 @@ public class ChantierCanvas : MonoBehaviour
         {
             layoutItems[i].gameObject.SetActive(false);
         }
-
         int f = 0;
         for (int i = 0; i < etabli.recette.requiredItemStacks.Length; i++)
         {
@@ -94,7 +93,6 @@ public class ChantierCanvas : MonoBehaviour
                 if (rMC.stackType == etabli.recette.requiredItemStacks[i].stackType)
                 {
                     texts[f].text = "x " + etabli.currentStackRessources[i] + " / " + etabli.recette.requiredItemStacks[i].cost.ToString();
-                    f++;
                     if (etabli.currentStackRessources[i] >= etabli.recette.requiredItemStacks[i].cost)
                     {
                         texts[f].color = Color.green;
@@ -103,6 +101,7 @@ public class ChantierCanvas : MonoBehaviour
                     {
                         texts[f].color = Color.black;
                     }
+                    f++;
                     break;
                 }
             }
@@ -114,7 +113,6 @@ public class ChantierCanvas : MonoBehaviour
             {
                 if (rMC.itemType == etabli.recette.requiredItemUnstackable[i].itemType)
                 {
-                    f++;
                     if (etabli.itemsFilled[i])
                     {
                         texts[f].text = " V";
@@ -125,6 +123,7 @@ public class ChantierCanvas : MonoBehaviour
                         texts[f].text = "X";
                         texts[f].color = Color.black;
                     }
+                    f++;
                     break;
                 }
             }

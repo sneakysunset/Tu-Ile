@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
-
 public class LoadScene : MonoBehaviour
 {
     public TextMeshProUGUI fpsText;
@@ -15,6 +14,7 @@ public class LoadScene : MonoBehaviour
     public RectTransform timerTr;
     public RectTransform scoreTr;
     public Image[] fillStars;
+
     [SerializeField] private float lerpDuration;
     [SerializeField] private float disabledPos;
     private float ogPos;

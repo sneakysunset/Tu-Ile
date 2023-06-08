@@ -75,12 +75,14 @@ public static class GridUtils
                             if (ts[i].walkable && ts[i] != tile)
                             {
                                 ts[i].degradable = true;
-                                ts[i].currentPos.y = -16;
+                                ts[i].SetCurrentPos(-16);
+                                //ts[i].currentPos.y = -16;
                                 ts[i].td.tileDegraderMult = UnityEngine.Random.Range(0.8f, 3f);
                             }
                             else if (ts[i] == tile)
                             {
-                                tile.currentPos.y = 0;
+                                tile.SetCurrentPos(0);
+                                //tile.currentPos.y = 0;
                             }
                             if (!ts[i].walkable && ts[i].tourbillon)
                             {
@@ -211,7 +213,6 @@ public static class GridUtils
             TileSystem.Instance.isHub = false;
 
         }
-        
         string tileMapInfo = File.ReadAllText(Application.streamingAssetsPath + "/LevelMaps/" + n + ".txt");
         string[] tiLine = tileMapInfo.Split('|');
         for (int i = 0; i < tiLine.Length - 1; i++)
@@ -231,6 +232,7 @@ public static class GridUtils
                 tile.walkable = Convert.ToBoolean(int.Parse(tiParam[1].Split(":")[1]));
                 tile.tourbillon = Convert.ToBoolean(int.Parse(tiParam[3].Split(":")[1]));
                 tile.tileSpawnType = (TileType)Convert.ToInt32(int.Parse(tiParam[5].Split(":")[1]));
+                tile.degradable = true;
                 if (tile.walkable)
                 {
 
@@ -238,7 +240,8 @@ public static class GridUtils
                     tile.tileType = (TileType)Convert.ToInt32(int.Parse(tiParam[4].Split(":")[1]));
                     tile.spawnPositions = (SpawnPositions)int.Parse(tiParam[6].Split(":")[1]);
                     tile.levelName = tiParam[7].Split(":")[1];
-                    tile.currentPos.y = int.Parse(tiParam[8].Split(":")[1]);
+                    tile.SetCurrentPos(int.Parse(tiParam[8].Split(":")[1]));
+                    //tile.currentPos.y = int.Parse(tiParam[8].Split(":")[1]);
                     string[] tiSpawner = tiParam[9].Split(":")[1].Split(";");
                     if (tiSpawner.Length > 1)
                     {

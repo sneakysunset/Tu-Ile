@@ -90,7 +90,7 @@ public class Tile : MonoBehaviour
     [HideNormalInspector] public int coordX, coordY;
     private bool walkedOntoIni = false;
     public bool walkedOnto { get { return walkedOntoIni; } set { if (walkedOnto != value) IsWalkedOntoMethod(value); } }
-    [HideNormalInspector] public Vector3 currentPos;
+    public Vector3 currentPos { get;  private set; }
     [HideInInspector] public Vector2Int[] adjTCoords;
     #endregion
 
@@ -123,6 +123,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public bool IsNear { get { return isNear; } set { if (isNear != value) IsNearMethod(value); } }
     [HideInInspector] public bool isDetail;
     [HideInInspector] public bool IsDetail { get { return  isDetail; } set { if (isDetail != value) IsDetailMethod(value); } }
+    private string groundType;
     #endregion
     #endregion
 
@@ -237,8 +238,6 @@ public class Tile : MonoBehaviour
             tc.minableItems.Rotate(0, -rotation * 60, 0);
             tc.altSpawnPositions.Rotate(0, -rotation * 60, 0);
         }
-
-        //if (tileType == TileType.BouncyTile) tc.rb.isKinematic = false;
     }
 
     private void OnDisable()
@@ -359,6 +358,32 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region Tile Functions
+    public string GetTileType()
+    {
+        string groundTypeName = "Neutral";
+        switch (tileType)
+        {
+            case TileType.Wood: groundTypeName = tileType.ToString(); break;
+            case TileType.Rock: groundTypeName = tileType.ToString(); break;
+            case TileType.Sand: groundTypeName = tileType.ToString(); break;
+            case TileType.Gold: groundTypeName = "Rock"; break;
+            case TileType.Diamond: groundTypeName = "Rock"; break;
+            default: break;
+        }
+        return groundTypeName;
+    }
+
+    public void ChangeCurrentPos(int steps)
+    {
+        currentPos += steps * td.heightByTile * Vector3.up;
+        if(currentPos.y != transform.position.y) IsMoving = true;
+    }
+
+    public void SetCurrentPos(float height)
+    {
+        currentPos = height * Vector3.up;
+        if(currentPos.y != transform.position.y) IsMoving = true;
+    }
 
     public void StopDegradation() => td.EndDegradation();
 
@@ -444,7 +469,8 @@ public class Tile : MonoBehaviour
 
         isDegrading = false;
         transform.position = new Vector3(transform.position.x, -7f, transform.position.z) ;
-        currentPos.y = height - (height % td.heightByTile);
+        //currentPos.y = height - (height % td.heightByTile);
+        SetCurrentPos(height - (height % td.heightByTile));
     }
 
     private void GetAdjCoords()

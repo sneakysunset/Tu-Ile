@@ -80,7 +80,8 @@ public class Item_Etabli : Item
         createdItem = transform.Find("TileCreator/CreatedPos");
         if (isChantier)
         {
-            //itemNumCh = GetComponentInChildren<ChantierCanvas>();
+            itemNumCh = GetComponentInChildren<ChantierCanvas>();
+            itemNumCh.OnActivated();
             itemNumCh.UpdateText(this);
         }
         else
@@ -95,7 +96,7 @@ public class Item_Etabli : Item
         {
             transform.position = hit.point + transform.localScale.y * yoffset * Vector3.up;
             transform.LookAt(new Vector3(tileUnder.transform.position.x, transform.position.y, tileUnder.transform.position.z));
-            spawnPos.position = new Vector3(tileUnder.tc.minableItems.position.x, transform.position.y, tileUnder.tc.minableItems.position.z); 
+            spawnPos.position = new Vector3(tileUnder.tc.minableItems.position.x, spawnPos.position.y, tileUnder.tc.minableItems.position.z); 
         }
         yield return new WaitForEndOfFrame();
     }

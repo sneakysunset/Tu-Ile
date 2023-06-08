@@ -1,15 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System.IO;
 using System;
-using static UnityEditor.PlayerSettings;
 #if UNITY_EDITOR
-using AmplifyShaderEditor;
+using UnityEditor;
 #endif
 public class TileSystem : MonoBehaviour
 {
@@ -141,9 +139,9 @@ public class TileSystem : MonoBehaviour
         }
     }
 
-    private void OnPauseStart() => music.setPaused(true);
+    private void OnPauseStart(Player player) => music.setPaused(true);
 
-    private void OnPauseEnd() => music.setPaused(false);
+    private void OnPauseEnd(Player player) => music.setPaused(false);
 
     void RegenGrid()
     {
