@@ -40,14 +40,18 @@ public class LoadScene : MonoBehaviour
 
     public void ActivateUI()
     {
-        timerTr.DOAnchorPosY(ogPos, lerpDuration).SetEase(TileSystem.Instance.easeOut);
-        scoreTr.DOAnchorPosY(ogPos, lerpDuration).SetEase(TileSystem.Instance.easeOut);
+        DOTween.Kill(timerTr);
+        DOTween.Kill(scoreTr);
+        timerTr.DOAnchorPosY(ogPos, lerpDuration).SetUpdate(true).SetEase(TileSystem.Instance.easeOut);
+        scoreTr.DOAnchorPosY(ogPos, lerpDuration).SetUpdate(true).SetEase(TileSystem.Instance.easeOut);
     }
 
     public void DisableUI()
     {
-        timerTr.DOAnchorPosY(disabledPos, lerpDuration).SetEase(TileSystem.Instance.easeIn);
-        scoreTr.DOAnchorPosY(disabledPos, lerpDuration).SetEase(TileSystem.Instance.easeIn);
+        DOTween.Kill(timerTr);
+        DOTween.Kill(scoreTr);
+        timerTr.DOAnchorPosY(disabledPos, lerpDuration).SetUpdate(true).SetEase(TileSystem.Instance.easeIn);
+        scoreTr.DOAnchorPosY(disabledPos, lerpDuration).SetUpdate(true).SetEase(TileSystem.Instance.easeIn);
     }
 
 

@@ -519,15 +519,8 @@ public class Tile : MonoBehaviour
 
     public void UnFadeTile()
     {
-        /*        for (int i = 0; i < tc.myMeshR.materials.Length; i++)
-                {
-                    ChangeRenderMode.ChangeRenderModer(tc.myMeshR.materials[i], ChangeRenderMode.BlendMode.Opaque);
-                    Color col = tc.myMeshR.materials[i].color;
-                    col.a = 1f;
-                    tc.myMeshR.materials[i].color = col;
-                }*/
-        print(gameObject.name);
-        tc.myMeshR.materials = getCorrespondingMat(tileType);
+
+        if(walkable && faded) tc.myMeshR.materials = getCorrespondingMat(tileType);
         faded = false;
     }
 

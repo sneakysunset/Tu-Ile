@@ -49,7 +49,8 @@ public class Item_Crate : Item
     public IEnumerator OnCenterReached(Transform pos)
     {
         holdable = false;
-        
+        interactable = false;
+        Highlight.SetActive(false);
         transform.parent = null;
         transform.position = pos.position;
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Chest", transform.position);

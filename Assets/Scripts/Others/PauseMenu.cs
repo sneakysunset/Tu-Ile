@@ -18,6 +18,7 @@ public class PauseMenu : MonoBehaviour
     public Button ogButton;
     public Button optionButton;
     public bool optionOn;
+    [SerializeField] private LoadScene canvasRef;
     private void Awake()
     {
         players = FindObjectsOfType<PlayerInput>();
@@ -30,6 +31,10 @@ public class PauseMenu : MonoBehaviour
         ogButton.Select();
         player = _player;
         playerInputManager.enabled = false;
+        if (!TileSystem.Instance.isHub)
+        {
+            canvasRef.DisableUI();
+        }
         Time.timeScale = 0;
         tr.DOAnchorPosX(0, 1,true).SetEase(easeOut).SetUpdate(true);
         foreach (PlayerInput p in players)
@@ -63,6 +68,10 @@ public class PauseMenu : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/Tuile/Ui/Button");
 
         if (optionOn) return;
+        if (!TileSystem.Instance.isHub)
+        {
+            canvasRef.ActivateUI();
+        }
         if (player && !TileSystem.Instance.isHub) player.SetPause();
         else if (player && TileSystem.Instance.isHub) player.SetHubPause();
     }
