@@ -42,21 +42,21 @@ public class PlayersManager : MonoBehaviour
         //pM.transform.GetChild(0).gameObject.SetActive(true);
         //pM.gameObject.SetActive(false);
         //SplitScreenEffect sse = FindObjectOfType<SplitScreenEffect>();
-        for (int i = 0; i < players.Length; i++)
+        /*for (int i = 0; i < players.Length; i++)
         {
             if(cam.players == null || cam.players.Count == 0)
             {
                 cam.AddPlayer(players[0].dummyTarget, players[0]);      
             } 
-            if ((TileSystem.Instance.isHub) && !cam.players.Contains(players[i].dummyTarget)) cam.AddPlayer(players[i].dummyTarget, players[i]);
+            if (*//*(TileSystem.Instance.isHub) && *//*!cam.players.Contains(players[i].dummyTarget)) cam.AddPlayer(players[i].dummyTarget, players[i]);
             Player_Pause pPause = players[i].GetComponent<Player_Pause>();
             print(pHM);
             pPause.pauseHubMenu = pHM;
             pPause.pauseMenu = pM;
-            print(pPause.pauseHubMenu);
-        }
+            //print(pPause.pauseHubMenu);
+        }*/
 
-        if(!cam.GetComponentInChildren<CinemachineBrain>().IsBlending) playerInputManager.EnableJoining();
+        //if(!cam.GetComponentInChildren<CinemachineBrain>().IsBlending) playerInputManager.EnableJoining();
         yield return new WaitUntil(() => TileSystem.Instance.ready);
     }
 
@@ -73,7 +73,7 @@ public class PlayersManager : MonoBehaviour
 
     public void PlayerDisconnect(InputDevice device, InputDeviceChange change)
     {
-        if (change == InputDeviceChange.Disconnected && TileSystem.Instance.isHub)
+        if (change == InputDeviceChange.Disconnected /*&& TileSystem.Instance.isHub*/)
         {
             PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
             foreach (PlayerInput playerInput in playerInputs)

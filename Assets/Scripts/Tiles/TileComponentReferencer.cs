@@ -12,20 +12,27 @@ public class TileComponentReferencer : MonoBehaviour
     public Mesh meshCollider;
     [Foldout("Center Tile")] public Mesh centerMesh;
     [Foldout("Center Tile")] public Material centerMat, centerMatBottom;
+    [Foldout("Center Tile")] public Material fcenterMat, fcenterMatBottom;
     [Foldout("Undegradable Tile")] public Mesh undegradableMesh;
     [Foldout("Undegradable Tile")] public Material undegradableMat, undegradableMatBottom;
+    [Foldout("Undegradable Tile")] public Material fundegradableMat, fundegradableMatBottom;
     [Foldout("Plaine Tile")] public Mesh defaultMesh;
     [Foldout("Plaine Tile")] public Material plaineMatTop, plaineMatBottom;
+    [Foldout("Plaine Tile")] public Material fplaineMatTop, fplaineMatBottom;
     [Foldout("Wood Tile")] public Mesh woodMesh;
     [Foldout("Wood Tile")] public Material woodMat;
+    [Foldout("Wood Tile")] public Material fwoodMat;
     [Foldout("Rock Tile")] public Mesh rockMesh;
     [Foldout("Rock Tile")] public Material rockMat;
+    [Foldout("Rock Tile")] public Material frockMat;
     [Foldout("Gold Tile")] public Material goldMat;
     [Foldout("Diamond Tile")] public Material diamondMat;
     [Foldout("Adamantium Tile")] public Material adamantiumMat;
     [Foldout("Sand Tile")] public Mesh sandMesh;
     [Foldout("Sand Tile")] public Material desertMatTop, desertMatBottom;
+    [Foldout("Sand Tile")] public Material fdesertMatTop, fdesertMatBottom;
     [Foldout("Bouncy Tile")] public Material bounceMat;
+    [Foldout("Bouncy Tile")] public Material fbounceMat;
     [Foldout("Disabled Tile")] public Material disabledMaterial;
     #endregion
     #region Interactors

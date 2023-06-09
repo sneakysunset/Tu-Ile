@@ -237,6 +237,7 @@ public class Tile : MonoBehaviour
             transform.Rotate(0, rotation * 60, 0);
             tc.minableItems.Rotate(0, -rotation * 60, 0);
             tc.altSpawnPositions.Rotate(0, -rotation * 60, 0);
+            tc.levelUI.transform.Rotate(0, -rotation * 60, 0);
         }
     }
 
@@ -505,25 +506,28 @@ public class Tile : MonoBehaviour
     Color currentColor;
     public void FadeTile(float t)
     {
-        for (int i = 0; i < tc.myMeshR.materials.Length; i++)
-        {
-            ChangeRenderMode.ChangeRenderModer(tc.myMeshR.materials[i], ChangeRenderMode.BlendMode.Transparent);
-            Color col = tc.myMeshR.materials[i].color;
-            col.a = t;
-            tc.myMeshR.materials[i].color = col;
-        }
+        /*        for (int i = 0; i < tc.myMeshR.materials.Length; i++)
+                {
+                    ChangeRenderMode.ChangeRenderModer(tc.myMeshR.materials[i], ChangeRenderMode.BlendMode.Transparent);
+                    Color col = tc.myMeshR.materials[i].color;
+                    col.a = t;
+                    tc.myMeshR.materials[i].color = col;
+                }*/
+        tc.myMeshR.materials = getFadeCorrespondingMat(tileType);
         faded = true;
     }
 
     public void UnFadeTile()
     {
-        for (int i = 0; i < tc.myMeshR.materials.Length; i++)
-        {
-            ChangeRenderMode.ChangeRenderModer(tc.myMeshR.materials[i], ChangeRenderMode.BlendMode.Opaque);
-            Color col = tc.myMeshR.materials[i].color;
-            col.a = 1f;
-            tc.myMeshR.materials[i].color = col;
-        }
+        /*        for (int i = 0; i < tc.myMeshR.materials.Length; i++)
+                {
+                    ChangeRenderMode.ChangeRenderModer(tc.myMeshR.materials[i], ChangeRenderMode.BlendMode.Opaque);
+                    Color col = tc.myMeshR.materials[i].color;
+                    col.a = 1f;
+                    tc.myMeshR.materials[i].color = col;
+                }*/
+        print(gameObject.name);
+        tc.myMeshR.materials = getCorrespondingMat(tileType);
         faded = false;
     }
 
@@ -608,6 +612,49 @@ public class Tile : MonoBehaviour
             }
         }
         if(walkable && !tc.myMeshR.enabled)
+        {
+            tc.myMeshR.enabled = true;
+        }
+
+        return mat;
+    }
+
+    public Material[] getFadeCorrespondingMat(TileType tType)
+    {
+        Material[] mat = new Material[2];
+        if (!walkable)
+        {
+            tc.myMeshR.enabled = false;
+            return null;
+        }
+        else if (TileSystem.Instance && (this == TileSystem.Instance.centerTile || (tileType == TileType.LevelLoader && TileSystem.Instance.isHub)))
+        {
+            mat[1] = tc.fcenterMat;
+            mat[0] = tc.fcenterMatBottom;
+            if (!transform.GetChild(9).gameObject.activeInHierarchy) tc.pSysCenterTile.gameObject.SetActive(true);
+        }
+        else if (!degradable && tileType != TileType.LevelLoader)
+        {
+            mat[1] = tc.fundegradableMat;
+            mat[0] = tc.fundegradableMatBottom;
+        }
+        else
+        {
+            switch (tType)
+            {
+                case TileType.Neutral: mat[1] = tc.fplaineMatTop; mat[0] = tc.fplaineMatBottom; break;
+                case TileType.Wood: mat = new Material[1]; mat[0] = tc.fwoodMat; break;
+                case TileType.Rock: mat = new Material[1]; mat[0] = tc.frockMat; break;
+                case TileType.Gold: mat[1] = tc.goldMat; break;
+                case TileType.Diamond: mat[1] = tc.diamondMat; break;
+                case TileType.Adamantium: mat[1] = tc.adamantiumMat; break;
+                case TileType.Sand: mat = new Material[1]; mat[0] = tc.fdesertMatBottom; break;
+                case TileType.BouncyTile: mat[1] = tc.fbounceMat; mat[0] = tc.fplaineMatBottom; break;
+                case TileType.LevelLoader: mat = new Material[1]; mat[0] = tc.fcenterMatBottom; break;
+                default: mat[1] = tc.fplaineMatTop; mat[0] = tc.fplaineMatBottom; break;
+            }
+        }
+        if (walkable && !tc.myMeshR.enabled)
         {
             tc.myMeshR.enabled = true;
         }

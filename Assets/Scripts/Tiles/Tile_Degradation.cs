@@ -1,3 +1,4 @@
+using ProjectDawn.SplitScreen;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -30,6 +31,11 @@ public class Tile_Degradation : MonoBehaviour
     [SerializeField, Range(0, 10)] private float growthLerpSpeed;
     #endregion
     #endregion
+
+    public void SetTimer(float _timerValue)
+    {
+        if(t.walkable && t.degradable) degradationTimer = _timerValue;
+    }
 
     private void Awake()
     {

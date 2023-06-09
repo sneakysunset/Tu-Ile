@@ -26,6 +26,7 @@ public class CheatCodes : MonoBehaviour
         FileInfo[] fileInfo = new DirectoryInfo(path).GetFiles();
 
         List<string> options = new List<string>();
+        options.Add("   ");
         foreach (FileInfo fi in fileInfo)
         {
             string[] d = fi.Name.Split('.');
@@ -83,5 +84,11 @@ public class CheatCodes : MonoBehaviour
     {
         if(levelLoader.gameObject.activeInHierarchy) levelLoader.gameObject.SetActive(false);
         else levelLoader.gameObject.SetActive(true);   
+    }
+
+    public void DegradeTile()
+    {
+        Player p = FindObjectOfType<Player>();
+        p.tileUnder.td.SetTimer(.05f);
     }
 }

@@ -77,7 +77,7 @@ public static class GridUtils
                                 ts[i].degradable = true;
                                 ts[i].SetCurrentPos(-16);
                                 //ts[i].currentPos.y = -16;
-                                ts[i].td.tileDegraderMult = UnityEngine.Random.Range(0.8f, 3f);
+                                ts[i].td.tileDegraderMult = UnityEngine.Random.Range(1.2f, 3f);
                             }
                             else if (ts[i] == tile)
                             {

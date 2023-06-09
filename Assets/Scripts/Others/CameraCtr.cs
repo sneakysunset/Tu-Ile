@@ -2,10 +2,8 @@ using Cinemachine;
 using ProjectDawn.SplitScreen;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static Unity.Burst.Intrinsics.X86;
 using System.IO;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -51,6 +49,7 @@ public class CameraCtr : MonoBehaviour
 
     #region ScreenShot
     [Foldout("ScreenShot")] public RenderTexture rtTarget;
+    [Foldout("ScreenShot")] public Camera screenShotCamera;
 
     #endregion
     #endregion
@@ -231,6 +230,8 @@ public class CameraCtr : MonoBehaviour
         pPause.pauseHubMenu = pauseHubMenu;
         pPause.pauseMenu = pauseMenu;
         SetPlayerColor(player);
+        if(players.Count == 2) playerInputManager.DisableJoining();
+
     }
 
     private void SetPlayerColor(Transform player)
@@ -255,12 +256,16 @@ public class CameraCtr : MonoBehaviour
         playerInputManager.EnableJoining();
         if (players.Count == 1)
         {
+            cam1.Follow = players[0];
+            cam1.LookAt = players[0];
+            players[0].GetComponentInParent<Player>().myCamera = soloCam.transform;
             Rect rect = new Rect(0, 0, 1, 1);
             soloCam.DORect(rect , 2).SetEase(TileSystem.Instance.easeInOut);
             duoCam2.gameObject.SetActive(false);
             SplitBar.transform.DOScaleX(0, 2).SetEase(TileSystem.Instance.easeInOut);
             SplitBar.DOAnchorPosX(splitBarPosX, 2).SetEase(TileSystem.Instance.easeInOut);
         }
+
     }
     #endregion
 
@@ -323,28 +328,30 @@ public class CameraCtr : MonoBehaviour
             foreach (Tile tile in value) if (!tile.faded) tile.FadeTile(transparencyLevel);
             return;
         }
-            
-        foreach(Tile tile in fadeTile)
+        else
         {
-            if(tile.faded) tile.UnFadeTile();
-        } 
-        foreach(Tile tile in value) if(!tile.faded) tile.FadeTile(transparencyLevel);
+            foreach(Tile tile in fadeTile)
+            {
+                if(tile.faded) tile.UnFadeTile();
+            } 
+            foreach(Tile tile in value) if(!tile.faded) tile.FadeTile(transparencyLevel);
+        }    
 
         fadeTile = value;
     }
 
     public void CamCapture()
     {
-        Camera Cam = GetComponentInChildren<Camera>() ;
-        Cam.targetTexture = rtTarget;
+        screenShotCamera.gameObject.SetActive(true);
+        screenShotCamera.targetTexture = rtTarget;
 
         RenderTexture currentRT = RenderTexture.active;
-        RenderTexture.active = Cam.targetTexture;
+        RenderTexture.active = screenShotCamera.targetTexture;
 
-        Cam.Render();
+        screenShotCamera.Render();
 
-        Texture2D Image = new Texture2D(Cam.targetTexture.width, Cam.targetTexture.height);
-        Image.ReadPixels(new Rect(0, 0, Cam.targetTexture.width, Cam.targetTexture.height), 0, 0);
+        Texture2D Image = new Texture2D(screenShotCamera.targetTexture.width, screenShotCamera.targetTexture.height);
+        Image.ReadPixels(new Rect(0, 0, screenShotCamera.targetTexture.width, screenShotCamera.targetTexture.height), 0, 0);
         Image.Apply();
         RenderTexture.active = currentRT;
 
@@ -353,7 +360,8 @@ public class CameraCtr : MonoBehaviour
         string filePath = Application.streamingAssetsPath + "/ScreenShots/" + SceneManager.GetActiveScene().name;
         if (!Directory.Exists(filePath)) Directory.CreateDirectory(filePath); ;
         File.WriteAllBytes(Application.streamingAssetsPath + "/ScreenShots/" + SceneManager.GetActiveScene().name + "/SS_Game.png", Bytes);
-        Cam.targetTexture = null;
+        screenShotCamera.targetTexture = null;
+        screenShotCamera.gameObject.SetActive(false);
 
     }
 

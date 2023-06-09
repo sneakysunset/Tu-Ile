@@ -38,7 +38,7 @@ public class LevelUI : MonoBehaviour
         gameTimer = rMan.getGameManagerFromList(tile.levelName + "_GM");
         scoreManager = gameTimer.GetComponent<ScoreManager>();
         StarActivation(string.Empty);
-        timeT.text = "Time:         " + gameTimer.gameTimer.ToString();
+        timeT.text = gameTimer.gameTimer.ToString();
     }
 
     private void OnDisable()
@@ -49,12 +49,16 @@ public class LevelUI : MonoBehaviour
 
     void OnLevelLoad(string path)
     {
-        if(tile.tileType == TileType.LevelLoader && TileSystem.Instance.isHub) StarActivation(path);
+        if(tile.tileType == TileType.LevelLoader && TileSystem.Instance.isHub)
+        {
+            StarActivation(path);
+            OnActivated();
+        }
     }
 
     private void StarActivation(string path)
     {
-        scoreT.text = "HighScore: " + scoreManager.highscore.ToString();
+        scoreT.text = scoreManager.highscore.ToString();
         int[] scoreCaps = scoreManager.scoreCaps;
         int highScore = scoreManager.highscore;
 
